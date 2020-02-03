@@ -43,6 +43,11 @@ jacoco {
 }
 
 dependencies {
+    implementation project(':presentation')
+    implementation project(':usecases')
+    implementation project(':domain')
+    implementation project(':data')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation debugToolsDependencies.values()
     kapt kaptJetpackDependencies.values()
