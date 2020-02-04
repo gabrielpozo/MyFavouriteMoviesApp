@@ -9,15 +9,16 @@ task clean(type: Delete) {
 }
 ext {
     versionNumber = [// Sdk and tools
-                     compileSdkVersion : 29,
-                     minSdkVersion : 24,
+                     compileSdkVersion: 29,
+                     minSdkVersion    : 24,
+                     buildToolsVersion: "29.0.2",
                      targetSdkVersion : 29,
-                     kotlinVersion : '1.3.61']
+                     kotlinVersion    : '1.3.61']
     // App dependencies
     appCompatVersion = '1.2.0-alpha02'
     constraintLayoutVersion = '2.0.0-beta4'
     coroutinesVersion = "1.3.0-RC"
-    fragmentVersion =  '1.2.0'
+    fragmentVersion = '1.2.0'
     glideVersion = '4.10.0'
     gradleVersion = '3.5.2'
     kotlinVersion = '1.3.41'
@@ -53,8 +54,8 @@ ext {
     testRulesVersion = "1.1.1"
 
     classpathDependencies = [
-            androidToolsBuild       : "com.android.tools.build:gradle:${gradleVersion}",
-            kotlinGradlePlugin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
+            androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
+            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             safeArgs          : "androidx.navigation:navigation-safe-args-gradle-plugin:${navigationVersion}"
@@ -63,84 +64,89 @@ ext {
 
     debugToolsDependencies = [
             //implementation
-            timber : "com.jakewharton.timber:timber:$timberVersion",
-            stetho : "com.facebook.stetho:stetho:$stetho",
-            stethoOkhttp : "com.facebook.stetho:stetho-okhttp3:$stetho"
+            timber      : "com.jakewharton.timber:timber:$timberVersion",
+            stetho      : "com.facebook.stetho:stetho:$stetho",
+            stethoOkhttp: "com.facebook.stetho:stetho-okhttp3:$stetho"
     ]
 
     kaptJetpackDependencies = [
             //kapt
             kaptRoom : "androidx.room:room-compiler:$roomVersion",
-            kaptGlide : "com.github.bumptech.glide:compiler:$glideVersion",
+            kaptGlide: "com.github.bumptech.glide:compiler:$glideVersion",
     ]
 
     jetPackDependencies = [
             //implementation
-            glide : "com.github.bumptech.glide:glide:$glideVersion",
-            appCompat : "androidx.appcompat:appcompat:$appCompatVersion",
-            constraint : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
-            ktx : "androidx.core:core-ktx:$ktxVersion",
-            fragment : "androidx.fragment:fragment-ktx:$fragmentVersion",
-            lifeCycle : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
-            liveData : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
-            viewModel : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
-            navigationFragment : "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
-            navigationUi : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
-            recyclerView : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
-            room : "androidx.room:room-runtime:$roomVersion",
-            paging : "androidx.paging:paging-runtime:$pagingVersion",
-            roomKtx : "androidx.room:room-ktx:$roomVersion",
-            workManager : "androidx.work:work-runtime-ktx:$workVersion",
-            material : "com.google.android.material:material:$materialVersion",
-            kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
-            coroutines : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
-            coreCoroutines : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
+            glide             : "com.github.bumptech.glide:glide:$glideVersion",
+            appCompat         : "androidx.appcompat:appcompat:$appCompatVersion",
+            constraint        : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
+            ktx               : "androidx.core:core-ktx:$ktxVersion",
+            viewModel         : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+            fragment          : "androidx.fragment:fragment-ktx:$fragmentVersion",
+            lifeCycle         : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+            liveData          : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+            navigationFragment: "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
+            navigationUi      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
+            recyclerView      : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            room              : "androidx.room:room-runtime:$roomVersion",
+            paging            : "androidx.paging:paging-runtime:$pagingVersion",
+            roomKtx           : "androidx.room:room-ktx:$roomVersion",
+            workManager       : "androidx.work:work-runtime-ktx:$workVersion",
+            material          : "com.google.android.material:material:$materialVersion",
+            kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    ]
+
+    coroutinesDependencies = [
+            coroutines    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
+            coreCoroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
+
     ]
 
     kaptDaggerDependencies = [
             // kapt
-            kaptDaggerComp : "com.google.dagger:dagger-compiler:$daggerVersion",
-            kaptDaggerProcessor : "com.google.dagger:dagger-android-processor:$daggerVersion",
+            kaptDaggerComp     : "com.google.dagger:dagger-compiler:$daggerVersion",
+            kaptDaggerProcessor: "com.google.dagger:dagger-android-processor:$daggerVersion",
     ]
 
     daggerDependencies = [
             //implementation
-            dagger : "com.google.dagger:dagger:$daggerVersion",
-            daggerAndroid : "com.google.dagger:dagger-android:$daggerVersion",
-            daggerSupport : "com.google.dagger:dagger-android-support:$daggerVersion"
+            dagger       : "com.google.dagger:dagger:$daggerVersion",
+            daggerAndroid: "com.google.dagger:dagger-android:$daggerVersion",
+            daggerSupport: "com.google.dagger:dagger-android-support:$daggerVersion"
     ]
     networkDependencies = [
             //implementation
-            gson : "com.google.code.gson:gson:$gsonVersion",
-            retrofit : "com.squareup.retrofit2:retrofit:$retrofit",
-            gsonConverter : "com.squareup.retrofit2:converter-gson:$retrofit",
-            okhttp : "com.squareup.okhttp3:okhttp:$okhttp",
-            okhttpLogging : "com.squareup.okhttp3:logging-interceptor:$okhttp"
+            gson         : "com.google.code.gson:gson:$gsonVersion",
+            retrofit     : "com.squareup.retrofit2:retrofit:$retrofit",
+            gsonConverter: "com.squareup.retrofit2:converter-gson:$retrofit",
+            okhttp       : "com.squareup.okhttp3:okhttp:$okhttp",
+            okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp"
     ]
 
     testDependencies = [
             //testImplementation
-            junit : "junit:junit:$junitVersion",
-            mockwebserver : "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion",
-            coreTesting : "androidx.arch.core:core-testing:$coreTestingVersion",
-            mockitoCore : "org.mockito:mockito-core:$mockitoVersion",
+            junit        : "junit:junit:$junitVersion",
+            mockwebserver: "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion",
+            coreTesting  : "androidx.arch.core:core-testing:$coreTestingVersion",
+            mockitoCore  : "org.mockito:mockito-core:$mockitoVersion",
     ]
 
     androidTestDependencies = [
             //androidTestImplementation
-            testCore : "androidx.test:core:$testCoreVersion",
-            runner : "androidx.test:runner:$testRunnerVersion",
-            rules : "androidx.test:rules:$testRulesVersion",
-            appCompatTest : "androidx.appcompat:appcompat:$appCompatVersion",
-            recyclerViewTest : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
-            materialTest : "com.google.android.material:material:$materialVersion",
-            espressoCore : "androidx.test.espresso:espresso-core:$espressoVersion",
-            espressoCont : "androidx.test.espresso:espresso-contrib:$espressoVersion",
-            espressoIntent : "androidx.test.espresso:espresso-intents:$espressoVersion",
-            testExtJunit : "androidx.test.ext:junit:$testExtJunit",
-            uiAutomator : "androidx.test.uiautomator:uiautomator:$uiAutomatorVersion",
+            testCore        : "androidx.test:core:$testCoreVersion",
+            runner          : "androidx.test:runner:$testRunnerVersion",
+            rules           : "androidx.test:rules:$testRulesVersion",
+            appCompatTest   : "androidx.appcompat:appcompat:$appCompatVersion",
+            recyclerViewTest: "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            materialTest    : "com.google.android.material:material:$materialVersion",
+            espressoCore    : "androidx.test.espresso:espresso-core:$espressoVersion",
+            espressoCont    : "androidx.test.espresso:espresso-contrib:$espressoVersion",
+            espressoIntent  : "androidx.test.espresso:espresso-intents:$espressoVersion",
+            testExtJunit    : "androidx.test.ext:junit:$testExtJunit",
+            uiAutomator     : "androidx.test.uiautomator:uiautomator:$uiAutomatorVersion",
             workManagerTest : "androidx.work:work-testing:$workVersion",
-            archTest : "androidx.arch.core:core-testing:$coreTestingVersion",
-            mockitoAndroid : "org.mockito:mockito-android:$mockitoAndroidVersion"
+            archTest        : "androidx.arch.core:core-testing:$coreTestingVersion",
+            mockitoAndroid  : "org.mockito:mockito-android:$mockitoAndroidVersion"
     ]
 }
