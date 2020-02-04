@@ -20,6 +20,7 @@ android {
         versionCode 1
         versionName "1"
         vectorDrawables.useSupportLibrary true
+        buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api\""
     }
     buildTypes {
         debug {
@@ -58,6 +59,7 @@ dependencies {
     kapt kaptDaggerDependencies.values()
     implementation daggerDependencies.values()
     implementation networkDependencies.values()
+    implementation coroutinesDependencies.values()
     testImplementation testDependencies.values()
     androidTestImplementation androidTestDependencies.values()
 }

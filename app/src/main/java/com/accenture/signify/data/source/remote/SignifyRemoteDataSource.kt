@@ -6,10 +6,10 @@ import com.accenture.signify.data.mappers.mapServerMessagesToDomain
 import com.accenture.source.BaseDataSource
 import com.accenture.source.RemoteDataSource
 
-class SignifyRemoteDataSource constructor(private val signifyApiService: SignifyApiService) :
-    BaseDataSource(), RemoteDataSource {
+class SignifyRemoteDataSource : BaseDataSource(), RemoteDataSource {
+
     override suspend fun fetchMessages(): Result<List<Message>> =
-        getResult(::mapResultToDomainModel) { signifyApiService.fetchMessage() }
+        getResult(::mapResultToDomainModel) { MessageRemoteUtil.service.fetchMessageAsync() }
 
     private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> =
         categoryResult.messageList.map(mapServerMessagesToDomain)

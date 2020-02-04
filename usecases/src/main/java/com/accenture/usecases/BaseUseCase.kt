@@ -11,7 +11,7 @@ abstract class BaseUseCase<T, Params> {
     ) {
         when (val dataState = useCaseExecution(params)) {
             is DataState.Success -> onSuccess.invoke(dataState.data)
-            is DataState.Error -> onError.invoke(Throwable(dataState.message))
+            is DataState.Error -> onError.invoke(Throwable(dataState.errorMessage))
         }
     }
 

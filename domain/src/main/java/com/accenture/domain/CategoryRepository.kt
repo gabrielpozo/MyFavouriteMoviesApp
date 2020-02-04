@@ -4,6 +4,6 @@ import com.accenture.domain.model.Message
 import com.accenture.domain.state.DataState
 
 interface CategoryRepository {
-    suspend fun getMessage(): DataState<Message>
 
+    suspend fun getMessage(): DataState<List<Message>>
 }
