@@ -3,7 +3,7 @@ package com.accenture.signify.data.source.remote
 import com.google.gson.annotations.SerializedName
 
 
-data class CategoryResultDto(@SerializedName("message") val message: List<MessageDto>)
+data class CategoryResultDto(@SerializedName("message") val messageList: List<MessageDto>)
 
 data class MessageDto(
     @SerializedName("categories")
