@@ -1,4 +1,4 @@
-package com.accenture.signify.ui
+package com.accenture.signify.ui.categories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.accenture.signify.di.modules.CategoriesModule
 import com.accenture.signify.extensions.app
 import com.accenture.signify.extensions.getViewModel
 
-class CategoriesFragment : Fragment(){
+class LightFinderFragment : Fragment(){
 
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
