@@ -6,13 +6,17 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
 
 object MessageRemoteUtil {
 
-    private val okHttpClient = HttpLoggingInterceptor().run {
-        level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(this).build()
-    }
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .hostnameVerifier { _, _ -> true }
+        .addInterceptor(HttpLoggingInterceptor())
+        .build()
+
 
     val service: SignifyApiService = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
