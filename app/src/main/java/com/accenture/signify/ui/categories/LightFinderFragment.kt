@@ -1,10 +1,15 @@
 package com.accenture.signify.ui.categories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.accenture.domain.model.Message
 import com.accenture.presentation.viewmodels.CategoryViewModel
 import com.accenture.signify.R
@@ -12,11 +17,14 @@ import com.accenture.signify.di.modules.CategoriesComponent
 import com.accenture.signify.di.modules.CategoriesModule
 import com.accenture.signify.extensions.app
 import com.accenture.signify.extensions.getViewModel
+import com.accenture.signify.ui.adapter.CategoriesAdapter
+import kotlinx.android.synthetic.main.fragment_lightfinder.*
 
-class LightFinderFragment : Fragment(){
+class LightFinderFragment : Fragment() {
 
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
+    private lateinit var adapter: CategoriesAdapter
 
 
     override fun onCreateView(
@@ -24,7 +32,7 @@ class LightFinderFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.support_simple_spinner_dropdown_item, container, false)
+        return inflater.inflate(R.layout.fragment_lightfinder, container, false)
     }
 
 
@@ -35,23 +43,33 @@ class LightFinderFragment : Fragment(){
             component = app.applicationComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
+        initAdapter()
 
+        viewModel.model.observe(this, Observer(::updateUi))
 
     }
 
-    private fun updateUI(model: CategoryViewModel.UiModel) {
+    private fun updateUi(model: CategoryViewModel.UiModel) {
         when (model) {
-            is CategoryViewModel.UiModel.Loading -> {}
-            is CategoryViewModel.UiModel.RequestMessages -> {}
+            is CategoryViewModel.UiModel.Loading -> {
+            }
+            is CategoryViewModel.UiModel.RequestMessages -> {
+                viewModel.onRequestCategoriesMessages()
+            }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
+            is CategoryViewModel.UiModel.Navigation -> {
+            }
         }
     }
 
+    private fun initAdapter() {
+        adapter = CategoriesAdapter(viewModel::onCategoryClicked)
+        rv.adapter = adapter
+    }
+
     private fun updateData(messages: List<Message>) {
-        initAdapter(messages)
+        Log.d("Gabriel","Messages: ${messages[0].categories[0].categoryName}")
+        adapter.categories = messages[1].categories
     }
 
-    private fun initAdapter(items: List<Message>) {
-
-    }
 }
