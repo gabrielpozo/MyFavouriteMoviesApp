@@ -1,15 +1,11 @@
 package com.accenture.signify.ui.categories
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.accenture.domain.model.Message
 import com.accenture.presentation.viewmodels.CategoryViewModel
 import com.accenture.signify.R
@@ -68,7 +64,6 @@ class LightFinderFragment : Fragment() {
     }
 
     private fun updateData(messages: List<Message>) {
-        Log.d("Gabriel","Messages: ${messages[0].categories[0].categoryName}")
         adapter.categories = messages[1].categories
     }
 

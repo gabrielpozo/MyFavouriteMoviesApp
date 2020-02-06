@@ -1,6 +1,5 @@
 package com.accenture.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.accenture.domain.model.Categories
@@ -39,16 +38,13 @@ class CategoryViewModel(
         }
     }
 
-    fun onCategoryClicked(category: Categories) {
-
-    }
+    fun onCategoryClicked(category: Categories) {}
 
     private fun handleMessagesResponse(messages: List<Message>) {
         _model.value = UiModel.Content(messages)
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        Log.d("Gabriel","HERE ERROR ${throwable.message}")
         //TODO
     }
 
