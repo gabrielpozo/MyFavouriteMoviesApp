@@ -2,6 +2,7 @@ package com.accenture.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.accenture.domain.model.Categories
 import com.accenture.domain.model.Message
 import com.accenture.usecases.GetCategoriesResultUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,7 @@ class CategoryViewModel(
     sealed class UiModel {
         object Loading : UiModel()
         object RequestMessages : UiModel()
+        object Navigation : UiModel()
         data class Content(val messages: List<Message>) : UiModel()
     }
 
@@ -32,9 +34,11 @@ class CategoryViewModel(
     fun onRequestCategoriesMessages() {
         launch {
             _model.value = UiModel.Loading
-              getCategoryResultUseCase.execute(::handleMessagesResponse, ::handleErrorResponse)
+            getCategoryResultUseCase.execute(::handleMessagesResponse, ::handleErrorResponse)
         }
     }
+
+    fun onCategoryClicked(category: Categories) {}
 
     private fun handleMessagesResponse(messages: List<Message>) {
         _model.value = UiModel.Content(messages)

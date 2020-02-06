@@ -1,11 +1,14 @@
 package com.accenture.signify.data.source.remote
 
 import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
+import retrofit2.http.*
 
 
 interface SignifyApiService {
 
-    @GET("/")
-    fun fetchMessageAsync(): Deferred<CategoryResultDto>
+    @POST("lamp64/")
+    suspend fun fetchMessageAsync(
+        @Header("Content-Type") contentType: String, @Body body: HashMap<String, String>
+    ): Deferred<CategoryResultDto>
 }
+
