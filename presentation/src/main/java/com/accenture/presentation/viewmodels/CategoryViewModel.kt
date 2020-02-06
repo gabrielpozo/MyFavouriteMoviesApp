@@ -1,5 +1,6 @@
 package com.accenture.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.accenture.domain.model.Categories
@@ -45,6 +46,7 @@ class CategoryViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
+        Log.d("ege77", throwable.message.toString())
         //TODO
     }
 
