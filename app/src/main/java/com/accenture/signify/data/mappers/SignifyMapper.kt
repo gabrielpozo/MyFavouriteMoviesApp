@@ -10,19 +10,12 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
     messageDto.categories.map { categoryDto ->
         categoriesList.add(
             Categories(
-                categoryProducts = categoryDto.categoryProducts,
-                categoryEnergySave = categoryDto.categoryEnergysave,
-                categoryIndex = categoryDto.categoryIndex,
-                categoryImage = categoryDto.categoryImage,
-                categoryName = categoryDto.categoryName,
-                categoryPrice = categoryDto.categoryPrice
+                categoryName = categoryDto.categoryName
             )
         )
     }
 
     Message(
-        categories = categoriesList,
-        version = messageDto.version,
-        formFactor = messageDto.formFactor
+        categories = categoriesList
     )
 }

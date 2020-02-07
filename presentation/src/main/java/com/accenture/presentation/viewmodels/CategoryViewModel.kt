@@ -42,6 +42,7 @@ class CategoryViewModel(
     fun onCategoryClicked(category: Categories) {}
 
     private fun handleMessagesResponse(messages: List<Message>) {
+        Log.d("ege77", messages[0].categories[0].categoryName)
         _model.value = UiModel.Content(messages)
     }
 

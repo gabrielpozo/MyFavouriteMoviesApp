@@ -15,8 +15,8 @@ class CategoriesAdapter(private val listener: (Categories) -> Unit) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
     var categories: List<Categories> by basicDiffUtil(
-        emptyList(),
-        areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
+        emptyList()
+        //areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
