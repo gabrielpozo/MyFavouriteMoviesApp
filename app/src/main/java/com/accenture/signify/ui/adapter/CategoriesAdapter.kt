@@ -1,5 +1,6 @@
 package com.accenture.signify.ui.adapter
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,8 @@ class CategoriesAdapter(private val listener: (Categories) -> Unit) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(category: Categories) {
             itemView.category_name.text = category.categoryName
-            itemView.bulbCover.loadUrl("")
+            itemView.price.text = category.categoryPrice
+            itemView.bulbCover.loadUrl(category.categoryImage)
         }
     }
 }

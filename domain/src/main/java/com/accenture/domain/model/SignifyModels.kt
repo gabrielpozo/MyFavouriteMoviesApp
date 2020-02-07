@@ -14,7 +14,6 @@ data class Categories(
     val categoryPrice: String
 )
 
-
 data class Product(
     val productImage: List<String>,
     val productName: String,

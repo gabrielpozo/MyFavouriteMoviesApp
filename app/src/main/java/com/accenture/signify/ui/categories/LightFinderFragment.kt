@@ -1,11 +1,13 @@
 package com.accenture.signify.ui.categories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.accenture.domain.model.Message
 import com.accenture.presentation.viewmodels.CategoryViewModel
 import com.accenture.signify.R
@@ -46,8 +48,8 @@ class LightFinderFragment : Fragment() {
     }
 
     private fun updateUi(model: CategoryViewModel.UiModel) {
+        progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
-            is CategoryViewModel.UiModel.Loading -> { }
             is CategoryViewModel.UiModel.RequestMessages -> { viewModel.onRequestCategoriesMessages() }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
             is CategoryViewModel.UiModel.Navigation -> {
@@ -57,6 +59,7 @@ class LightFinderFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = CategoriesAdapter(viewModel::onCategoryClicked)
+        //rv.layoutManager = LinearLayoutManager(requireContext())
         rv.adapter = adapter
     }
 
