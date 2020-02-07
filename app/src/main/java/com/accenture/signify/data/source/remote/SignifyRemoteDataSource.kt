@@ -6,12 +6,19 @@ import com.accenture.signify.data.mappers.mapServerMessagesToDomain
 import com.accenture.source.BaseDataSource
 import com.accenture.source.RemoteDataSource
 import com.accenture.util.BASE64
+import com.google.gson.annotations.SerializedName
+
 
 class SignifyRemoteDataSource : BaseDataSource(), RemoteDataSource {
 
     override suspend fun fetchMessages(): Result<List<Message>> =
-        getResult(::mapResultToDomainModel) { MessageRemoteUtil.service.fetchMessageAsync("application/json",BASE64) }
+        getResult(::mapResultToDomainModel) {
+            MessageRemoteUtil.service.fetchMessageAsync(Image(BASE64))
+        }
 
-    private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> =
-        categoryResult.messageList.map(mapServerMessagesToDomain)
+    private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> {
+        return categoryResult.messageList.map(mapServerMessagesToDomain)
+    }
 }
+
+data class Image(@SerializedName("image") private val base: String)

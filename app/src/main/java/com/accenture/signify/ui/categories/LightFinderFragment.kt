@@ -47,11 +47,8 @@ class LightFinderFragment : Fragment() {
 
     private fun updateUi(model: CategoryViewModel.UiModel) {
         when (model) {
-            is CategoryViewModel.UiModel.Loading -> {
-            }
-            is CategoryViewModel.UiModel.RequestMessages -> {
-                viewModel.onRequestCategoriesMessages()
-            }
+            is CategoryViewModel.UiModel.Loading -> { }
+            is CategoryViewModel.UiModel.RequestMessages -> { viewModel.onRequestCategoriesMessages() }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
             is CategoryViewModel.UiModel.Navigation -> {
             }
@@ -64,7 +61,7 @@ class LightFinderFragment : Fragment() {
     }
 
     private fun updateData(messages: List<Message>) {
-        adapter.categories = messages[1].categories
+        adapter.categories = messages[0].categories
     }
 
 }
