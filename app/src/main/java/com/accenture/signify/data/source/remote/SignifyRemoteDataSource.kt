@@ -11,17 +11,14 @@ import com.google.gson.annotations.SerializedName
 
 class SignifyRemoteDataSource : BaseDataSource(), RemoteDataSource {
 
-    override suspend fun fetchMessages(): Result<List<Message>> {
-        val myData = MyData(BASE64)
-        return getResult(::mapResultToDomainModel) {
-            MessageRemoteUtil.service.fetchMessageAsync(myData)
+    override suspend fun fetchMessages(): Result<List<Message>> =
+        getResult(::mapResultToDomainModel) {
+            MessageRemoteUtil.service.fetchMessageAsync(Image(BASE64))
         }
 
-    }
-
     private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> {
-        return mutableListOf(mapServerMessagesToDomain(categoryResult.messageList))
+        return categoryResult.messageList.map(mapServerMessagesToDomain)
     }
 }
 
-data class MyData(@SerializedName("image") private val base: String)
+data class Image(@SerializedName("image") private val base: String)

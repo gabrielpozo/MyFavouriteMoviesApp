@@ -11,7 +11,7 @@ interface SignifyApiService {
     @Headers("Content-Type: application/json")
     @POST("lamp64")
     fun fetchMessageAsync(
-        @Body body: MyData
+        @Body body: Image
     ): Deferred<CategoryResultDto>
 }
 

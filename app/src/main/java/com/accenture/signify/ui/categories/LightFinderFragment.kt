@@ -64,7 +64,7 @@ class LightFinderFragment : Fragment() {
     }
 
     private fun updateData(messages: List<Message>) {
-        adapter.categories = messages[1].categories
+        adapter.categories = messages[0].categories
     }
 
 }
