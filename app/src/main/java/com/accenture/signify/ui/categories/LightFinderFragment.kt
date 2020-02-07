@@ -42,7 +42,6 @@ class LightFinderFragment : Fragment() {
         initAdapter()
 
         viewModel.model.observe(this, Observer(::updateUi))
-
     }
 
     private fun updateUi(model: CategoryViewModel.UiModel) {
@@ -57,7 +56,6 @@ class LightFinderFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = CategoriesAdapter(viewModel::onCategoryClicked)
-        //rv.layoutManager = LinearLayoutManager(requireContext())
         rv.adapter = adapter
     }
 
