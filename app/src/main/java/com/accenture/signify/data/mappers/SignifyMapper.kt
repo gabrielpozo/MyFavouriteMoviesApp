@@ -13,12 +13,12 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         categoryDto.categoryProducts.map { productDto ->
             products.add(
                 Product(
-                    productDto.productImage,
-                    productDto.productName,
-                    productDto.productDescription,
-                    productDto.productSpecOne,
-                    productDto.productSpecThree,
-                    productDto.productScene
+                    productImage = productDto.productImage,
+                    productName = productDto.productName,
+                    productDescription = productDto.productDescription,
+                    productSpecOne = productDto.productSpecOne,
+                    productSpecThree = productDto.productSpecThree,
+                    productScene = productDto.productScene
                 )
             )
         }

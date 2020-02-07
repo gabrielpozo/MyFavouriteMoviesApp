@@ -47,11 +47,8 @@ class LightFinderFragment : Fragment() {
 
     private fun updateUi(model: CategoryViewModel.UiModel) {
         when (model) {
-            is CategoryViewModel.UiModel.Loading -> {
-            }
-            is CategoryViewModel.UiModel.RequestMessages -> {
-                viewModel.onRequestCategoriesMessages()
-            }
+            is CategoryViewModel.UiModel.Loading -> { }
+            is CategoryViewModel.UiModel.RequestMessages -> { viewModel.onRequestCategoriesMessages() }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
             is CategoryViewModel.UiModel.Navigation -> {
             }
