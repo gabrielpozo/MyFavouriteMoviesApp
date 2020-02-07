@@ -1,6 +1,6 @@
 <resources>
     //Bottom navigation task
-    <string name="lightfinder">Lightfinder</string>
+    <string name="categories">Categories</string>
     <string name="cart">My Cart</string>
     <string name="expert">Expert</string>
 </resources>
