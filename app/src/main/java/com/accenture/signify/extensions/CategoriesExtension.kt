@@ -12,7 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.accenture.domain.model.Category
+import com.accenture.domain.model.Product
 import com.accenture.signify.SignifyApp
+import com.accenture.signify.data.source.remote.CategoryParcelable
+import com.accenture.signify.data.source.remote.ProductParcelable
 import com.bumptech.glide.Glide
 import kotlin.properties.Delegates
 
@@ -29,7 +33,6 @@ inline fun <reified T : ViewModel> Fragment.getViewModel(crossinline factory: ()
 
 val Context.app: SignifyApp
     get() = applicationContext as SignifyApp
-
 
 
 inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(
@@ -58,3 +61,28 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): 
 fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url).into(this)
 }
+
+
+fun Category.parcelize(): CategoryParcelable =
+    CategoryParcelable(
+        categoryProducts.map(mapDomainProductToParcelable),
+        categoryEnergySave,
+        categoryIndex,
+        categoryName,
+        categoryImage,
+        categoryPrice
+    )
+
+
+private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
+    ProductParcelable(
+        product.productImage,
+        product.productName,
+        product.productDescription,
+        product.productSpecOne,
+        product.productSpecThree,
+        product.productScene
+    )
+
+}
+

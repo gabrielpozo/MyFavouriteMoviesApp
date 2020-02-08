@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="@color/whiteGhost"
+    app:cardBackgroundColor="@color/gray"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -41,20 +41,19 @@
             tools:text="Name Place" />
 
         <TextView
-            android:id="@+id/watts"
+            android:id="@+id/energySave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="end"
-
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
             tools:text="500 metres" />
 
         <TextView
-            android:id="@+id/opening_hours"
+            android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -67,7 +66,7 @@
 
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/watts"
+            app:layout_constraintTop_toBottomOf="@+id/energySave"
             tools:text="Open" />
 
         <TextView
@@ -82,7 +81,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/opening_hours"
+            app:layout_constraintTop_toBottomOf="@+id/price"
             tools:text="rating" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

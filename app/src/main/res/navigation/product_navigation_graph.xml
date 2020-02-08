@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/product_navigation"
-    app:startDestination="@id/lightFinderFragment">
+    app:startDestination="@id/categoriesFragment">
     <fragment
-        android:id="@+id/lightFinderFragment"
-        android:name="com.accenture.signify.ui.categories.LightFinderFragment"
-        android:label="LightFinderFragment" />
+        android:id="@+id/categoriesFragment"
+        android:name="com.accenture.signify.ui.lightfinder.CategoriesFragment"
+        android:label="CategoriesFragment">
+
+
+    <action
+        android:id="@+id/action_categoriesFragment_to_productsFragment"
+        app:destination="@id/productsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim">
+        <argument
+            android:name="DetailMovieFragment::id"
+            android:defaultValue="0" />
+    </action>
+
+    </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.accenture.signify.ui.cart.CartFragment"
@@ -14,4 +29,8 @@
         android:id="@+id/expertFragment"
         android:name="com.accenture.signify.ui.expert.ExpertFragment"
         android:label="ExpertFragment" />
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.accenture.signify.ui.lightfinder.ProductsFragment"
+        android:label="ProductsFragment" />
 </navigation>

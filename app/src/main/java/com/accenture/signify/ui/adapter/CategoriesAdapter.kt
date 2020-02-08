@@ -3,7 +3,7 @@ package com.accenture.signify.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.accenture.domain.model.Categories
+import com.accenture.domain.model.Category
 import com.accenture.signify.R
 import com.accenture.signify.extensions.basicDiffUtil
 import com.accenture.signify.extensions.inflate
@@ -11,10 +11,10 @@ import com.accenture.signify.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_category.view.*
 
 
-class CategoriesAdapter(private val listener: (Categories) -> Unit) :
+class CategoriesAdapter(private val listener: (Category) -> Unit) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
-    var categories: List<Categories> by basicDiffUtil(
+    var categories: List<Category> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
@@ -33,9 +33,10 @@ class CategoriesAdapter(private val listener: (Categories) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(category: Categories) {
+        fun bind(category: Category) {
             itemView.category_name.text = category.categoryName
-            itemView.bulbCover.loadUrl("")
+            itemView.price.text = category.categoryPrice
+            itemView.bulbCover.loadUrl(category.categoryImage)
         }
     }
 }
