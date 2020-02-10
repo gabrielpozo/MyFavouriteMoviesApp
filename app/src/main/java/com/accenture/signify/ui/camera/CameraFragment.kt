@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.KeyEvent
@@ -35,8 +36,8 @@ import com.accenture.signify.extensions.loadFile
 import com.accenture.signify.extensions.simulateClick
 import com.accenture.util.KEY_EVENT_ACTION
 import com.accenture.util.KEY_EVENT_EXTRA
-import com.android.example.camerax.fragments.CameraFragmentDirections
 import kotlinx.android.synthetic.main.camera_ui_container.*
+import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -137,17 +138,11 @@ class CameraFragment : Fragment() {
             Timber.e("$TAG Photo capture failed: $message", cause)
         }
 
+        @SuppressLint("ObsoleteSdkInt")
         override fun onImageSaved(photoFile: File) {
             Timber.d("$TAG Photo capture succeeded: ${photoFile.absolutePath}")
 
-
             setGalleryThumbnail(photoFile)
-
-
-            requireActivity().sendBroadcast(
-                Intent(android.hardware.Camera.ACTION_NEW_PICTURE, Uri.fromFile(photoFile))
-            )
-
 
             val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(photoFile.extension)
             MediaScannerConnection.scanFile(
@@ -160,6 +155,7 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         container = view as ConstraintLayout
+        viewFinder = container.findViewById(R.id.viewFinder)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
@@ -251,11 +247,14 @@ class CameraFragment : Fragment() {
 
     private fun initCameraUi() {
 
-        cameraUiContainer?.let {
+        container.findViewById<ConstraintLayout>(R.id.cameraUiContainer)?.let {
             container.removeView(it)
         }
 
-        cameraCaptureButton.setOnClickListener {
+        val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
+
+
+        controls.cameraCaptureButton.setOnClickListener {
             imageCapture?.let { imageCapture ->
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {
@@ -275,6 +274,7 @@ class CameraFragment : Fragment() {
             }
         }
 
+        /*
         cameraSwitchButton.setOnClickListener {
             lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
                 CameraSelector.LENS_FACING_BACK
@@ -283,9 +283,10 @@ class CameraFragment : Fragment() {
             }
             bindCameraUseCases()
         }
+         */
 
 
-        photoPreviewButton.setOnClickListener {
+        controls.photoPreviewButton.setOnClickListener {
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
                 Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
                     CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)

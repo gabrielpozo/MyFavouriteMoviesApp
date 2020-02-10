@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.accenture.signify.R
-import com.android.example.camerax.fragments.PermissionsFragmentDirections
 import timber.log.Timber
 
 

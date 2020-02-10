@@ -26,7 +26,7 @@
 
         <action
             android:id="@+id/action_camera_to_gallery"
-            app:destination="@id/gallery_fragment" />
+            app:destination="@id/preview_fragment" />
 
         <action
             android:id="@+id/action_camera_to_permissions"
@@ -37,7 +37,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/gallery_fragment"
+        android:id="@+id/preview_fragment"
         android:name="com.accenture.signify.ui.camera.PreviewFragment"
         android:label="PreviewFragment" >
         <argument

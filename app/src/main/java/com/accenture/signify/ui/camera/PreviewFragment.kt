@@ -15,7 +15,6 @@ import androidx.navigation.fragment.navArgs
 import com.accenture.signify.R
 import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
-import com.android.example.camerax.fragments.GalleryFragmentArgs
 import kotlinx.android.synthetic.main.fragment_preview.*
 import java.io.File
 import java.util.*
@@ -28,7 +27,7 @@ val EXTENSION_WHITELIST = arrayOf("JPG")
 
 class PreviewFragment internal constructor() : Fragment() {
 
-    private val args: GalleryFragmentArgs by navArgs()
+    private val args: PreviewFragmentArgs by navArgs()
 
     private lateinit var mediaList: MutableList<File>
 
