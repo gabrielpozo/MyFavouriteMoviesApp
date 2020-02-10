@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lightfinder_nav_graph"
+    app:startDestination="@id/categoriesFragment">
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.accenture.signify.ui.lightfinder.CategoriesFragment"
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.accenture.signify.ui.lightfinder.ProductsFragment"
+        android:label="ProductsFragment">
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.accenture.signify.ui.cart.CartFragment"
+        android:label="CartFragment" />
+
+
+    <fragment
+        android:id="@+id/expertFragment"
+        android:name="com.accenture.signify.ui.expert.ExpertFragment"
+        android:label="ExpertFragment" />
+
+</navigation>
