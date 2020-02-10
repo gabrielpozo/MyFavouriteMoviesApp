@@ -4,29 +4,45 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.accenture.signify.R
+import kotlinx.android.synthetic.main.fragment_permission.*
 import timber.log.Timber
 
 
 //todo add a textview with onclicklistener to ask permission
 class PermissionsFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_permission, container, false)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         checkPermission()
     }
 
     private fun checkPermission() {
         if (!hasPermissions(requireContext())) {
-            requestPermissions(PERMISSIONS_REQUIRED, PERMISSIONS_REQUEST_CODE)
+            initView()
         } else {
             Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
                 PermissionsFragmentDirections.actionPermissionsToCamera()
             )
+        }
+    }
+
+    private fun initView() {
+        textViewEnableAccess.setOnClickListener {
+            requestPermissions(PERMISSIONS_REQUIRED, PERMISSIONS_REQUEST_CODE)
         }
     }
 
