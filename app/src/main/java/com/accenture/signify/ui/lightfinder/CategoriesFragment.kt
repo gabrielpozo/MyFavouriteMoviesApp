@@ -54,7 +54,6 @@ class CategoriesFragment : Fragment() {
             is CategoryViewModel.UiModel.RequestMessages -> {
                 viewModel.onRequestCategoriesMessages()
             }
-            is CategoryViewModel.UiModel.Navigation -> navigateToProductList(model.category)
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
         }
     }
