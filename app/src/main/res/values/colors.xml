@@ -14,4 +14,9 @@
     <color name="whiteGhost">#f8f8ff</color>
     <color name="gold">#DAA520</color>
     <color name="openGreen">#008000</color>
+
+    <!--Camera -->
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
 </resources>

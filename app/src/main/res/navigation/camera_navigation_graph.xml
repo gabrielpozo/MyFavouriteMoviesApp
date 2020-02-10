@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/permissions_fragment"
-        android:name="com.android.example.camerax.fragments.PermissionsFragment"
+        android:name="com.accenture.signify.ui.camera.PermissionsFragment"
         android:label="PermissionsFragment" >
 
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/camera_fragment"
-        android:name="com.android.example.camerax.fragments.CameraFragment"
+        android:name="com.accenture.signify.ui.camera.CameraFragment"
         android:label="CameraFragment" >
 
         <action
@@ -38,8 +38,8 @@
 
     <fragment
         android:id="@+id/gallery_fragment"
-        android:name="com.android.example.camerax.fragments.GalleryFragment"
-        android:label="GalleryFragment" >
+        android:name="com.accenture.signify.ui.camera.PreviewFragment"
+        android:label="PreviewFragment" >
         <argument
             android:name="root_directory"
             app:argType="string" />

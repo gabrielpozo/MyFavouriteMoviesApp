@@ -19,6 +19,10 @@ import com.android.example.camerax.fragments.GalleryFragmentArgs
 import kotlinx.android.synthetic.main.fragment_preview.*
 import java.io.File
 import java.util.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import java.io.ByteArrayOutputStream
+
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
 
@@ -72,6 +76,12 @@ class PreviewFragment internal constructor() : Fragment() {
             mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
 
                 //todo convert it to base64 and send
+                val bm = BitmapFactory.decodeFile(mediaFile.absolutePath)
+                val resized = Bitmap.createScaledBitmap(bm, 600, 800, true)
+                val baos = ByteArrayOutputStream()
+                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val base64 = baos.toByteArray()
+
             }
         }
 
