@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.accenture.domain.model.Category
 import com.accenture.domain.model.Message
 import com.accenture.presentation.viewmodels.CategoryViewModel
 import com.accenture.signify.R
@@ -17,13 +17,12 @@ import com.accenture.signify.di.modules.CategoriesModule
 import com.accenture.signify.extensions.app
 import com.accenture.signify.extensions.getViewModel
 import com.accenture.signify.extensions.parcelize
-import com.accenture.signify.ui.adapter.CategoriesAdapter
-import kotlinx.android.synthetic.main.fragment_lightfinder.*
+import com.accenture.signify.ui.adapters.CategoriesAdapter
+import kotlinx.android.synthetic.main.fragment_categories.*
 
 class CategoriesFragment : Fragment() {
 
     private lateinit var component: CategoriesComponent
-    private lateinit var navController: NavController
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
 
@@ -33,7 +32,7 @@ class CategoriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_lightfinder, container, false)
+        return inflater.inflate(R.layout.fragment_categories, container, false)
     }
 
 
@@ -44,33 +43,31 @@ class CategoriesFragment : Fragment() {
             component = app.applicationComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
-        navController = view.findNavController()
-
         initAdapter()
 
-        viewModel.model.observe(this, Observer(::updateUi))
+        viewModel.model.observe(this, Observer(::updateUI))
     }
 
-    private fun updateUi(model: CategoryViewModel.UiModel) {
-        progress.visibility =
-            if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
+    private fun updateUI(model: CategoryViewModel.UiModel) {
+        progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
             is CategoryViewModel.UiModel.RequestMessages -> {
                 viewModel.onRequestCategoriesMessages()
             }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
-            is CategoryViewModel.UiModel.Navigation -> {
-                   navController.navigate(
-                       R.id.action_categoriesFragment_to_productsFragment,
-                       bundleOf(ProductsFragment.PRODUCTS_CATEGORY_ID_KEY to model.category.parcelize())
-                   )
-            }
         }
     }
 
     private fun initAdapter() {
-        adapter = CategoriesAdapter(viewModel::onCategoryClicked)
-        rv.adapter = adapter
+        adapter = CategoriesAdapter(::navigateToProductList)
+        rvCategories.adapter = adapter
+    }
+
+    private fun navigateToProductList(category: Category){
+        findNavController().navigate(
+            R.id.action_categoriesFragment_to_productsFragment,
+            bundleOf(ProductsFragment.PRODUCTS_ID_KEY to category.parcelize())
+        )
     }
 
     private fun updateData(messages: List<Message>) {

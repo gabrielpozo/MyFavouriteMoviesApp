@@ -1,10 +1,7 @@
 package com.accenture.signify.di
 
 import android.app.Application
-import com.accenture.signify.di.modules.ApplicationModule
-import com.accenture.signify.di.modules.CategoriesComponent
-import com.accenture.signify.di.modules.CategoriesModule
-import com.accenture.signify.di.modules.DataModule
+import com.accenture.signify.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -15,6 +12,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun plus(module: CategoriesModule): CategoriesComponent
+    fun plus(module: ProductsModule): ProductsComponent
 
     @Component.Factory
     interface Factory {
