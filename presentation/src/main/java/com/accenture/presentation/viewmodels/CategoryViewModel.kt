@@ -38,10 +38,6 @@ class CategoryViewModel(
         }
     }
 
-    fun onCategoryClicked(category: Category) {
-        _model.value = UiModel.Navigation(category)
-    }
-
     private fun handleMessagesResponse(messages: List<Message>) {
         _model.value = UiModel.Content(messages)
     }

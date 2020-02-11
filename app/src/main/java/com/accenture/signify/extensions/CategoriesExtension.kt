@@ -74,8 +74,30 @@ fun Category.parcelize(): CategoryParcelable =
     )
 
 
+fun CategoryParcelable.deparcelize(): Category =
+    Category(
+        categoryProducts.map(mapParcelableProductToDomain),
+        categoryEnergySave,
+        categoryIndex,
+        categoryName,
+        categoryImage,
+        categoryPrice
+    )
+
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
+        product.productImage,
+        product.productName,
+        product.productDescription,
+        product.productSpecOne,
+        product.productSpecThree,
+        product.productScene
+    )
+
+}
+
+private val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
+    Product(
         product.productImage,
         product.productName,
         product.productDescription,

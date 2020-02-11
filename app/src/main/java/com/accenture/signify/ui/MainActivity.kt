@@ -17,6 +17,6 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        bottom_navigation_view.setupWithNavController(findNavController(R.id.nav_host_fragment))
+        bottom_navigation_view.setupWithNavController(findNavController(R.id.navHostFragment))
     }
 }

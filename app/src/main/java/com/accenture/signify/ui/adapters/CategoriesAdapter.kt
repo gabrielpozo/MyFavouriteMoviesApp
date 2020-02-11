@@ -1,4 +1,4 @@
-package com.accenture.signify.ui.adapter
+package com.accenture.signify.ui.adapters
 
 import android.view.View
 import android.view.ViewGroup
