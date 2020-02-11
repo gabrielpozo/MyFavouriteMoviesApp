@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.fragment_permission.*
 import timber.log.Timber
 
 
-//todo add a textview with onclicklistener to ask permission
 class PermissionsFragment : Fragment() {
 
     override fun onCreateView(
