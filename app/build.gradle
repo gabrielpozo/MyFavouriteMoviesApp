@@ -61,6 +61,7 @@ dependencies {
     implementation daggerDependencies.values()
     implementation networkDependencies.values()
     implementation coroutinesDependencies.values()
+    implementation cameraxDependencies.values()
     testImplementation testDependencies.values()
     androidTestImplementation androidTestDependencies.values()
 }
