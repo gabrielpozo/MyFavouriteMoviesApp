@@ -1,9 +1,11 @@
 package com.accenture.signify.ui.camera
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,20 +15,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.accenture.signify.R
 import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
 import kotlinx.android.synthetic.main.fragment_preview.*
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.util.*
-import android.graphics.Bitmap
-import android.util.Base64
-import com.accenture.signify.R
-
-import java.io.ByteArrayOutputStream
-
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
@@ -84,7 +82,8 @@ class PreviewFragment internal constructor() : Fragment() {
                 Timber.d("IMAGE PATH ${mediaFile.absolutePath}")
                 Timber.d("BASE64 ${encodeImage(mediaFile.absolutePath)}")
 
-                encodeImage(mediaFile.absolutePath)
+               encodeImage(mediaFile.absolutePath)
+                //todo make the call with this BASE64
 
             }
         }
@@ -119,6 +118,7 @@ class PreviewFragment internal constructor() : Fragment() {
     }
 
 
+    //todo move this to use case
     private fun encodeImage(path: String): String {
         val imageFile = File(path)
         var inputStream: FileInputStream? = null
@@ -132,6 +132,8 @@ class PreviewFragment internal constructor() : Fragment() {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+
+
 
     }
 
