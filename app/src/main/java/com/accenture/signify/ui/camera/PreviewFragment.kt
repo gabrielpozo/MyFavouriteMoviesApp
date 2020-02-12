@@ -1,5 +1,6 @@
 package com.accenture.signify.ui.camera
 
+import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
@@ -12,15 +13,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.accenture.signify.R
 import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
 import kotlinx.android.synthetic.main.fragment_preview.*
+import timber.log.Timber
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.util.*
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.util.Base64
+import com.accenture.signify.R
+
 import java.io.ByteArrayOutputStream
+
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
@@ -31,7 +37,8 @@ class PreviewFragment internal constructor() : Fragment() {
 
     private lateinit var mediaList: MutableList<File>
 
-    inner class MediaPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class MediaPagerAdapter(fm: FragmentManager) :
+        FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getCount(): Int = mediaList.size
         override fun getItem(position: Int): Fragment = GalleryFragment.create(mediaList[position])
         override fun getItemPosition(obj: Any): Int = POSITION_NONE
@@ -74,12 +81,10 @@ class PreviewFragment internal constructor() : Fragment() {
         sendButton.setOnClickListener {
             mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
 
-                //todo convert it to base64 and send
-                val bm = BitmapFactory.decodeFile(mediaFile.absolutePath)
-                val resized = Bitmap.createScaledBitmap(bm, 600, 800, true)
-                val baos = ByteArrayOutputStream()
-                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val base64 = baos.toByteArray()
+                Timber.d("IMAGE PATH ${mediaFile.absolutePath}")
+                Timber.d("BASE64 ${encodeImage(mediaFile.absolutePath)}")
+
+                encodeImage(mediaFile.absolutePath)
 
             }
         }
@@ -96,7 +101,8 @@ class PreviewFragment internal constructor() : Fragment() {
                         mediaFile.delete()
 
                         MediaScannerConnection.scanFile(
-                            view.context, arrayOf(mediaFile.absolutePath), null, null)
+                            view.context, arrayOf(mediaFile.absolutePath), null, null
+                        )
 
                         mediaList.removeAt(mediaViewPager.currentItem)
                         mediaViewPager.adapter?.notifyDataSetChanged()
@@ -104,10 +110,29 @@ class PreviewFragment internal constructor() : Fragment() {
                         if (mediaList.isEmpty()) {
                             fragmentManager?.popBackStack()
                         }
-                    }}
+                    }
+                }
 
                 .setNegativeButton(android.R.string.no, null)
                 .create().showImmersive()
         }
     }
+
+
+    private fun encodeImage(path: String): String {
+        val imageFile = File(path)
+        var inputStream: FileInputStream? = null
+        try {
+            inputStream = FileInputStream(imageFile)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+
+    }
+
 }

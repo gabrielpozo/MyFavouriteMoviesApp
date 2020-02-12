@@ -8,7 +8,7 @@
 
     <!--Camera -->
     <string name="capture_button_alt">Capture</string>
-    <string name="switch_camera_button_alt">Switch camera</string>
+    <string name="switch_camera_button_alt">Switch flash</string>
     <string name="gallery_button_alt">Gallery</string>
     <string name="back_button_alt">Back</string>
     <string name="send_button_alt">Send</string>
