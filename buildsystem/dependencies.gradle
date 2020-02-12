@@ -30,6 +30,7 @@ ext {
     navigationVersion = '2.1.0'
     safeargs_version = "2.1.0-rc01"
     recyclerViewVersion = '1.2.0-alpha01'
+    recyclerViewSelectionVersion = '1.0.0'
     roomVersion = '2.2.3'
     workVersion = '2.3.0'
     pagingVersion = '2.1.1'
@@ -95,6 +96,7 @@ ext {
             navigationUi      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
 
             recyclerView      : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$recyclerViewSelectionVersion",
             room              : "androidx.room:room-runtime:$roomVersion",
             paging            : "androidx.paging:paging-runtime:$pagingVersion",
             roomKtx           : "androidx.room:room-ktx:$roomVersion",
