@@ -147,7 +147,15 @@ class CameraFragment : Fragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
+
+            navigateToPreview()
         }
+    }
+
+    private fun navigateToPreview() {
+        Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
+            CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)
+        )
     }
 
     @SuppressLint("MissingPermission")
@@ -294,9 +302,7 @@ class CameraFragment : Fragment() {
 
         controls.photoPreviewButton.setOnClickListener {
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                    CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)
-                )
+                navigateToPreview()
             }
         }
     }
