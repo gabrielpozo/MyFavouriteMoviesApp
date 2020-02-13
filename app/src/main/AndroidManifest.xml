@@ -27,6 +27,18 @@
             <nav-graph android:value="@navigation/lightfinder_nav_graph" />
         </activity>
 
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:theme="@style/Theme.Design.NoActionBar"
+            >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
 
         <activity
             android:name=".ui.camera.CameraActivity"
@@ -37,11 +49,6 @@
             android:rotationAnimation="seamless"
             tools:targetApi="O">
 
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
             <intent-filter>
