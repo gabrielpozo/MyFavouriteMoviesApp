@@ -1,51 +1,38 @@
 package com.accenture.signify.ui.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.accenture.signify.R
+import com.accenture.signify.extensions.basicDiffUtil
+import com.accenture.signify.extensions.inflate
+import com.accenture.domain.model.Filter
 import kotlinx.android.synthetic.main.item_filter.view.*
 
 //todo must be horizontal gridLayout for 2 grids
-class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
-    var list: List<Int> = arrayListOf()
-    private var tracker: SelectionTracker<Long>? = null
+class FilterAdapter(private val listener: (Filter) -> Unit) : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
-    init {
-        setHasStableIds(true)
-    }
+        var categories: List<Filter> by basicDiffUtil(
+            emptyList(),
+            areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter}
+        )
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val number = list[position]
-        tracker?.let {
-            holder.bind(number, it.isSelected(position.toLong()))
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.item_filter, parent, false)
-        return ViewHolder(itemView)
-    }
-
-    override fun getItemCount(): Int = list.size
-
-    override fun getItemId(position: Int): Long = position.toLong()
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(value: Int, selected: Boolean = false) {
-            itemView.textViewFilter.text = value.toString()
-            itemView.isActivated = selected
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = parent.inflate(R.layout.item_filter, false)
+            return ViewHolder(view)
         }
 
-        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
-            object : ItemDetailsLookup.ItemDetails<Long>() {
-                override fun getPosition(): Int = adapterPosition
-                override fun getSelectionKey(): Long? = itemId
+        override fun getItemCount(): Int = categories.size
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val filter = categories[position]
+            holder.bind(filter)
+            holder.itemView.setOnClickListener { listener(filter) }
+        }
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            fun bind(filter: Filter) {
+                itemView.textViewFilter.text = filter.nameFilter
             }
-    }
+        }
 }
