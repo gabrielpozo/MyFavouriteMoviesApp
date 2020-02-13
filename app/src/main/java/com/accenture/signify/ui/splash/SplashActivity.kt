@@ -12,7 +12,7 @@ import com.accenture.signify.di.modules.SplashComponent
 import com.accenture.signify.di.modules.SplashModule
 import com.accenture.signify.extensions.app
 import com.accenture.signify.extensions.getViewModel
-import com.accenture.signify.ui.camera.CameraActivity
+import com.accenture.signify.CameraActivity
 
 class SplashActivity : AppCompatActivity() {
 

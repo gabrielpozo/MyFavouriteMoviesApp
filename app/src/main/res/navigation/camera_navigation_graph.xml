@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/permissions_fragment">
@@ -9,7 +8,7 @@
     <fragment
         android:id="@+id/permissions_fragment"
         android:name="com.accenture.signify.ui.camera.PermissionsFragment"
-        android:label="PermissionsFragment" >
+        android:label="PermissionsFragment">
 
         <action
             android:id="@+id/action_permissions_to_camera"
@@ -22,7 +21,7 @@
     <fragment
         android:id="@+id/camera_fragment"
         android:name="com.accenture.signify.ui.camera.CameraFragment"
-        android:label="CameraFragment" >
+        android:label="CameraFragment">
 
         <action
             android:id="@+id/action_camera_to_gallery"
@@ -32,17 +31,47 @@
             android:id="@+id/action_camera_to_permissions"
             app:destination="@id/permissions_fragment"
             app:popUpTo="@id/camera_fragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
     </fragment>
 
     <fragment
         android:id="@+id/preview_fragment"
         android:name="com.accenture.signify.ui.camera.PreviewFragment"
-        android:label="PreviewFragment" >
+        android:label="PreviewFragment">
         <argument
             android:name="root_directory"
             app:argType="string" />
     </fragment>
+
+
+    <!-- todo -->
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.accenture.signify.ui.lightfinder.CategoriesFragment"
+        android:label="CategoriesFragment">
+        <action
+            android:id="@+id/action_categoriesFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.accenture.signify.ui.lightfinder.ProductsFragment"
+        android:label="ProductsFragment" />
+
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.accenture.signify.ui.cart.CartFragment"
+        android:label="CartFragment" />
+
+
+    <fragment
+        android:id="@+id/expertFragment"
+        android:name="com.accenture.signify.ui.expert.ExpertFragment"
+        android:label="ExpertFragment" />
 
 </navigation>
