@@ -10,14 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.accenture.signify.R
 import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
+import com.accenture.signify.ui.lightfinder.CategoriesFragment
 import kotlinx.android.synthetic.main.fragment_preview.*
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -78,12 +81,8 @@ class PreviewFragment internal constructor() : Fragment() {
 
         sendButton.setOnClickListener {
             mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
-
-                Timber.d("IMAGE PATH ${mediaFile.absolutePath}")
-                Timber.d("BASE64 ${encodeImage(mediaFile.absolutePath)}")
-
-               encodeImage(mediaFile.absolutePath)
-                //todo make the call with this BASE64
+                val base64 = encodeImage(mediaFile.absolutePath)
+                navigateToProductList(base64)
 
             }
         }
@@ -118,6 +117,13 @@ class PreviewFragment internal constructor() : Fragment() {
     }
 
 
+    private fun navigateToProductList(base64: String) {
+        findNavController().navigate(
+            R.id.action_preview_fragment_to_categoriesFragment,
+            bundleOf(CategoriesFragment.CATEGORIES_ID_KEY to base64)
+        )
+    }
+
     //todo move this to use case
     private fun encodeImage(path: String): String {
         val imageFile = File(path)
@@ -132,7 +138,6 @@ class PreviewFragment internal constructor() : Fragment() {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
-
 
 
     }

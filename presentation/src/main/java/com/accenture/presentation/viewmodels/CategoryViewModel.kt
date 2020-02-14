@@ -31,10 +31,10 @@ class CategoryViewModel(
         _model.value = UiModel.RequestMessages
     }
 
-    fun onRequestCategoriesMessages() {
+    fun onRequestCategoriesMessages(base64: String) {
         launch {
             _model.value = UiModel.Loading
-            getCategoryResultUseCase.execute(::handleMessagesResponse, ::handleErrorResponse)
+            getCategoryResultUseCase.execute(::handleMessagesResponse, ::handleErrorResponse, base64)
         }
     }
 

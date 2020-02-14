@@ -9,5 +9,5 @@ class GetCategoriesResultUseCase(private val categoryRepository: CategoryReposit
     BaseUseCase<List<Message>, Any>() {
 
     override suspend fun useCaseExecution(params: Any?): DataState<List<Message>> =
-        categoryRepository.getMessage()
+        categoryRepository.getMessage(params.toString())
 }

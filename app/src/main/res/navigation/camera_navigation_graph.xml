@@ -42,6 +42,9 @@
         <argument
             android:name="root_directory"
             app:argType="string" />
+        <action
+            android:id="@+id/action_preview_fragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
     </fragment>
 
 

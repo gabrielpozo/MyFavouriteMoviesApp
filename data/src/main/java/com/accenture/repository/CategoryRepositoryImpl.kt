@@ -9,7 +9,7 @@ import com.accenture.source.RemoteDataSource
 
 class CategoryRepositoryImpl(private val remoteDataSource: RemoteDataSource) : CategoryRepository {
 
-    override suspend fun getMessage(): DataState<List<Message>> =
-        repositoryHandleSource(remoteSourceRequest = { remoteDataSource.fetchMessages() })
+    override suspend fun getMessage(base64: String): DataState<List<Message>> =
+        repositoryHandleSource(remoteSourceRequest = { remoteDataSource.fetchMessages(base64) })
 
 }
