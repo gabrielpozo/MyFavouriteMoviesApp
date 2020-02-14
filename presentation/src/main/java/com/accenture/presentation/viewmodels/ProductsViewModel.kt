@@ -7,6 +7,7 @@ import com.accenture.domain.model.Filter
 import com.accenture.domain.model.Product
 import com.accenture.usecases.GetFilterButtonsUseCase
 import com.accenture.usecases.GetProductsFilteredUseCase
+import com.accenture.usecases.GetActiveFiltersUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -14,10 +15,12 @@ import kotlinx.coroutines.launch
 class ProductsViewModel(
     private val getProductListFiltered: GetProductsFilteredUseCase,
     private val getFilterButtonListUseCase: GetFilterButtonsUseCase,
+    private val getActiveFilterButtonsUseCase: GetActiveFiltersUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
     private lateinit var dataProducts: List<Product>
+    private lateinit var filterActiveButtonsNoActive: List<Filter>
 
     private val _productsFiltered = MutableLiveData<ProductContent>()
     val productsFiltered: LiveData<ProductContent>
@@ -26,22 +29,25 @@ class ProductsViewModel(
         }
 
 
-    private val _filterTags = MutableLiveData<FilteringModel>()
-    val filterTags: LiveData<FilteringModel>
+    private val _dataFilterButtons = MutableLiveData<FilteringModel>()
+    val dataFilterButtons: LiveData<FilteringModel>
         get() {
-            return _filterTags
+            return _dataFilterButtons
         }
 
 
     data class ProductContent(val productList: List<Product>)
-    data class FilteringModel(val filterList: MutableList<Filter>)
+    data class FilteringModel(
+        val initFilterList: List<Filter>?,
+        val filteredButtons: List<Filter> = emptyList()
+    )
 
 
     fun onRetrieveProductsAndFilters(category: Category) {
         setDataProducts(category.categoryProducts)
         launch {
             getFilterButtonListUseCase.execute(
-                ::handleFilteringButtonsResult,
+                ::handleInitFilteringButtonsResult,
                 params = *arrayOf(dataProducts)
             )
 
@@ -54,38 +60,66 @@ class ProductsViewModel(
     fun onFilterTap(filter: Filter) {
         launch {
             // we get the PRODUCTS associated with the filters we have
+            switchActiveFieldOnFilterInitList(filter)
             getProductListFiltered.execute(
                 ::handleProductListResult,
-                params = *arrayOf(
-                    dataProducts,
-                    _filterTags.value?.filterList
-                )
+                params = *arrayOf(dataProducts, _dataFilterButtons.value?.initFilterList)
             )
 
             //we get the FILTERS associated with the products already filtered
             getFilterButtonListUseCase.execute(
-                ::handleFilteringButtonsResult,
-                params = *arrayOf(_productsFiltered.value?.productList,filter)
+                ::setFilteredButtonsNoActive,
+                params = *arrayOf(
+                    _productsFiltered.value?.productList
+                )
+            )
+
+            //We set to active those active-filters in the new filtered list and
+            // we get them back to display them finally on the view
+            getActiveFilterButtonsUseCase.execute(
+                ::handleFilteredButtons,
+                params = *arrayOf(
+                    filterActiveButtonsNoActive,
+                    _dataFilterButtons.value?.initFilterList
+                )
+
             )
         }
     }
 
 
-    private fun handleFilteringButtonsResult(filterButtons: List<Filter>) {
-        _filterTags.value = FilteringModel(filterList = filterButtons.toMutableList())
-    }
-
     private fun handleProductListResult(products: List<Product>) {
         _productsFiltered.value = ProductContent(productList = products)
     }
 
-    private fun handleErrorResponse(throwable: Throwable) {
-        //TODO
+    private fun handleInitFilteringButtonsResult(filterButtons: List<Filter>) {
+        _dataFilterButtons.value = FilteringModel(
+            initFilterList = filterButtons,
+            filteredButtons = filterButtons
+        )
     }
+
+    private fun handleFilteredButtons(filterButtons: List<Filter>) {
+        _dataFilterButtons.value = FilteringModel(
+            initFilterList = _dataFilterButtons.value?.initFilterList,
+            filteredButtons = filterButtons
+        )
+    }
+
+    private fun switchActiveFieldOnFilterInitList(filter: Filter) {
+        _dataFilterButtons.value?.initFilterList?.find { it.nameFilter == filter.nameFilter }
+            ?.copy(isActive = !filter.isActive)
+    }
+
 
     private fun setDataProducts(productList: List<Product>) {
         dataProducts = productList
     }
+
+    private fun setFilteredButtonsNoActive(filterButtons: List<Filter>) {
+        filterActiveButtonsNoActive = filterButtons
+    }
+
 
 
 }

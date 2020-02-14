@@ -1,6 +1,7 @@
 package com.accenture.signify.di.modules
 
 import com.accenture.presentation.viewmodels.ProductsViewModel
+import com.accenture.usecases.GetActiveFiltersUseCase
 import com.accenture.usecases.GetFilterButtonsUseCase
 import com.accenture.usecases.GetProductsFilteredUseCase
 import dagger.Module
@@ -20,10 +21,20 @@ class ProductsModule {
         GetFilterButtonsUseCase()
 
     @Provides
+    fun getActiveFiltersUseCase() =
+        GetActiveFiltersUseCase()
+
+    @Provides
     fun categoryViewModel(
         productsFilteredUseCase: GetProductsFilteredUseCase,
-        filterButtonsUseCase: GetFilterButtonsUseCase
-    ) = ProductsViewModel(productsFilteredUseCase, filterButtonsUseCase, Dispatchers.Main)
+        filterButtonsUseCase: GetFilterButtonsUseCase,
+        getActiveFiltersUseCase: GetActiveFiltersUseCase
+    ) = ProductsViewModel(
+        productsFilteredUseCase,
+        filterButtonsUseCase,
+        getActiveFiltersUseCase,
+        Dispatchers.Main
+    )
 
 }
 

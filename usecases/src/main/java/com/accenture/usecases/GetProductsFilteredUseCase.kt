@@ -12,8 +12,9 @@ class GetProductsFilteredUseCase : BaseUseCase<List<Product>>() {
         val productDataList = params[0] as List<Product>
         val filterList = params[1] as List<Filter>
         val productsFiltered = mutableListOf<Product>()
+        val filterHashSet = filterList.toHashSet()
 
-        filterList.map { filter ->
+        filterHashSet.map { filter ->
             if (filter.isActive) {
                 productDataList.map { product ->
                     if (filter.nameFilter == product.productSpecOne || filter.nameFilter == product.productScene

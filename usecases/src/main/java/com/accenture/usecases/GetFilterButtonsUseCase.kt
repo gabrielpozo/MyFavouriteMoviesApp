@@ -5,35 +5,30 @@ import com.accenture.domain.model.Product
 import com.accenture.domain.state.DataState
 
 
+@Suppress("UNCHECKED_CAST")
 class GetFilterButtonsUseCase : BaseUseCase<List<Filter>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Filter>> {
         val productList: List<Product> = params[0] as List<Product>
-       // val filter: Filter = params[1] as Filter
+        val filterHashSet = hashSetOf<Filter>()
 
-
-        val filterList = productList.map { product ->
+        //filter List must be a hashSet
+        productList.map { product ->
             product.productScene.isNotEmpty().let {
-                Filter(nameFilter = product.productScene)
+                filterHashSet.add(Filter(nameFilter = product.productScene, type = "whatever"))
             }
 
             product.productSpecOne.isNotEmpty().let {
-                Filter(nameFilter = product.productScene)
+                filterHashSet.add(Filter(nameFilter = product.productSpecOne, type = "whatever"))
             }
 
             product.productSpecThree.isNotEmpty().let {
-                Filter(nameFilter = product.productSpecThree)
+                filterHashSet.add(Filter(nameFilter = product.productSpecThree, type = "whatever"))
             }
         }
 
 
-        if (params.size > 1) {
-            val filter = params[1] as Filter
-            filterList.find { it.nameFilter == filter.nameFilter }
-                ?.copy(isActive = !filter.isActive)
-            //filterList.add(filter.copy(isActive = !filter.isActive))
-        }
-        return DataState.Success(filterList)
+        return DataState.Success(filterHashSet.toList())
     }
 
 }
