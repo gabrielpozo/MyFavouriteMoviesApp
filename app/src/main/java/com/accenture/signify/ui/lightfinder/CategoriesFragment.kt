@@ -67,9 +67,6 @@ class CategoriesFragment : Fragment() {
     private fun updateUI(model: CategoryViewModel.UiModel) {
         progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
-            is CategoryViewModel.UiModel.RequestMessages -> {
-                //viewModel.onRequestCategoriesMessages(base64 = base64)
-            }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
         }
     }

@@ -5,5 +5,5 @@ import com.accenture.domain.state.DataState
 
 interface CategoryRepository {
 
-    suspend fun getMessage(base64: String): DataState<List<Message>>
+    suspend fun getMessage(base64: String?): DataState<List<Message>>
 }

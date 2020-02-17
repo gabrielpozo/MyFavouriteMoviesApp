@@ -1,7 +1,6 @@
 package com.accenture.signify.ui.camera
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
@@ -22,12 +21,10 @@ import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
 import com.accenture.signify.ui.lightfinder.CategoriesFragment
 import kotlinx.android.synthetic.main.fragment_preview.*
-import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
 import java.util.*
+import android.graphics.BitmapFactory
+import java.io.ByteArrayOutputStream
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
@@ -126,20 +123,28 @@ class PreviewFragment internal constructor() : Fragment() {
 
     //todo move this to use case
     private fun encodeImage(path: String): String {
-        val imageFile = File(path)
-        var inputStream: FileInputStream? = null
-        try {
-            inputStream = FileInputStream(imageFile)
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
-
-
+        val bytes = File(path).readBytes()
+        return resizeBase64Image(Base64.encodeToString(bytes,0))
     }
 
+
+    private fun resizeBase64Image(base64image: String): String {
+        val encodeByte = Base64.decode(base64image.toByteArray(), Base64.DEFAULT)
+        val options = BitmapFactory.Options()
+        var image = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size, options)
+
+
+        if (image.height <= 600 && image.width <= 800) {
+            return base64image
+        }
+        image = Bitmap.createScaledBitmap(image, 800, 600, false)
+
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+        val b = baos.toByteArray()
+        System.gc()
+        return Base64.encodeToString(b, Base64.NO_WRAP)
+
+    }
 }

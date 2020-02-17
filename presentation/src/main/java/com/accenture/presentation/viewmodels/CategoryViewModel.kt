@@ -1,12 +1,15 @@
 package com.accenture.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.accenture.domain.model.Category
 import com.accenture.domain.model.Message
 import com.accenture.usecases.GetCategoriesResultUseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoryViewModel(
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
@@ -34,7 +37,11 @@ class CategoryViewModel(
     fun onRequestCategoriesMessages(base64: String) {
         launch {
             _model.value = UiModel.Loading
-            getCategoryResultUseCase.execute(::handleMessagesResponse, ::handleErrorResponse, base64)
+                getCategoryResultUseCase.execute(
+                    ::handleMessagesResponse,
+                    ::handleErrorResponse,
+                    base64
+                )
         }
     }
 
@@ -43,7 +50,7 @@ class CategoryViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        //TODO
+        Log.e("AKIS", throwable.message)
     }
 
 }

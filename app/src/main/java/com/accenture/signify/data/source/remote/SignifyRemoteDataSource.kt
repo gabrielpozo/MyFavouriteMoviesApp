@@ -5,9 +5,9 @@ import com.accenture.domain.model.Message
 import com.accenture.signify.data.mappers.mapServerMessagesToDomain
 import com.accenture.source.BaseDataSource
 import com.accenture.source.RemoteDataSource
-import com.accenture.util.BASE64
 import com.accenture.util.BASE64_PREFIX
 import com.google.gson.annotations.SerializedName
+import timber.log.Timber
 
 
 class SignifyRemoteDataSource : BaseDataSource(), RemoteDataSource {
