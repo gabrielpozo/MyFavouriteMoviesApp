@@ -6,11 +6,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CategoryParcelable(
     val categoryProducts: List<ProductParcelable>,
-    val categoryEnergySave: String,
     val categoryIndex: Int,
     val categoryName: String,
-    val categoryImage: String,
-    val categoryPrice: String
+    val categoryImage: String
 ) : Parcelable
 
 @Parcelize

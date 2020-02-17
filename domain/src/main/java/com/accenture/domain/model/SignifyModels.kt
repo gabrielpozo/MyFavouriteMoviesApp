@@ -7,11 +7,9 @@ data class Message(
 
 data class Category(
     val categoryProducts: List<Product>,
-    val categoryEnergySave: String,
     val categoryIndex: Int,
     val categoryName: String,
-    val categoryImage: String,
-    val categoryPrice: String
+    val categoryImage: String
 )
 
 data class Product(
