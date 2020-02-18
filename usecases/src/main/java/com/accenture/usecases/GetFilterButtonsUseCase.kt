@@ -31,10 +31,6 @@ class GetFilterButtonsUseCase : BaseUseCase<List<Filter>>() {
                     true
             }
         }
-      /*  val reomeo = filterHashSet.filter { it.isActive }
-
-        reomeo*/
-
 
         return DataState.Success(filterHashSet.removeDuplicateElements(activeOnInitList))
     }

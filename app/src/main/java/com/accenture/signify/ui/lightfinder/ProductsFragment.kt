@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.accenture.domain.model.Filter
 import com.accenture.domain.model.Product
 import com.accenture.presentation.viewmodels.ProductsViewModel
@@ -63,6 +64,8 @@ class ProductsFragment : Fragment() {
     }
 
     private fun initFilterAdapter() {
+        rvFilterResult.layoutManager =
+            GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
         filterAdapter = FilterAdapter(::handleFilterPressed)
         rvFilterResult.adapter = filterAdapter
     }
@@ -80,7 +83,7 @@ class ProductsFragment : Fragment() {
 
 
     private fun handleFilterPressed(filter: Filter) {
-         viewModel.onFilterTap(filter)
+        viewModel.onFilterTap(filter)
     }
 
     private fun updateProducts(modelProduct: ProductsViewModel.ProductContent) {
