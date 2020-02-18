@@ -5,5 +5,5 @@ import com.accenture.domain.model.Message
 
 
 interface RemoteDataSource {
-    suspend fun fetchMessages(): Result<List<Message>>
+    suspend fun fetchMessages(base64: String): Result<List<Message>>
 }

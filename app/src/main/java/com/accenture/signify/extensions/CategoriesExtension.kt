@@ -1,6 +1,5 @@
 package com.accenture.signify.extensions
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -79,22 +78,18 @@ fun ImageView.loadUrl(url: String) {
 fun Category.parcelize(): CategoryParcelable =
     CategoryParcelable(
         categoryProducts.map(mapDomainProductToParcelable),
-        categoryEnergySave,
         categoryIndex,
         categoryName,
-        categoryImage,
-        categoryPrice
+        categoryImage
     )
 
 
 fun CategoryParcelable.deparcelize(): Category =
     Category(
         categoryProducts.map(mapParcelableProductToDomain),
-        categoryEnergySave,
         categoryIndex,
         categoryName,
-        categoryImage,
-        categoryPrice
+        categoryImage
     )
 
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->

@@ -19,8 +19,13 @@ import com.accenture.signify.extensions.getViewModel
 import com.accenture.signify.extensions.parcelize
 import com.accenture.signify.ui.adapters.CategoriesAdapter
 import kotlinx.android.synthetic.main.fragment_categories.*
+import timber.log.Timber
 
 class CategoriesFragment : Fragment() {
+
+    companion object {
+        const val CATEGORIES_ID_KEY = "CategoriesFragment::id"
+    }
 
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
@@ -43,17 +48,25 @@ class CategoriesFragment : Fragment() {
             component = app.applicationComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
+        val base64 = arguments?.getString(CATEGORIES_ID_KEY)
+        Timber.d("BASE64AAAAA $base64")
+
+        arguments?.let { bundle ->
+            bundle.getString(CATEGORIES_ID_KEY)
+                ?.let { base64 ->
+                    viewModel.onRequestCategoriesMessages(base64)
+                }
+            viewModel.model.observe(this, Observer(::updateUI))
+        }
+
         initAdapter()
 
-        viewModel.model.observe(this, Observer(::updateUI))
+
     }
 
     private fun updateUI(model: CategoryViewModel.UiModel) {
         progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
-            is CategoryViewModel.UiModel.RequestMessages -> {
-                viewModel.onRequestCategoriesMessages()
-            }
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
         }
     }

@@ -20,12 +20,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/Theme.Design.NoActionBar"
-            >
-            <nav-graph android:value="@navigation/lightfinder_nav_graph" />
-        </activity>
 
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -41,13 +35,14 @@
 
 
         <activity
-            android:name=".ui.camera.CameraActivity"
+            android:name=".CameraActivity"
             android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme"
             android:icon="@mipmap/ic_launcher"
             android:screenOrientation="fullUser"
             android:rotationAnimation="seamless"
-            tools:targetApi="O">
+            tools:targetApi="O"
+            android:windowSoftInputMode="adjustPan">
 
 
 

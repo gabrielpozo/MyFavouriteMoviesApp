@@ -27,6 +27,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.Navigation
+import com.accenture.signify.CameraActivity
 import com.accenture.signify.R
 import com.accenture.signify.extensions.ANIMATION_FAST_MILLIS
 import com.accenture.signify.extensions.ANIMATION_SLOW_MILLIS

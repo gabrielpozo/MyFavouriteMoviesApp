@@ -2,7 +2,7 @@
     <string name="app_name">Light Finder</string>
 
     //Bottom navigation task
-    <string name="categories">Categories</string>
+    <string name="light_finder">LightFinder</string>
     <string name="cart">My Cart</string>
     <string name="expert">Expert</string>
 

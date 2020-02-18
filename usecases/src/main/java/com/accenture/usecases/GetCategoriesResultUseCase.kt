@@ -6,8 +6,8 @@ import com.accenture.domain.state.DataState
 
 
 class GetCategoriesResultUseCase(private val categoryRepository: CategoryRepository) :
-    BaseUseCase<List<Message>, Any>() {
+    BaseUseCase<List<Message>, String>() {
 
-    override suspend fun useCaseExecution(params: Any?): DataState<List<Message>> =
-        categoryRepository.getMessage()
+    override suspend fun useCaseExecution(params: String?): DataState<List<Message>> =
+        categoryRepository.getMessage(params)
 }

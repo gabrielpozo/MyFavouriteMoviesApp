@@ -9,15 +9,15 @@ import com.accenture.signify.data.source.remote.ProductDto
 val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
     val categoriesList: ArrayList<Category> = ArrayList()
-    messageDto.categories.map { categoryDto ->
+    messageDto.categories?.map { categoryDto ->
         categoriesList.add(
             Category(
-                categoryProducts = categoryDto.categoryProducts.map(mapServerProductToDomain),
-                categoryEnergySave = categoryDto.categoryEnergysave,
-                categoryIndex = categoryDto.categoryIndex,
-                categoryImage = categoryDto.categoryImage,
-                categoryName = categoryDto.categoryName,
-                categoryPrice = categoryDto.categoryPrice
+                categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain)
+                    ?: emptyList(),
+                categoryName = categoryDto.categoryName ?: "",
+                categoryIndex = categoryDto.categoryIndex ?: 0,
+                categoryImage = categoryDto.categoryImage ?: ""
+
             )
         )
     }
@@ -29,11 +29,11 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
 private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
     Product(
-        productImage = productDto.productImage,
-        productName = productDto.productName,
-        productDescription = productDto.productDescription,
-        productSpecOne = productDto.productSpecOne,
-        productSpecThree = productDto.productSpecThree,
-        productScene = productDto.productScene
+        productImage = productDto.productImage ?: emptyList(),
+        productName = productDto.productName ?: "",
+        productDescription = productDto.productDescription ?: "",
+        productSpecOne = productDto.productSpecOne ?: "",
+        productSpecThree = productDto.productSpecThree ?: "",
+        productScene = productDto.productScene ?: ""
     )
 }
