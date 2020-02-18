@@ -1,6 +1,7 @@
 package com.accenture.signify.ui.lightfinder
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,38 +56,38 @@ class ProductsFragment : Fragment() {
                 ?.let { categoryParcelable ->
                     viewModel.onRetrieveProductsAndFilters(categoryParcelable.deparcelize())
                 }
-            viewModel.productsFiltered.observe(this, Observer(::updateUI))
+
+            observeElements()
         }
 
     }
-
-    private fun updateUI(model: ProductsViewModel.ProductContent) {
-        return when (model) {
-            else -> {
-                updateData(model.productList)
-            }
-        }
-    }
-
-    private fun updateData(products: List<Product>) {
-        productsAdapter.products = products
-    }
-
-
 
     private fun initFilterAdapter() {
         filterAdapter = FilterAdapter(::handleFilterPressed)
-        rvProducts.adapter = filterAdapter
-
+        rvFilterResult.adapter = filterAdapter
     }
-
-    private fun handleFilterPressed(filter: Filter){
-
-    }
-
 
     private fun initProductsAdapter() {
         productsAdapter = ProductsAdapter()
-        rvFilterResult.adapter = productsAdapter
+        rvProducts.adapter = productsAdapter
+    }
+
+
+    private fun observeElements() {
+        viewModel.productsFiltered.observe(viewLifecycleOwner, Observer(::updateProducts))
+        viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
+    }
+
+
+    private fun handleFilterPressed(filter: Filter) {
+         viewModel.onFilterTap(filter)
+    }
+
+    private fun updateProducts(modelProduct: ProductsViewModel.ProductContent) {
+        productsAdapter.products = modelProduct.productList
+    }
+
+    private fun updateFilters(modelFilter: ProductsViewModel.FilteringModel) {
+        filterAdapter.filterList = modelFilter.filteredButtons
     }
 }

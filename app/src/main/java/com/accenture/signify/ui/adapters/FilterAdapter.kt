@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_filter.view.*
 //todo must be horizontal gridLayout for 2 grids
 class FilterAdapter(private val listener: (Filter) -> Unit) : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
-        var categories: List<Filter> by basicDiffUtil(
+        var filterList: List<Filter> by basicDiffUtil(
             emptyList(),
             areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter}
         )
@@ -22,17 +22,19 @@ class FilterAdapter(private val listener: (Filter) -> Unit) : RecyclerView.Adapt
             return ViewHolder(view)
         }
 
-        override fun getItemCount(): Int = categories.size
+        override fun getItemCount(): Int = filterList.size
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val filter = categories[position]
+            val filter = filterList[position]
             holder.bind(filter)
-            holder.itemView.setOnClickListener { listener(filter) }
+            //holder.itemView.setOnClickListener { listener(filter) }
+            holder.itemView.filterButton.setOnClickListener { listener(filter) }
         }
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             fun bind(filter: Filter) {
-                itemView.textViewFilter.text = filter.nameFilter
+                itemView.filterButton.text = filter.nameFilter
+                //itemView.filterButton.setOnClickListener { listener(filter) }
             }
         }
 }

@@ -1,5 +1,6 @@
 package com.accenture.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.accenture.domain.model.Category
@@ -48,7 +49,7 @@ class ProductsViewModel(
         launch {
             getFilterButtonListUseCase.execute(
                 ::handleInitFilteringButtonsResult,
-                params = *arrayOf(dataProducts)
+                params = *arrayOf(dataProducts, emptyList())
             )
 
             handleProductListResult(category.categoryProducts)
@@ -56,33 +57,23 @@ class ProductsViewModel(
     }
 
 
-    //here we are going to get the filters associated with the products displayed on screen
     fun onFilterTap(filter: Filter) {
         launch {
-            // we get the PRODUCTS associated with the filters we have
             switchActiveFieldOnFilterInitList(filter)
+            // we get the PRODUCTS associated with the filters we have
             getProductListFiltered.execute(
                 ::handleProductListResult,
                 params = *arrayOf(dataProducts, _dataFilterButtons.value?.initFilterList)
             )
 
-            //we get the FILTERS associated with the products already filtered
+            // we get the FILTERS associated with the products already filtered
             getFilterButtonListUseCase.execute(
-                ::setFilteredButtonsNoActive,
+                ::handleFilteredButton,
                 params = *arrayOf(
-                    _productsFiltered.value?.productList
-                )
-            )
-
-            //We set to active those active-filters in the new filtered list and
-            // we get them back to display them finally on the view
-            getActiveFilterButtonsUseCase.execute(
-                ::handleFilteredButtons,
-                params = *arrayOf(
-                    filterActiveButtonsNoActive,
+                    _productsFiltered.value?.productList,
                     _dataFilterButtons.value?.initFilterList
-                )
 
+                )
             )
         }
     }
@@ -99,27 +90,26 @@ class ProductsViewModel(
         )
     }
 
-    private fun handleFilteredButtons(filterButtons: List<Filter>) {
+    private fun handleFilteredButton(filteredButtons: List<Filter>){
         _dataFilterButtons.value = FilteringModel(
             initFilterList = _dataFilterButtons.value?.initFilterList,
-            filteredButtons = filterButtons
+            filteredButtons = filteredButtons
         )
     }
 
+
     private fun switchActiveFieldOnFilterInitList(filter: Filter) {
+        //val value = filter.copy(isActive = !filter.isActive)
         _dataFilterButtons.value?.initFilterList?.find { it.nameFilter == filter.nameFilter }
-            ?.copy(isActive = !filter.isActive)
+            ?.isActive = !filter.isActive
+
+      //  Log.d("Gabriel","filter on Filter tap $filter")
+
     }
 
 
     private fun setDataProducts(productList: List<Product>) {
         dataProducts = productList
     }
-
-    private fun setFilteredButtonsNoActive(filterButtons: List<Filter>) {
-        filterActiveButtonsNoActive = filterButtons
-    }
-
-
 
 }
