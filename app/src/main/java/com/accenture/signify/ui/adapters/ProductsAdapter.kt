@@ -10,7 +10,7 @@ import com.accenture.signify.extensions.inflate
 import com.accenture.signify.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+class ProductsAdapter() : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     var products: List<Product> by basicDiffUtil(
         emptyList(),

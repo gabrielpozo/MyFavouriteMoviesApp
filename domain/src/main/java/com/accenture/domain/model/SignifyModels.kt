@@ -18,5 +18,6 @@ data class Product(
     val productDescription: String,
     val productSpecOne: String,
     val productSpecThree: String,
-    val productScene: String
+    val productScene: String,
+    var filtered: Boolean = false
 )

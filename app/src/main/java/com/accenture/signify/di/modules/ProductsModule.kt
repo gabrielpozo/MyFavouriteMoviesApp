@@ -1,8 +1,8 @@
 package com.accenture.signify.di.modules
 
-import com.accenture.domain.CategoryRepository
 import com.accenture.presentation.viewmodels.ProductsViewModel
-import com.accenture.usecases.GetCategoriesResultUseCase
+import com.accenture.usecases.GetFilterButtonsUseCase
+import com.accenture.usecases.GetProductsFilteredUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -12,15 +12,23 @@ import kotlinx.coroutines.Dispatchers
 class ProductsModule {
 
     @Provides
-    fun getCategoriesResultUseCase(categoryRepository: CategoryRepository) =
-        GetCategoriesResultUseCase(categoryRepository)
+    fun getProductsFilteredUseCase() =
+        GetProductsFilteredUseCase()
+
+    @Provides
+    fun getFilterListUseCase() =
+        GetFilterButtonsUseCase()
 
     @Provides
     fun categoryViewModel(
-        getCategoryResultUseCase: GetCategoriesResultUseCase
+        productsFilteredUseCase: GetProductsFilteredUseCase,
+        filterButtonsUseCase: GetFilterButtonsUseCase
     ) = ProductsViewModel(
+        productsFilteredUseCase,
+        filterButtonsUseCase,
         Dispatchers.Main
     )
+
 }
 
 @Subcomponent(modules = [(ProductsModule::class)])

@@ -65,6 +65,7 @@ class PermissionsFragment : Fragment() {
         private const val PERMISSIONS_REQUEST_CODE = 10
         private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
 
+        //todo  move to extension
         fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }

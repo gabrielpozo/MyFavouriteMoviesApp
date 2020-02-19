@@ -85,8 +85,10 @@ class PreviewFragment internal constructor() : Fragment() {
         }
 
 
+
         deleteButton.setOnClickListener {
-            AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
+            //TODO change it to cancel and navigate
+           /* AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
                 .setTitle(getString(R.string.delete_title))
                 .setMessage(getString(R.string.delete_dialog))
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -109,7 +111,7 @@ class PreviewFragment internal constructor() : Fragment() {
                 }
 
                 .setNegativeButton(android.R.string.no, null)
-                .create().showImmersive()
+                .create().showImmersive()*/
         }
     }
 

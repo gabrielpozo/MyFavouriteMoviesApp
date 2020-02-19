@@ -39,6 +39,7 @@ tracker?.addObserver(
     })
  */
 
+/*
 class FilterItemDetailsLookUp(private val recyclerView: RecyclerView) :
     ItemDetailsLookup<Long>() {
     override fun getItemDetails(event: MotionEvent): ItemDetails<Long>? {
@@ -49,4 +50,4 @@ class FilterItemDetailsLookUp(private val recyclerView: RecyclerView) :
         }
         return null
     }
-}
+}*/

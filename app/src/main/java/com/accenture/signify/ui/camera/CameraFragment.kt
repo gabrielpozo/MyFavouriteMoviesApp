@@ -301,11 +301,11 @@ class CameraFragment : Fragment() {
 
 
 
-        controls.photoPreviewButton.setOnClickListener {
+        /*controls.photoPreviewButton.setOnClickListener {
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
                 navigateToPreview()
             }
-        }
+        }*/
     }
 
 }

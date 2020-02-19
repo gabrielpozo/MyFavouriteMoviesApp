@@ -37,6 +37,7 @@
         app:layout_constraintStart_toEndOf="@+id/photoPreviewButton" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/photoPreviewButton"
         android:layout_width="64dp"
         android:layout_height="@dimen/round_button_medium"
