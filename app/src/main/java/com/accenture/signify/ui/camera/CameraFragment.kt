@@ -8,8 +8,6 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.KeyEvent
@@ -29,6 +27,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.Navigation
+import com.accenture.signify.CameraActivity
 import com.accenture.signify.R
 import com.accenture.signify.extensions.ANIMATION_FAST_MILLIS
 import com.accenture.signify.extensions.ANIMATION_SLOW_MILLIS
@@ -60,6 +59,7 @@ class CameraFragment : Fragment() {
         private const val PHOTO_EXTENSION = ".jpg"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
+        private var flashMode = ImageCapture.FLASH_MODE_OFF
 
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
@@ -148,7 +148,15 @@ class CameraFragment : Fragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
+
+            navigateToPreview()
         }
+    }
+
+    private fun navigateToPreview() {
+        Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
+            CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)
+        )
     }
 
     @SuppressLint("MissingPermission")
@@ -169,7 +177,7 @@ class CameraFragment : Fragment() {
 
             initCameraUi()
 
-            bindCameraUseCases()
+            bindCameraUseCases(flashMode)
 
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
@@ -182,7 +190,13 @@ class CameraFragment : Fragment() {
     }
 
 
-    private fun bindCameraUseCases() {
+    private fun bindCameraUseCases(flashMode: Int) {
+
+        if (flashMode == ImageCapture.FLASH_MODE_OFF) {
+            flashSwitchButton.setImageResource(R.drawable.flash_off)
+        } else {
+            flashSwitchButton.setImageResource(R.drawable.flash_on)
+        }
 
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
         Timber.d("$TAG, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
@@ -209,6 +223,7 @@ class CameraFragment : Fragment() {
             imageCapture = ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .setTargetAspectRatio(screenAspectRatio)
+                .setFlashMode(flashMode)
                 .setTargetRotation(rotation)
                 .build()
 
@@ -274,24 +289,23 @@ class CameraFragment : Fragment() {
             }
         }
 
-        /*
-        cameraSwitchButton.setOnClickListener {
-            lensFacing = if (CameraSelector.LENS_FACING_FRONT == lensFacing) {
-                CameraSelector.LENS_FACING_BACK
+
+        flashSwitchButton.setOnClickListener {
+            flashMode = if (ImageCapture.FLASH_MODE_ON == flashMode) {
+                ImageCapture.FLASH_MODE_OFF
             } else {
-                CameraSelector.LENS_FACING_FRONT
+                ImageCapture.FLASH_MODE_ON
             }
-            bindCameraUseCases()
+            bindCameraUseCases(flashMode)
         }
-         */
+
 
 
         controls.photoPreviewButton.setOnClickListener {
             if (true == outputDirectory.listFiles()?.isNotEmpty()) {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                    CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)
-                )
+                navigateToPreview()
             }
         }
     }
+
 }

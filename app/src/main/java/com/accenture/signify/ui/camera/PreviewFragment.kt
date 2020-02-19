@@ -1,24 +1,28 @@
 package com.accenture.signify.ui.camera
 
+import android.graphics.Bitmap
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.accenture.signify.R
 import com.accenture.signify.extensions.padWithDisplayCutout
 import com.accenture.signify.extensions.showImmersive
+import com.accenture.signify.ui.lightfinder.CategoriesFragment
 import kotlinx.android.synthetic.main.fragment_preview.*
 import java.io.File
 import java.util.*
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.ByteArrayOutputStream
 
@@ -31,7 +35,8 @@ class PreviewFragment internal constructor() : Fragment() {
 
     private lateinit var mediaList: MutableList<File>
 
-    inner class MediaPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class MediaPagerAdapter(fm: FragmentManager) :
+        FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getCount(): Int = mediaList.size
         override fun getItem(position: Int): Fragment = GalleryFragment.create(mediaList[position])
         override fun getItemPosition(obj: Any): Int = POSITION_NONE
@@ -73,18 +78,14 @@ class PreviewFragment internal constructor() : Fragment() {
 
         sendButton.setOnClickListener {
             mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
-
-                //todo convert it to base64 and send
-                val bm = BitmapFactory.decodeFile(mediaFile.absolutePath)
-                val resized = Bitmap.createScaledBitmap(bm, 600, 800, true)
-                val baos = ByteArrayOutputStream()
-                resized.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val base64 = baos.toByteArray()
+                val base64 = encodeImage(mediaFile.absolutePath)
+                navigateToProductList(base64)
 
             }
         }
 
 
+        //TODO remove
         deleteButton.setOnClickListener {
             AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
                 .setTitle(getString(R.string.delete_title))
@@ -96,7 +97,8 @@ class PreviewFragment internal constructor() : Fragment() {
                         mediaFile.delete()
 
                         MediaScannerConnection.scanFile(
-                            view.context, arrayOf(mediaFile.absolutePath), null, null)
+                            view.context, arrayOf(mediaFile.absolutePath), null, null
+                        )
 
                         mediaList.removeAt(mediaViewPager.currentItem)
                         mediaViewPager.adapter?.notifyDataSetChanged()
@@ -104,10 +106,46 @@ class PreviewFragment internal constructor() : Fragment() {
                         if (mediaList.isEmpty()) {
                             fragmentManager?.popBackStack()
                         }
-                    }}
+                    }
+                }
 
                 .setNegativeButton(android.R.string.no, null)
                 .create().showImmersive()
         }
+    }
+
+
+    private fun navigateToProductList(base64: String) {
+        findNavController().navigate(
+            R.id.action_preview_fragment_to_categoriesFragment,
+            bundleOf(CategoriesFragment.CATEGORIES_ID_KEY to base64)
+        )
+    }
+
+    //todo move this to use case
+    private fun encodeImage(path: String): String {
+        val bytes = File(path).readBytes()
+        return resizeBase64Image(Base64.encodeToString(bytes,0))
+    }
+
+
+    private fun resizeBase64Image(base64image: String): String {
+        val encodeByte = Base64.decode(base64image.toByteArray(), Base64.DEFAULT)
+        val options = BitmapFactory.Options()
+        var image = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size, options)
+
+
+        if (image.height <= 600 && image.width <= 800) {
+            return base64image
+        }
+        image = Bitmap.createScaledBitmap(image, 800, 600, false)
+
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+        val b = baos.toByteArray()
+        System.gc()
+        return Base64.encodeToString(b, Base64.NO_WRAP)
+
     }
 }

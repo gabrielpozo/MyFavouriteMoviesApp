@@ -20,35 +20,30 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/Theme.Design.NoActionBar"
             >
-            <nav-graph android:value="@navigation/lightfinder_nav_graph" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
 
-        <!-- todo uncomment and move to main activity for camera -->
-        <!--
         <activity
-            android:name=".ui.camera.CameraActivity"
+            android:name=".CameraActivity"
             android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme"
             android:icon="@mipmap/ic_launcher"
             android:screenOrientation="fullUser"
             android:rotationAnimation="seamless"
-            tools:targetApi="O">
+            tools:targetApi="O"
+            android:windowSoftInputMode="adjustPan">
 
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
             <intent-filter>
@@ -73,8 +68,6 @@
             <meta-data android:name="android.notch_support" android:value="true"/>
 
         </activity>
-    -->
-
 
 
         <provider

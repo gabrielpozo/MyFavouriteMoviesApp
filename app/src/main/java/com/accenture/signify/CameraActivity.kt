@@ -1,19 +1,22 @@
-package com.accenture.signify.ui.camera
+package com.accenture.signify
 
 import android.content.Context
-import android.os.Bundle
-import android.view.KeyEvent
-import androidx.appcompat.app.AppCompatActivity
-import java.io.File
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.Bundle
+import android.view.KeyEvent
+import android.view.WindowManager
 import android.widget.FrameLayout
-import com.accenture.signify.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.accenture.signify.extensions.FLAGS_FULLSCREEN
 import com.accenture.util.IMMERSIVE_FLAG_TIMEOUT
 import com.accenture.util.KEY_EVENT_ACTION
 import com.accenture.util.KEY_EVENT_EXTRA
+import kotlinx.android.synthetic.main.activity_camera.*
+import java.io.File
 
 
 /**
@@ -28,6 +31,12 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.activity_camera)
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
+        bottom_navigation_view.setupWithNavController(findNavController(R.id.fragment_container))
     }
 
     override fun onResume() {
@@ -53,7 +62,8 @@ class CameraActivity : AppCompatActivity() {
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
             val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() } }
+                File(it, appContext.resources.getString(R.string.app_name)).apply { mkdirs() }
+            }
             return if (mediaDir != null && mediaDir.exists())
                 mediaDir else appContext.filesDir
         }

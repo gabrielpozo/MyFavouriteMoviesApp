@@ -13,6 +13,7 @@ interface ApplicationComponent {
 
     fun plus(module: CategoriesModule): CategoriesComponent
     fun plus(module: ProductsModule): ProductsComponent
+    fun plus(module: SplashModule): SplashComponent
 
     @Component.Factory
     interface Factory {

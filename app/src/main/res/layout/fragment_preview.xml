@@ -29,7 +29,7 @@
             android:layout_height="@dimen/round_button_small"
             android:scaleType="fitCenter"
             android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
         <ImageButton
             android:id="@+id/sendButton"
@@ -42,7 +42,7 @@
             android:layout_height="@dimen/round_button_small"
             android:scaleType="fitCenter"
             android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_send" />
+            app:srcCompat="@drawable/ic_send_black_24dp" />
 
         <ImageButton
             android:id="@+id/deleteButton"
@@ -56,7 +56,7 @@
             android:layout_height="@dimen/round_button_small"
             android:scaleType="fitCenter"
             android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_delete_forever_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
