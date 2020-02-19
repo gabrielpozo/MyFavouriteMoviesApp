@@ -85,6 +85,7 @@ class PreviewFragment internal constructor() : Fragment() {
         }
 
 
+        //TODO remove
         deleteButton.setOnClickListener {
             AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
                 .setTitle(getString(R.string.delete_title))

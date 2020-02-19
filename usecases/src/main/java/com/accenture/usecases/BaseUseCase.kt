@@ -2,12 +2,12 @@ package com.accenture.usecases
 
 import com.accenture.domain.state.DataState
 
-abstract class BaseUseCase<T, Params> {
+abstract class BaseUseCase<T> {
 
     suspend fun execute(
         onSuccess: (T) -> Unit,
         onError: (Throwable) -> Unit = {},
-        params: Params? = null
+        vararg params: Any?
     ) {
         when (val dataState = useCaseExecution(params)) {
             is DataState.Success -> onSuccess.invoke(dataState.data)
@@ -15,5 +15,5 @@ abstract class BaseUseCase<T, Params> {
         }
     }
 
-    protected abstract suspend fun useCaseExecution(params: Params?): DataState<T>
+    protected abstract suspend fun useCaseExecution(params: Array<out Any?>): DataState<T>
 }
