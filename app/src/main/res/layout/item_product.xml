@@ -29,32 +29,36 @@
 
         <TextView
             android:id="@+id/product_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="end"
             android:textSize="@dimen/medium_size_name"
             android:textStyle="bold"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/productCover"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Product Name" />
 
         <TextView
             android:id="@+id/product_description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="end"
             android:textStyle="italic"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/productCover"
             app:layout_constraintTop_toBottomOf="@+id/product_name"
             tools:text="Description" />
 
         <TextView
             android:id="@+id/price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -64,7 +68,9 @@
             android:singleLine="true"
             android:textColor="@color/red"
             android:textStyle="italic"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/productCover"
             app:layout_constraintTop_toBottomOf="@+id/product_description"
             tools:text="Open" />
 

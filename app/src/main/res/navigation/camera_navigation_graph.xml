@@ -57,13 +57,20 @@
         <action
             android:id="@+id/action_categoriesFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_camera_fragment2"
+            app:destination="@id/camera_fragment" />
     </fragment>
 
 
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.accenture.signify.ui.lightfinder.ProductsFragment"
-        android:label="ProductsFragment" />
+        android:label="ProductsFragment" >
+        <action
+            android:id="@+id/action_productsFragment_to_categoriesFragment2"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
 
 
     <fragment

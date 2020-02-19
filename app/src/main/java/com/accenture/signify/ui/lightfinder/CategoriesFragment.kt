@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +31,18 @@ class CategoriesFragment : Fragment() {
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToCamera()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
 
 
     override fun onCreateView(
@@ -80,6 +93,12 @@ class CategoriesFragment : Fragment() {
         findNavController().navigate(
             R.id.action_categoriesFragment_to_productsFragment,
             bundleOf(ProductsFragment.PRODUCTS_ID_KEY to category.parcelize())
+        )
+    }
+
+    private fun navigateToCamera() {
+        findNavController().navigate(
+            R.id.action_categoriesFragment_to_camera_fragment2
         )
     }
 

@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.accenture.domain.model.Product
 import com.accenture.presentation.viewmodels.ProductsViewModel
 import com.accenture.signify.R
@@ -29,6 +31,23 @@ class ProductsFragment : Fragment() {
     private val viewModel: ProductsViewModel by lazy { getViewModel { component.productsViewModel } }
     private lateinit var adapter: ProductsAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToCategories()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+
+    private fun navigateToCategories() {
+        findNavController().navigate(
+            R.id.action_productsFragment_to_categoriesFragment2
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +76,9 @@ class ProductsFragment : Fragment() {
 
     private fun updateUI(model: ProductsViewModel.UiModel) {
         when (model) {
-            is ProductsViewModel.UiModel.Content -> { updateData(model.products) }
+            is ProductsViewModel.UiModel.Content -> {
+                updateData(model.products)
+            }
         }
     }
 
