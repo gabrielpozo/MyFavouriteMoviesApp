@@ -7,12 +7,9 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.light.finder.R
 import com.light.finder.extensions.padWithDisplayCutout
@@ -21,16 +18,22 @@ import kotlinx.android.synthetic.main.fragment_preview.*
 import java.io.File
 import java.util.*
 import android.graphics.BitmapFactory
+import com.light.finder.extensions.newInstance
+import com.light.finder.ui.BaseFragment
 import java.io.ByteArrayOutputStream
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
 
-class PreviewFragment internal constructor() : Fragment() {
+class PreviewFragment internal constructor() : BaseFragment() {
 
-    private val args: PreviewFragmentArgs by navArgs()
+    companion object {
+        const val PREVIEW_ID_KEY = "PreviewFragment::id"
+    }
+
 
     private lateinit var mediaList: MutableList<File>
+    private var rootDirectory: File? = null
 
     inner class MediaPagerAdapter(fm: FragmentManager) :
         FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -41,14 +44,7 @@ class PreviewFragment internal constructor() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         retainInstance = true
-
-        val rootDirectory = File(args.rootDirectory)
-
-        mediaList = rootDirectory.listFiles { file ->
-            EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-        }?.sortedDescending()?.toMutableList() ?: mutableListOf()
     }
 
     override fun onCreateView(
@@ -60,6 +56,16 @@ class PreviewFragment internal constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.let { bundle ->
+            bundle.getString(PREVIEW_ID_KEY).let { path ->
+                rootDirectory = File(path)
+            }
+        }
+
+        mediaList = rootDirectory?.listFiles { file ->
+            EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
+        }?.sortedDescending()?.toMutableList() ?: mutableListOf()
+
         val mediaViewPager = photoViewPager.apply {
             offscreenPageLimit = 2
             adapter = MediaPagerAdapter(childFragmentManager)
@@ -67,10 +73,6 @@ class PreviewFragment internal constructor() : Fragment() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             cutoutSafeArea.padWithDisplayCutout()
-        }
-
-        backButton.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigateUp()
         }
 
         sendButton.setOnClickListener {
@@ -82,48 +84,44 @@ class PreviewFragment internal constructor() : Fragment() {
         }
 
 
-
         deleteButton.setOnClickListener {
             //TODO change it to cancel and navigate
-           /* AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
-                .setTitle(getString(R.string.delete_title))
-                .setMessage(getString(R.string.delete_dialog))
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes) { _, _ ->
-                    mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
+            /* AlertDialog.Builder(view.context, android.R.style.Theme_Material_Dialog)
+                 .setTitle(getString(R.string.delete_title))
+                 .setMessage(getString(R.string.delete_dialog))
+                 .setIcon(android.R.drawable.ic_dialog_alert)
+                 .setPositiveButton(android.R.string.yes) { _, _ ->
+                     mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
 
-                        mediaFile.delete()
+                         mediaFile.delete()
 
-                        MediaScannerConnection.scanFile(
-                            view.context, arrayOf(mediaFile.absolutePath), null, null
-                        )
+                         MediaScannerConnection.scanFile(
+                             view.context, arrayOf(mediaFile.absolutePath), null, null
+                         )
 
-                        mediaList.removeAt(mediaViewPager.currentItem)
-                        mediaViewPager.adapter?.notifyDataSetChanged()
+                         mediaList.removeAt(mediaViewPager.currentItem)
+                         mediaViewPager.adapter?.notifyDataSetChanged()
 
-                        if (mediaList.isEmpty()) {
-                            fragmentManager?.popBackStack()
-                        }
-                    }
-                }
+                         if (mediaList.isEmpty()) {
+                             fragmentManager?.popBackStack()
+                         }
+                     }
+                 }
 
-                .setNegativeButton(android.R.string.no, null)
-                .create().showImmersive()*/
+                 .setNegativeButton(android.R.string.no, null)
+                 .create().showImmersive()*/
         }
     }
 
 
     private fun navigateToProductList(base64: String) {
-        findNavController().navigate(
-            R.id.action_preview_fragment_to_categoriesFragment,
-            bundleOf(CategoriesFragment.CATEGORIES_ID_KEY to base64)
-        )
+        mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(base64))
     }
 
     //todo move this to use case
     private fun encodeImage(path: String): String {
         val bytes = File(path).readBytes()
-        return resizeBase64Image(Base64.encodeToString(bytes,0))
+        return resizeBase64Image(Base64.encodeToString(bytes, 0))
     }
 
 

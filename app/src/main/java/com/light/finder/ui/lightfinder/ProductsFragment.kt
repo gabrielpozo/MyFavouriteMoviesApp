@@ -34,25 +34,7 @@ class ProductsFragment : Fragment() {
     private val viewModel: ProductsViewModel by lazy { getViewModel { component.productsViewModel } }
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var filterAdapter: FilterAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                navigateToCategories()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-
-    private fun navigateToCategories() {
-        findNavController().navigate(
-            R.id.action_productsFragment_to_categoriesFragment2
-        )
-    }
-
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
