@@ -22,17 +22,13 @@ import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.Navigation
 import com.light.finder.CameraActivity
 import com.light.finder.R
-import com.light.finder.extensions.ANIMATION_FAST_MILLIS
-import com.light.finder.extensions.ANIMATION_SLOW_MILLIS
-import com.light.finder.extensions.loadFile
-import com.light.finder.extensions.simulateClick
+import com.light.finder.extensions.*
+import com.light.finder.ui.BaseFragment
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
@@ -51,7 +47,7 @@ import kotlin.math.min
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
 
-class CameraFragment : Fragment() {
+class CameraFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "CameraX"
@@ -102,8 +98,8 @@ class CameraFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (!PermissionsFragment.hasPermissions(requireContext())) {
-            Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                CameraFragmentDirections.actionCameraToPermissions()
+            mFragmentNavigation.pushFragment(
+                PermissionsFragment.newInstance()
             )
         }
     }
@@ -154,8 +150,8 @@ class CameraFragment : Fragment() {
     }
 
     private fun navigateToPreview() {
-        Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-            CameraFragmentDirections.actionCameraToGallery(outputDirectory.absolutePath)
+        mFragmentNavigation.pushFragment(
+            PreviewFragment.newInstance(outputDirectory.absolutePath)
         )
     }
 
@@ -298,7 +294,6 @@ class CameraFragment : Fragment() {
             }
             bindCameraUseCases(flashMode)
         }
-
 
 
         /*controls.photoPreviewButton.setOnClickListener {

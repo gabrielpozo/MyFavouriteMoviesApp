@@ -4,12 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.finder.R
@@ -17,12 +12,13 @@ import com.light.finder.di.modules.CategoriesComponent
 import com.light.finder.di.modules.CategoriesModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.parcelize
+import com.light.finder.extensions.newInstance
+import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
+import com.light.presentation.common.Event
 import kotlinx.android.synthetic.main.fragment_categories.*
-import timber.log.Timber
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : BaseFragment() {
 
     companion object {
         const val CATEGORIES_ID_KEY = "CategoriesFragment::id"
@@ -31,19 +27,6 @@ class CategoriesFragment : Fragment() {
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                navigateToCamera()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,9 +44,7 @@ class CategoriesFragment : Fragment() {
             component = app.applicationComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
-        val base64 = arguments?.getString(CATEGORIES_ID_KEY)
-        Timber.d("BASE64AAAAA $base64")
-
+        //TODO(check, it shouldn't be called again when pressing back from products fragment
         arguments?.let { bundle ->
             bundle.getString(CATEGORIES_ID_KEY)
                 ?.let { base64 ->
@@ -72,10 +53,14 @@ class CategoriesFragment : Fragment() {
             viewModel.model.observe(this, Observer(::updateUI))
         }
 
+        navigationObserver()
         initAdapter()
-
-
     }
+
+    private fun navigationObserver() {
+        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
+    }
+
 
     private fun updateUI(model: CategoryViewModel.UiModel) {
         progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
@@ -85,21 +70,15 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = CategoriesAdapter(::navigateToProductList)
+        adapter = CategoriesAdapter(viewModel::onCategoryClick)
         rvCategories.adapter = adapter
     }
 
-    private fun navigateToProductList(category: Category){
-        findNavController().navigate(
-            R.id.action_categoriesFragment_to_productsFragment,
-            bundleOf(ProductsFragment.PRODUCTS_ID_KEY to category.parcelize())
-        )
-    }
+    private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>){
+        navigationModel.getContentIfNotHandled()?.let { navModel ->
+            mFragmentNavigation.pushFragment(ProductsFragment.newInstance(navModel.category))
+        }
 
-    private fun navigateToCamera() {
-        findNavController().navigate(
-            R.id.action_categoriesFragment_to_camera_fragment2
-        )
     }
 
     private fun updateData(messages: List<Message>) {

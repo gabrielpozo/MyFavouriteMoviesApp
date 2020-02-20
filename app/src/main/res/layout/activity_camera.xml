@@ -71,7 +71,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:navGraph="@navigation/camera_navigation_graph" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.roughike.bottombar.BottomBar
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_bar_height"
@@ -83,6 +83,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:bb_tabXmlResource="@xml/menu_bottom_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

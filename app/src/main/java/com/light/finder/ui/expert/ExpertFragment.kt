@@ -1,5 +1,7 @@
 package com.light.finder.ui.expert
 
-import androidx.fragment.app.Fragment
+import com.light.finder.ui.BaseFragment
 
-class ExpertFragment : Fragment()
+class ExpertFragment : BaseFragment(){
+    companion object
+}

@@ -62,3 +62,5 @@ fun AlertDialog.showImmersive() {
 fun ImageView.loadFile(file: File){
     Glide.with(this).load(file).apply(RequestOptions.circleCropTransform()).into(this)
 }
+
+
