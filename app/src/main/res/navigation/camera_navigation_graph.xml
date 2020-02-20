@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/permissions_fragment"
-        android:name="com.accenture.signify.ui.camera.PermissionsFragment"
+        android:name="com.light.finder.ui.camera.PermissionsFragment"
         android:label="PermissionsFragment">
 
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/camera_fragment"
-        android:name="com.accenture.signify.ui.camera.CameraFragment"
+        android:name="com.light.finder.ui.camera.CameraFragment"
         android:label="CameraFragment">
 
         <action
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/preview_fragment"
-        android:name="com.accenture.signify.ui.camera.PreviewFragment"
+        android:name="com.light.finder.ui.camera.PreviewFragment"
         android:label="PreviewFragment">
         <argument
             android:name="root_directory"
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="com.accenture.signify.ui.lightfinder.CategoriesFragment"
+        android:name="com.light.finder.ui.lightfinder.CategoriesFragment"
         android:label="CategoriesFragment">
         <action
             android:id="@+id/action_categoriesFragment_to_productsFragment"
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.accenture.signify.ui.lightfinder.ProductsFragment"
+        android:name="com.light.finder.ui.lightfinder.ProductsFragment"
         android:label="ProductsFragment" >
         <action
             android:id="@+id/action_productsFragment_to_categoriesFragment2"
@@ -75,13 +75,13 @@
 
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.accenture.signify.ui.cart.CartFragment"
+        android:name="com.light.finder.ui.cart.CartFragment"
         android:label="CartFragment" />
 
 
     <fragment
         android:id="@+id/expertFragment"
-        android:name="com.accenture.signify.ui.expert.ExpertFragment"
+        android:name="com.light.finder.ui.expert.ExpertFragment"
         android:label="ExpertFragment" />
 
 </navigation>

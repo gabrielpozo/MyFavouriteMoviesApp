@@ -15,6 +15,21 @@
     <color name="gold">#DAA520</color>
     <color name="openGreen">#008000</color>
 
+
+    <!--LightFinder-->
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#00e880</color>
+    <color name="primarySubText">#d7d7d8</color>
+    <color name="primaryAppColor">#00e487</color>
+    <color name="secondaryAppColor">#1ecbd0</color>
+    <color name="darkBackgroundColor">#3c3c41</color>
+    <color name="lightBackgroundColor">#636367</color>
+    <color name="snackBarColor">#1432ff</color>
+    <color name="bottomNavBarColor">#1c1c1f</color>
+
+
+
+
     <!--Camera -->
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>

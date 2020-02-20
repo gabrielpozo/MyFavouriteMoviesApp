@@ -14,7 +14,7 @@
         android:background="?android:attr/selectableItemBackground">
 
 
-        <com.accenture.signify.ui.common.AspectRatioImageView
+        <com.light.finder.ui.common.AspectRatioImageView
             android:id="@+id/productCover"
             android:layout_width="100dp"
             android:layout_height="100dp"
