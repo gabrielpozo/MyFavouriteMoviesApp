@@ -24,4 +24,7 @@
     <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
     <string name="text_permissions_title">Identify a light bulb</string>
     <string name="text_browse_button">Browse light bulbs</string>
+    <string name="placeholder">-</string>
+    <string name="text_bulb">/bulb</string>
+    <string name="lightbulb_cd">lightBulb</string>
 </resources>
