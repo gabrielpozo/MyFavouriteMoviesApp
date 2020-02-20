@@ -19,6 +19,9 @@
     <string name="delete_button_alt">Delete</string>
     <string name="delete_dialog">Delete current photo?</string>
     <string name="delete_title">Confirm</string>
-    <string name="text_enable_access">Enable Access</string>
+    <string name="text_enable_access">Enable camera access</string>
     <string name="text_filter">filter</string>
+    <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
+    <string name="text_permissions_title">Identify a light bulb</string>
+    <string name="text_browse_button">Browse light bulbs</string>
 </resources>
