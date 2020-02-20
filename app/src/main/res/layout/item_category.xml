@@ -14,7 +14,7 @@
         android:background="?android:attr/selectableItemBackground">
 
 
-        <com.accenture.signify.ui.common.AspectRatioImageView
+        <com.light.finder.ui.common.AspectRatioImageView
             android:id="@+id/bulbCover"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -29,32 +29,36 @@
 
         <TextView
             android:id="@+id/category_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="end"
             android:textSize="@dimen/medium_size_name"
             android:textStyle="bold"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Category Name" />
 
         <TextView
             android:id="@+id/energySave"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="end"
             android:textStyle="italic"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
             tools:text="500 watts" />
 
         <TextView
             android:id="@+id/price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -64,13 +68,15 @@
             android:singleLine="true"
             android:textColor="@color/red"
             android:textStyle="italic"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/energySave"
             tools:text="30 $" />
 
         <TextView
             android:id="@+id/rating"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -78,8 +84,10 @@
             android:gravity="end"
             android:textColor="@color/gold"
             android:textStyle="bold"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/price"
             tools:text="rating" />
 
