@@ -52,6 +52,7 @@
     </style>
 
     <style name="GreenButton" parent="Theme.AppCompat">
+        <item name="android:minHeight">50dp</item>
         <item name="android:height">30dp</item>
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textColor">@color/darkBackgroundColor</item>

@@ -193,9 +193,9 @@ class CameraFragment : Fragment() {
     private fun bindCameraUseCases(flashMode: Int) {
 
         if (flashMode == ImageCapture.FLASH_MODE_OFF) {
-            flashSwitchButton.setImageResource(R.drawable.flash_off)
+            flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
         } else {
-            flashSwitchButton.setImageResource(R.drawable.flash_on)
+            flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
         }
 
         val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
