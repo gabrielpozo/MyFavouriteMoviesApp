@@ -1,5 +1,7 @@
 package com.light.finder.ui.cart
 
-import androidx.fragment.app.Fragment
+import com.light.finder.ui.BaseFragment
 
-class CartFragment : Fragment()
+class CartFragment : BaseFragment(){
+    companion object
+}

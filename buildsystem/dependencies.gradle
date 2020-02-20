@@ -58,6 +58,8 @@ ext {
     testCoreVersion = "1.1.0"
     testRunnerVersion = "1.1.1"
     testRulesVersion = "1.1.1"
+    navigationFragNav = "3.2.0"
+    bottombar = "2.3.1"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -83,34 +85,34 @@ ext {
 
     jetPackDependencies = [
             //implementation
-            glide             : "com.github.bumptech.glide:glide:$glideVersion",
-            appCompat         : "androidx.appcompat:appcompat:$appCompatVersion",
-            constraint        : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
-            ktx               : "androidx.core:core-ktx:$ktxVersion",
-            viewModel         : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
-            fragment          : "androidx.fragment:fragment-ktx:$fragmentVersion",
-            lifeCycle         : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
-            liveData          : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+            glide                : "com.github.bumptech.glide:glide:$glideVersion",
+            appCompat            : "androidx.appcompat:appcompat:$appCompatVersion",
+            constraint           : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
+            ktx                  : "androidx.core:core-ktx:$ktxVersion",
+            viewModel            : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+            fragment             : "androidx.fragment:fragment-ktx:$fragmentVersion",
+            lifeCycle            : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+            liveData             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
 
-            navigationFragment: "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
-            navigationUi      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
+            navigationFragment   : "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
+            navigationUi         : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
 
-            recyclerView      : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            recyclerView         : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
             recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$recyclerViewSelectionVersion",
-            room              : "androidx.room:room-runtime:$roomVersion",
-            paging            : "androidx.paging:paging-runtime:$pagingVersion",
-            roomKtx           : "androidx.room:room-ktx:$roomVersion",
-            workManager       : "androidx.work:work-runtime-ktx:$workVersion",
-            material          : "com.google.android.material:material:$materialVersion",
-            kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+            room                 : "androidx.room:room-runtime:$roomVersion",
+            paging               : "androidx.paging:paging-runtime:$pagingVersion",
+            roomKtx              : "androidx.room:room-ktx:$roomVersion",
+            workManager          : "androidx.work:work-runtime-ktx:$workVersion",
+            material             : "com.google.android.material:material:$materialVersion",
+            kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     ]
 
     cameraxDependencies = [
-            cameraxCore: "androidx.camera:camera-core:$cameraVersion",
-            cameraTwo  : "androidx.camera:camera-camera2:$cameraVersion",
-            cameraxLifeCyle : "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
-            cameraxView : "androidx.camera:camera-view:$cameraViewVersion"
+            cameraxCore    : "androidx.camera:camera-core:$cameraVersion",
+            cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
+            cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
+            cameraxView    : "androidx.camera:camera-view:$cameraViewVersion"
     ]
 
     coroutinesDependencies = [
@@ -136,6 +138,12 @@ ext {
             daggerAndroid: "com.google.dagger:dagger-android:$daggerVersion",
             daggerSupport: "com.google.dagger:dagger-android-support:$daggerVersion"
     ]
+
+    navigationDependencies = [
+            fragnav: "com.ncapdevi:frag-nav:$navigationFragNav",
+            bottom : "com.roughike:bottom-bar:$bottombar"
+    ]
+
     networkDependencies = [
             //implementation
             gson         : "com.google.code.gson:gson:$gsonVersion",
