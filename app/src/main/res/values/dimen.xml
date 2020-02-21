@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="medium_size_name">16sp</dimen>
 
     <!-- camera -->
@@ -19,6 +19,7 @@
     <dimen name="stroke_large">12dp</dimen>
 
     <dimen name="round_button_small">42dp</dimen>
+    <dimen name="round_button_normal">52dp</dimen>
     <dimen name="round_button_medium">64dp</dimen>
     <dimen name="round_button_large">92dp</dimen>
 
