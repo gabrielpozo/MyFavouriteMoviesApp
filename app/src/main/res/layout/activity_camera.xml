@@ -58,18 +58,14 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:defaultNavHost="true"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:navGraph="@navigation/camera_navigation_graph" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottom_navigation_view"
@@ -77,9 +73,6 @@
         android:layout_height="@dimen/bottom_nav_bar_height"
         android:layout_gravity="bottom"
         android:background="@color/darkBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:bb_tabXmlResource="@xml/menu_bottom_bar"
         app:bb_inActiveTabAlpha="0.6"
         app:bb_activeTabAlpha="1"
@@ -87,6 +80,12 @@
         app:bb_activeTabColor="@color/primaryAppColor"
         app:bb_badgesHideWhenActive="true"
         app:bb_titleTextAppearance="@style/NavBarText"
-      />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

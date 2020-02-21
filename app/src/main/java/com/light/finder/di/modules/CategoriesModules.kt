@@ -9,7 +9,7 @@ import dagger.Subcomponent
 import kotlinx.coroutines.Dispatchers
 
 @Module
-class CategoriesModule {
+class CategoriesModule() {
 
     @Provides
     fun getCategoriesResultUseCase(categoryRepository: CategoryRepository) =

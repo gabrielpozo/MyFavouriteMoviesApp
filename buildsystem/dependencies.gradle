@@ -27,7 +27,6 @@ ext {
     ktxVersion = '1.1.0'
     lifecycleVersion = '2.2.0'
     materialVersion = '1.0.0'
-    navigationVersion = '2.1.0'
     safeargs_version = "2.1.0-rc01"
     recyclerViewVersion = '1.2.0-alpha01'
     recyclerViewSelectionVersion = '1.0.0'
@@ -66,7 +65,6 @@ ext {
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-            safeArgs          : "androidx.navigation:navigation-safe-args-gradle-plugin:${safeargs_version}"
     ]
 
 
@@ -93,10 +91,6 @@ ext {
             fragment             : "androidx.fragment:fragment-ktx:$fragmentVersion",
             lifeCycle            : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
             liveData             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
-
-            navigationFragment   : "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
-            navigationUi         : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
-
             recyclerView         : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
             recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$recyclerViewSelectionVersion",
             room                 : "androidx.room:room-runtime:$roomVersion",
