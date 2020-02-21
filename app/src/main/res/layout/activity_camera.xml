@@ -77,12 +77,16 @@
         android:layout_height="@dimen/bottom_nav_bar_height"
         android:layout_gravity="bottom"
         android:background="@color/darkBackgroundColor"
-        app:itemTextColor="@color/primaryTextColor"
-        app:itemIconTint="@color/primaryTextColor"
-        app:itemTextAppearanceActive="@color/primaryAppColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:bb_tabXmlResource="@xml/menu_bottom_bar" />
+        app:bb_tabXmlResource="@xml/menu_bottom_bar"
+        app:bb_inActiveTabAlpha="0.6"
+        app:bb_activeTabAlpha="1"
+        app:bb_inActiveTabColor="@color/primaryTextColor"
+        app:bb_activeTabColor="@color/primaryAppColor"
+        app:bb_badgesHideWhenActive="true"
+        app:bb_titleTextAppearance="@style/NavBarText"
+      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
