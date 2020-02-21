@@ -5,4 +5,5 @@
     <dimen name="margin_big">16dp</dimen>
     <dimen name="margin_card">4dp</dimen>
     <dimen name="card_height">220dp</dimen>
+    <dimen name="no_internet_header_height">60dp</dimen>
 </resources>

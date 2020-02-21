@@ -2,8 +2,11 @@ package com.light.finder
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -11,12 +14,16 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.room.RoomOpenHelper
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.PermissionsFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.util.ConnectivityReceiver
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
@@ -26,6 +33,7 @@ import com.ncapdevi.fragnav.FragNavSwitchController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
 import kotlinx.android.synthetic.main.activity_camera.*
+import timber.log.Timber
 import java.io.File
 
 
@@ -34,8 +42,9 @@ import java.io.File
  * functionality is implemented in the form of fragments.
  */
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation {
+    BaseFragment.FragmentNavigation, ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var container: FrameLayout
+    private var snackBarView : Snackbar? = null
 
     private val fragNavController: FragNavController =
         FragNavController(supportFragmentManager, R.id.fragment_container)
@@ -60,6 +69,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         /**
          *ON CREATE
          */
+
+        registerReceiver(
+            ConnectivityReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+
 
         fragNavController.apply {
             rootFragmentListener = this@CameraActivity
@@ -100,11 +115,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
         bottom_navigation_view.setOnTabReselectListener { fragNavController.clearStack() }
 
-        /**
-         *
-         *
-         */
-
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -121,8 +131,23 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        showNetworkMessage(isConnected)
+    }
+
+    private fun showNetworkMessage(isConnected: Boolean) {
+        if (isConnected) {
+            //todo show snackbar from the top
+            Timber.d("EGE IS CONNECTED")
+        } else {
+            Timber.d("EGE IS NOT CONNECTED")
+        }
+    }
+
+
     override fun onResume() {
         super.onResume()
+        ConnectivityReceiver.connectivityReceiverListener = this
         container.postDelayed({
             container.systemUiVisibility = FLAGS_FULLSCREEN
         }, IMMERSIVE_FLAG_TIMEOUT)
