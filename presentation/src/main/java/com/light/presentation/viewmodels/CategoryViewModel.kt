@@ -27,7 +27,6 @@ class CategoryViewModel(
 
     class NavigationModel(val category: Category)
 
-
     sealed class UiModel {
         object Loading : UiModel()
         object RequestMessages : UiModel()

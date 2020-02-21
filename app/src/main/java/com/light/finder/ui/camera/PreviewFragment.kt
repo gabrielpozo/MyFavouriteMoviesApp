@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.navigation.fragment.navArgs
 import com.light.finder.R
 import com.light.finder.extensions.padWithDisplayCutout
 import com.light.finder.ui.lightfinder.CategoriesFragment
