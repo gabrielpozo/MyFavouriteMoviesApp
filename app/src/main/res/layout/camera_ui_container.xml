@@ -1,15 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cameraUiContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr">
 
+    <TextView
+        android:id="@+id/textViewCameraTitle"
+        style="@style/TitleText"
+        android:text="@string/text_permissions_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCameraSubtitle"
+        style="@style/SubtitleText"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/text_camera_subtitle"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraTitle" />
+
+    <Button
+        android:id="@+id/textViewEnableAccess"
+        style="@style/GrayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_help"
+        android:background="@color/lightBackgroundColor"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/cameraCaptureButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraSubtitle"
+        app:layout_constraintVertical_bias="0.0" />
+
     <ImageButton
         android:id="@+id/flashSwitchButton"
-        android:layout_width="@dimen/round_button_small"
-        android:layout_height="@dimen/round_button_small"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="@dimen/round_button_medium"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/margin_xlarge"
@@ -21,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cameraCaptureButton"
-        app:srcCompat="@drawable/flash_off" />
+        app:srcCompat="@drawable/ic_flash_off" />
 
     <ImageButton
         android:id="@+id/cameraCaptureButton"
@@ -53,5 +102,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_photo" />
+
+    <TextView
+        android:id="@+id/textViewTap"
+        style="@style/NavBarText"
+        android:textAllCaps="true"
+        android:text="@string/text_tap_to_identify"
+        android:letterSpacing="0.2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraCaptureButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

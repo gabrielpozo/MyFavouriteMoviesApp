@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        icon="@drawable/ic_highlight_24px"
+        icon="@drawable/ic_lightfinder"
         id="@+id/camera_fragment"
         title="@string/light_finder"
         />
     <tab
-        icon="@drawable/ic_shopping_cart_24px"
+        icon="@drawable/ic_cart"
         id ="@+id/cartFragment"
         title="@string/cart"
         />
     <tab
-        icon="@drawable/ic_phone_24px"
+        icon="@drawable/ic_information"
         id="@+id/expertFragment"
         title="@string/expert"
         />

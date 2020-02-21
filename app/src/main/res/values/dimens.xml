@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bottom_nav_bar_height">56dp</dimen>
+    <dimen name="bottom_nav_bar_height">86dp</dimen>
+    <dimen name="marginx_small">4dp</dimen>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_card">4dp</dimen>
+    <dimen name="card_height">220dp</dimen>
 </resources>

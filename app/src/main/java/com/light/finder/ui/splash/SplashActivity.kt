@@ -1,8 +1,10 @@
 package com.light.finder.ui.splash
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.light.presentation.viewmodels.SplashState
@@ -23,7 +25,8 @@ class SplashActivity : AppCompatActivity() {
 
         component = app.applicationComponent.plus(SplashModule())
 
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -39,6 +42,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun goToCameraActivity() {
         finish()
+        overridePendingTransition(0,0)
         startActivity(Intent(this, CameraActivity::class.java))
     }
 }

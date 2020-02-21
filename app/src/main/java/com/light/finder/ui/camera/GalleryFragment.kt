@@ -19,7 +19,7 @@ class GalleryFragment internal constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments ?: return
-        val resource = args.getString(FILE_NAME)?.let { File(it) } ?: R.drawable.ic_highlight_24px
+        val resource = args.getString(FILE_NAME)?.let { File(it) } ?: R.drawable.ic_lightfinder
         Glide.with(view).load(resource).into(view as ImageView)
     }
 
