@@ -44,13 +44,11 @@ class CategoriesFragment : BaseFragment() {
             component = app.applicationComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
-        //TODO(check, it shouldn't be called again when pressing back from products fragment
         arguments?.let { bundle ->
             bundle.getString(CATEGORIES_ID_KEY)
                 ?.let { base64 ->
-                    viewModel.onRequestCategoriesMessages(base64)
+                    viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel, base64) })
                 }
-            viewModel.model.observe(this, Observer(::updateUI))
         }
 
         navigationObserver()
@@ -62,10 +60,15 @@ class CategoriesFragment : BaseFragment() {
     }
 
 
-    private fun updateUI(model: CategoryViewModel.UiModel) {
-        progress.visibility = if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
+    private fun updateUI(model: CategoryViewModel.UiModel, base64: String) {
+        progress.visibility =
+            if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
+            is CategoryViewModel.UiModel.RequestMessages -> viewModel.onRequestCategoriesMessages(
+                base64
+            )
             is CategoryViewModel.UiModel.Content -> updateData(model.messages)
+
         }
     }
 
@@ -74,7 +77,7 @@ class CategoriesFragment : BaseFragment() {
         rvCategories.adapter = adapter
     }
 
-    private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>){
+    private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             mFragmentNavigation.pushFragment(ProductsFragment.newInstance(navModel.category))
         }

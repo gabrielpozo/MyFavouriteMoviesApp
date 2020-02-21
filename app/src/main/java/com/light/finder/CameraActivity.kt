@@ -11,6 +11,10 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.light.finder.common.FragmentFrameHelper
+import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
+import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
+import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
@@ -21,24 +25,14 @@ import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
-import com.ncapdevi.fragnav.FragNavLogger
-import com.ncapdevi.fragnav.FragNavSwitchController
-import com.ncapdevi.fragnav.FragNavTransactionOptions
-import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
-import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 
 
-/**
- * Main entry point into our app. This app follows the single-activity pattern, and all
- * functionality is implemented in the form of fragments.
- */
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
     BaseFragment.FragmentNavigation {
     private lateinit var container: FrameLayout
 
-    private val fragNavController: FragNavController =
-        FragNavController(supportFragmentManager, R.id.fragment_container)
+    private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
 
     companion object {
@@ -52,58 +46,10 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
-        /**
-         *ON CREATE
-         */
-
-        fragNavController.apply {
-            rootFragmentListener = this@CameraActivity
-            createEager = true
-            fragNavLogger = object : FragNavLogger {
-                override fun error(message: String, throwable: Throwable) {
-                }
-            }
-
-            defaultTransactionOptions = FragNavTransactionOptions.newBuilder().customAnimations(
-                R.anim.slide_in_from_right,
-                R.anim.slide_out_to_left,
-                R.anim.slide_in_from_left,
-                R.anim.slide_out_to_right
-            ).build()
-            fragmentHideStrategy = FragNavController.DETACH_ON_NAVIGATE_HIDE_ON_SWITCH
-
-            navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
-                override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    bottom_navigation_view.selectTabAtPosition(index)
-                }
-            })
-        }
-
-        fragNavController.initialize(INDEX_LIGHT_FINDER, savedInstanceState)
-        val initial = savedInstanceState == null
-        if (initial) {
-            bottom_navigation_view.selectTabAtPosition(INDEX_LIGHT_FINDER)
-        }
-
-        bottom_navigation_view.setOnTabSelectListener({ tabId ->
-            when (tabId) {
-                R.id.camera_fragment -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
-                R.id.cartFragment -> fragNavController.switchTab(INDEX_CART)
-                R.id.expertFragment -> fragNavController.switchTab(INDEX_EXPERT)
-            }
-        }, initial)
-
-        bottom_navigation_view.setOnTabReselectListener { fragNavController.clearStack() }
-
-        /**
-         *
-         *
-         */
+        fragmentHelper.setupNavController(savedInstanceState)
 
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -112,11 +58,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragNavController.onSaveInstanceState(outState)
+        fragmentHelper.onSaveInstanceState(outState)
     }
 
     override fun onBackPressed() {
-        if (fragNavController.popFragment().not()) {
+        if (fragmentHelper.popFragmentNot()) {
             super.onBackPressed()
         }
     }
@@ -151,11 +97,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>?) {
-        fragNavController.pushFragment(fragment)
+        fragmentHelper.pushFragment(fragment)
     }
 
 }
-
-const val INDEX_LIGHT_FINDER = FragNavController.TAB1
-const val INDEX_CART = FragNavController.TAB2
-const val INDEX_EXPERT = FragNavController.TAB3
