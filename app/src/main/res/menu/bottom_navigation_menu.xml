@@ -3,15 +3,15 @@
     <item
         android:id="@+id/camera_fragment"
         android:title="@string/light_finder"
-        android:icon="@drawable/ic_highlight_24px"/>
+        android:icon="@drawable/ic_lightfinder"/>
 
     <item
         android:id="@+id/cartFragment"
         android:title="@string/cart"
-        android:icon="@drawable/ic_shopping_cart_24px"/>
+        android:icon="@drawable/ic_cart"/>
 
     <item
         android:id="@+id/expertFragment"
         android:title="@string/expert"
-        android:icon="@drawable/ic_phone_24px"/>
+        android:icon="@drawable/ic_information"/>
 </menu>
