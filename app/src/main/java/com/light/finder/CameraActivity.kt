@@ -2,21 +2,16 @@ package com.light.finder
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ActivityInfo
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.room.RoomOpenHelper
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import com.light.finder.common.FragmentFrameHelper
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
@@ -32,11 +27,6 @@ import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
-import com.ncapdevi.fragnav.FragNavLogger
-import com.ncapdevi.fragnav.FragNavSwitchController
-import com.ncapdevi.fragnav.FragNavTransactionOptions
-import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
-import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
 
@@ -44,7 +34,6 @@ import java.io.File
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
     BaseFragment.FragmentNavigation, ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var container: FrameLayout
-    private var snackBarView : Snackbar? = null
 
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
@@ -61,10 +50,14 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
         fragmentHelper.setupNavController(savedInstanceState)
-
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)

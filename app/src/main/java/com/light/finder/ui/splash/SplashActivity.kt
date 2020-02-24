@@ -3,18 +3,19 @@ package com.light.finder.ui.splash
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.light.presentation.viewmodels.SplashState
-import com.light.presentation.viewmodels.SplashViewModel
+import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.di.modules.SplashComponent
 import com.light.finder.di.modules.SplashModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
-import com.light.finder.CameraActivity
+import com.light.presentation.viewmodels.SplashState
+import com.light.presentation.viewmodels.SplashViewModel
+
 
 class SplashActivity : AppCompatActivity() {
 
@@ -24,12 +25,14 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         component = app.applicationComponent.plus(SplashModule())
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         splashViewModel.liveData.observe(this, Observer {
             when (it) {
@@ -42,7 +45,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun goToCameraActivity() {
         finish()
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
         startActivity(Intent(this, CameraActivity::class.java))
     }
 }
