@@ -2,8 +2,11 @@ package com.light.finder
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -11,6 +14,9 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.room.RoomOpenHelper
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.light.finder.common.FragmentFrameHelper
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
@@ -21,16 +27,24 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.PermissionsFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.util.ConnectivityReceiver
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import com.ncapdevi.fragnav.FragNavLogger
+import com.ncapdevi.fragnav.FragNavSwitchController
+import com.ncapdevi.fragnav.FragNavTransactionOptions
+import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
+import kotlinx.android.synthetic.main.activity_camera.*
+import timber.log.Timber
 import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation {
+    BaseFragment.FragmentNavigation, ConnectivityReceiver.ConnectivityReceiverListener {
     private lateinit var container: FrameLayout
+    private var snackBarView : Snackbar? = null
 
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
@@ -67,8 +81,23 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        showNetworkMessage(isConnected)
+    }
+
+    private fun showNetworkMessage(isConnected: Boolean) {
+        if (isConnected) {
+            //todo show snackbar from the top
+            Timber.d("EGE IS CONNECTED")
+        } else {
+            Timber.d("EGE IS NOT CONNECTED")
+        }
+    }
+
+
     override fun onResume() {
         super.onResume()
+        ConnectivityReceiver.connectivityReceiverListener = this
         container.postDelayed({
             container.systemUiVisibility = FLAGS_FULLSCREEN
         }, IMMERSIVE_FLAG_TIMEOUT)
