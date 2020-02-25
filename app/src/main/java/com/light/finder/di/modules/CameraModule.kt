@@ -1,31 +1,31 @@
 package com.light.finder.di.modules
 
 import com.light.domain.CategoryRepository
-import com.light.presentation.viewmodels.CategoryViewModel
+import com.light.presentation.viewmodels.CameraViewModel
 import com.light.usecases.GetCategoriesResultUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
 import kotlinx.coroutines.Dispatchers
 
+
 @Module
-class CategoriesModule {
+class CameraModule {
 
     @Provides
     fun getCategoriesResultUseCase(categoryRepository: CategoryRepository) =
         GetCategoriesResultUseCase(categoryRepository)
 
     @Provides
-    fun categoryViewModel(
+    fun cameraViewModel(
         getCategoryResultUseCase: GetCategoriesResultUseCase
 
-    ) = CategoryViewModel(
-        getCategoryResultUseCase,
-        Dispatchers.Main
+    ) = CameraViewModel(
+        getCategoryResultUseCase, Dispatchers.Main
     )
 }
 
-@Subcomponent(modules = [(CategoriesModule::class)])
-interface CategoriesComponent {
-    val categoryViewModel: CategoryViewModel
+@Subcomponent(modules = [(CameraModule::class)])
+interface CameraComponent {
+    val cameraViewModel: CameraViewModel
 }

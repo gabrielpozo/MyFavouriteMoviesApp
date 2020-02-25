@@ -2,16 +2,12 @@ package com.light.finder.ui.camera
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.light.finder.BuildConfig
 import com.light.finder.R
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
@@ -56,26 +52,7 @@ class PermissionsFragment : BaseFragment() {
                 Timber.d("permission", "granted")
                 mFragmentNavigation.pushFragment(CameraFragment.newInstance())
             } else {
-                // deep link to settings
-
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        requireActivity(),
-                        Manifest.permission.READ_CALL_LOG
-                    )
-                ) {
-                    Timber.d("permission", "denied")
-
-                } else {
-
-
-                    startActivity(
-                        Intent(
-                            android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.parse("package:" + BuildConfig.APPLICATION_ID)
-                        )
-                    )
-
-                }
+                Timber.d("permission", "denied")
             }
         }
     }

@@ -78,7 +78,6 @@ class PreviewFragment internal constructor() : BaseFragment() {
             mediaList.getOrNull(mediaViewPager.currentItem)?.let { mediaFile ->
                 val base64 = encodeImage(mediaFile.absolutePath)
                 navigateToProductList(base64)
-
             }
         }
 

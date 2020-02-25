@@ -1,5 +1,6 @@
 package com.light.finder.ui.camera
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +10,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -17,18 +17,25 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.light.domain.model.Message
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.PermissionRequester
+import com.light.finder.di.modules.CameraComponent
+import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.presentation.common.Event
+import com.light.presentation.viewmodels.CameraViewModel
+import com.light.presentation.viewmodels.CameraViewModel.*
+import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
@@ -40,21 +47,21 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
 
 class CameraFragment : BaseFragment() {
 
+    private lateinit var component: CameraComponent
+    private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
+    private lateinit var cameraPermissionRequester: PermissionRequester
+
+
     companion object {
-        private const val TAG = "CameraX"
+        const val TAG = "CameraX"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
-        private const val RATIO_4_3_VALUE = 4.0 / 3.0
-        private const val RATIO_16_9_VALUE = 16.0 / 9.0
         private var flashMode = ImageCapture.FLASH_MODE_OFF
 
         private fun createFile(baseFolder: File, format: String, extension: String) =
@@ -65,17 +72,17 @@ class CameraFragment : BaseFragment() {
     }
 
     private lateinit var container: ConstraintLayout
-    private lateinit var viewFinder: PreviewView
+    lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
-    private lateinit var mainExecutor: Executor
+    lateinit var mainExecutor: Executor
 
     private var displayId: Int = -1
-    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private var preview: Preview? = null
-    private var imageCapture: ImageCapture? = null
-    private var imageAnalyzer: ImageAnalysis? = null
-    private var camera: Camera? = null
+    var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    var preview: Preview? = null
+    var imageCapture: ImageCapture? = null
+    var imageAnalyzer: ImageAnalysis? = null
+    var camera: Camera? = null
 
     private val volumeDownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -95,14 +102,14 @@ class CameraFragment : BaseFragment() {
         mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
-    override fun onResume() {
+/*    override fun onResume() {
         super.onResume()
         if (!PermissionsFragment.hasPermissions(requireContext())) {
             mFragmentNavigation.pushFragment(
                 PermissionsFragment.newInstance()
             )
         }
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -118,7 +125,6 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setGalleryThumbnail(file: File) {
-
         val thumbnail = photoPreviewButton
         thumbnail.post {
 
@@ -144,8 +150,81 @@ class CameraFragment : BaseFragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
+            //onSendButtonClicked // TODO("uncomment this line")
+            navigateToPreview()//REMOVE THIS LINE
+        }
+    }
 
-            navigateToPreview()
+
+    private fun onSendButtonClicked(absolutePath: String) {
+        viewModel.onSendButtonClicked(absolutePath)
+    }
+
+
+    @SuppressLint("MissingPermission")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.run {
+            component = app.applicationComponent.plus(CameraModule())
+            cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+        } ?: throw Exception("Invalid Activity")
+
+        viewModel.model.observe(viewLifecycleOwner, Observer(::updateUI))
+        viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
+        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::handleContent))
+
+        container = view as ConstraintLayout
+        viewFinder = container.findViewById(R.id.viewFinder)
+        broadcastManager = LocalBroadcastManager.getInstance(view.context)
+
+    }
+
+
+    private fun updateUI(model: UiModel) {
+        when (model) {
+            is UiModel.PermissionsViewRequested -> {
+                setPermissionView()
+            }
+
+            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
+                viewModel.onCameraPermissionRequested(isPermissionGranted)
+            }
+
+            is UiModel.CameraViewDisplay -> setCameraSpecs()
+            is UiModel.CameraViewPermissionDenied -> {
+                //TODO()
+            }
+        }
+    }
+
+    private fun handleContent(modelContent: Content) {
+        //TODO set the Loading here
+        when (modelContent) {
+            is Content.EncodeImage -> {
+                viewModel.onRequestCategoriesMessages(modelContent.base64.encodeImage())
+            }
+            is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
+        }
+    }
+
+
+    private fun setPermissionView() {
+        //TODO show the permissions view here!!
+        setCameraSpecs()//REMOVE THIS LINE
+    }
+
+
+    private fun setPreviewView(previewModel: Event<PreviewModel>) {
+        previewModel.getContentIfNotHandled()?.let {
+            //TODO setPreview View here!!
+        }
+    }
+
+    private fun navigateToCategories(content: Event<List<Message>>) {
+        content.getContentIfNotHandled()?.let { messages ->
+            //TODO we navigate here to Categories, parcelizing the object itself
+            //mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
     }
 
@@ -155,13 +234,7 @@ class CameraFragment : BaseFragment() {
         )
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        container = view as ConstraintLayout
-        viewFinder = container.findViewById(R.id.viewFinder)
-        broadcastManager = LocalBroadcastManager.getInstance(view.context)
-
+    private fun setCameraSpecs() {
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
         broadcastManager.registerReceiver(volumeDownReceiver, filter)
 
@@ -183,76 +256,7 @@ class CameraFragment : BaseFragment() {
                 }
             }
         }
-    }
 
-
-    private fun bindCameraUseCases(flashMode: Int) {
-
-        if (flashMode == ImageCapture.FLASH_MODE_OFF) {
-            flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
-        } else {
-            flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
-        }
-
-        val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
-        Timber.d("$TAG, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
-
-        val screenAspectRatio = setAspectRatio(metrics.widthPixels, metrics.heightPixels)
-        Timber.d("$TAG Preview aspect ratio: $screenAspectRatio")
-
-        val rotation = viewFinder.display.rotation
-
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener(Runnable {
-
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            preview = Preview.Builder()
-                .setTargetAspectRatio(screenAspectRatio)
-
-                .setTargetRotation(rotation)
-                .build()
-
-            preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
-
-            imageCapture = ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                .setTargetAspectRatio(screenAspectRatio)
-                .setFlashMode(flashMode)
-                .setTargetRotation(rotation)
-                .build()
-
-            imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetAspectRatio(screenAspectRatio)
-                .setTargetRotation(rotation)
-                .build()
-                .also {
-                    it.setAnalyzer(mainExecutor, LuminosityAnalyzer { luma ->
-                        Timber.d("$TAG Average luminosity: $luma")
-                    })
-                }
-
-            cameraProvider.unbindAll()
-
-            try {
-                camera = cameraProvider.bindToLifecycle(
-                    this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
-                )
-            } catch (exc: Exception) {
-                Timber.e("$TAG Use case binding failed", exc)
-            }
-
-        }, mainExecutor)
-    }
-
-
-    private fun setAspectRatio(width: Int, height: Int): Int {
-        val previewRatio = max(width, height).toDouble() / min(width, height)
-        if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
-            return AspectRatio.RATIO_4_3
-        }
-        return AspectRatio.RATIO_16_9
     }
 
 
@@ -263,7 +267,6 @@ class CameraFragment : BaseFragment() {
         }
 
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
-
 
         controls.cameraCaptureButton.setOnClickListener {
             imageCapture?.let { imageCapture ->
@@ -295,12 +298,6 @@ class CameraFragment : BaseFragment() {
             bindCameraUseCases(flashMode)
         }
 
-
-        /*controls.photoPreviewButton.setOnClickListener {
-            if (true == outputDirectory.listFiles()?.isNotEmpty()) {
-                navigateToPreview()
-            }
-        }*/
     }
 
 }
