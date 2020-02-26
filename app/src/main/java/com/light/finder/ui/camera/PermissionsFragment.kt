@@ -11,8 +11,7 @@ import androidx.core.content.ContextCompat
 import com.light.finder.R
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_permission.*
-import timber.log.Timber
+import kotlinx.android.synthetic.main.layout_permission.*
 
 
 class PermissionsFragment : BaseFragment() {
@@ -21,7 +20,7 @@ class PermissionsFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_permission, container, false)
+    ): View? = inflater.inflate(R.layout.layout_permission, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,10 +48,8 @@ class PermissionsFragment : BaseFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (PackageManager.PERMISSION_GRANTED == grantResults.firstOrNull()) {
-                Timber.d("permission", "granted")
                 mFragmentNavigation.pushFragment(CameraFragment.newInstance())
             } else {
-                Timber.d("permission", "denied")
             }
         }
     }

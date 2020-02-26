@@ -40,5 +40,4 @@ fun PreviewFragment.Companion.newInstance(absolutePath: String): PreviewFragment
     return fragment
 }
 
-fun PermissionsFragment.Companion.newInstance(): PermissionsFragment = PermissionsFragment()
 

@@ -20,7 +20,6 @@ import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
-import com.light.finder.ui.camera.PermissionsFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.util.ConnectivityReceiver

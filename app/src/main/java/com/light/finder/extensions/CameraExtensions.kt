@@ -106,7 +106,7 @@ fun CameraFragment.checkSelfCameraPermission(): Boolean  = ContextCompat.checkSe
 
 
 
-//todo move this to use case
+
 fun String.encodeImage(): String {
     val bytes = File(this).readBytes()
     return resizeBase64Image(Base64.encodeToString(bytes, 0))

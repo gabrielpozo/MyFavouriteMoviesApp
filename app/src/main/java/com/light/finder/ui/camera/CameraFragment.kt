@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.light.domain.model.Message
+import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
@@ -137,14 +139,14 @@ class CameraFragment : BaseFragment() {
 
     private val imageSavedListener = object : ImageCapture.OnImageSavedCallback {
         override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
-            Timber.e("$TAG Photo capture failed: $message", cause)
+            Timber.e("$TAG Photo capture failed: $message cause")
         }
 
         @SuppressLint("ObsoleteSdkInt")
         override fun onImageSaved(photoFile: File) {
             Timber.d("$TAG Photo capture succeeded: ${photoFile.absolutePath}")
 
-            setGalleryThumbnail(photoFile)
+            //setGalleryThumbnail(photoFile)
 
             val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(photoFile.extension)
             MediaScannerConnection.scanFile(
@@ -198,10 +200,17 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.CameraViewDisplay -> setCameraSpecs()
-            is UiModel.CameraViewPermissionDenied -> {
-                //TODO()
-            }
+            is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
         }
+    }
+
+    private fun deepLinkToSettings() {
+        startActivity(
+            Intent(
+                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+            )
+        )
     }
 
     private fun observeModelContent(modelContent: Content) {
