@@ -22,6 +22,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 
+val EXTENSION_WHITELIST = arrayOf("JPG")
+
 fun setAspectRatio(width: Int, height: Int): Int {
     val previewRatio = max(width, height).toDouble() / min(width, height)
     if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {

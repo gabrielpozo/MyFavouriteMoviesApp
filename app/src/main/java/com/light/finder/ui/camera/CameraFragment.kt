@@ -87,7 +87,7 @@ class CameraFragment : BaseFragment() {
     var imageAnalyzer: ImageAnalysis? = null
     var camera: Camera? = null
 
-    private val volumeDownReceiver = object : BroadcastReceiver() {
+    /*private val volumeDownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)) {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
@@ -97,7 +97,7 @@ class CameraFragment : BaseFragment() {
                 }
             }
         }
-    }
+    }*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,19 +105,11 @@ class CameraFragment : BaseFragment() {
         mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
-/*    override fun onResume() {
-        super.onResume()
-        if (!PermissionsFragment.hasPermissions(requireContext())) {
-            mFragmentNavigation.pushFragment(
-                PermissionsFragment.newInstance()
-            )
-        }
-    }*/
-
+/*
     override fun onDestroyView() {
         super.onDestroyView()
         broadcastManager.unregisterReceiver(volumeDownReceiver)
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,7 +119,7 @@ class CameraFragment : BaseFragment() {
         inflater.inflate(R.layout.fragment_camera, container, false)
 
 
-    private fun setGalleryThumbnail(file: File) {
+    /*private fun setGalleryThumbnail(file: File) {
         val thumbnail = photoPreviewButton
         thumbnail.post {
 
@@ -136,7 +128,7 @@ class CameraFragment : BaseFragment() {
             thumbnail.loadFile(file)
 
         }
-    }
+    }*/
 
     private val imageSavedListener = object : ImageCapture.OnImageSavedCallback {
         override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
@@ -153,8 +145,8 @@ class CameraFragment : BaseFragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
-            //onSendButtonClicked // TODO("uncomment this line, get all the media stuff as in preview screen")
-            navigateToPreview()//REMOVE THIS LINE
+            onSendButtonClicked(outputDirectory.absolutePath)
+            //navigateToPreview()//REMOVE THIS LINE
         }
     }
 
@@ -257,8 +249,8 @@ class CameraFragment : BaseFragment() {
     private fun setCameraSpecs() {
         viewFinder.visibility = View.VISIBLE
         layoutPermission.visibility = View.GONE
-        val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
-        broadcastManager.registerReceiver(volumeDownReceiver, filter)
+        //val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
+        //broadcastManager.registerReceiver(volumeDownReceiver, filter)
 
         outputDirectory = CameraActivity.getOutputDirectory(requireContext())
 
@@ -274,7 +266,7 @@ class CameraFragment : BaseFragment() {
                 outputDirectory.listFiles { file ->
                     EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
                 }?.max()?.let {
-                    setGalleryThumbnail(it)
+                    //setGalleryThumbnail(it)
                 }
             }
         }
@@ -295,7 +287,7 @@ class CameraFragment : BaseFragment() {
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {
 
-                    isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+                   isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
                 }
 
                 imageCapture.takePicture(photoFile, metadata, mainExecutor, imageSavedListener)
@@ -308,6 +300,8 @@ class CameraFragment : BaseFragment() {
                 }, ANIMATION_SLOW_MILLIS)
 
             }
+
+            //todo preview
         }
 
 

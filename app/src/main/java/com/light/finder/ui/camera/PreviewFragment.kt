@@ -17,12 +17,13 @@ import kotlinx.android.synthetic.main.fragment_preview.*
 import java.io.File
 import java.util.*
 import android.graphics.BitmapFactory
+import com.light.finder.extensions.EXTENSION_WHITELIST
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import java.io.ByteArrayOutputStream
 
 
-val EXTENSION_WHITELIST = arrayOf("JPG")
+
 
 class PreviewFragment internal constructor() : BaseFragment() {
 
