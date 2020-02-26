@@ -35,7 +35,6 @@ import com.light.finder.ui.BaseFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
-import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
@@ -157,6 +156,7 @@ class CameraFragment : BaseFragment() {
 
 
     private fun onSendButtonClicked(absolutePath: String) {
+        //TODO get the absolute path like in the preview fragment
         viewModel.onSendButtonClicked(absolutePath)
     }
 
@@ -172,7 +172,7 @@ class CameraFragment : BaseFragment() {
 
         viewModel.model.observe(viewLifecycleOwner, Observer(::updateUI))
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
-        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::handleContent))
+        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
@@ -198,11 +198,11 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun handleContent(modelContent: Content) {
+    private fun observeModelContent(modelContent: Content) {
         //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
-                viewModel.onRequestCategoriesMessages(modelContent.base64.encodeImage())
+                viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
         }

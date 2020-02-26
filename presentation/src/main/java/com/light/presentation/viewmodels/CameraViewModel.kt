@@ -43,7 +43,7 @@ class CameraViewModel(
 
     sealed class Content {
         object Loading : Content()
-        class EncodeImage(val base64: String) : Content()
+        class EncodeImage(val absolutePath: String) : Content()
         class RequestModelContent(val messages: Event<List<Message>>) : Content()
     }
 
