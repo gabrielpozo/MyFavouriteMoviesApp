@@ -8,6 +8,7 @@
     android:layout_height="match_parent">
 
     <include
+        android:id="@+id/layoutPermission"
         layout="@layout/layout_permission"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.camera.view.PreviewView
+        android:visibility="gone"
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

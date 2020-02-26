@@ -42,6 +42,7 @@ import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
+import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -225,8 +226,7 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setPermissionView() {
-        //TODO show the permissions view here!!
-    
+        layoutPermission.visibility = View.VISIBLE
     }
 
 
@@ -250,6 +250,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun setCameraSpecs() {
+        viewFinder.visibility = View.VISIBLE
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
         broadcastManager.registerReceiver(volumeDownReceiver, filter)
 

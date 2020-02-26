@@ -91,7 +91,7 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
                 this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
             )
         } catch (exc: Exception) {
-            Timber.e("${CameraFragment.TAG} Use case binding failed", exc)
+            Timber.e("${CameraFragment.TAG} Use case binding failed exc")
         }
 
     }, mainExecutor)
