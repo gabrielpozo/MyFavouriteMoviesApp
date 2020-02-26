@@ -1,11 +1,14 @@
 package com.light.finder.extensions
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.DisplayMetrics
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.light.finder.R
 import com.light.finder.ui.camera.CameraFragment
@@ -28,73 +31,78 @@ fun setAspectRatio(width: Int, height: Int): Int {
 }
 
 
+fun CameraFragment.bindCameraUseCases(flashMode: Int) {
+    if (flashMode == ImageCapture.FLASH_MODE_OFF) {
+        flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
+    } else {
+        flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
+    }
 
- fun CameraFragment.bindCameraUseCases(flashMode: Int) {
-     if (flashMode == ImageCapture.FLASH_MODE_OFF) {
-         flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
-     } else {
-         flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
-     }
+    val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
+    Timber.d("${CameraFragment.TAG}, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
 
-     val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
-     Timber.d("${CameraFragment.TAG}, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
+    val screenAspectRatio = setAspectRatio(
+        metrics.widthPixels,
+        metrics.heightPixels
+    )
+    Timber.d("${CameraFragment.TAG} Preview aspect ratio: $screenAspectRatio")
 
-     val screenAspectRatio = setAspectRatio(
-         metrics.widthPixels,
-         metrics.heightPixels
-     )
-     Timber.d("${CameraFragment.TAG} Preview aspect ratio: $screenAspectRatio")
+    val rotation = viewFinder.display.rotation
 
-     val rotation = viewFinder.display.rotation
-
-     val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-     val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-
+    val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+    val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
 
-     cameraProviderFuture.addListener(Runnable {
 
-         val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+    cameraProviderFuture.addListener(Runnable {
 
-         preview = Preview.Builder()
-             .setTargetAspectRatio(screenAspectRatio)
+        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-             .setTargetRotation(rotation)
-             .build()
+        preview = Preview.Builder()
+            .setTargetAspectRatio(screenAspectRatio)
 
-         preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
+            .setTargetRotation(rotation)
+            .build()
 
-         imageCapture = ImageCapture.Builder()
-             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-             .setTargetAspectRatio(screenAspectRatio)
-             .setFlashMode(flashMode)
-             .setTargetRotation(rotation)
-             .build()
+        preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
 
-         imageAnalyzer = ImageAnalysis.Builder()
-             .setTargetAspectRatio(screenAspectRatio)
-             .setTargetRotation(rotation)
-             .build()
-             .also {
-                 it.setAnalyzer(mainExecutor,
-                     LuminosityAnalyzer { luma ->
-                         Timber.d("${CameraFragment.TAG} Average luminosity: $luma")
-                     })
-             }
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .setTargetAspectRatio(screenAspectRatio)
+            .setFlashMode(flashMode)
+            .setTargetRotation(rotation)
+            .build()
 
-         cameraProvider.unbindAll()
+        imageAnalyzer = ImageAnalysis.Builder()
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+            .also {
+                it.setAnalyzer(mainExecutor,
+                    LuminosityAnalyzer { luma ->
+                        Timber.d("${CameraFragment.TAG} Average luminosity: $luma")
+                    })
+            }
 
-         try {
-             camera = cameraProvider.bindToLifecycle(
-                 this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
-             )
-         } catch (exc: Exception) {
-             Timber.e("${CameraFragment.TAG} Use case binding failed", exc)
-         }
+        cameraProvider.unbindAll()
 
-     }, mainExecutor)
+        try {
+            camera = cameraProvider.bindToLifecycle(
+                this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
+            )
+        } catch (exc: Exception) {
+            Timber.e("${CameraFragment.TAG} Use case binding failed", exc)
+        }
+
+    }, mainExecutor)
 
 }
+
+
+fun CameraFragment.checkSelfCameraPermission(): Boolean  = ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
 
 
 

@@ -22,6 +22,7 @@ class CameraViewModel(
         }
 
     sealed class UiModel {
+        object CameraInitializeScreen: UiModel()
         object RequestCameraViewDisplay : UiModel()
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
@@ -65,7 +66,7 @@ class CameraViewModel(
     }
 
     private fun init() {
-        _model.value = UiModel.PermissionsViewRequested
+        _model.value = UiModel.CameraInitializeScreen
     }
 
     fun onCameraPermissionRequested(isPermissionGranted: Boolean) {
@@ -81,7 +82,18 @@ class CameraViewModel(
         _modelRequest.value = Content.RequestModelContent(Event(messages))
     }
 
+    fun onPermissionsViewRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _model.value = UiModel.CameraViewDisplay
+
+        } else {
+            _model.value = UiModel.PermissionsViewRequested
+        }
+    }
+
     private fun handleErrorResponse(throwable: Throwable) {
         //TODO
     }
+
+
 }

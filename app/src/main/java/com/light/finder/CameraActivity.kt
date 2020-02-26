@@ -19,6 +19,7 @@ import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.camera.PermissionsFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
@@ -110,7 +111,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun getRootFragment(index: Int): Fragment {
         when (index) {
             INDEX_LIGHT_FINDER -> {
-                return PermissionsFragment.newInstance()
+                return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
             INDEX_EXPERT -> return ExpertFragment.newInstance()

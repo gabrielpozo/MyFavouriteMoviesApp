@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
@@ -149,7 +150,7 @@ class CameraFragment : BaseFragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
-            //onSendButtonClicked // TODO("uncomment this line")
+            //onSendButtonClicked // TODO("uncomment this line, get all the media stuff as in preview screen")
             navigateToPreview()//REMOVE THIS LINE
         }
     }
@@ -183,6 +184,11 @@ class CameraFragment : BaseFragment() {
 
     private fun updateUI(model: UiModel) {
         when (model) {
+
+            is UiModel.CameraInitializeScreen -> {
+                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            }
+
             is UiModel.PermissionsViewRequested -> {
                 setPermissionView()
             }
