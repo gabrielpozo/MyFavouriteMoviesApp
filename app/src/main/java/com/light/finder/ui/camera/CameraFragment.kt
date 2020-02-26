@@ -228,14 +228,7 @@ class CameraFragment : BaseFragment() {
     private fun setPermissionView() {
         layoutPermission.visibility = View.VISIBLE
         textViewEnableAccess.setOnClickListener {
-            cameraPermissionRequester.request {
-
-                when (it) {
-                    it -> updateUI(UiModel.CameraViewDisplay)
-                    else -> updateUI(UiModel.CameraViewPermissionDenied)
-                }
-
-            }
+            viewModel.onRequestCameraViewDisplay()
         }
 
     }
