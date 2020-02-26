@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
@@ -23,8 +22,8 @@ import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.light.domain.model.Message
 import com.light.finder.BuildConfig
@@ -43,6 +42,7 @@ import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -227,6 +227,17 @@ class CameraFragment : BaseFragment() {
 
     private fun setPermissionView() {
         layoutPermission.visibility = View.VISIBLE
+        textViewEnableAccess.setOnClickListener {
+            cameraPermissionRequester.request {
+
+                when (it) {
+                    it -> updateUI(UiModel.CameraViewDisplay)
+                    else -> updateUI(UiModel.CameraViewPermissionDenied)
+                }
+
+            }
+        }
+
     }
 
 
@@ -251,6 +262,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setCameraSpecs() {
         viewFinder.visibility = View.VISIBLE
+        layoutPermission.visibility = View.GONE
         val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
         broadcastManager.registerReceiver(volumeDownReceiver, filter)
 
