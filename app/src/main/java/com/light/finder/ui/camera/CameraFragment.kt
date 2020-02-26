@@ -217,7 +217,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setPermissionView() {
         //TODO show the permissions view here!!
-        setCameraSpecs()//REMOVE THIS LINE
+    
     }
 
 
