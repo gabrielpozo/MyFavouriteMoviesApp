@@ -78,6 +78,10 @@ class CameraViewModel(
         }
     }
 
+    fun onRequestCameraViewDisplay() {
+        _model.value = UiModel.RequestCameraViewDisplay
+    }
+
     private fun handleMessagesResponse(messages: List<Message>) {
         _modelRequest.value = Content.RequestModelContent(Event(messages))
     }
@@ -94,6 +98,5 @@ class CameraViewModel(
     private fun handleErrorResponse(throwable: Throwable) {
         //TODO
     }
-
 
 }

@@ -229,16 +229,7 @@ class CameraFragment : BaseFragment() {
         viewFinder.visibility = View.GONE
         layoutPermission.visibility = View.VISIBLE
         textViewEnableAccess.setOnClickListener {
-            cameraPermissionRequester.request {
-
-                if (it) {
-                    updateUI(UiModel.CameraViewDisplay)
-                } else {
-                    updateUI(UiModel.CameraViewPermissionDenied)
-                }
-
-
-            }
+            viewModel.onRequestCameraViewDisplay()
         }
 
     }
