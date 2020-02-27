@@ -35,6 +35,7 @@ import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -124,7 +125,6 @@ class CameraFragment : BaseFragment() {
 
 
     private fun onSendButtonClicked(absolutePath: String) {
-        imageViewPreview.loadFile(File(absolutePath))
         viewModel.onSendButtonClicked(absolutePath)
     }
 
@@ -184,6 +184,7 @@ class CameraFragment : BaseFragment() {
         //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
+                imageViewPreview.loadFile(File(modelContent.absolutePath))
                 viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
@@ -209,7 +210,10 @@ class CameraFragment : BaseFragment() {
 
         cancelButton.setOnClickListener {
             //todo suspend request
-            viewModel.onRequestCameraViewDisplay()
+            layoutPreview.gone()
+            layoutCamera.visible()
+            cameraUiContainer.visible()
+            //viewModel.onRequestCameraViewDisplay()
         }
 
         //lottieAnimationView.playAnimation()
@@ -277,7 +281,6 @@ class CameraFragment : BaseFragment() {
 
             }
 
-            //todo preview
         }
 
 
