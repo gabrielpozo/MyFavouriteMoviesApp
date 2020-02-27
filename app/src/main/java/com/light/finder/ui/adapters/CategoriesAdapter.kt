@@ -35,7 +35,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(category: Category) {
             itemView.category_name.text = category.categoryName
-          //  itemView.price.text = category.categoryPrice
+            //itemView.price.text = category.categoryPrice
             itemView.bulbCover.loadUrl(category.categoryImage)
         }
     }

@@ -106,7 +106,6 @@ class CameraFragment : BaseFragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
-            imageViewPreview.loadFile(File(photoFile.absolutePath))
             viewModel.onSendButtonClicked(photoFile.absolutePath)
 
         }
@@ -134,7 +133,6 @@ class CameraFragment : BaseFragment() {
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
-            //todo File(absolutePath).delete()
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
@@ -178,6 +176,7 @@ class CameraFragment : BaseFragment() {
         //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
+                imageViewPreview.loadFile(File(modelContent.absolutePath))
                 viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)

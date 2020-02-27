@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import java.io.File
 
 const val FLAGS_FULLSCREEN =
@@ -53,7 +52,8 @@ fun View.padWithDisplayCutout() {
         cutout.safeInsetLeft,
         cutout.safeInsetTop,
         cutout.safeInsetRight,
-        cutout.safeInsetBottom)
+        cutout.safeInsetBottom
+    )
 
     rootWindowInsets?.displayCutout?.let { doPadding(it) }
 
@@ -66,14 +66,16 @@ fun View.padWithDisplayCutout() {
 fun AlertDialog.showImmersive() {
     window?.setFlags(
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+    )
     window?.decorView?.systemUiVisibility = FLAGS_FULLSCREEN
     show()
     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
 }
 
-fun ImageView.loadFile(file: File){
-    Glide.with(this).load(file).diskCacheStrategy(DiskCacheStrategy.DATA).into(this)
+fun ImageView.loadFile(file: File) {
+    Glide.with(this).load(file).diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true).into(this)
 }
 
 
