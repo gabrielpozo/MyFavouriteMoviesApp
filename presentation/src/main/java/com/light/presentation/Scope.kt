@@ -24,6 +24,12 @@ interface Scope : CoroutineScope {
         job = SupervisorJob()
     }
 
+    fun checkCoroutineIsCancelled() {
+        if(job.isCancelled){
+            initScope()
+        }
+    }
+
     fun destroyScope() {
         job.cancel()
     }

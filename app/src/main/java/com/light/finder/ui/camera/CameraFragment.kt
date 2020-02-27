@@ -157,7 +157,6 @@ class CameraFragment : BaseFragment() {
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }
 
-
             is UiModel.CameraViewDisplay -> setCameraSpecs()
             is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
         }

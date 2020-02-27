@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -63,6 +62,7 @@ class CameraViewModel(
 
     fun onRequestCategoriesMessages(base64: String){
         _modelRequest.value = Content.Loading
+        checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
                 ::handleMessagesResponse,
@@ -71,8 +71,6 @@ class CameraViewModel(
             )
         }
     }
-
-
 
     private fun init() {
         _model.value = UiModel.CameraInitializeScreen
@@ -105,12 +103,10 @@ class CameraViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        Log.d("Akis","Tofas Error ${throwable}")
         //TODO
     }
 
     fun onCancelRequest() {
-        destroyScope()
         _modelRequestCancel.value = Event(CancelModel())
     }
 

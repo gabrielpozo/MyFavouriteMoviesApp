@@ -49,21 +49,16 @@ class CategoriesFragment : BaseFragment() {
                     viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
                 }
 
-            observeElements()
+            viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
         }
 
         navigationObserver()
         initAdapter()
     }
 
-    private fun observeElements() {
-        viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
-    }
-
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
-
 
     private fun updateUI(model: CategoryViewModel.Content) {
         updateData(model.messages)
