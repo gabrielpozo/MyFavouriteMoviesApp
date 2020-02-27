@@ -60,7 +60,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         fragmentHelper.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -91,9 +91,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityReceiverListener = this
-        container.postDelayed({
-            container.systemUiVisibility = FLAGS_FULLSCREEN
-        }, IMMERSIVE_FLAG_TIMEOUT)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

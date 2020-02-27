@@ -40,7 +40,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
 
@@ -143,10 +142,6 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //todo File(absolutePath).delete()
-    }
 
     private fun updateUI(model: UiModel) {
         when (model) {
@@ -217,7 +212,6 @@ class CameraFragment : BaseFragment() {
 
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
-            //todo File(absolutePath).delete()
             //TODO we navigate here to Categories, parcelizing the object itself
             //mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }

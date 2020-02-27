@@ -2,8 +2,6 @@ package com.light.finder.extensions
 
 import com.light.domain.model.Category
 import com.light.finder.ui.camera.CameraFragment
-import com.light.finder.ui.camera.PermissionsFragment
-import com.light.finder.ui.camera.PreviewFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -32,12 +30,5 @@ fun CategoriesFragment.Companion.newInstance(base64: String): CategoriesFragment
     return fragment
 }
 
-fun PreviewFragment.Companion.newInstance(absolutePath: String): PreviewFragment {
-    val args = android.os.Bundle()
-    args.putString(PREVIEW_ID_KEY, absolutePath)
-    val fragment = PreviewFragment()
-    fragment.arguments = args
-    return fragment
-}
 
 

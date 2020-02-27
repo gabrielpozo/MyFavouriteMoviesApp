@@ -6,7 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.DisplayMetrics
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -17,20 +20,9 @@ import kotlinx.android.synthetic.main.camera_ui_container.*
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
-
-/*fun setAspectRatio(width: Int, height: Int): Int {
-    val previewRatio = max(width, height).toDouble() / min(width, height)
-    if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
-        return AspectRatio.RATIO_4_3
-    }
-    return AspectRatio.RATIO_16_9
-}*/
 
 
 fun CameraFragment.bindCameraUseCases(flashMode: Int) {
@@ -42,11 +34,6 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
 
     val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
     Timber.d("${CameraFragment.TAG}, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
-
-   /* val screenAspectRatio = setAspectRatio(
-        metrics.widthPixels,
-        metrics.heightPixels
-    )*/
 
 
     val rotation = viewFinder.display.rotation
@@ -61,7 +48,7 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
         val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
         preview = Preview.Builder()
-           // .setTargetAspectRatio(screenAspectRatio)
+            // .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
             .build()
 
@@ -100,17 +87,14 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
 }
 
 
-fun CameraFragment.checkSelfCameraPermission(): Boolean  = ContextCompat.checkSelfPermission(
-        requireContext(),
-        Manifest.permission.CAMERA
-    ) == PackageManager.PERMISSION_GRANTED
-
-
+fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermission(
+    requireContext(),
+    Manifest.permission.CAMERA
+) == PackageManager.PERMISSION_GRANTED
 
 
 fun String.encodeImage(): String {
     val bytes = File(this).readBytes()
-    File(this).delete()
     return resizeBase64Image(Base64.encodeToString(bytes, 0))
 }
 
@@ -135,5 +119,3 @@ private fun resizeBase64Image(base64image: String): String {
 
 }
 
-private const val RATIO_4_3_VALUE = 4.0 / 3.0
-private const val RATIO_16_9_VALUE = 16.0 / 9.0
