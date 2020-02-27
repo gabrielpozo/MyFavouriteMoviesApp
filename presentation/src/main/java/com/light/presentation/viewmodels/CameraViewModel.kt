@@ -49,6 +49,12 @@ class CameraViewModel(
     }
 
 
+    private val _modelRequestCancel = MutableLiveData<Event<CancelModel>>()
+    val modelRequestCancel: LiveData<Event<CancelModel>>
+        get() = _modelRequestCancel
+
+    class CancelModel
+
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
         _modelRequest.value = Content.EncodeImage(absolutePath)
@@ -64,6 +70,8 @@ class CameraViewModel(
             )
         }
     }
+
+
 
     private fun init() {
         _model.value = UiModel.CameraInitializeScreen
@@ -97,6 +105,11 @@ class CameraViewModel(
 
     private fun handleErrorResponse(throwable: Throwable) {
         //TODO
+    }
+
+    fun onCancelRequest() {
+        destroyScope()
+        _modelRequestCancel.value = Event(CancelModel())
     }
 
 }

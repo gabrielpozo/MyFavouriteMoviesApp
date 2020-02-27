@@ -2,30 +2,23 @@ package com.light.finder.ui.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.ImageButton
 import androidx.camera.core.*
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.bumptech.glide.Glide
 import com.light.domain.model.Message
 import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
@@ -35,12 +28,9 @@ import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
-import com.light.util.KEY_EVENT_ACTION
-import com.light.util.KEY_EVENT_EXTRA
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
@@ -118,16 +108,11 @@ class CameraFragment : BaseFragment() {
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
-            onSendButtonClicked(photoFile.absolutePath)
+            imageViewPreview.loadFile(File(photoFile.absolutePath))
+            viewModel.onSendButtonClicked(photoFile.absolutePath)
 
         }
     }
-
-
-    private fun onSendButtonClicked(absolutePath: String) {
-        viewModel.onSendButtonClicked(absolutePath)
-    }
-
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -141,6 +126,7 @@ class CameraFragment : BaseFragment() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::updateUI))
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
+        viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
@@ -148,6 +134,14 @@ class CameraFragment : BaseFragment() {
 
     }
 
+    private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
+        cancelModelEvent.getContentIfNotHandled()?.let {
+            layoutPreview.gone()
+            layoutCamera.visible()
+            cameraUiContainer.visible()
+           // lottieAnimationView.cancelAnimation()
+        }
+    }
 
     private fun updateUI(model: UiModel) {
         when (model) {
@@ -184,7 +178,6 @@ class CameraFragment : BaseFragment() {
         //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
-                imageViewPreview.loadFile(File(modelContent.absolutePath))
                 viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
@@ -209,14 +202,9 @@ class CameraFragment : BaseFragment() {
         cameraUiContainer.gone()
 
         cancelButton.setOnClickListener {
-            //todo suspend request
-            layoutPreview.gone()
-            layoutCamera.visible()
-            cameraUiContainer.visible()
-            //viewModel.onRequestCameraViewDisplay()
+            viewModel.onCancelRequest()
         }
 
-        //lottieAnimationView.playAnimation()
         previewModel.getContentIfNotHandled()?.let {
 
         }
@@ -267,7 +255,7 @@ class CameraFragment : BaseFragment() {
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {
 
-                   isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+                    isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
                 }
 
                 imageCapture.takePicture(photoFile, metadata, mainExecutor, imageSavedListener)
