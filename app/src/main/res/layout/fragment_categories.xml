@@ -7,17 +7,40 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textViewResults"
         style="@style/SubtitleTextSmall"
         android:paddingTop="@dimen/stroke_medium"
         android:paddingBottom="@dimen/stroke_medium"
-        android:id="@+id/textViewResults"
         android:text="@string/text_results"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/layoutBulbType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/layoutBulbType"
+        android:background="@color/snackBarColor"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewBulbType"
+            style="@style/ActiveTextWhite"
+            android:paddingTop="@dimen/stroke_medium"
+            android:paddingBottom="@dimen/stroke_medium"
+            android:text="@string/light_bulb_recognised_as"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"

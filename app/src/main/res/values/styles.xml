@@ -63,6 +63,12 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="ActiveTextWhite" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="NavBarText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textSize">12sp</item>

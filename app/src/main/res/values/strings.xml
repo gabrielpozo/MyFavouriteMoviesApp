@@ -36,4 +36,5 @@
     <string name="identify_cd">identify</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_results">Results</string>
+    <string name="light_bulb_recognised_as">Light bulb recognised as E26</string>
 </resources>
