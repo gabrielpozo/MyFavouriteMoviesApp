@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -104,6 +105,7 @@ class CameraViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
+        Log.d("Akis","Tofas Error ${throwable}")
         //TODO
     }
 

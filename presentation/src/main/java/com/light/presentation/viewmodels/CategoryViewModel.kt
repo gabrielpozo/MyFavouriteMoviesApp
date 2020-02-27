@@ -5,19 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
-import com.light.usecases.GetCategoriesResultUseCase
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.launch
 
 class CategoryViewModel(
-    private val getCategoryResultUseCase: GetCategoriesResultUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
-    private val _model = MutableLiveData<UiModel>()
-    val model: LiveData<UiModel>
+    private val _model = MutableLiveData<Content>()
+    val model: LiveData<Content>
         get() {
-            if (_model.value == null) refresh()
             return _model
         }
 
@@ -27,26 +23,8 @@ class CategoryViewModel(
 
     class NavigationModel(val category: Category)
 
-    sealed class UiModel {
-        object Loading : UiModel()
-        object RequestMessages : UiModel()
-        data class Content(val messages: List<Message>) : UiModel()
-    }
+    data class Content(val messages: List<Category>)
 
-    private fun refresh() {
-        _model.value = UiModel.RequestMessages
-    }
-
-    fun onRequestCategoriesMessages(base64: String) {
-        launch {
-            _model.value = UiModel.Loading
-                getCategoryResultUseCase.execute(
-                    ::handleMessagesResponse,
-                    ::handleErrorResponse,
-                    base64
-                )
-        }
-    }
 
     fun onCategoryClick(category: Category) {
         _modelNavigation.value = Event(
@@ -54,10 +32,7 @@ class CategoryViewModel(
         )
     }
 
-    private fun handleMessagesResponse(messages: List<Message>) {
-        _model.value = UiModel.Content(messages)
+    fun onRetrieveCategories(message: Message) {
+        _model.value = Content(message.categories)
     }
-
-    private fun handleErrorResponse(throwable: Throwable) {}
-
 }

@@ -28,6 +28,7 @@ import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -136,7 +137,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-           // lottieAnimationView.cancelAnimation()
+            // lottieAnimationView.cancelAnimation()
         }
     }
 
@@ -195,24 +196,22 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setPreviewView(previewModel: Event<PreviewModel>) {
-        layoutCamera.gone()
-        layoutPermission.gone()
-        layoutPreview.visible()
-        cameraUiContainer.gone()
-
-        cancelButton.setOnClickListener {
-            viewModel.onCancelRequest()
-        }
-
         previewModel.getContentIfNotHandled()?.let {
+            layoutCamera.gone()
+            layoutPermission.gone()
+            layoutPreview.visible()
+            cameraUiContainer.gone()
+
+            cancelButton.setOnClickListener {
+                viewModel.onCancelRequest()
+            }
 
         }
     }
 
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
-            //TODO we navigate here to Categories, parcelizing the object itself
-            //mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
+            mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
     }
 

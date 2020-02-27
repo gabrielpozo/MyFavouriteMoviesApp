@@ -20,3 +20,8 @@ data class ProductParcelable(
     val productSpecThree: String,
     val productScene: String
 ) : Parcelable
+
+@Parcelize
+data class MessageParcelable(
+    val categoriesList: List<CategoryParcelable>
+) : Parcelable
