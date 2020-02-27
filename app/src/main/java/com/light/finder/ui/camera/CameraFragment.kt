@@ -25,6 +25,7 @@ import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
 import com.light.domain.model.Message
 import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
@@ -43,6 +44,7 @@ import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.layout_permission.*
+import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -87,29 +89,12 @@ class CameraFragment : BaseFragment() {
     var imageAnalyzer: ImageAnalysis? = null
     var camera: Camera? = null
 
-    /*private val volumeDownReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)) {
-                KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                    val shutter = container
-                        .findViewById<ImageButton>(R.id.cameraCaptureButton)
-                    shutter.simulateClick()
-                }
-            }
-        }
-    }*/
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
-/*
-    override fun onDestroyView() {
-        super.onDestroyView()
-        broadcastManager.unregisterReceiver(volumeDownReceiver)
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -118,17 +103,6 @@ class CameraFragment : BaseFragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_camera, container, false)
 
-
-    /*private fun setGalleryThumbnail(file: File) {
-        val thumbnail = photoPreviewButton
-        thumbnail.post {
-
-            thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
-
-            thumbnail.loadFile(file)
-
-        }
-    }*/
 
     private val imageSavedListener = object : ImageCapture.OnImageSavedCallback {
         override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
@@ -139,20 +113,18 @@ class CameraFragment : BaseFragment() {
         override fun onImageSaved(photoFile: File) {
             Timber.d("$TAG Photo capture succeeded: ${photoFile.absolutePath}")
 
-            //setGalleryThumbnail(photoFile)
-
             val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(photoFile.extension)
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
-            onSendButtonClicked(outputDirectory.absolutePath)
-            //navigateToPreview()//REMOVE THIS LINE
+            onSendButtonClicked(photoFile.absolutePath)
+
         }
     }
 
 
     private fun onSendButtonClicked(absolutePath: String) {
-        //TODO get the absolute path like in the preview fragment
+        imageViewPreview.loadFile(File(absolutePath))
         viewModel.onSendButtonClicked(absolutePath)
     }
 
@@ -192,10 +164,12 @@ class CameraFragment : BaseFragment() {
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }
 
+
             is UiModel.CameraViewDisplay -> setCameraSpecs()
             is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
         }
     }
+
 
     private fun deepLinkToSettings() {
         startActivity(
@@ -218,8 +192,8 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setPermissionView() {
-        viewFinder.visibility = View.GONE
-        layoutPermission.visibility = View.VISIBLE
+        layoutCamera.gone()
+        layoutPermission.visible()
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
         }
@@ -228,8 +202,19 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setPreviewView(previewModel: Event<PreviewModel>) {
+        layoutCamera.gone()
+        layoutPermission.gone()
+        layoutPreview.visible()
+        cameraUiContainer.gone()
+
+        cancelButton.setOnClickListener {
+            //todo suspend request
+            viewModel.onRequestCameraViewDisplay()
+        }
+
+        //lottieAnimationView.playAnimation()
         previewModel.getContentIfNotHandled()?.let {
-            //TODO setPreview View here!!
+
         }
     }
 
@@ -240,17 +225,10 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun navigateToPreview() {
-        mFragmentNavigation.pushFragment(
-            PreviewFragment.newInstance(outputDirectory.absolutePath)
-        )
-    }
 
     private fun setCameraSpecs() {
-        viewFinder.visibility = View.VISIBLE
-        layoutPermission.visibility = View.GONE
-        //val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
-        //broadcastManager.registerReceiver(volumeDownReceiver, filter)
+        layoutCamera.visible()
+        layoutPermission.gone()
 
         outputDirectory = CameraActivity.getOutputDirectory(requireContext())
 
@@ -265,8 +243,6 @@ class CameraFragment : BaseFragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
                     EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-                }?.max()?.let {
-                    //setGalleryThumbnail(it)
                 }
             }
         }

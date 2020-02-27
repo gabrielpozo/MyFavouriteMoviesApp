@@ -24,13 +24,13 @@ import kotlin.math.min
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
 
-fun setAspectRatio(width: Int, height: Int): Int {
+/*fun setAspectRatio(width: Int, height: Int): Int {
     val previewRatio = max(width, height).toDouble() / min(width, height)
     if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
         return AspectRatio.RATIO_4_3
     }
     return AspectRatio.RATIO_16_9
-}
+}*/
 
 
 fun CameraFragment.bindCameraUseCases(flashMode: Int) {
@@ -43,11 +43,11 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
     val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
     Timber.d("${CameraFragment.TAG}, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
 
-    val screenAspectRatio = setAspectRatio(
+   /* val screenAspectRatio = setAspectRatio(
         metrics.widthPixels,
         metrics.heightPixels
-    )
-    Timber.d("${CameraFragment.TAG} Preview aspect ratio: $screenAspectRatio")
+    )*/
+
 
     val rotation = viewFinder.display.rotation
 
@@ -61,8 +61,7 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
         val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
         preview = Preview.Builder()
-            .setTargetAspectRatio(screenAspectRatio)
-
+           // .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
             .build()
 
@@ -70,13 +69,13 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetAspectRatio(screenAspectRatio)
+            //.setTargetAspectRatio(screenAspectRatio)
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
 
         imageAnalyzer = ImageAnalysis.Builder()
-            .setTargetAspectRatio(screenAspectRatio)
+            //.setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
             .build()
             .also {

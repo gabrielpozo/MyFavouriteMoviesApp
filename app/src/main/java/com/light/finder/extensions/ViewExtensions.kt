@@ -33,6 +33,18 @@ fun ImageButton.simulateClick(delay: Long = ANIMATION_FAST_MILLIS) {
     }, delay)
 }
 
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+
+fun View.invisible() {
+    visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
+}
+
 @RequiresApi(Build.VERSION_CODES.P)
 fun View.padWithDisplayCutout() {
 
@@ -60,7 +72,7 @@ fun AlertDialog.showImmersive() {
 }
 
 fun ImageView.loadFile(file: File){
-    Glide.with(this).load(file).apply(RequestOptions.circleCropTransform()).into(this)
+    Glide.with(this).load(file).into(this)
 }
 
 

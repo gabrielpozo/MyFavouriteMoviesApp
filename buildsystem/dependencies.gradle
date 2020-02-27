@@ -27,7 +27,6 @@ ext {
     ktxVersion = '1.1.0'
     lifecycleVersion = '2.2.0'
     materialVersion = '1.0.0'
-    safeargs_version = "2.1.0-rc01"
     recyclerViewVersion = '1.2.0-alpha01'
     recyclerViewSelectionVersion = '1.0.0'
     roomVersion = '2.2.3'
@@ -37,6 +36,7 @@ ext {
     okhttp = '3.10.0'
     retrofit = '2.6.0'
     stetho = '1.5.1'
+    lottieVersion = '3.4.0'
     timberVersion = '4.7.1'
     daggerVersion = '2.25'
     cameraVersion = '1.0.0-alpha08'
@@ -59,7 +59,6 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.1"
-
 
 
     classpathDependencies = [
@@ -104,12 +103,16 @@ ext {
 
     ]
 
+    lottieDependencies = [
+            lottie: "com.airbnb.android:lottie:$lottieVersion"
+    ]
+
     cameraxDependencies = [
             cameraxCore    : "androidx.camera:camera-core:$cameraVersion",
             cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
             cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
             cameraxView    : "androidx.camera:camera-view:$cameraViewVersion",
-            dexter              : 'com.karumi:dexter:5.0.0'
+            dexter         : 'com.karumi:dexter:5.0.0'
     ]
 
     coroutinesDependencies = [
