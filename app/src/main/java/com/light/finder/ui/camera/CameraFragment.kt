@@ -56,14 +56,13 @@ class CameraFragment : BaseFragment() {
 
     companion object {
         const val TAG = "CameraX"
-        private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val FILENAME = "light"
         private const val PHOTO_EXTENSION = ".jpg"
         private var flashMode = ImageCapture.FLASH_MODE_OFF
 
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
-                baseFolder, SimpleDateFormat(format, Locale.US)
-                    .format(System.currentTimeMillis()) + extension
+                baseFolder, format + extension
             )
     }
 
@@ -136,11 +135,17 @@ class CameraFragment : BaseFragment() {
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
+            //todo File(absolutePath).delete()
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
            // lottieAnimationView.cancelAnimation()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //todo File(absolutePath).delete()
     }
 
     private fun updateUI(model: UiModel) {
@@ -212,6 +217,7 @@ class CameraFragment : BaseFragment() {
 
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
+            //todo File(absolutePath).delete()
             //TODO we navigate here to Categories, parcelizing the object itself
             //mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
