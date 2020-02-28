@@ -24,7 +24,7 @@
 
         <activity
             android:name="com.light.finder.ui.splash.SplashActivity"
-            android:theme="@style/Theme.Design.NoActionBar"
+            android:theme="@style/AppTheme"
             >
 
             <intent-filter>
