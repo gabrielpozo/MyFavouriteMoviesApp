@@ -71,6 +71,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     private fun observeConnection() {
+        //todo move to viewmodel
         val connectionLiveData = ConnectionLiveData(applicationContext)
         connectionLiveData.observe(this,
             Observer<ConnectionModel> { connection ->
