@@ -251,7 +251,7 @@ class CameraFragment : BaseFragment() {
 
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setOnClickListener {
+        controls.cameraCaptureButton.setSafeOnClickListener {
             imageCapture?.let { imageCapture ->
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {

@@ -10,53 +10,56 @@
     <TextView
         android:id="@+id/textViewCameraTitle"
         style="@style/TitleText"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/text_permissions_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewCameraSubtitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.431"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/textViewCameraSubtitle"
         style="@style/SubtitleText"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:textColor="@color/primaryTextColor"
         android:text="@string/text_camera_subtitle"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/helpButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraTitle" />
 
     <Button
         android:id="@+id/helpButton"
         style="@style/GrayButton"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/button_curvy_corners_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_help"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/cameraCaptureButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraSubtitle" />
 
     <ImageButton
         android:id="@+id/flashSwitchButton"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_normal"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/switch_camera_button_alt"
@@ -64,23 +67,24 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cameraCaptureButton"
         app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
         app:srcCompat="@drawable/ic_flash_off" />
 
     <ImageButton
         android:id="@+id/cameraCaptureButton"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="64dp"
         android:layout_width="@dimen/round_button_large"
         android:layout_height="@dimen/round_button_large"
         android:background="@drawable/ic_scan"
         android:contentDescription="@string/capture_button_alt"
         android:scaleType="fitCenter"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTap"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/flashSwitchButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton" />
+        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton"
+        app:layout_constraintTop_toBottomOf="@+id/helpButton" />
 
     <ImageButton
         android:id="@+id/photoPreviewButton"
@@ -88,30 +92,13 @@
         android:layout_width="64dp"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/ic_outer_circle"
         android:contentDescription="@string/gallery_button_alt"
         android:padding="@dimen/spacing_large"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
-        app:layout_constraintEnd_toStartOf="@+id/cameraCaptureButton"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
         app:srcCompat="@drawable/ic_photo" />
-
-    <TextView
-        android:id="@+id/textViewTap"
-        style="@style/NavBarText"
-        android:textAllCaps="true"
-        android:text="@string/text_tap_to_identify"
-        android:letterSpacing="0.2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
