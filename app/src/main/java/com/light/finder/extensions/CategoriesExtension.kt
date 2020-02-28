@@ -19,6 +19,8 @@ import com.light.finder.SignifyApp
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.ProductParcelable
 import com.bumptech.glide.Glide
+import com.light.domain.model.Message
+import com.light.finder.data.source.remote.MessageParcelable
 import kotlin.properties.Delegates
 
 
@@ -75,7 +77,7 @@ fun ImageView.loadUrl(url: String) {
 }
 
 
-fun Category.parcelize(): CategoryParcelable =
+fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(
         categoryProducts.map(mapDomainProductToParcelable),
         categoryIndex,
@@ -84,13 +86,22 @@ fun Category.parcelize(): CategoryParcelable =
     )
 
 
-fun CategoryParcelable.deparcelize(): Category =
+fun CategoryParcelable.deparcelizeCategory(): Category =
     Category(
         categoryProducts.map(mapParcelableProductToDomain),
         categoryIndex,
         categoryName,
         categoryImage
     )
+
+
+fun Message.parcelizeMessage(): MessageParcelable =
+    MessageParcelable(categories.map { it.parcelizeCategory() })
+
+
+fun MessageParcelable.deparcelizeMessage(): Message =
+    Message(this.categoriesList.map { it.deparcelizeCategory() })
+
 
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(

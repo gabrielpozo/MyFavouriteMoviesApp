@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.light.domain.model.Message
+import com.light.domain.model.Category
 import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.finder.R
+import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.CategoriesComponent
 import com.light.finder.di.modules.CategoriesModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
@@ -45,10 +44,12 @@ class CategoriesFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->
-            bundle.getString(CATEGORIES_ID_KEY)
-                ?.let { base64 ->
-                    viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel, base64) })
+            bundle.getParcelable<MessageParcelable>(CATEGORIES_ID_KEY)
+                ?.let { messageParcelable ->
+                    viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
                 }
+
+            viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
         }
 
         navigationObserver()
@@ -59,17 +60,8 @@ class CategoriesFragment : BaseFragment() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
 
-
-    private fun updateUI(model: CategoryViewModel.UiModel, base64: String) {
-        progress.visibility =
-            if (model is CategoryViewModel.UiModel.Loading) View.VISIBLE else View.GONE
-        when (model) {
-            is CategoryViewModel.UiModel.RequestMessages -> viewModel.onRequestCategoriesMessages(
-                base64
-            )
-            is CategoryViewModel.UiModel.Content -> updateData(model.messages)
-
-        }
+    private fun updateUI(model: CategoryViewModel.Content) {
+        updateData(model.messages)
     }
 
     private fun initAdapter() {
@@ -81,11 +73,10 @@ class CategoriesFragment : BaseFragment() {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             mFragmentNavigation.pushFragment(ProductsFragment.newInstance(navModel.category))
         }
-
     }
 
-    private fun updateData(messages: List<Message>) {
-        adapter.categories = messages[0].categories
+    private fun updateData(categories: List<Category>) {
+        adapter.categories = categories
     }
 
 }

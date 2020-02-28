@@ -62,6 +62,7 @@ class CameraViewModel(
 
     fun onRequestCategoriesMessages(base64: String){
         _modelRequest.value = Content.Loading
+        checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
                 ::handleMessagesResponse,
@@ -70,8 +71,6 @@ class CameraViewModel(
             )
         }
     }
-
-
 
     private fun init() {
         _model.value = UiModel.CameraInitializeScreen
@@ -108,7 +107,6 @@ class CameraViewModel(
     }
 
     fun onCancelRequest() {
-        destroyScope()
         _modelRequestCancel.value = Event(CancelModel())
     }
 

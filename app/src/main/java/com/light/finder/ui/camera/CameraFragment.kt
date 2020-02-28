@@ -28,6 +28,7 @@ import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -40,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
 
@@ -53,17 +55,20 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraPermissionRequester: PermissionRequester
 
 
+
     companion object {
         const val TAG = "CameraX"
-        private const val FILENAME = "light"
+        private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private var flashMode = ImageCapture.FLASH_MODE_OFF
-
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
-                baseFolder, format + extension
+                baseFolder, SimpleDateFormat(format, Locale.US)
+                    .format(System.currentTimeMillis()) + extension
             )
     }
+
+
 
     private lateinit var container: ConstraintLayout
     lateinit var viewFinder: PreviewView
@@ -136,7 +141,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-           // lottieAnimationView.cancelAnimation()
+            // lottieAnimationView.cancelAnimation()
         }
     }
 
@@ -155,7 +160,6 @@ class CameraFragment : BaseFragment() {
             is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }
-
 
             is UiModel.CameraViewDisplay -> setCameraSpecs()
             is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
@@ -195,24 +199,22 @@ class CameraFragment : BaseFragment() {
 
 
     private fun setPreviewView(previewModel: Event<PreviewModel>) {
-        layoutCamera.gone()
-        layoutPermission.gone()
-        layoutPreview.visible()
-        cameraUiContainer.gone()
-
-        cancelButton.setOnClickListener {
-            viewModel.onCancelRequest()
-        }
-
         previewModel.getContentIfNotHandled()?.let {
+            layoutCamera.gone()
+            layoutPermission.gone()
+            layoutPreview.visible()
+            cameraUiContainer.gone()
+
+            cancelButton.setOnClickListener {
+                viewModel.onCancelRequest()
+            }
 
         }
     }
 
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
-            //TODO we navigate here to Categories, parcelizing the object itself
-            //mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
+            mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
     }
 
