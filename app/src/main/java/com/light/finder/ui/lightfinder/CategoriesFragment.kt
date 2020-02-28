@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
-import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.finder.R
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.CategoriesComponent
 import com.light.finder.di.modules.CategoriesModule
-import com.light.finder.extensions.*
+import com.light.finder.extensions.app
+import com.light.finder.extensions.deparcelizeMessage
+import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
+import com.light.presentation.viewmodels.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
 
 class CategoriesFragment : BaseFragment() {

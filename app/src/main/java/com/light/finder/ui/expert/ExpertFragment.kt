@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.light.finder.R
 import com.light.finder.ui.BaseFragment
 
-class ExpertFragment : BaseFragment(){
+class ExpertFragment : BaseFragment() {
     companion object;
     override fun onCreateView(
         inflater: LayoutInflater,

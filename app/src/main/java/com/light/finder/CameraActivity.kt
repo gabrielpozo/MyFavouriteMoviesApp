@@ -3,19 +3,16 @@ package com.light.finder
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Color.parseColor
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.androidadvance.topsnackbar.TSnackbar
 import com.light.finder.common.ConnectionLiveData
 import com.light.finder.common.ConnectionModel
 import com.light.finder.common.FragmentFrameHelper
@@ -40,7 +37,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
-    private lateinit var snackBar: TSnackbar
 
     companion object {
         fun getOutputDirectory(context: Context): File {
@@ -65,7 +61,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        makeSnackBar()
         observeConnection()
 
     }
@@ -76,7 +71,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         connectionLiveData.observe(this,
             Observer<ConnectionModel> { connection ->
                 if (connection.isConnected) {
-                    snackBar.dismiss()
+                    // snackBar.dismiss()
                     when (connection.type) {
                         "WifiData" -> {
                             Timber.d("connected to wifi data")
@@ -86,20 +81,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                         }
                     }
                 } else {
-                    snackBar.show()
+                    // snackBar.show()
+                    Timber.d("no connection")
                 }
             })
     }
 
-    private fun makeSnackBar() {
-        snackBar = TSnackbar.make(container, "No internet connection", TSnackbar.LENGTH_INDEFINITE)
-        snackBar.setActionTextColor(parseColor("#3c3c41"))
-        val snackbarView = snackBar.view
-        snackbarView.setBackgroundColor(parseColor("#d8d8d9"))
-        val textView =
-            snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text) as TextView
-        textView.setTextColor(parseColor("#3c3c41"))
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
