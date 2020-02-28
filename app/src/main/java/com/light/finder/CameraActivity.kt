@@ -16,14 +16,12 @@ import com.light.finder.common.FragmentFrameHelper
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
-import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.util.ConnectivityReceiver
-import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController

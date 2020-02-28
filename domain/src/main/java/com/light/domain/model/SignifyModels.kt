@@ -9,7 +9,9 @@ data class Category(
     val categoryProducts: List<Product>,
     val categoryIndex: Int,
     val categoryName: String,
-    val categoryImage: String
+    val categoryImage: String,
+    val priceRange: String,
+    val wattageAvailable: Int
 )
 
 data class Product(
@@ -19,5 +21,7 @@ data class Product(
     val productSpecOne: String,
     val productSpecThree: String,
     val productScene: String,
+    val productPrice: String,
     var filtered: Boolean = false
+
 )
