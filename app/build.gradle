@@ -71,6 +71,7 @@ dependencies {
     androidTestImplementation androidTestDependencies.values()
     implementation navigationDependencies.values()
     implementation lottieDependencies.values()
+    implementation tsnackBarDependencies.values()
 
 
 }

@@ -54,8 +54,6 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private lateinit var cameraPermissionRequester: PermissionRequester
 
-
-
     companion object {
         const val TAG = "CameraX"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
@@ -67,7 +65,6 @@ class CameraFragment : BaseFragment() {
                     .format(System.currentTimeMillis()) + extension
             )
     }
-
 
 
     private lateinit var container: ConstraintLayout
@@ -251,7 +248,7 @@ class CameraFragment : BaseFragment() {
 
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setOnClickListener {
+        controls.cameraCaptureButton.setSafeOnClickListener {
             imageCapture?.let { imageCapture ->
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {
