@@ -2,11 +2,10 @@ package com.light.finder.common
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.net.ConnectivityManager
-import androidx.core.app.NotificationCompat.getExtras
-import android.net.NetworkInfo
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.lifecycle.LiveData
 
 
@@ -20,7 +19,12 @@ class ConnectionLiveData(private val context: Context) : LiveData<ConnectionMode
                 val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
                 if (isConnected) {
                     when (activeNetwork?.type) {
-                        ConnectivityManager.TYPE_WIFI -> postValue(ConnectionModel("WifiData", true))
+                        ConnectivityManager.TYPE_WIFI -> postValue(
+                            ConnectionModel(
+                                "WifiData",
+                                true
+                            )
+                        )
                         ConnectivityManager.TYPE_MOBILE -> postValue(
                             ConnectionModel(
                                 "MobileData",
