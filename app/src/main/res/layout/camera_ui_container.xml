@@ -72,8 +72,7 @@
 
     <ImageButton
         android:id="@+id/cameraCaptureButton"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginBottom="24dp"
         android:layout_width="@dimen/round_button_large"
         android:layout_height="@dimen/round_button_large"
         android:background="@drawable/ic_scan"
@@ -83,8 +82,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/flashSwitchButton"
-        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton"
-        app:layout_constraintTop_toBottomOf="@+id/helpButton" />
+        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton" />
 
     <ImageButton
         android:id="@+id/photoPreviewButton"

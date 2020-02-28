@@ -59,6 +59,7 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.1"
+    tsnackBarVersion = "1.1.1"
 
 
     classpathDependencies = [
@@ -105,6 +106,10 @@ ext {
 
     lottieDependencies = [
             lottie: "com.airbnb.android:lottie:$lottieVersion"
+    ]
+
+    tsnackBarDependencies = [
+            tsnackBar: "com.androidadvance:topsnackbar:$tsnackBarVersion"
     ]
 
     cameraxDependencies = [
