@@ -14,7 +14,7 @@ import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.ProductsComponent
 import com.light.finder.di.modules.ProductsModule
 import com.light.finder.extensions.app
-import com.light.finder.extensions.deparcelize
+import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.adapters.FilterAdapter
 import com.light.finder.ui.adapters.ProductsAdapter
@@ -52,7 +52,7 @@ class ProductsFragment : Fragment() {
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
-                    viewModel.onRetrieveProductsAndFilters(categoryParcelable.deparcelize())
+                    viewModel.onRetrieveProductsAndFilters(categoryParcelable.deparcelizeCategory())
                 }
 
             observeElements()

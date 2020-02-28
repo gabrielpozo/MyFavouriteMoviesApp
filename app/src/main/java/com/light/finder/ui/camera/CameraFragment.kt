@@ -1,38 +1,42 @@
 package com.light.finder.ui.camera
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.ImageButton
 import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.light.domain.model.Message
+import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.PermissionRequester
+import com.light.finder.di.modules.CameraComponent
+import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.util.KEY_EVENT_ACTION
-import com.light.util.KEY_EVENT_EXTRA
+import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.presentation.common.Event
+import com.light.presentation.viewmodels.CameraViewModel
+import com.light.presentation.viewmodels.CameraViewModel.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
+import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.layout_permission.*
+import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -40,23 +44,23 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
 
 class CameraFragment : BaseFragment() {
 
+    private lateinit var component: CameraComponent
+    private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
+    private lateinit var cameraPermissionRequester: PermissionRequester
+
+
+
     companion object {
-        private const val TAG = "CameraX"
+        const val TAG = "CameraX"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
-        private const val RATIO_4_3_VALUE = 4.0 / 3.0
-        private const val RATIO_16_9_VALUE = 16.0 / 9.0
         private var flashMode = ImageCapture.FLASH_MODE_OFF
-
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
                 baseFolder, SimpleDateFormat(format, Locale.US)
@@ -64,30 +68,20 @@ class CameraFragment : BaseFragment() {
             )
     }
 
+
+
     private lateinit var container: ConstraintLayout
-    private lateinit var viewFinder: PreviewView
+    lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
-    private lateinit var mainExecutor: Executor
+    lateinit var mainExecutor: Executor
 
     private var displayId: Int = -1
-    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private var preview: Preview? = null
-    private var imageCapture: ImageCapture? = null
-    private var imageAnalyzer: ImageAnalysis? = null
-    private var camera: Camera? = null
-
-    private val volumeDownReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)) {
-                KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                    val shutter = container
-                        .findViewById<ImageButton>(R.id.cameraCaptureButton)
-                    shutter.simulateClick()
-                }
-            }
-        }
-    }
+    var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    var preview: Preview? = null
+    var imageCapture: ImageCapture? = null
+    var imageAnalyzer: ImageAnalysis? = null
+    var camera: Camera? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,19 +89,6 @@ class CameraFragment : BaseFragment() {
         mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!PermissionsFragment.hasPermissions(requireContext())) {
-            mFragmentNavigation.pushFragment(
-                PermissionsFragment.newInstance()
-            )
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        broadcastManager.unregisterReceiver(volumeDownReceiver)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,53 +98,130 @@ class CameraFragment : BaseFragment() {
         inflater.inflate(R.layout.fragment_camera, container, false)
 
 
-    private fun setGalleryThumbnail(file: File) {
-
-        val thumbnail = photoPreviewButton
-        thumbnail.post {
-
-            thumbnail.setPadding(resources.getDimension(R.dimen.stroke_small).toInt())
-
-            thumbnail.loadFile(file)
-
-        }
-    }
-
     private val imageSavedListener = object : ImageCapture.OnImageSavedCallback {
         override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
-            Timber.e("$TAG Photo capture failed: $message", cause)
+            Timber.e("$TAG Photo capture failed: $message cause")
         }
 
         @SuppressLint("ObsoleteSdkInt")
         override fun onImageSaved(photoFile: File) {
             Timber.d("$TAG Photo capture succeeded: ${photoFile.absolutePath}")
 
-            setGalleryThumbnail(photoFile)
-
             val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(photoFile.extension)
             MediaScannerConnection.scanFile(
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
+            viewModel.onSendButtonClicked(photoFile.absolutePath)
 
-            navigateToPreview()
         }
-    }
-
-    private fun navigateToPreview() {
-        mFragmentNavigation.pushFragment(
-            PreviewFragment.newInstance(outputDirectory.absolutePath)
-        )
     }
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.run {
+            component = app.applicationComponent.plus(CameraModule())
+            cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+        } ?: throw Exception("Invalid Activity")
+
+        viewModel.model.observe(viewLifecycleOwner, Observer(::updateUI))
+        viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
+        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
+        viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
-        val filter = IntentFilter().apply { addAction(KEY_EVENT_ACTION) }
-        broadcastManager.registerReceiver(volumeDownReceiver, filter)
+    }
+
+    private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
+        cancelModelEvent.getContentIfNotHandled()?.let {
+            layoutPreview.gone()
+            layoutCamera.visible()
+            cameraUiContainer.visible()
+            // lottieAnimationView.cancelAnimation()
+        }
+    }
+
+
+    private fun updateUI(model: UiModel) {
+        when (model) {
+
+            is UiModel.CameraInitializeScreen -> {
+                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            }
+
+            is UiModel.PermissionsViewRequested -> {
+                setPermissionView()
+            }
+
+            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
+                viewModel.onCameraPermissionRequested(isPermissionGranted)
+            }
+
+            is UiModel.CameraViewDisplay -> setCameraSpecs()
+            is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
+        }
+    }
+
+
+    private fun deepLinkToSettings() {
+        startActivity(
+            Intent(
+                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+            )
+        )
+    }
+
+    private fun observeModelContent(modelContent: Content) {
+        //TODO set the Loading here
+        when (modelContent) {
+            is Content.EncodeImage -> {
+                imageViewPreview.loadFile(File(modelContent.absolutePath))
+                viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
+            }
+            is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
+        }
+    }
+
+
+    private fun setPermissionView() {
+        layoutCamera.gone()
+        layoutPermission.visible()
+        textViewEnableAccess.setOnClickListener {
+            viewModel.onRequestCameraViewDisplay()
+        }
+
+    }
+
+
+    private fun setPreviewView(previewModel: Event<PreviewModel>) {
+        previewModel.getContentIfNotHandled()?.let {
+            layoutCamera.gone()
+            layoutPermission.gone()
+            layoutPreview.visible()
+            cameraUiContainer.gone()
+
+            cancelButton.setOnClickListener {
+                viewModel.onCancelRequest()
+            }
+
+        }
+    }
+
+    private fun navigateToCategories(content: Event<List<Message>>) {
+        content.getContentIfNotHandled()?.let { messages ->
+            mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
+        }
+    }
+
+
+    private fun setCameraSpecs() {
+        layoutCamera.visible()
+        layoutPermission.gone()
 
         outputDirectory = CameraActivity.getOutputDirectory(requireContext())
 
@@ -178,81 +236,10 @@ class CameraFragment : BaseFragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
                     EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-                }?.max()?.let {
-                    setGalleryThumbnail(it)
                 }
             }
         }
-    }
 
-
-    private fun bindCameraUseCases(flashMode: Int) {
-
-        if (flashMode == ImageCapture.FLASH_MODE_OFF) {
-            flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
-        } else {
-            flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
-        }
-
-        val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
-        Timber.d("$TAG, Screen metrics: ${metrics.widthPixels} x ${metrics.heightPixels}")
-
-        val screenAspectRatio = setAspectRatio(metrics.widthPixels, metrics.heightPixels)
-        Timber.d("$TAG Preview aspect ratio: $screenAspectRatio")
-
-        val rotation = viewFinder.display.rotation
-
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener(Runnable {
-
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            preview = Preview.Builder()
-                .setTargetAspectRatio(screenAspectRatio)
-
-                .setTargetRotation(rotation)
-                .build()
-
-            preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
-
-            imageCapture = ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                .setTargetAspectRatio(screenAspectRatio)
-                .setFlashMode(flashMode)
-                .setTargetRotation(rotation)
-                .build()
-
-            imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetAspectRatio(screenAspectRatio)
-                .setTargetRotation(rotation)
-                .build()
-                .also {
-                    it.setAnalyzer(mainExecutor, LuminosityAnalyzer { luma ->
-                        Timber.d("$TAG Average luminosity: $luma")
-                    })
-                }
-
-            cameraProvider.unbindAll()
-
-            try {
-                camera = cameraProvider.bindToLifecycle(
-                    this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
-                )
-            } catch (exc: Exception) {
-                Timber.e("$TAG Use case binding failed", exc)
-            }
-
-        }, mainExecutor)
-    }
-
-
-    private fun setAspectRatio(width: Int, height: Int): Int {
-        val previewRatio = max(width, height).toDouble() / min(width, height)
-        if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
-            return AspectRatio.RATIO_4_3
-        }
-        return AspectRatio.RATIO_16_9
     }
 
 
@@ -263,7 +250,6 @@ class CameraFragment : BaseFragment() {
         }
 
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
-
 
         controls.cameraCaptureButton.setOnClickListener {
             imageCapture?.let { imageCapture ->
@@ -283,6 +269,7 @@ class CameraFragment : BaseFragment() {
                 }, ANIMATION_SLOW_MILLIS)
 
             }
+
         }
 
 
@@ -295,12 +282,6 @@ class CameraFragment : BaseFragment() {
             bindCameraUseCases(flashMode)
         }
 
-
-        /*controls.photoPreviewButton.setOnClickListener {
-            if (true == outputDirectory.listFiles()?.isNotEmpty()) {
-                navigateToPreview()
-            }
-        }*/
     }
 
 }

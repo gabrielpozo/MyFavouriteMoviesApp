@@ -44,6 +44,12 @@
         <item name="android:lineSpacingExtra">10dp</item>
     </style>
 
+    <style name="SubtitleTextSmall" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primarySubText</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/book</item>
+    </style>
+
     <style name="SubtitleTextGreen" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/secondaryTextColor</item>
         <item name="android:textSize">18sp</item>
@@ -53,6 +59,12 @@
 
     <style name="ActiveText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="ActiveTextWhite" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>

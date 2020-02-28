@@ -70,6 +70,7 @@ dependencies {
     testImplementation testDependencies.values()
     androidTestImplementation androidTestDependencies.values()
     implementation navigationDependencies.values()
+    implementation lottieDependencies.values()
 
 
 }

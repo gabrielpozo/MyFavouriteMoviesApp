@@ -19,7 +19,7 @@ import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.extensions.FLAGS_FULLSCREEN
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.camera.PermissionsFragment
+import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.util.ConnectivityReceiver
@@ -60,7 +60,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         fragmentHelper.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -91,9 +91,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun onResume() {
         super.onResume()
         ConnectivityReceiver.connectivityReceiverListener = this
-        container.postDelayed({
-            container.systemUiVisibility = FLAGS_FULLSCREEN
-        }, IMMERSIVE_FLAG_TIMEOUT)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -110,7 +107,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun getRootFragment(index: Int): Fragment {
         when (index) {
             INDEX_LIGHT_FINDER -> {
-                return PermissionsFragment.newInstance()
+                return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
             INDEX_EXPERT -> return ExpertFragment.newInstance()

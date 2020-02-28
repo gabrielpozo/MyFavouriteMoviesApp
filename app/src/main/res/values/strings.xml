@@ -6,7 +6,6 @@
     <string name="cart">My Cart</string>
     <string name="expert">Expert</string>
 
-    <!--Camera -->
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch flash</string>
     <string name="gallery_button_alt">Gallery</string>
@@ -33,4 +32,9 @@
     <string name="settings_cd">settings</string>
     <string name="text_tap_to_identify">TAP TO IDENTIFY</string>
     <string name="text_no_internet_connection">No internet connection</string>
+    <string name="text_identifying">Identifying light bulb…</string>
+    <string name="identify_cd">identify</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_results">Results</string>
+    <string name="light_bulb_recognised_as">Light bulb recognised as E26</string>
 </resources>
