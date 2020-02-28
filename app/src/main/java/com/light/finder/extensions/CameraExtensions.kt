@@ -98,7 +98,7 @@ fun String.encodeImage(): String {
     return resizeBase64Image(Base64.encodeToString(bytes, 0))
 }
 
-
+//todo change this to efficient way
 private fun resizeBase64Image(base64image: String): String {
     val encodeByte = Base64.decode(base64image.toByteArray(), Base64.DEFAULT)
     val options = BitmapFactory.Options()

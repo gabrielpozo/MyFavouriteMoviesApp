@@ -3,9 +3,9 @@ package com.light.finder
 import android.app.Application
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
+import com.facebook.stetho.Stetho
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
-import com.facebook.stetho.Stetho
 import timber.log.Timber
 
 

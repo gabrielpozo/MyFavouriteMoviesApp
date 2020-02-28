@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.light.domain.model.Filter
-import com.light.presentation.viewmodels.ProductsViewModel
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.ProductsComponent
@@ -18,6 +17,7 @@ import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.adapters.FilterAdapter
 import com.light.finder.ui.adapters.ProductsAdapter
+import com.light.presentation.viewmodels.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 import kotlinx.android.synthetic.main.fragment_products.rvProducts
 
@@ -32,7 +32,7 @@ class ProductsFragment : Fragment() {
     private val viewModel: ProductsViewModel by lazy { getViewModel { component.productsViewModel } }
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var filterAdapter: FilterAdapter
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.light.finder.R
 import com.light.finder.ui.BaseFragment
 
-class CartFragment : BaseFragment(){
+class CartFragment : BaseFragment() {
     companion object;
 
     override fun onCreateView(
