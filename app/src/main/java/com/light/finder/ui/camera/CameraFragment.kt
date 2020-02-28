@@ -41,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
 
@@ -54,17 +55,20 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraPermissionRequester: PermissionRequester
 
 
+
     companion object {
         const val TAG = "CameraX"
-        private const val FILENAME = "light"
+        private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private var flashMode = ImageCapture.FLASH_MODE_OFF
-
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
-                baseFolder, format + extension
+                baseFolder, SimpleDateFormat(format, Locale.US)
+                    .format(System.currentTimeMillis()) + extension
             )
     }
+
+
 
     private lateinit var container: ConstraintLayout
     lateinit var viewFinder: PreviewView
