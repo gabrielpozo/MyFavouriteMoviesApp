@@ -8,7 +8,9 @@ data class CategoryParcelable(
     val categoryProducts: List<ProductParcelable>,
     val categoryIndex: Int,
     val categoryName: String,
-    val categoryImage: String
+    val categoryImage: String,
+    val priceRange: String,
+    val wattageAvailable: Int
 ) : Parcelable
 
 @Parcelize
@@ -18,7 +20,8 @@ data class ProductParcelable(
     val productDescription: String,
     val productSpecOne: String,
     val productSpecThree: String,
-    val productScene: String
+    val productScene: String,
+    val productPrice: String
 ) : Parcelable
 
 @Parcelize

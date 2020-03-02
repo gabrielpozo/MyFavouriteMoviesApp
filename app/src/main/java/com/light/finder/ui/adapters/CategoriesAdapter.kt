@@ -1,5 +1,6 @@
 package com.light.finder.ui.adapters
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,9 +34,10 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        @SuppressLint("SetTextI18n")
         fun bind(category: Category) {
             itemView.category_name.text = category.categoryName
-            //itemView.price.text = category.categoryPrice
+            itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
         }
     }

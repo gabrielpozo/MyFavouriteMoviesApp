@@ -24,7 +24,7 @@ data class ProductDto(
     @SerializedName("product_description") val productDescription: String?,
     @SerializedName("product_spec1") val productSpecOne: String?,
     @SerializedName("product_spec3") val productSpecThree: String?,
-    @SerializedName("product_scene") val productScene: String?
-
+    @SerializedName("product_scene") val productScene: String?,
+    @SerializedName("product_price_lamp") val productPrice: String = ""
 )
 

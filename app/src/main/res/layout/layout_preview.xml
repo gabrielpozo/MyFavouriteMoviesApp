@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-     <ImageView
+    <ImageView
         android:id="@+id/imageViewPreview"
-        android:scaleType="fitXY"
+        android:scaleType="center"
+        android:adjustViewBounds="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/identify_cd"
