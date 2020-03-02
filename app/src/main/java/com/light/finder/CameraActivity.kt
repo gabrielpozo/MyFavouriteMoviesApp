@@ -19,7 +19,10 @@ import com.light.finder.common.FragmentFrameHelper
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.common.VisibilityCallBack
+import com.light.finder.extensions.gone
 import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.visible
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
@@ -27,17 +30,29 @@ import com.light.finder.ui.expert.ExpertFragment
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation {
-    private lateinit var container: FrameLayout
+    BaseFragment.FragmentNavigation, VisibilityCallBack {
 
+    private lateinit var container: FrameLayout
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
 
+    override fun onVisibilityChanged(visible: Boolean) {
+        if (visible) {
+            toolbar.gone()
+            bottom_navigation_view.gone()
+        } else {
+            toolbar.visible()
+            bottom_navigation_view.visible()
+        }
+    }
+
+   
     companion object {
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
