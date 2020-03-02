@@ -202,4 +202,4 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 #keystore
-/keystore.properties
+#/keystore.properties
