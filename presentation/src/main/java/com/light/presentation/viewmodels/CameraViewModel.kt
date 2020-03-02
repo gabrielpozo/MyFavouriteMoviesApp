@@ -1,6 +1,6 @@
 package com.light.presentation.viewmodels
 
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -15,6 +15,10 @@ class CameraViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    private lateinit var dataMessages: List<Message>
+    private var flag: TYPE_RESPONSE = TYPE_RESPONSE.NO_RESPONSE
+
+
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
@@ -23,7 +27,7 @@ class CameraViewModel(
         }
 
     sealed class UiModel {
-        object CameraInitializeScreen: UiModel()
+        object CameraInitializeScreen : UiModel()
         object RequestCameraViewDisplay : UiModel()
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
@@ -56,12 +60,19 @@ class CameraViewModel(
 
     class CancelModel
 
+
+    private val _modelError = MutableLiveData<Event<ErrorModel>>()
+    val modelError: LiveData<Event<ErrorModel>>
+        get() = _modelError
+
+    class ErrorModel(val throwable: Throwable)
+
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
         _modelRequest.value = Content.EncodeImage(absolutePath)
     }
 
-    fun onRequestCategoriesMessages(base64: String){
+    fun onRequestCategoriesMessages(base64: String) {
         _modelRequest.value = Content.Loading
         checkCoroutineIsCancelled()
         launch {
@@ -90,9 +101,6 @@ class CameraViewModel(
         _model.value = UiModel.RequestCameraViewDisplay
     }
 
-    private fun handleMessagesResponse(messages: List<Message>) {
-        _modelRequest.value = Content.RequestModelContent(Event(messages))
-    }
 
     fun onPermissionsViewRequested(isPermissionGranted: Boolean) {
         if (isPermissionGranted) {
@@ -103,12 +111,30 @@ class CameraViewModel(
         }
     }
 
-    private fun handleErrorResponse(throwable: Throwable) {
-        //TODO
+    private fun handleMessagesResponse(messages: List<Message>) {
+        flag = TYPE_RESPONSE.SUCCESS
+        dataMessages = messages
     }
 
+    private fun handleErrorResponse(throwable: Throwable) {
+        Log.d("Gabriel","TIME OUT")
+        _modelError.value = Event(ErrorModel(throwable))
+    }
+
+    fun onCheckResultRequest() {
+        if(flag == TYPE_RESPONSE.SUCCESS){
+            _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
+            flag = TYPE_RESPONSE.NO_RESPONSE
+        }
+    }
+
+
     fun onCancelRequest() {
+        destroyScope()
         _modelRequestCancel.value = Event(CancelModel())
     }
 
+
 }
+
+enum class TYPE_RESPONSE { SUCCESS, ERROR, NO_RESPONSE }

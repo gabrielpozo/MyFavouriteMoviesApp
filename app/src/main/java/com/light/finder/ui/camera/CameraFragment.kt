@@ -1,6 +1,8 @@
 package com.light.finder.ui.camera
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -139,6 +141,9 @@ class CameraFragment : BaseFragment() {
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+        viewModel.modelError.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+
+        setLottieTransitionAnimation()
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
@@ -152,14 +157,20 @@ class CameraFragment : BaseFragment() {
             layoutCamera.visible()
             cameraUiContainer.visible()
             visibilityCallBack.onVisibilityChanged(false)
-            // lottieAnimationView.cancelAnimation()
+            initializeLottieAnimation()
+        }
+    }
+
+    private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
+        eventErrorResponse.getContentIfNotHandled()?.let {
+           // initializeLottieAnimation()
+            //TODO(handle error View)
         }
     }
 
 
     private fun updateUI(model: UiModel) {
         when (model) {
-
             is UiModel.CameraInitializeScreen -> {
                 viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
             }
@@ -175,6 +186,28 @@ class CameraFragment : BaseFragment() {
             is UiModel.CameraViewDisplay -> setCameraSpecs()
             is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
         }
+    }
+
+
+    private fun setLottieTransitionAnimation() {
+        lottieAnimationView.addAnimatorListener(object : AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                //check if we have success on the result and navigate to Categories
+                viewModel.onCheckResultRequest()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+                // lottieAnimationView.clearAnimation()
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+
+        })
     }
 
 
@@ -205,9 +238,7 @@ class CameraFragment : BaseFragment() {
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
         }
-
     }
-
 
     private fun setPreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
@@ -294,6 +325,10 @@ class CameraFragment : BaseFragment() {
             bindCameraUseCases(flashMode)
         }
 
+    }
+
+    private fun initializeLottieAnimation() {
+        lottieAnimationView.progress = 0.0f
     }
 
 }

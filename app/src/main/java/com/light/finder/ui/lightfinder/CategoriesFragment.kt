@@ -41,7 +41,7 @@ class CategoriesFragment : BaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {

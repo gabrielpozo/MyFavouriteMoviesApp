@@ -53,6 +53,7 @@ fun CameraFragment.bindCameraUseCases(flashMode: Int) {
             .build()
 
         preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
+        imageCapture?.flashMode = flashMode
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
