@@ -13,14 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.light.domain.model.Category
+import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.SignifyApp
 import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.ProductParcelable
-import com.bumptech.glide.Glide
-import com.light.domain.model.Message
 import com.light.finder.data.source.remote.MessageParcelable
+import com.light.finder.data.source.remote.ProductParcelable
 import kotlin.properties.Delegates
 
 

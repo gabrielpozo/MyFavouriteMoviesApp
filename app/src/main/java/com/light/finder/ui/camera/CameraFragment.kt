@@ -2,6 +2,7 @@ package com.light.finder.ui.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -24,6 +25,7 @@ import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
+import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
@@ -41,6 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -53,8 +56,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var component: CameraComponent
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private lateinit var cameraPermissionRequester: PermissionRequester
-
-
+    private lateinit var visibilityCallBack: VisibilityCallBack
 
     companion object {
         const val TAG = "CameraX"
@@ -67,7 +69,6 @@ class CameraFragment : BaseFragment() {
                     .format(System.currentTimeMillis()) + extension
             )
     }
-
 
 
     private lateinit var container: ConstraintLayout
@@ -89,6 +90,14 @@ class CameraFragment : BaseFragment() {
         mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -141,6 +150,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
+            visibilityCallBack.onVisibilityChanged(false)
             // lottieAnimationView.cancelAnimation()
         }
     }
@@ -204,6 +214,7 @@ class CameraFragment : BaseFragment() {
             layoutPermission.gone()
             layoutPreview.visible()
             cameraUiContainer.gone()
+            visibilityCallBack.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
                 viewModel.onCancelRequest()
@@ -251,7 +262,7 @@ class CameraFragment : BaseFragment() {
 
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setOnClickListener {
+        controls.cameraCaptureButton.setSafeOnClickListener {
             imageCapture?.let { imageCapture ->
                 val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
                 val metadata = ImageCapture.Metadata().apply {

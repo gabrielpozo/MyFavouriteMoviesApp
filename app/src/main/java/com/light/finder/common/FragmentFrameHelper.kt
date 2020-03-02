@@ -2,7 +2,8 @@ package com.light.finder.common
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.light.finder.*
+import com.light.finder.CameraActivity
+import com.light.finder.R
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController

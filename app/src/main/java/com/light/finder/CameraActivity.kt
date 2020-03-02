@@ -11,31 +11,48 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.light.finder.common.ConnectionLiveData
+import com.light.finder.common.ConnectionModel
 import com.light.finder.common.FragmentFrameHelper
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.common.VisibilityCallBack
+import com.light.finder.extensions.gone
 import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.visible
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
-import com.light.finder.util.ConnectivityReceiver
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation, ConnectivityReceiver.ConnectivityReceiverListener {
-    private lateinit var container: FrameLayout
+    BaseFragment.FragmentNavigation, VisibilityCallBack {
 
+    private lateinit var container: FrameLayout
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
 
+    override fun onVisibilityChanged(visible: Boolean) {
+        if (visible) {
+            toolbar.gone()
+            bottom_navigation_view.gone()
+        } else {
+            toolbar.visible()
+            bottom_navigation_view.visible()
+        }
+    }
+
+   
     companion object {
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
@@ -59,7 +76,32 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         container = findViewById(R.id.fragment_container)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        observeConnection()
+
     }
+
+    private fun observeConnection() {
+        //todo move to viewmodel
+        val connectionLiveData = ConnectionLiveData(applicationContext)
+        connectionLiveData.observe(this,
+            Observer<ConnectionModel> { connection ->
+                if (connection.isConnected) {
+                    // snackBar.dismiss()
+                    when (connection.type) {
+                        "WifiData" -> {
+                            Timber.d("connected to wifi data")
+                        }
+                        "MobileData" -> {
+                            Timber.d("connected to mobile data")
+                        }
+                    }
+                } else {
+                    // snackBar.show()
+                    Timber.d("no connection")
+                }
+            })
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -70,25 +112,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         if (fragmentHelper.popFragmentNot()) {
             super.onBackPressed()
         }
-    }
-
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        showNetworkMessage(isConnected)
-    }
-
-    private fun showNetworkMessage(isConnected: Boolean) {
-        if (isConnected) {
-            //todo show snackbar from the top
-            Timber.d("EGE IS CONNECTED")
-        } else {
-            Timber.d("EGE IS NOT CONNECTED")
-        }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        ConnectivityReceiver.connectivityReceiverListener = this
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

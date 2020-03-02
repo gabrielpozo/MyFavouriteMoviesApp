@@ -10,7 +10,7 @@ import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductsAdapter() : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     var products: List<Product> by basicDiffUtil(
         emptyList(),
