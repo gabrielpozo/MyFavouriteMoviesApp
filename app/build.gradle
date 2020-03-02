@@ -3,7 +3,9 @@ apply plugin: 'jacoco'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 29
     dataBinding {
@@ -21,15 +23,61 @@ android {
         vectorDrawables.useSupportLibrary true
         buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
     }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['releaseKeyAlias']
+            keyPassword keystoreProperties['releaseKeyPassword']
+            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
+            storePassword keystoreProperties['releaseStorePassword']
+        }
+
+        qa {
+            keyAlias keystoreProperties['qaKeyAlias']
+            keyPassword keystoreProperties['qaKeyPassword']
+            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['qaKeyStore'])
+            storePassword keystoreProperties['qaStorePassword']
+        }
+    }
     buildTypes {
         debug {
             testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
         }
         release {
-            minifyEnabled false
+            debuggable false
+            shrinkResources true
+            minifyEnabled true
+            useProguard true
+            applicationIdSuffix '.release'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        shipment {
+            debuggable true
+            useProguard true
+            applicationIdSuffix '.qa'
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
+            signingConfig signingConfigs.qa
+        }
+
+    }
+
+    flavorDimensions "release", "debug","qa"
+    productFlavors {
+        dev {
+            dimension "debug"
+            applicationIdSuffix ".dev"
+        }
+        prod {
+            dimension "release"
+            applicationIdSuffix ".release"
+        }
+        qa {
+            dimension "qa"
+            applicationIdSuffix ".qa"
         }
     }
+
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
