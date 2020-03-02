@@ -1,6 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -22,12 +28,53 @@ android {
         }
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            keyAlias keystoreProperties['releaseKeyAlias']
+            keyPassword keystoreProperties['releaseKeyPassword']
+            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
+            storePassword keystoreProperties['releaseStorePassword']
+        }
+
+        qa {
+            keyAlias keystoreProperties['qaKeyAlias']
+            keyPassword keystoreProperties['qaKeyPassword']
+            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['qaKeyStore'])
+            storePassword keystoreProperties['qaStorePassword']
         }
     }
+    buildTypes {
+        debug {
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        shipment {
+            debuggable true
+            useProguard true
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
+        }
+
+    }
+
+    flavorDimensions "release", "debug","qa"
+    productFlavors {
+        dev {
+            dimension "debug"
+        }
+        prod {
+            dimension "release"
+        }
+        qa {
+            dimension "qa"
+        }
+    }
+
 
 }
 
