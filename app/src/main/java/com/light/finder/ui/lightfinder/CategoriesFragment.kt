@@ -1,5 +1,6 @@
 package com.light.finder.ui.lightfinder
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
 import com.light.finder.R
+import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.CategoriesComponent
 import com.light.finder.di.modules.CategoriesModule
@@ -19,6 +21,7 @@ import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
+import java.lang.ClassCastException
 
 class CategoriesFragment : BaseFragment() {
 
@@ -29,6 +32,7 @@ class CategoriesFragment : BaseFragment() {
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
+    private lateinit var visibilityCallBack: VisibilityCallBack
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +41,15 @@ class CategoriesFragment : BaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
-
+    
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,6 +69,11 @@ class CategoriesFragment : BaseFragment() {
 
         navigationObserver()
         initAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        visibilityCallBack.onVisibilityChanged(false)
     }
 
     private fun navigationObserver() {

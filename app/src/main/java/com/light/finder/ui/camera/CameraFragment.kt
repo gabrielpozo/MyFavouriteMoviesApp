@@ -157,12 +157,6 @@ class CameraFragment : BaseFragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        visibilityCallBack.onVisibilityChanged(false)
-
-    }
-
     private fun updateUI(model: UiModel) {
         when (model) {
 
