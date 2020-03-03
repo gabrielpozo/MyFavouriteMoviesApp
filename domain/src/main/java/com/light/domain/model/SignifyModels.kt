@@ -17,12 +17,12 @@ data class Category(
 
 data class Product(
     val productImage: List<String>,
+    val productCategoryName: String,
     val productName: String,
     val productDescription: String,
-    val productSpecOne: String,
-    val productSpecThree: String,
+    val productSpecOne: Float,
+    val productSpecThree: List<String>,
     val productScene: String,
-    val productPrice: String,
+    val productPrice: Float,
     var filtered: Boolean = false
-
 )

@@ -95,7 +95,7 @@ class CategoriesFragment : BaseFragment() {
     private fun updateData(categories: List<Category>) {
         textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryName)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)
         adapter.categories = categories
     }
 

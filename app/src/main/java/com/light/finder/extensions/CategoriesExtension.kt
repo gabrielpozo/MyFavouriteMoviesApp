@@ -112,6 +112,7 @@ fun MessageParcelable.deparcelizeMessage(): Message =
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
         product.productImage,
+        product.productCategoryName,
         product.productName,
         product.productDescription,
         product.productSpecOne,
@@ -125,6 +126,7 @@ private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { pro
 private val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
     Product(
         product.productImage,
+        product.productCategoryName,
         product.productName,
         product.productDescription,
         product.productSpecOne,
