@@ -35,13 +35,6 @@ android {
             storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
             storePassword keystoreProperties['releaseStorePassword']
         }
-
-        qa {
-            keyAlias keystoreProperties['qaKeyAlias']
-            keyPassword keystoreProperties['qaKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['qaKeyStore'])
-            storePassword keystoreProperties['qaStorePassword']
-        }
     }
     buildTypes {
         debug {
