@@ -47,24 +47,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        shipment {
-            debuggable true
-            useProguard true
-            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
-        }
-
     }
 
-    flavorDimensions "release", "debug","qa"
+    flavorDimensions "release", "debug"
     productFlavors {
         dev {
             dimension "debug"
         }
         prod {
             dimension "release"
-        }
-        qa {
-            dimension "qa"
         }
     }
 

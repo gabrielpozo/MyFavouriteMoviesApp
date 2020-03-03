@@ -30,13 +30,6 @@ android {
             storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
             storePassword keystoreProperties['releaseStorePassword']
         }
-
-        qa {
-            keyAlias keystoreProperties['qaKeyAlias']
-            keyPassword keystoreProperties['qaKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['qaKeyStore'])
-            storePassword keystoreProperties['qaStorePassword']
-        }
     }
     buildTypes {
         debug {
@@ -52,17 +45,9 @@ android {
             signingConfig signingConfigs.release
         }
 
-        shipment {
-            debuggable true
-            useProguard true
-            applicationIdSuffix '.qa'
-            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
-            signingConfig signingConfigs.qa
-        }
-
     }
 
-    flavorDimensions "release", "debug","qa"
+    flavorDimensions "release", "debug"
     productFlavors {
         dev {
             dimension "debug"
@@ -71,10 +56,6 @@ android {
         prod {
             dimension "release"
             applicationIdSuffix ".release"
-        }
-        qa {
-            dimension "qa"
-            applicationIdSuffix ".qa"
         }
     }
 
