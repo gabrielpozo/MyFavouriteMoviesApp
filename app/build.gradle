@@ -56,18 +56,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    flavorDimensions 'qa'
-    productFlavors {
-        qaRelease {
-            dimension = 'qa'
-            applicationIdSuffix = '.qaRelease'
-            signingConfig signingConfigs.release
-        }
-        qaDebug {
-            dimension = 'qa'
-            applicationIdSuffix = '.qaDebug'
-        }
-    }
+
     // work-runtime-ktx 2.1.0 and above now requires Java 8
     kotlinOptions {
         jvmTarget = "1.8"
