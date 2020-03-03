@@ -12,10 +12,7 @@ import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.CategoriesComponent
 import com.light.finder.di.modules.CategoriesModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.deparcelizeMessage
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
@@ -96,6 +93,9 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateData(categories: List<Category>) {
+        textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
+        textViewBulbType.text =
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryName)
         adapter.categories = categories
     }
 

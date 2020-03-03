@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CategoryParcelable(
+    val categoryProductBase: String,
     val categoryProducts: List<ProductParcelable>,
     val categoryIndex: Int,
     val categoryName: String,

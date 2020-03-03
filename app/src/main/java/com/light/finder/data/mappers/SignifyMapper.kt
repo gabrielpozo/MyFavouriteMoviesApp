@@ -14,6 +14,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         val countWattages = getWattValuesCategory(categoryDto.categoryProducts)
         categoriesList.add(
             Category(
+                categoryProductBase = categoryDto.categoryProductBase ?: "",
                 categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain)
                     ?: emptyList(),
                 categoryName = categoryDto.categoryName ?: "",

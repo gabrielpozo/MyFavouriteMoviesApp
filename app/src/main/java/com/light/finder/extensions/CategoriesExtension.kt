@@ -79,6 +79,7 @@ fun ImageView.loadUrl(url: String) {
 
 fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(
+        categoryProductBase,
         categoryProducts.map(mapDomainProductToParcelable),
         categoryIndex,
         categoryName,
@@ -90,6 +91,7 @@ fun Category.parcelizeCategory(): CategoryParcelable =
 
 fun CategoryParcelable.deparcelizeCategory(): Category =
     Category(
+        categoryProductBase,
         categoryProducts.map(mapParcelableProductToDomain),
         categoryIndex,
         categoryName,

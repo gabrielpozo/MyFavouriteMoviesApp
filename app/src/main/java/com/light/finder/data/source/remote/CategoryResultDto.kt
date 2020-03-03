@@ -11,6 +11,7 @@ data class MessageDto(
 )
 
 data class CategoriesDto(
+    @SerializedName("category_filter_product_base") val categoryProductBase: String?,
     @SerializedName("category_products") val categoryProducts: List<ProductDto>?,
     @SerializedName("category_index") val categoryIndex: Int?,
     @SerializedName("category_name") val categoryName: String?,

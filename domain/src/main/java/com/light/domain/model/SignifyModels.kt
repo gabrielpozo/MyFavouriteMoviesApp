@@ -6,6 +6,7 @@ data class Message(
 
 
 data class Category(
+    val categoryProductBase: String,
     val categoryProducts: List<Product>,
     val categoryIndex: Int,
     val categoryName: String,

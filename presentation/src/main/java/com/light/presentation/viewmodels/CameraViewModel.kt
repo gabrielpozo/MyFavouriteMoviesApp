@@ -115,7 +115,7 @@ class CameraViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-       // Log.d("Gabriel","is an Error!!!${throwable.message}")
+        Log.d("Gabriel","is an Error!!!${throwable.message.toString()}")
         //TODO if it has been canceled(JobCancelExeception) then check if Animation has been consumed,
         // if it is then show an error timeout dialog
         //if(throwable.error == CancellationException && flag = TYPE_RESPONSE.ANIMATION_CONSUMED){
@@ -126,7 +126,10 @@ class CameraViewModel(
     }
 
     fun onCheckLoaderAnimationConsumed() {
+        Log.d("Gabriel","onCheckLoader ANIMATION OUUUUT")
+
         if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
+            Log.d("Gabriel","onCheckLoader ANIMATION $dataMessages")
             _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
             flag = STATUS_REQUEST_LOADER.NO_RESPONSE//TODO change the order???
         } else if (flag == STATUS_REQUEST_LOADER.NO_RESPONSE) {
