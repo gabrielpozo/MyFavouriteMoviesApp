@@ -14,7 +14,7 @@ abstract class BaseViewModel(uiDispatcher: CoroutineDispatcher) : ViewModel(),
 
     @CallSuper
     override fun onCleared() {
-        destroyScope()
+        cancelRequestScope()
         super.onCleared()
     }
 }

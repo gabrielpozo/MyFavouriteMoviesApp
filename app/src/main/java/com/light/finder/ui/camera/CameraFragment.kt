@@ -11,7 +11,6 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -162,12 +161,10 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
-        eventErrorResponse.getContentIfNotHandled()?.let {
-           // initializeLottieAnimation()
-            //TODO(handle error View)
+        eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
+            //TODO navigate to error pop-up
         }
     }
-
 
     private fun updateUI(model: UiModel) {
         when (model) {
@@ -188,21 +185,15 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-
     private fun setLottieTransitionAnimation() {
         lottieAnimationView.addAnimatorListener(object : AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {
-
-            }
+            override fun onAnimationRepeat(animation: Animator?) {}
 
             override fun onAnimationEnd(animation: Animator?) {
-                //check if we have success on the result and navigate to Categories
-                viewModel.onCheckResultRequest()
+                viewModel.onCheckLoaderAnimationConsumed()
             }
 
-            override fun onAnimationCancel(animation: Animator?) {
-                // lottieAnimationView.clearAnimation()
-            }
+            override fun onAnimationCancel(animation: Animator?) {}
 
             override fun onAnimationStart(animation: Animator?) {
             }
@@ -221,7 +212,6 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeModelContent(modelContent: Content) {
-        //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
                 imageViewPreview.loadFile(File(modelContent.absolutePath))

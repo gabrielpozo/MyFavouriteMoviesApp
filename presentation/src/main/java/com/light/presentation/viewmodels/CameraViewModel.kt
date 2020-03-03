@@ -16,7 +16,7 @@ class CameraViewModel(
 ) : BaseViewModel(uiDispatcher) {
 
     private lateinit var dataMessages: List<Message>
-    private var flag: TYPE_RESPONSE = TYPE_RESPONSE.NO_RESPONSE
+    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.NO_RESPONSE
 
 
     private val _model = MutableLiveData<UiModel>()
@@ -48,7 +48,6 @@ class CameraViewModel(
 
 
     sealed class Content {
-        object Loading : Content()
         class EncodeImage(val absolutePath: String) : Content()
         class RequestModelContent(val messages: Event<List<Message>>) : Content()
     }
@@ -65,7 +64,8 @@ class CameraViewModel(
     val modelError: LiveData<Event<ErrorModel>>
         get() = _modelError
 
-    class ErrorModel(val throwable: Throwable)
+    class ErrorModel(val throwable: Throwable? = null, val isTimeout: Boolean = false)
+
 
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
@@ -73,7 +73,6 @@ class CameraViewModel(
     }
 
     fun onRequestCategoriesMessages(base64: String) {
-        _modelRequest.value = Content.Loading
         checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
@@ -101,7 +100,6 @@ class CameraViewModel(
         _model.value = UiModel.RequestCameraViewDisplay
     }
 
-
     fun onPermissionsViewRequested(isPermissionGranted: Boolean) {
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
@@ -112,29 +110,42 @@ class CameraViewModel(
     }
 
     private fun handleMessagesResponse(messages: List<Message>) {
-        flag = TYPE_RESPONSE.SUCCESS
+        flag = STATUS_REQUEST_LOADER.DATA_RETRIEVED
         dataMessages = messages
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        Log.d("Gabriel","TIME OUT")
-        _modelError.value = Event(ErrorModel(throwable))
+       // Log.d("Gabriel","is an Error!!!${throwable.message}")
+        //TODO if it has been canceled(JobCancelExeception) then check if Animation has been consumed,
+        // if it is then show an error timeout dialog
+        //if(throwable.error == CancellationException && flag = TYPE_RESPONSE.ANIMATION_CONSUMED){
+        // show time error dialog on View and
+        // flag == STATUS_REQUEST.NO_RESPONSE
+        // _modelError.value = Event(ErrorModel(throwable))
+        // }
     }
 
-    fun onCheckResultRequest() {
-        if(flag == TYPE_RESPONSE.SUCCESS){
+    fun onCheckLoaderAnimationConsumed() {
+        if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
             _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
-            flag = TYPE_RESPONSE.NO_RESPONSE
+            flag = STATUS_REQUEST_LOADER.NO_RESPONSE//TODO change the order???
+        } else if (flag == STATUS_REQUEST_LOADER.NO_RESPONSE) {
+            /**
+             *(the lottie time animation has been consumed(finish),
+             * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+             * cause an error
+             */
+            flag = STATUS_REQUEST_LOADER.ANIMATION_CONSUMED
+            cancelRequestScope()
         }
     }
 
 
     fun onCancelRequest() {
-        destroyScope()
+        cancelRequestScope()
+        //TODO( ???, do check here, MAKE SURE if the animation has been consumed, then not cancel
         _modelRequestCancel.value = Event(CancelModel())
     }
-
-
 }
 
-enum class TYPE_RESPONSE { SUCCESS, ERROR, NO_RESPONSE }
+enum class STATUS_REQUEST_LOADER { DATA_RETRIEVED, NO_RESPONSE, ANIMATION_CONSUMED }
