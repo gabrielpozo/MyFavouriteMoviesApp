@@ -3,10 +3,16 @@ apply plugin: 'jacoco'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        release {
+            storeFile rootProject.file('keystore.jks')
+            storePassword 'MJKArakam2p5ckMh'
+            keyPassword 'MJKArakam2p5ckMh'
+            keyAlias = 'releaseKey'
+        }
+    }
     compileSdkVersion 29
     dataBinding {
         enabled = true
@@ -23,21 +29,7 @@ android {
         vectorDrawables.useSupportLibrary true
         buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
     }
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['releaseKeyAlias']
-            keyPassword keystoreProperties['releaseKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
-            storePassword keystoreProperties['releaseStorePassword']
-        }
 
-        qa {
-            keyAlias keystoreProperties['qaKeyAlias']
-            keyPassword keystoreProperties['qaKeyPassword']
-            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['qaKeyStore'])
-            storePassword keystoreProperties['qaStorePassword']
-        }
-    }
     buildTypes {
         debug {
             testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
@@ -47,35 +39,10 @@ android {
             shrinkResources true
             minifyEnabled true
             useProguard true
-            applicationIdSuffix '.release'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
 
-        shipment {
-            debuggable true
-            useProguard true
-            applicationIdSuffix '.qa'
-            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
-            signingConfig signingConfigs.qa
-        }
-
-    }
-
-    flavorDimensions "release", "debug","qa"
-    productFlavors {
-        dev {
-            dimension "debug"
-            applicationIdSuffix ".dev"
-        }
-        prod {
-            dimension "release"
-            applicationIdSuffix ".release"
-        }
-        qa {
-            dimension "qa"
-            applicationIdSuffix ".qa"
-        }
     }
 
 
@@ -89,6 +56,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     // work-runtime-ktx 2.1.0 and above now requires Java 8
     kotlinOptions {
         jvmTarget = "1.8"
