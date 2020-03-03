@@ -49,16 +49,6 @@ android {
 
     }
 
-    flavorDimensions "release", "debug"
-    productFlavors {
-        dev {
-            dimension "debug"
-        }
-        prod {
-            dimension "release"
-        }
-    }
-
 
 }
 

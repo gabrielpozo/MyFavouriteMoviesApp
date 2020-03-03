@@ -47,18 +47,6 @@ android {
 
     }
 
-    flavorDimensions "release", "debug"
-    productFlavors {
-        dev {
-            dimension "debug"
-            applicationIdSuffix ".dev"
-        }
-        prod {
-            dimension "release"
-            applicationIdSuffix ".release"
-        }
-    }
-
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
