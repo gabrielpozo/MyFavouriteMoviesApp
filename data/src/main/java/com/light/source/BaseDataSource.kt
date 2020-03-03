@@ -2,6 +2,7 @@ package com.light.source
 
 import kotlinx.coroutines.Deferred
 import com.light.data.Result
+import kotlinx.coroutines.CancellationException
 
 abstract class BaseDataSource {
 
@@ -11,6 +12,8 @@ abstract class BaseDataSource {
     ): Result<D> = try {
         val response = call().await()
         Result.success(mapper(response))
+    } catch (ce: CancellationException) {
+        Result.error(ce.message ?: ce.toString(), isCancelRequest = true)
     } catch (e: Exception) {
         Result.error(e.message ?: e.toString())
     }

@@ -33,20 +33,6 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
     )
 }
 
-
-fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
-    if (minPrice == null || maxPrice == null) {
-        "-"
-
-    } else if (minPrice == maxPrice) {
-        minPrice.toString()
-
-    } else {
-        //TODO the format here
-        "$minPrice$ - $maxPrice$"
-    }
-
-
 private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
     Product(
         productImage = productDto.productImage ?: emptyList(),
@@ -71,3 +57,15 @@ fun getWattValuesCategory(categoryProducts: List<ProductDto>?): Int {
     return wattages.count()
 
 }
+
+
+fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
+    if (minPrice == null || maxPrice == null) {
+        "-"
+
+    } else if (minPrice == maxPrice && minPrice != 0.0f) {
+        minPrice.toString()
+
+    } else {
+        "$minPrice$ - $maxPrice$"
+    }

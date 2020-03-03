@@ -1,10 +1,16 @@
 package com.light.data
 
-data class Result<out T>(val status: Status, val data: T? = null, val message: String?) {
+data class Result<out T>(
+    val status: Status,
+    val data: T? = null,
+    val message: String?,
+    val isCancelRequest: Boolean = false
+) {
 
     enum class Status {
         SUCCESS,
-        ERROR
+        ERROR,
+        CANCELED
     }
 
     companion object {
@@ -16,9 +22,17 @@ data class Result<out T>(val status: Status, val data: T? = null, val message: S
             )
         }
 
-        fun <T> error(message: String, data: T? = null): Result<T> {
+        fun <T> error(
+            message: String,
+            data: T? = null,
+            isCancelRequest: Boolean = false
+        ): Result<T> {
             return Result(
-                Status.ERROR,
+                if (!isCancelRequest) {
+                    Status.ERROR
+                } else {
+                    Status.CANCELED
+                },
                 data,
                 message
             )

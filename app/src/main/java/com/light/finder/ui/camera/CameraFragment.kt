@@ -23,7 +23,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.light.domain.model.Message
-import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
@@ -33,6 +32,7 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.presentation.BuildConfig
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*

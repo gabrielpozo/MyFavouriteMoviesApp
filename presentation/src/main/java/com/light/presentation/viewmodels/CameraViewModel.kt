@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -16,7 +15,7 @@ class CameraViewModel(
 ) : BaseViewModel(uiDispatcher) {
 
     private lateinit var dataMessages: List<Message>
-    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.NO_RESPONSE
+    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
 
 
     private val _model = MutableLiveData<UiModel>()
@@ -76,8 +75,9 @@ class CameraViewModel(
         checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
-                ::handleMessagesResponse,
+                ::handleSuccessResponse,
                 ::handleErrorResponse,
+                ::handleCancelResponse,
                 base64
             )
         }
@@ -109,46 +109,64 @@ class CameraViewModel(
         }
     }
 
-    private fun handleMessagesResponse(messages: List<Message>) {
+    fun onCheckLoaderAnimationConsumed() {
+        when (flag) {
+            STATUS_REQUEST_LOADER.DATA_RETRIEVED -> {
+                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+                _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
+            }
+            STATUS_REQUEST_LOADER.NO_RESPONSE_YET -> {
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                flag = STATUS_REQUEST_LOADER.ANIMATION_CONSUMED
+                cancelRequestScope()
+            }
+            STATUS_REQUEST_LOADER.ERROR -> {
+                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            }
+        }
+    }
+
+    fun onCancelRequest() {
+        if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
+            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+        } else {
+            cancelRequestScope()
+        }
+        _modelRequestCancel.value = Event(CancelModel())
+    }
+
+    private fun handleSuccessResponse(messages: List<Message>) {
         flag = STATUS_REQUEST_LOADER.DATA_RETRIEVED
         dataMessages = messages
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        Log.d("Gabriel","is an Error!!!${throwable.message.toString()}")
-        //TODO if it has been canceled(JobCancelExeception) then check if Animation has been consumed,
-        // if it is then show an error timeout dialog
-        //if(throwable.error == CancellationException && flag = TYPE_RESPONSE.ANIMATION_CONSUMED){
-        // show time error dialog on View and
-        // flag == STATUS_REQUEST.NO_RESPONSE
-        // _modelError.value = Event(ErrorModel(throwable))
-        // }
+        flag = STATUS_REQUEST_LOADER.ERROR
+        _modelError.value = Event(ErrorModel(throwable))
     }
 
-    fun onCheckLoaderAnimationConsumed() {
-        Log.d("Gabriel","onCheckLoader ANIMATION OUUUUT")
-
-        if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
-            Log.d("Gabriel","onCheckLoader ANIMATION $dataMessages")
-            _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
-            flag = STATUS_REQUEST_LOADER.NO_RESPONSE//TODO change the order???
-        } else if (flag == STATUS_REQUEST_LOADER.NO_RESPONSE) {
-            /**
-             *(the lottie time animation has been consumed(finish),
-             * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
-             * cause an error
-             */
-            flag = STATUS_REQUEST_LOADER.ANIMATION_CONSUMED
-            cancelRequestScope()
+    private fun handleCancelResponse(message: String) {
+        if (flag == STATUS_REQUEST_LOADER.ANIMATION_CONSUMED) {
+            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            _modelError.value = Event(ErrorModel(isTimeout = true))
         }
     }
 
 
-    fun onCancelRequest() {
-        cancelRequestScope()
-        //TODO( ???, do check here, MAKE SURE if the animation has been consumed, then not cancel
-        _modelRequestCancel.value = Event(CancelModel())
-    }
 }
 
-enum class STATUS_REQUEST_LOADER { DATA_RETRIEVED, NO_RESPONSE, ANIMATION_CONSUMED }
+enum class STATUS_REQUEST_LOADER { DATA_RETRIEVED, NO_RESPONSE_YET, ANIMATION_CONSUMED, ERROR }
