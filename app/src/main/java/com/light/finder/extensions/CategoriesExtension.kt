@@ -79,6 +79,7 @@ fun ImageView.loadUrl(url: String) {
 
 fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(
+        categoryProductBase,
         categoryProducts.map(mapDomainProductToParcelable),
         categoryIndex,
         categoryName,
@@ -90,6 +91,7 @@ fun Category.parcelizeCategory(): CategoryParcelable =
 
 fun CategoryParcelable.deparcelizeCategory(): Category =
     Category(
+        categoryProductBase,
         categoryProducts.map(mapParcelableProductToDomain),
         categoryIndex,
         categoryName,
@@ -110,6 +112,7 @@ fun MessageParcelable.deparcelizeMessage(): Message =
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
         product.productImage,
+        product.productCategoryName,
         product.productName,
         product.productDescription,
         product.productSpecOne,
@@ -123,6 +126,7 @@ private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { pro
 private val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
     Product(
         product.productImage,
+        product.productCategoryName,
         product.productName,
         product.productDescription,
         product.productSpecOne,

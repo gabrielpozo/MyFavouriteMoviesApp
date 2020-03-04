@@ -4,10 +4,10 @@ import com.light.domain.model.Filter
 import com.light.domain.model.Product
 
 
-fun Filter.isMatchSpecs(product: Product): Boolean =
-    nameFilter == product.productSpecOne
+fun Filter.isMatchSpecs(product: Product): Boolean = true
+/*    nameFilter == product.productSpecOne
             || nameFilter == product.productScene
-            || nameFilter == product.productSpecThree
+            || nameFilter == product.productSpecThree*/
 
 
 fun HashSet<Filter>.removeDuplicateElements(activeOnInitList: List<Filter>): List<Filter> {

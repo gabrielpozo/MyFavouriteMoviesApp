@@ -1,6 +1,6 @@
 package com.light.presentation.viewmodels
 
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -15,6 +15,10 @@ class CameraViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    private lateinit var dataMessages: List<Message>
+    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+
+
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
@@ -23,7 +27,7 @@ class CameraViewModel(
         }
 
     sealed class UiModel {
-        object CameraInitializeScreen: UiModel()
+        object CameraInitializeScreen : UiModel()
         object RequestCameraViewDisplay : UiModel()
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
@@ -44,7 +48,6 @@ class CameraViewModel(
 
 
     sealed class Content {
-        object Loading : Content()
         class EncodeImage(val absolutePath: String) : Content()
         class RequestModelContent(val messages: Event<List<Message>>) : Content()
     }
@@ -56,18 +59,26 @@ class CameraViewModel(
 
     class CancelModel
 
+
+    private val _modelError = MutableLiveData<Event<ErrorModel>>()
+    val modelError: LiveData<Event<ErrorModel>>
+        get() = _modelError
+
+    class ErrorModel(val throwable: Throwable? = null, val isTimeout: Boolean = false)
+
+
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
         _modelRequest.value = Content.EncodeImage(absolutePath)
     }
 
-    fun onRequestCategoriesMessages(base64: String){
-        _modelRequest.value = Content.Loading
+    fun onRequestCategoriesMessages(base64: String) {
         checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
-                ::handleMessagesResponse,
+                ::handleSuccessResponse,
                 ::handleErrorResponse,
+                ::handleCancelResponse,
                 base64
             )
         }
@@ -90,10 +101,6 @@ class CameraViewModel(
         _model.value = UiModel.RequestCameraViewDisplay
     }
 
-    private fun handleMessagesResponse(messages: List<Message>) {
-        _modelRequest.value = Content.RequestModelContent(Event(messages))
-    }
-
     fun onPermissionsViewRequested(isPermissionGranted: Boolean) {
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
@@ -103,12 +110,65 @@ class CameraViewModel(
         }
     }
 
-    private fun handleErrorResponse(throwable: Throwable) {
-        //TODO
+    fun onCheckLoaderAnimationConsumed() {
+        when (flag) {
+            STATUS_REQUEST_LOADER.DATA_RETRIEVED -> {
+                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+                _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
+            }
+            STATUS_REQUEST_LOADER.NO_RESPONSE_YET -> {
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                /**
+                 *(the lottie time animation has been consumed(finish),
+                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
+                 * cause an error
+                 */
+                flag = STATUS_REQUEST_LOADER.ANIMATION_CONSUMED
+                cancelRequestScope()
+            }
+            STATUS_REQUEST_LOADER.ERROR -> {
+                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            }
+        }
     }
 
     fun onCancelRequest() {
+        if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
+            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+        } else {
+            cancelRequestScope()
+        }
         _modelRequestCancel.value = Event(CancelModel())
     }
 
+    private fun handleSuccessResponse(messages: List<Message>) {
+        flag = STATUS_REQUEST_LOADER.DATA_RETRIEVED
+        dataMessages = messages
+    }
+
+    private fun handleErrorResponse(throwable: Throwable) {
+        flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+        _modelError.value = Event(ErrorModel(throwable))
+    }
+
+    private fun handleCancelResponse(message: String) {
+        if (flag == STATUS_REQUEST_LOADER.ANIMATION_CONSUMED) {
+            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            Log.d("Gabriel", "handleCancelResponse!!! ")
+            _modelError.value = Event(ErrorModel(isTimeout = true))
+        }
+    }
+
+
 }
+
+enum class STATUS_REQUEST_LOADER { DATA_RETRIEVED, NO_RESPONSE_YET, ANIMATION_CONSUMED, ERROR }

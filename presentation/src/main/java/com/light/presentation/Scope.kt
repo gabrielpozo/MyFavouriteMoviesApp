@@ -30,7 +30,7 @@ interface Scope : CoroutineScope {
         }
     }
 
-    fun destroyScope() {
+    fun cancelRequestScope() {
         job.cancel()
     }
 }

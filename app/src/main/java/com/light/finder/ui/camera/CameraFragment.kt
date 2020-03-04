@@ -1,6 +1,8 @@
 package com.light.finder.ui.camera
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -9,7 +11,6 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.light.domain.model.Message
-import com.light.finder.BuildConfig
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
@@ -32,6 +32,7 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.presentation.BuildConfig
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -139,6 +140,9 @@ class CameraFragment : BaseFragment() {
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+        viewModel.modelError.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+
+        setLottieTransitionAnimation()
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
@@ -152,14 +156,26 @@ class CameraFragment : BaseFragment() {
             layoutCamera.visible()
             cameraUiContainer.visible()
             visibilityCallBack.onVisibilityChanged(false)
-            // lottieAnimationView.cancelAnimation()
+            initializeLottieAnimation()
         }
     }
 
+    private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
+        eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
+            //TODO navigate to error pop-up
+            layoutPreview.gone()
+            layoutCamera.visible()
+            cameraUiContainer.visible()
+            visibilityCallBack.onVisibilityChanged(false)
+
+            lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+            initializeLottieAnimation()
+
+        }
+    }
 
     private fun updateUI(model: UiModel) {
         when (model) {
-
             is UiModel.CameraInitializeScreen -> {
                 viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
             }
@@ -177,6 +193,22 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    private fun setLottieTransitionAnimation() {
+        lottieAnimationView.addAnimatorListener(object : AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {}
+
+            override fun onAnimationEnd(animation: Animator?) {
+                viewModel.onCheckLoaderAnimationConsumed()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {}
+
+            override fun onAnimationStart(animation: Animator?) {
+            }
+
+        })
+    }
+
 
     private fun deepLinkToSettings() {
         startActivity(
@@ -188,7 +220,6 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeModelContent(modelContent: Content) {
-        //TODO set the Loading here
         when (modelContent) {
             is Content.EncodeImage -> {
                 imageViewPreview.loadFile(File(modelContent.absolutePath))
@@ -205,9 +236,7 @@ class CameraFragment : BaseFragment() {
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
         }
-
     }
-
 
     private fun setPreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
@@ -251,7 +280,6 @@ class CameraFragment : BaseFragment() {
                 }
             }
         }
-
     }
 
 
@@ -294,6 +322,10 @@ class CameraFragment : BaseFragment() {
             bindCameraUseCases(flashMode)
         }
 
+    }
+
+    private fun initializeLottieAnimation() {
+        lottieAnimationView.progress = 0.0f
     }
 
 }

@@ -35,6 +35,7 @@
     <string name="text_identifying">Identifying light bulb…</string>
     <string name="identify_cd">identify</string>
     <string name="text_cancel">Cancel</string>
-    <string name="text_results">Results</string>
-    <string name="light_bulb_recognised_as">Light bulb recognised as E26</string>
+    <string name="text_results">%d results</string>
+    <string name="min_max_price">%d$ - %d$"</string>
+    <string name="light_bulb_recognised_as">Light bulb recognised as %s</string>
 </resources>

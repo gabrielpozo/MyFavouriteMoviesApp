@@ -17,9 +17,9 @@ class GetFilterButtonsUseCase : BaseUseCase<List<Filter>>() {
 
 
         productList.forEach { product ->
-            filterHashSet.add(Filter(nameFilter = product.productSpecOne, type = TYPE.SPEC1))
+            /*filterHashSet.add(Filter(nameFilter = product.productSpecOne, type = TYPE.SPEC1))
             filterHashSet.add(Filter(nameFilter = product.productSpecThree, type = TYPE.SPEC3))
-            filterHashSet.add(Filter(nameFilter = product.productScene, type = TYPE.PRODUCT_SCENE))
+            filterHashSet.add(Filter(nameFilter = product.productScene, type = TYPE.PRODUCT_SCENE))*/
         }
 
         val activeOnInitList = initFilterList.filter { it.isActive }
