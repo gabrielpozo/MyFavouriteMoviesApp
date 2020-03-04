@@ -32,7 +32,6 @@ class SplashActivity : AppCompatActivity() {
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         splashViewModel.liveData.observe(this, Observer {
             when (it) {

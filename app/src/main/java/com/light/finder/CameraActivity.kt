@@ -74,7 +74,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         setContentView(R.layout.activity_camera)
         fragmentHelper.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         observeConnection()
 
