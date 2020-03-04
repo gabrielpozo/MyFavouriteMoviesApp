@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -155,13 +156,14 @@ class CameraViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        flag = STATUS_REQUEST_LOADER.ERROR
+        flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
         _modelError.value = Event(ErrorModel(throwable))
     }
 
     private fun handleCancelResponse(message: String) {
         if (flag == STATUS_REQUEST_LOADER.ANIMATION_CONSUMED) {
             flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            Log.d("Gabriel", "handleCancelResponse!!! ")
             _modelError.value = Event(ErrorModel(isTimeout = true))
         }
     }

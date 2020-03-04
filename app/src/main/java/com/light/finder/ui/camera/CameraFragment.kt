@@ -163,6 +163,14 @@ class CameraFragment : BaseFragment() {
     private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
         eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
             //TODO navigate to error pop-up
+            layoutPreview.gone()
+            layoutCamera.visible()
+            cameraUiContainer.visible()
+            visibilityCallBack.onVisibilityChanged(false)
+
+            lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+            initializeLottieAnimation()
+
         }
     }
 
