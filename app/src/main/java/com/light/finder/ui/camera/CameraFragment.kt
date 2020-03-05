@@ -164,37 +164,64 @@ class CameraFragment : BaseFragment() {
     private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
         eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
 
-
             val dialogBuilder = AlertDialog.Builder(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
             dialogBuilder.setView(dialogView)
-
-            dialogView.buttonPositive.text = "Try again"
-            dialogView.buttonNeutral.text = "Help me scan"
-            dialogView.textViewTitleDialog.text = "No light bulb identified"
-            dialogView.textViewSubTitleDialog.text =
-                "We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible."
-            dialogView.buttonNegative.gone()
-
             val alertDialog = dialogBuilder.create()
             alertDialog.setCanceledOnTouchOutside(false)
-            alertDialog.show()
+            alertDialog.setCancelable(false)
 
-            dialogView.buttonPositive.setOnClickListener {
 
-                layoutPreview.gone()
-                layoutCamera.visible()
-                cameraUiContainer.visible()
-                visibilityCallBack.onVisibilityChanged(false)
 
-                lottieAnimationView.playAnimation()//restore lottie view again after being consumed
-                initializeLottieAnimation()
-                alertDialog.dismiss()
+            if (errorModel.isTimeout) {
+
+
+                dialogView.buttonPositive.text = getString(R.string.try_again)
+                dialogView.buttonNeutral.text = getString(R.string.help_me)
+                dialogView.textViewTitleDialog.text = getString(R.string.unidentified)
+                dialogView.textViewSubTitleDialog.text = getString(R.string.unidentified_sub)
+                dialogView.buttonNegative.gone()
+
+
+                dialogView.buttonPositive.setOnClickListener {
+
+                    revertCameraView()
+                    alertDialog.dismiss()
+
+                }
+                alertDialog.show()
+            } else {
+
+
+                dialogView.buttonPositive.text = getString(R.string.ok)
+                dialogView.buttonNeutral.gone()
+                dialogView.buttonNegative.gone()
+                dialogView.textViewTitleDialog.text = getString(R.string.oops)
+                dialogView.textViewSubTitleDialog.text = getString(R.string.error_sub)
+
+
+                dialogView.buttonPositive.setOnClickListener {
+
+                    revertCameraView()
+                    alertDialog.dismiss()
+
+                }
+
+                alertDialog.show()
+
 
             }
-
-
         }
+    }
+
+    private fun revertCameraView() {
+        layoutPreview.gone()
+        layoutCamera.visible()
+        cameraUiContainer.visible()
+        visibilityCallBack.onVisibilityChanged(false)
+
+        lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+        initializeLottieAnimation()
     }
 
     private fun updateUI(model: UiModel) {
