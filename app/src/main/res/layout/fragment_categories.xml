@@ -9,8 +9,7 @@
     <TextView
         android:id="@+id/textViewResults"
         style="@style/SubtitleTextSmall"
-        android:paddingTop="@dimen/stroke_medium"
-        android:paddingBottom="@dimen/stroke_medium"
+        android:layout_marginTop="@dimen/stroke_medium"
         android:text="@string/text_results"
         android:layout_width="0dp"
         android:layout_height="40dp"
@@ -46,6 +45,7 @@
         android:id="@+id/rvCategories"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/stroke_medium"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

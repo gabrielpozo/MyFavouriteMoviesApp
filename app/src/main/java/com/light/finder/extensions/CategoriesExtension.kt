@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
+import com.light.finder.R
 import com.light.finder.SignifyApp
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.MessageParcelable
@@ -73,7 +74,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): 
 
 
 fun ImageView.loadUrl(url: String) {
-    Glide.with(context).load(url).into(this)
+    Glide.with(context).load(url).placeholder(R.drawable.category_placeholder).into(this)
 }
 
 
