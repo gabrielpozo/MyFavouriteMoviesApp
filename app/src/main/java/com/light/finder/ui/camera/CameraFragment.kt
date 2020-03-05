@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.*
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,11 +42,11 @@ import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
+import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
-import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -162,14 +163,36 @@ class CameraFragment : BaseFragment() {
 
     private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
         eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
-            //TODO navigate to error pop-up
-            layoutPreview.gone()
-            layoutCamera.visible()
-            cameraUiContainer.visible()
-            visibilityCallBack.onVisibilityChanged(false)
 
-            lottieAnimationView.playAnimation()//restore lottie view again after being consumed
-            initializeLottieAnimation()
+
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+            dialogBuilder.setView(dialogView)
+
+            dialogView.buttonPositive.text = "Try again"
+            dialogView.buttonNeutral.text = "Help me scan"
+            dialogView.textViewTitleDialog.text = "No light bulb identified"
+            dialogView.textViewSubTitleDialog.text =
+                "We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible."
+            dialogView.buttonNegative.gone()
+
+            val alertDialog = dialogBuilder.create()
+            alertDialog.setCanceledOnTouchOutside(false)
+            alertDialog.show()
+
+            dialogView.buttonPositive.setOnClickListener {
+
+                layoutPreview.gone()
+                layoutCamera.visible()
+                cameraUiContainer.visible()
+                visibilityCallBack.onVisibilityChanged(false)
+
+                lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+                initializeLottieAnimation()
+                alertDialog.dismiss()
+
+            }
+
 
         }
     }
