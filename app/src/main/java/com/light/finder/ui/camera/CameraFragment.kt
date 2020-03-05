@@ -190,7 +190,9 @@ class CameraFragment : BaseFragment() {
 
                 }
                 alertDialog.show()
-            } else {
+            }
+            //TODO handle other errors
+            /*else {
 
 
                 dialogView.buttonPositive.text = getString(R.string.ok)
@@ -210,7 +212,7 @@ class CameraFragment : BaseFragment() {
                 alertDialog.show()
 
 
-            }
+            }*/
         }
     }
 
