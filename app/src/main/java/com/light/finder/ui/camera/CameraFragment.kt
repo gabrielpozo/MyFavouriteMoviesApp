@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.*
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,11 +42,11 @@ import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
+import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
-import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -162,16 +163,67 @@ class CameraFragment : BaseFragment() {
 
     private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
         eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
-            //TODO navigate to error pop-up
-            layoutPreview.gone()
-            layoutCamera.visible()
-            cameraUiContainer.visible()
-            visibilityCallBack.onVisibilityChanged(false)
 
-            lottieAnimationView.playAnimation()//restore lottie view again after being consumed
-            initializeLottieAnimation()
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+            dialogBuilder.setView(dialogView)
+            val alertDialog = dialogBuilder.create()
+            alertDialog.setCanceledOnTouchOutside(false)
+            alertDialog.setCancelable(false)
 
+
+
+            if (errorModel.isTimeout) {
+
+
+                dialogView.buttonPositive.text = getString(R.string.try_again)
+                dialogView.buttonNeutral.text = getString(R.string.help_me)
+                dialogView.textViewTitleDialog.text = getString(R.string.unidentified)
+                dialogView.textViewSubTitleDialog.text = getString(R.string.unidentified_sub)
+                dialogView.buttonNegative.gone()
+
+
+                dialogView.buttonPositive.setOnClickListener {
+
+                    revertCameraView()
+                    alertDialog.dismiss()
+
+                }
+                alertDialog.show()
+            }
+            //TODO handle other errors
+            /*else {
+
+
+                dialogView.buttonPositive.text = getString(R.string.ok)
+                dialogView.buttonNeutral.gone()
+                dialogView.buttonNegative.gone()
+                dialogView.textViewTitleDialog.text = getString(R.string.oops)
+                dialogView.textViewSubTitleDialog.text = getString(R.string.error_sub)
+
+
+                dialogView.buttonPositive.setOnClickListener {
+
+                    revertCameraView()
+                    alertDialog.dismiss()
+
+                }
+
+                alertDialog.show()
+
+
+            }*/
         }
+    }
+
+    private fun revertCameraView() {
+        layoutPreview.gone()
+        layoutCamera.visible()
+        cameraUiContainer.visible()
+        visibilityCallBack.onVisibilityChanged(false)
+
+        lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+        initializeLottieAnimation()
     }
 
     private fun updateUI(model: UiModel) {

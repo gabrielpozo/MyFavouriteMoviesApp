@@ -38,4 +38,11 @@
     <string name="text_results">%d results</string>
     <string name="min_max_price">%d$ - %d$"</string>
     <string name="light_bulb_recognised_as">Light bulb recognised as %s</string>
+    <string name="try_again">Try again</string>
+    <string name="help_me">Help me scan</string>
+    <string name="unidentified">No light bulb identified</string>
+    <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
+    <string name="ok">OK</string>
+    <string name="oops">Oops!</string>
+    <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
 </resources>
