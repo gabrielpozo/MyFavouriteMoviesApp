@@ -2,7 +2,8 @@ package com.light.finder.di.modules
 
 import com.light.domain.CategoryRepository
 import com.light.repository.CategoryRepositoryImpl
-import com.light.source.RemoteDataSource
+import com.light.source.local.LocalMediaDataSource
+import com.light.source.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 
@@ -11,7 +12,8 @@ class DataModule {
 
     @Provides
     fun getApiRepository(
-        remoteDataSource: RemoteDataSource
+        remoteDataSource: RemoteDataSource,
+        localMediaDataSource: LocalMediaDataSource
     ): CategoryRepository =
-        CategoryRepositoryImpl(remoteDataSource)
+        CategoryRepositoryImpl(remoteDataSource, localMediaDataSource)
 }

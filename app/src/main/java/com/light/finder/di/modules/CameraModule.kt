@@ -3,6 +3,7 @@ package com.light.finder.di.modules
 import com.light.domain.CategoryRepository
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.usecases.GetCategoriesResultUseCase
+import com.light.usecases.GetFilePathImageEncodedUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -17,11 +18,17 @@ class CameraModule {
         GetCategoriesResultUseCase(categoryRepository)
 
     @Provides
-    fun cameraViewModel(
-        getCategoryResultUseCase: GetCategoriesResultUseCase
+    fun getFilePathImageEncodedUseCase(categoryRepository: CategoryRepository) =
+        GetFilePathImageEncodedUseCase(categoryRepository)
 
+    @Provides
+    fun cameraViewModel(
+        getCategoryResultUseCase: GetCategoriesResultUseCase,
+        getFilePathImageEncodedUseCase: GetFilePathImageEncodedUseCase
     ) = CameraViewModel(
-        getCategoryResultUseCase, Dispatchers.Main
+        getCategoryResultUseCase,
+        getFilePathImageEncodedUseCase,
+        Dispatchers.Main
     )
 }
 

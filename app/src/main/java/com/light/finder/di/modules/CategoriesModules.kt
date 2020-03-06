@@ -11,7 +11,6 @@ class CategoriesModule {
 
     @Provides
     fun categoryViewModel(
-
     ) = CategoryViewModel(
         Dispatchers.Main
     )

@@ -60,6 +60,7 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var alertDialog: AlertDialog
 
     companion object {
         const val TAG = "CameraX"
@@ -124,7 +125,6 @@ class CameraFragment : BaseFragment() {
                 context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
             )
             viewModel.onSendButtonClicked(photoFile.absolutePath)
-
         }
     }
 
@@ -142,6 +142,7 @@ class CameraFragment : BaseFragment() {
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
         viewModel.modelError.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
 
         setLottieTransitionAnimation()
 
@@ -161,35 +162,30 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun observeErrorResponse(eventErrorResponse: Event<ErrorModel>) {
-        eventErrorResponse.getContentIfNotHandled()?.let { errorModel ->
+    private fun observeErrorResponse(modelErrorEvent: Event<ErrorModel>) {
+        modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
 
             val dialogBuilder = AlertDialog.Builder(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
             dialogBuilder.setView(dialogView)
-            val alertDialog = dialogBuilder.create()
+            alertDialog = dialogBuilder.create()
             alertDialog.setCanceledOnTouchOutside(false)
             alertDialog.setCancelable(false)
 
 
 
             if (errorModel.isTimeout) {
-
-
                 dialogView.buttonPositive.text = getString(R.string.try_again)
                 dialogView.buttonNeutral.text = getString(R.string.help_me)
                 dialogView.textViewTitleDialog.text = getString(R.string.unidentified)
                 dialogView.textViewSubTitleDialog.text = getString(R.string.unidentified_sub)
                 dialogView.buttonNegative.gone()
-
-
                 dialogView.buttonPositive.setOnClickListener {
-
-                    revertCameraView()
-                    alertDialog.dismiss()
-
+                    viewModel.onPositiveAlertDialogButtonClicked()
                 }
                 alertDialog.show()
+            } else {
+                revertCameraView()
             }
             //TODO handle other errors
             /*else {
@@ -210,9 +206,24 @@ class CameraFragment : BaseFragment() {
                 }
 
                 alertDialog.show()
-
-
             }*/
+        }
+    }
+
+    private fun observeDialogButtonAction(modelDialogEvent: Event<DialogModel>) {
+        modelDialogEvent.getContentIfNotHandled()?.let { dialogModel ->
+            when (dialogModel) {
+                is DialogModel.PositiveButton -> {
+                    revertCameraView()
+                    alertDialog.dismiss()
+                }
+
+                is DialogModel.SecondaryButton -> {//TODO
+                }
+
+            }
+
+
         }
     }
 
@@ -275,7 +286,10 @@ class CameraFragment : BaseFragment() {
         when (modelContent) {
             is Content.EncodeImage -> {
                 imageViewPreview.loadFile(File(modelContent.absolutePath))
-                viewModel.onRequestCategoriesMessages(modelContent.absolutePath.encodeImage())
+                viewModel.onRequestFileImageEncoded(modelContent.absolutePath)
+            }
+            is Content.RequestCategoriesMessages -> {
+                viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
         }
