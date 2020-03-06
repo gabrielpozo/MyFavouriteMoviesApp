@@ -17,12 +17,15 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.*
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.finder.CameraActivity
 import com.light.finder.R
@@ -61,32 +64,29 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var alertDialog: AlertDialog
+    private lateinit var cameraSelector: CameraSelector
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
     companion object {
         const val TAG = "CameraX"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private var flashMode = ImageCapture.FLASH_MODE_OFF
-        private fun createFile(baseFolder: File, format: String, extension: String) =
-            File(
-                baseFolder, SimpleDateFormat(format, Locale.US)
-                    .format(System.currentTimeMillis()) + extension
-            )
     }
 
 
     private lateinit var container: ConstraintLayout
-    lateinit var viewFinder: PreviewView
+    private lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
-    lateinit var mainExecutor: Executor
+    private lateinit var mainExecutor: Executor
 
     private var displayId: Int = -1
-    var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    var preview: Preview? = null
-    var imageCapture: ImageCapture? = null
-    var imageAnalyzer: ImageAnalysis? = null
-    var camera: Camera? = null
+    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    private var preview: Preview? = null
+    private var imageCapture: ImageCapture? = null
+    private var imageAnalyzer: ImageAnalysis? = null
+    private var camera: Camera? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,19 +137,41 @@ class CameraFragment : BaseFragment() {
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
         } ?: throw Exception("Invalid Activity")
 
-        viewModel.model.observe(viewLifecycleOwner, Observer(::updateUI))
-        viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::setPreviewView))
+        container = view as ConstraintLayout
+        viewFinder = container.findViewById(R.id.viewFinder)
+
+        viewModel.model.observe(viewLifecycleOwner, Observer(::observeUpdateUI))
+        viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
         viewModel.modelError.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
 
+
         setLottieTransitionAnimation()
 
-        container = view as ConstraintLayout
-        viewFinder = container.findViewById(R.id.viewFinder)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
+    }
+
+
+    private fun observeUpdateUI(model: UiModel) {
+        when (model) {
+            is UiModel.CameraInitializeScreen -> {
+                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            }
+
+            is UiModel.PermissionsViewRequested -> {
+                setPermissionView()
+            }
+
+            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
+                viewModel.onCameraPermissionRequested(isPermissionGranted)
+            }
+
+            is UiModel.CameraViewDisplay -> setCameraSpecs()
+            is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
+        }
     }
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
@@ -220,11 +242,51 @@ class CameraFragment : BaseFragment() {
 
                 is DialogModel.SecondaryButton -> {//TODO
                 }
+            }
+        }
+    }
 
+    private fun observeModelContent(modelContent: Content) {
+        when (modelContent) {
+            is Content.EncodeImage -> {
+                imageViewPreview.loadFile(File(modelContent.absolutePath))
+                viewModel.onRequestFileImageEncoded(modelContent.absolutePath)
+            }
+            is Content.RequestCategoriesMessages -> {
+                viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
+            }
+            is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
+        }
+    }
+
+    private fun observePreviewView(previewModel: Event<PreviewModel>) {
+        previewModel.getContentIfNotHandled()?.let {
+            layoutCamera.gone()
+            layoutPermission.gone()
+            layoutPreview.visible()
+            cameraUiContainer.gone()
+            visibilityCallBack.onVisibilityChanged(true)
+
+            cancelButton.setOnClickListener {
+                viewModel.onCancelRequest()
             }
 
-
         }
+    }
+
+    private fun observeFlashButtonAction(flashModel: FlashModel) {
+        flashMode = when (flashModel) {
+            is FlashModel.ModeOn -> {
+                flashSwitchButton.setImageResource(R.drawable.ic_flash_on)
+                ImageCapture.FLASH_MODE_ON
+            }
+            is FlashModel.ModeOff -> {
+                flashSwitchButton.setImageResource(R.drawable.ic_flash_off)
+                ImageCapture.FLASH_MODE_OFF
+            }
+        }
+        imageCapture?.flashMode = flashMode
+
     }
 
     private fun revertCameraView() {
@@ -237,24 +299,6 @@ class CameraFragment : BaseFragment() {
         initializeLottieAnimation()
     }
 
-    private fun updateUI(model: UiModel) {
-        when (model) {
-            is UiModel.CameraInitializeScreen -> {
-                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
-            }
-
-            is UiModel.PermissionsViewRequested -> {
-                setPermissionView()
-            }
-
-            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
-                viewModel.onCameraPermissionRequested(isPermissionGranted)
-            }
-
-            is UiModel.CameraViewDisplay -> setCameraSpecs()
-            is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
-        }
-    }
 
     private fun setLottieTransitionAnimation() {
         lottieAnimationView.addAnimatorListener(object : AnimatorListener {
@@ -282,40 +326,12 @@ class CameraFragment : BaseFragment() {
         )
     }
 
-    private fun observeModelContent(modelContent: Content) {
-        when (modelContent) {
-            is Content.EncodeImage -> {
-                imageViewPreview.loadFile(File(modelContent.absolutePath))
-                viewModel.onRequestFileImageEncoded(modelContent.absolutePath)
-            }
-            is Content.RequestCategoriesMessages -> {
-                viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
-            }
-            is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
-        }
-    }
-
 
     private fun setPermissionView() {
         layoutCamera.gone()
         layoutPermission.visible()
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
-        }
-    }
-
-    private fun setPreviewView(previewModel: Event<PreviewModel>) {
-        previewModel.getContentIfNotHandled()?.let {
-            layoutCamera.gone()
-            layoutPermission.gone()
-            layoutPreview.visible()
-            cameraUiContainer.gone()
-            visibilityCallBack.onVisibilityChanged(true)
-
-            cancelButton.setOnClickListener {
-                viewModel.onCancelRequest()
-            }
-
         }
     }
 
@@ -336,10 +352,14 @@ class CameraFragment : BaseFragment() {
 
             displayId = viewFinder.display.displayId
 
+
             initCameraUi()
 
-            bindCameraUseCases(flashMode)
+            flashSwitchButton.setOnClickListener {
+                viewModel.onFlashModeButtonClicked(flashMode)
+            }
 
+            //TODO check this and move it to local data source
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
                     EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
@@ -375,21 +395,70 @@ class CameraFragment : BaseFragment() {
                 }, ANIMATION_SLOW_MILLIS)
 
             }
-
         }
 
 
-        flashSwitchButton.setOnClickListener {
-            flashMode = if (ImageCapture.FLASH_MODE_ON == flashMode) {
-                ImageCapture.FLASH_MODE_OFF
-            } else {
-                ImageCapture.FLASH_MODE_ON
+        cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+        /**
+         * CAMERA USE-CASES
+         */
+        val rotation = viewFinder.display.rotation
+
+        cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+
+
+        preview = Preview.Builder()
+            // .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            //.setTargetAspectRatio(screenAspectRatio)
+            .setFlashMode(flashMode)
+            .setTargetRotation(rotation)
+            .build()
+
+        imageAnalyzer = ImageAnalysis.Builder()
+            //.setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+            .also {
+                it.setAnalyzer(mainExecutor,
+                    LuminosityAnalyzer { luma ->
+                        Timber.d("$TAG Average luminosity: $luma")
+                    })
             }
-            bindCameraUseCases(flashMode)
-        }
+
+        /**
+         *END USE-CASES
+         */
+
+        preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
+
+        cameraProvider.unbindAll()
+
+        camera = cameraProvider.bindToLifecycle(
+            this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
+        )
+
+        /**
+         * once camera container is initialize we start observing camera events from camera viewmodels
+         */
+        viewModel.modelFlash.observe(viewLifecycleOwner, Observer(::observeFlashButtonAction))
 
     }
 
+    //TODO set this method for extension
+    private fun createFile(baseFolder: File, format: String, extension: String) =
+        File(
+            baseFolder, SimpleDateFormat(format, Locale.US)
+                .format(System.currentTimeMillis()) + extension
+        )
+
+    //TODO set this method for extension
     private fun initializeLottieAnimation() {
         lottieAnimationView.progress = 0.0f
     }

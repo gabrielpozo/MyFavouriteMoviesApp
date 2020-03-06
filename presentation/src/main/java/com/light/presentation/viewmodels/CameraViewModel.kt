@@ -16,6 +16,11 @@ class CameraViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    companion object {
+        const val MODE_ON = 1
+        const val MODE_OFF = 2
+    }
+
     private lateinit var dataMessages: List<Message>
     private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.INITIAL_STATE
 
@@ -72,12 +77,19 @@ class CameraViewModel(
     val modelDialog: LiveData<Event<DialogModel>>
         get() = _modelDialog
 
-
     sealed class DialogModel {
         class PositiveButton(val message: String) : DialogModel()
         class SecondaryButton(val message: String) : DialogModel()
     }
 
+    private val _modelFlash = MutableLiveData<FlashModel>()
+    val modelFlash: LiveData<FlashModel>
+        get() = _modelFlash
+
+    sealed class FlashModel(val mode: Int) {
+        object ModeOn : FlashModel(MODE_OFF)
+        object ModeOff : FlashModel(MODE_ON)
+    }
 
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
@@ -162,6 +174,14 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.PositiveButton(""))
     }
 
+    fun onFlashModeButtonClicked(flashMode: Int) {
+        if (flashMode == MODE_ON) {
+            _modelFlash.value = FlashModel.ModeOff
+        } else if (flashMode == MODE_OFF) {
+            _modelFlash.value = FlashModel.ModeOn
+        }
+    }
+
     private fun handleSuccessResponse(messages: List<Message>) {
         flag = STATUS_REQUEST_LOADER.DATA_RETRIEVED
         dataMessages = messages
@@ -182,6 +202,8 @@ class CameraViewModel(
             _modelError.value = Event(ErrorModel(isTimeout = true))
         }
     }
+
+
 }
 
 enum class STATUS_REQUEST_LOADER { INITIAL_STATE, DATA_RETRIEVED, ANIMATION_CONSUMED, ERROR }
