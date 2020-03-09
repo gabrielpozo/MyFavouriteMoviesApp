@@ -14,7 +14,6 @@ object MessageRemoteUtil {
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
         .hostnameVerifier { _, _ -> true }
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .readTimeout(5, TimeUnit.SECONDS)
         .build()
 
     val gsonBuilder: GsonBuilder = GsonBuilder().setLenient()

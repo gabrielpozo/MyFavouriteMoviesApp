@@ -195,7 +195,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
 
-                is ErrorModel.NotBulbRecognised -> {
+                is ErrorModel.NotBulbIdentified -> {
                     showErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),

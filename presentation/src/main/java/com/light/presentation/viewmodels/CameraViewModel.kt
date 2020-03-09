@@ -70,7 +70,7 @@ class CameraViewModel(
 
     sealed class ErrorModel {
         object TimeOutError : ErrorModel()
-        object NotBulbRecognised : ErrorModel()
+        object NotBulbIdentified : ErrorModel()
         object ServerError : ErrorModel()
 
     }
@@ -183,7 +183,7 @@ class CameraViewModel(
     }
 
     private fun handleEmptyResponse() {
-        _modelError.value = Event(ErrorModel.NotBulbRecognised)
+        _modelError.value = Event(ErrorModel.NotBulbIdentified)
     }
 
     private fun handleFileImageRetrieved(imageEncoded: String) {
