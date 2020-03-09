@@ -11,7 +11,7 @@ data class Result<out T>(
         SUCCESS,
         ERROR,
         EMPTY,
-        CANCELED
+        TIME_OUT
     }
 
     companion object {
@@ -31,16 +31,18 @@ data class Result<out T>(
         fun <T> error(
             message: String,
             data: T? = null,
-            isCancelRequest: Boolean = false
+            isTimeout: Boolean = false,
+            isCanceled: Boolean = false
         ): Result<T> {
             return Result(
-                if (!isCancelRequest) {
+                if (!isTimeout) {
                     Status.ERROR
                 } else {
-                    Status.CANCELED
+                    Status.TIME_OUT
                 },
                 data,
-                message
+                message,
+                isCanceled
             )
         }
     }

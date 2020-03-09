@@ -3,9 +3,13 @@ package com.light.source.remote
 import com.light.data.Result
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.io.IOException
 import java.lang.Exception
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeoutException
 
 abstract class BaseDataSource {
 
@@ -27,8 +31,11 @@ abstract class BaseDataSource {
             }
         }
 
-    } catch (ce: CancellationException) {
-        Result.error(ce.message ?: ce.toString(), isCancelRequest = true)
+    } catch (io: CancellationException) {
+        Result.error(io.message ?: io.toString(), isCanceled = true)
+    }
+    catch (st: SocketTimeoutException) {
+        Result.error(st.message ?: st.toString(), isTimeout = true)
     } catch (e: Exception) {
         Result.error(e.message.toString())
     }

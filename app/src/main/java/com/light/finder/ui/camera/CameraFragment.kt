@@ -189,22 +189,27 @@ class CameraFragment : BaseFragment() {
             when (errorModel) {
                 is ErrorModel.TimeOutError -> {
                     showErrorDialog(
-                        getString(R.string.time_out_error),
-                        getString(R.string.unidentified_sub)
+                        getString(R.string.unidentified),
+                        getString(R.string.unidentified_sub),
+                        getString(R.string.try_again)
                     )
                 }
 
                 is ErrorModel.NotBulbRecognised -> {
                     showErrorDialog(
                         getString(R.string.unidentified),
-                        getString(R.string.unidentified_sub)
+                        getString(R.string.unidentified_sub),
+                        getString(R.string.try_again)
                     )
                 }
 
-                is ErrorModel.GeneralError -> {
+                is ErrorModel.ServerError -> {
                     showErrorDialog(
                         getString(R.string.oops),
-                        getString(R.string.error_sub)
+                        getString(R.string.error_sub),
+                        getString(R.string.ok),
+                        false
+
                     )
                 }
             }
@@ -240,6 +245,7 @@ class CameraFragment : BaseFragment() {
 
     private fun observePreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
+            imageViewPreview.setImageDrawable(null)//we clear the view so we it won't keep  old images
             layoutCamera.gone()
             layoutPermission.gone()
             layoutPreview.visible()
@@ -274,7 +280,7 @@ class CameraFragment : BaseFragment() {
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 
-        lottieAnimationView.playAnimation()//restore lottie view again after being consumed
+        lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
     }
 
@@ -321,22 +327,31 @@ class CameraFragment : BaseFragment() {
     }
 
 
-    private fun showErrorDialog(titleDialog: String, subtitleDialog: String) {
+    private fun showErrorDialog(
+        titleDialog: String,
+        subtitleDialog: String,
+        buttonPositiveText: String,
+        neutralButton: Boolean = true
+    ) {
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)
         alertDialog = dialogBuilder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.setCancelable(false)
-
         lottieAnimationView.pauseAnimation()
-        dialogView.buttonPositive.text = getString(R.string.try_again)
-        dialogView.buttonNeutral.text = getString(R.string.help_me)
+        dialogView.buttonPositive.text = buttonPositiveText
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
-        dialogView.buttonNegative.gone()
         dialogView.buttonPositive.setOnClickListener {
             viewModel.onPositiveAlertDialogButtonClicked()
+        }
+
+        dialogView.buttonNegative.gone()
+        if (neutralButton) {
+            dialogView.buttonNeutral.text = getString(R.string.help_me)
+        } else {
+            dialogView.buttonNeutral.gone()
         }
         alertDialog.show()
 
@@ -393,6 +408,7 @@ class CameraFragment : BaseFragment() {
                     container.postDelayed(
                         { container.foreground = null }, ANIMATION_FAST_MILLIS
                     )
+                    viewModel.onCameraButtonClicked()
                 }, ANIMATION_SLOW_MILLIS)
 
             }

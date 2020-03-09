@@ -24,11 +24,11 @@ suspend fun <T> repositoryHandleSource(
             }
 
             Result.Status.ERROR -> {
-                DataState.Error(resultRequest.message ?: GENERAL_ERROR)
+                DataState.Error(resultRequest.message ?: GENERAL_ERROR, isCanceled =  resultRequest.isCancelRequest)
             }
 
-            Result.Status.CANCELED -> {
-                DataState.Cancel(resultRequest.message ?: CANCEL_ERROR)
+            Result.Status.TIME_OUT -> {
+                DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
             }
         }
 
