@@ -4,6 +4,8 @@ package com.light.util
 const val NULLABLE_ERROR = "Error, this can't be null"
 const val GENERAL_ERROR = "Call failed, general error"
 const val CANCEL_ERROR = "Request canceled, cancel error"
+const val EMPTY_RESPONSE = "Empty response"
+
 
 
 const val KEY_EVENT_ACTION = "key_event_action"

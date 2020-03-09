@@ -18,7 +18,7 @@ class SignifyRemoteDataSource : BaseDataSource(),
         }
 
     private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> {
-        return categoryResult.messageList.map(mapServerMessagesToDomain)
+        return categoryResult.messageList?.map(mapServerMessagesToDomain)!!
     }
 }
 

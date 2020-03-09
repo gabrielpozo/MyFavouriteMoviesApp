@@ -10,17 +10,23 @@ data class Result<out T>(
     enum class Status {
         SUCCESS,
         ERROR,
+        EMPTY,
         CANCELED
     }
 
     companion object {
-        fun <T> success(data: T): Result<T> {
+        fun <T> success(data: T? = null, hasContent: Boolean = true): Result<T> {
             return Result(
-                Status.SUCCESS,
+                if (hasContent) {
+                    Status.SUCCESS
+                } else {
+                    Status.EMPTY
+                },
                 data,
                 null
             )
         }
+
 
         fun <T> error(
             message: String,

@@ -41,6 +41,7 @@
     <string name="try_again">Try again</string>
     <string name="help_me">Help me scan</string>
     <string name="unidentified">No light bulb identified</string>
+    <string name="time_out_error">Time out error</string>
     <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops!</string>

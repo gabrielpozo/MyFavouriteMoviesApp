@@ -186,49 +186,28 @@ class CameraFragment : BaseFragment() {
 
     private fun observeErrorResponse(modelErrorEvent: Event<ErrorModel>) {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
-
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
-            dialogBuilder.setView(dialogView)
-            alertDialog = dialogBuilder.create()
-            alertDialog.setCanceledOnTouchOutside(false)
-            alertDialog.setCancelable(false)
-
-
-
-            if (errorModel.isTimeout) {
-                dialogView.buttonPositive.text = getString(R.string.try_again)
-                dialogView.buttonNeutral.text = getString(R.string.help_me)
-                dialogView.textViewTitleDialog.text = getString(R.string.unidentified)
-                dialogView.textViewSubTitleDialog.text = getString(R.string.unidentified_sub)
-                dialogView.buttonNegative.gone()
-                dialogView.buttonPositive.setOnClickListener {
-                    viewModel.onPositiveAlertDialogButtonClicked()
+            when (errorModel) {
+                is ErrorModel.TimeOutError -> {
+                    showErrorDialog(
+                        getString(R.string.time_out_error),
+                        getString(R.string.unidentified_sub)
+                    )
                 }
-                alertDialog.show()
-            } else {
-                revertCameraView()
+
+                is ErrorModel.NotBulbRecognised -> {
+                    showErrorDialog(
+                        getString(R.string.unidentified),
+                        getString(R.string.unidentified_sub)
+                    )
+                }
+
+                is ErrorModel.GeneralError -> {
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.error_sub)
+                    )
+                }
             }
-            //TODO handle other errors
-            /*else {
-
-
-                dialogView.buttonPositive.text = getString(R.string.ok)
-                dialogView.buttonNeutral.gone()
-                dialogView.buttonNegative.gone()
-                dialogView.textViewTitleDialog.text = getString(R.string.oops)
-                dialogView.textViewSubTitleDialog.text = getString(R.string.error_sub)
-
-
-                dialogView.buttonPositive.setOnClickListener {
-
-                    revertCameraView()
-                    alertDialog.dismiss()
-
-                }
-
-                alertDialog.show()
-            }*/
         }
     }
 
@@ -339,6 +318,28 @@ class CameraFragment : BaseFragment() {
         content.getContentIfNotHandled()?.let { messages ->
             mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
+    }
+
+
+    private fun showErrorDialog(titleDialog: String, subtitleDialog: String) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+
+        lottieAnimationView.pauseAnimation()
+        dialogView.buttonPositive.text = getString(R.string.try_again)
+        dialogView.buttonNeutral.text = getString(R.string.help_me)
+        dialogView.textViewTitleDialog.text = titleDialog
+        dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonNegative.gone()
+        dialogView.buttonPositive.setOnClickListener {
+            viewModel.onPositiveAlertDialogButtonClicked()
+        }
+        alertDialog.show()
+
     }
 
 

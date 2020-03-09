@@ -1,24 +1,39 @@
 package com.light.source.remote
 
-import kotlinx.coroutines.Deferred
 import com.light.data.Result
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.Response
+import java.lang.Exception
 
 abstract class BaseDataSource {
 
     protected suspend fun <T, D> getResult(
         mapper: (T) -> D,
-        call: suspend () -> Deferred<T>
+        call: suspend () -> Response<T>
     ): Result<D> = try {
-        val response = call().await()
-        Result.success(mapper(response))
+        withContext(Dispatchers.IO) {
+            val response = call()
+            if (response.isSuccessful) {
+                if (response.code() == 204) {
+                    Result.success(hasContent = false)
+                } else {
+                    Result.success(mapper(response.body()!!))
+                }
+
+            } else {
+                Result.error(response.message())
+            }
+        }
+
     } catch (ce: CancellationException) {
         Result.error(ce.message ?: ce.toString(), isCancelRequest = true)
     } catch (e: Exception) {
-        Result.error(e.message ?: e.toString())
+        Result.error(e.message.toString())
     }
 
     private fun <T> error(message: String): Result<T> {
-        return Result.error("Network call has failed for a following reason: $message")
+        return Result.error(message)
     }
 }

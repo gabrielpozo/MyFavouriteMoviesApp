@@ -71,7 +71,12 @@ class CameraViewModel(
     val modelError: LiveData<Event<ErrorModel>>
         get() = _modelError
 
-    class ErrorModel(val throwable: Throwable? = null, val isTimeout: Boolean = false)
+    sealed class ErrorModel {
+        object TimeOutError : ErrorModel()
+        object NotBulbRecognised : ErrorModel()
+        object GeneralError : ErrorModel()
+
+    }
 
     private val _modelDialog = MutableLiveData<Event<DialogModel>>()
     val modelDialog: LiveData<Event<DialogModel>>
@@ -103,6 +108,7 @@ class CameraViewModel(
                 ::handleSuccessResponse,
                 ::handleErrorResponse,
                 ::handleCancelResponse,
+                ::handleEmptyResponse,
                 base64
             )
         }
@@ -184,12 +190,18 @@ class CameraViewModel(
 
     private fun handleSuccessResponse(messages: List<Message>) {
         flag = STATUS_REQUEST_LOADER.DATA_RETRIEVED
+        //TODO the logic here!!
         dataMessages = messages
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
         flag = STATUS_REQUEST_LOADER.INITIAL_STATE
-        _modelError.value = Event(ErrorModel(throwable))
+        _modelError.value = Event(ErrorModel.GeneralError)
+    }
+
+    private fun handleEmptyResponse() {
+        flag = STATUS_REQUEST_LOADER.INITIAL_STATE
+        _modelError.value = Event(ErrorModel.NotBulbRecognised)
     }
 
     private fun handleFileImageRetrieved(imageEncoded: String) {
@@ -199,7 +211,7 @@ class CameraViewModel(
     private fun handleCancelResponse(message: String) {
         if (flag == STATUS_REQUEST_LOADER.ANIMATION_CONSUMED) {
             flag = STATUS_REQUEST_LOADER.INITIAL_STATE
-            _modelError.value = Event(ErrorModel(isTimeout = true))
+            _modelError.value = Event(ErrorModel.TimeOutError)
         }
     }
 
