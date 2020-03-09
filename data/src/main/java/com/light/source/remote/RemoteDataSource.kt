@@ -1,4 +1,4 @@
-package com.light.source
+package com.light.source.remote
 
 import com.light.data.Result
 import com.light.domain.model.Message

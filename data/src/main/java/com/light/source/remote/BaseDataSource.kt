@@ -1,4 +1,4 @@
-package com.light.source
+package com.light.source.remote
 
 import kotlinx.coroutines.Deferred
 import com.light.data.Result

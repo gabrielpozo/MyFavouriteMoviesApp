@@ -1,22 +1,28 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
 import com.light.usecases.GetCategoriesResultUseCase
+import com.light.usecases.GetFilePathImageEncodedUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
 class CameraViewModel(
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
+    private val getFilePathImageUseCase: GetFilePathImageEncodedUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    companion object {
+        const val MODE_ON = 1
+        const val MODE_OFF = 2
+    }
+
     private lateinit var dataMessages: List<Message>
-    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+    private var flag: STATUS_REQUEST_LOADER = STATUS_REQUEST_LOADER.INITIAL_STATE
 
 
     private val _model = MutableLiveData<UiModel>()
@@ -50,6 +56,7 @@ class CameraViewModel(
     sealed class Content {
         class EncodeImage(val absolutePath: String) : Content()
         class RequestModelContent(val messages: Event<List<Message>>) : Content()
+        class RequestCategoriesMessages(val encodedImage: String) : Content()
     }
 
 
@@ -66,6 +73,23 @@ class CameraViewModel(
 
     class ErrorModel(val throwable: Throwable? = null, val isTimeout: Boolean = false)
 
+    private val _modelDialog = MutableLiveData<Event<DialogModel>>()
+    val modelDialog: LiveData<Event<DialogModel>>
+        get() = _modelDialog
+
+    sealed class DialogModel {
+        class PositiveButton(val message: String) : DialogModel()
+        class SecondaryButton(val message: String) : DialogModel()
+    }
+
+    private val _modelFlash = MutableLiveData<FlashModel>()
+    val modelFlash: LiveData<FlashModel>
+        get() = _modelFlash
+
+    sealed class FlashModel(val mode: Int) {
+        object ModeOn : FlashModel(MODE_OFF)
+        object ModeOff : FlashModel(MODE_ON)
+    }
 
     fun onSendButtonClicked(absolutePath: String) {
         _modelPreview.value = Event(PreviewModel())
@@ -112,42 +136,50 @@ class CameraViewModel(
 
     fun onCheckLoaderAnimationConsumed() {
         when (flag) {
-            STATUS_REQUEST_LOADER.DATA_RETRIEVED -> {
-                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
-                _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
-            }
-            STATUS_REQUEST_LOADER.NO_RESPONSE_YET -> {
-                /**
-                 *(the lottie time animation has been consumed(finish),
-                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
-                 * cause an error
-                 */
-                /**
-                 *(the lottie time animation has been consumed(finish),
-                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
-                 * cause an error
-                 */
-                /**
-                 *(the lottie time animation has been consumed(finish),
-                 * so if it satisfies this else, it means we still have no response. Therefore we cancel the request and
-                 * cause an error
-                 */
+            STATUS_REQUEST_LOADER.INITIAL_STATE -> {
                 flag = STATUS_REQUEST_LOADER.ANIMATION_CONSUMED
                 cancelRequestScope()
             }
-            STATUS_REQUEST_LOADER.ERROR -> {
-                flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+
+            STATUS_REQUEST_LOADER.DATA_RETRIEVED -> {
+                flag = STATUS_REQUEST_LOADER.INITIAL_STATE
+                _modelRequest.value = Content.RequestModelContent(Event(dataMessages))
             }
+
+            STATUS_REQUEST_LOADER.ERROR -> {
+                flag = STATUS_REQUEST_LOADER.INITIAL_STATE
+            }
+        }
+    }
+
+    fun onRequestFileImageEncoded(absolutePath: String) {
+        checkCoroutineIsCancelled()
+        launch {
+            getFilePathImageUseCase.execute(
+                ::handleFileImageRetrieved, params = *arrayOf(absolutePath)
+            )
         }
     }
 
     fun onCancelRequest() {
         if (flag == STATUS_REQUEST_LOADER.DATA_RETRIEVED) {
-            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+            flag = STATUS_REQUEST_LOADER.INITIAL_STATE
         } else {
             cancelRequestScope()
         }
         _modelRequestCancel.value = Event(CancelModel())
+    }
+
+    fun onPositiveAlertDialogButtonClicked() {
+        _modelDialog.value = Event(DialogModel.PositiveButton(""))
+    }
+
+    fun onFlashModeButtonClicked(flashMode: Int) {
+        if (flashMode == MODE_ON) {
+            _modelFlash.value = FlashModel.ModeOff
+        } else if (flashMode == MODE_OFF) {
+            _modelFlash.value = FlashModel.ModeOn
+        }
     }
 
     private fun handleSuccessResponse(messages: List<Message>) {
@@ -156,14 +188,17 @@ class CameraViewModel(
     }
 
     private fun handleErrorResponse(throwable: Throwable) {
-        flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
+        flag = STATUS_REQUEST_LOADER.INITIAL_STATE
         _modelError.value = Event(ErrorModel(throwable))
+    }
+
+    private fun handleFileImageRetrieved(imageEncoded: String) {
+        _modelRequest.value = Content.RequestCategoriesMessages(imageEncoded)
     }
 
     private fun handleCancelResponse(message: String) {
         if (flag == STATUS_REQUEST_LOADER.ANIMATION_CONSUMED) {
-            flag = STATUS_REQUEST_LOADER.NO_RESPONSE_YET
-            Log.d("Gabriel", "handleCancelResponse!!! ")
+            flag = STATUS_REQUEST_LOADER.INITIAL_STATE
             _modelError.value = Event(ErrorModel(isTimeout = true))
         }
     }
@@ -171,4 +206,4 @@ class CameraViewModel(
 
 }
 
-enum class STATUS_REQUEST_LOADER { DATA_RETRIEVED, NO_RESPONSE_YET, ANIMATION_CONSUMED, ERROR }
+enum class STATUS_REQUEST_LOADER { INITIAL_STATE, DATA_RETRIEVED, ANIMATION_CONSUMED, ERROR }
