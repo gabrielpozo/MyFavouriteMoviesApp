@@ -1,6 +1,7 @@
 package com.light.source.remote
 
 import com.light.data.Result
+import com.light.util.NO_CONTENT_CODE
 import com.light.util.TIMEOUT_REQUEST
 import kotlinx.coroutines.*
 import retrofit2.Response
@@ -16,7 +17,7 @@ abstract class BaseDataSource {
             withTimeout(TIMEOUT_REQUEST) {
                 val response = call()
                 if (response.isSuccessful) {
-                    if (response.code() == 204) {
+                    if (response.code() == NO_CONTENT_CODE) {
                         Result.success(hasContent = false)
                     } else {
                         Result.success(mapper(response.body()!!))
