@@ -3,7 +3,7 @@ package com.light.finder.data.source.remote
 import com.google.gson.annotations.SerializedName
 
 
-data class CategoryResultDto(@SerializedName("message") val messageList: List<MessageDto>)
+data class CategoryResultDto(@SerializedName("message") val messageList: List<MessageDto>? = null)
 
 data class MessageDto(
     @SerializedName("categories")

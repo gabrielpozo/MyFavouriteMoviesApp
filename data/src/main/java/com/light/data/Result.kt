@@ -10,31 +10,39 @@ data class Result<out T>(
     enum class Status {
         SUCCESS,
         ERROR,
-        CANCELED
+        EMPTY,
+        TIME_OUT
     }
 
     companion object {
-        fun <T> success(data: T): Result<T> {
+        fun <T> success(data: T? = null, hasContent: Boolean = true): Result<T> {
             return Result(
-                Status.SUCCESS,
+                if (hasContent) {
+                    Status.SUCCESS
+                } else {
+                    Status.EMPTY
+                },
                 data,
                 null
             )
         }
 
+
         fun <T> error(
             message: String,
             data: T? = null,
-            isCancelRequest: Boolean = false
+            isTimeout: Boolean = false,
+            isCanceled: Boolean = false
         ): Result<T> {
             return Result(
-                if (!isCancelRequest) {
+                if (!isTimeout) {
                     Status.ERROR
                 } else {
-                    Status.CANCELED
+                    Status.TIME_OUT
                 },
                 data,
-                message
+                message,
+                isCanceled
             )
         }
     }
