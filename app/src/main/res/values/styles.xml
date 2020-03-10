@@ -36,7 +36,7 @@
 
     <style name="TitleTextGreen" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/primaryLightColor</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
 

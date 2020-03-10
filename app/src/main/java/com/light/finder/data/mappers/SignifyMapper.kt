@@ -63,5 +63,5 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
         minPrice.toString()
 
     } else {
-        "$$minPrice - $$maxPrice"
+        "$$minPrice-$$maxPrice"
     }

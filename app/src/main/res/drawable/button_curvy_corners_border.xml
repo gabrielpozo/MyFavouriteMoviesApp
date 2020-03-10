@@ -17,7 +17,7 @@
         android:bottomRightRadius="2dp"
         />
     <solid
-        android:color="@color/transpLightBackgroundColor"
+        android:color="@color/transparentLightBackgroundColor"
 
         />
     <padding
