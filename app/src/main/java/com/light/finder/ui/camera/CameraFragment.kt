@@ -1,8 +1,6 @@
 package com.light.finder.ui.camera
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.Animator.AnimatorListener
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -11,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,8 +66,20 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
+    private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
+        override fun onTick(millisUntilFinished: Long) {
+            countDownText.text = "${millisUntilFinished / 1000}"
+        }
+
+        override fun onFinish() {
+
+        }
+    }
+
     companion object {
-        const val TAG = "CameraX"
+        private const val TAG = "CameraX"
+        private const val INIT_INTERVAL = 5000L
+        private const val DOWN_INTERVAL = 1000L
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
         private var flashMode = ImageCapture.FLASH_MODE_OFF
@@ -148,8 +159,6 @@ class CameraFragment : BaseFragment() {
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
 
 
-        setLottieTransitionAnimation()
-
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
     }
@@ -176,6 +185,8 @@ class CameraFragment : BaseFragment() {
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
+            timer.onTick(INIT_INTERVAL)
+            timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
@@ -237,6 +248,7 @@ class CameraFragment : BaseFragment() {
                 viewModel.onRequestFileImageEncoded(modelContent.absolutePath)
             }
             is Content.RequestCategoriesMessages -> {
+                timer.start()
                 viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
@@ -245,7 +257,8 @@ class CameraFragment : BaseFragment() {
 
     private fun observePreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
-            imageViewPreview.setImageDrawable(null)//we clear the view so we it won't keep  old images
+            //            cancelButton.alpha = 0.4f
+            clearPreviousImage()
             layoutCamera.gone()
             layoutPermission.gone()
             browseButton.gone()
@@ -279,6 +292,7 @@ class CameraFragment : BaseFragment() {
         layoutPreview.gone()
         layoutCamera.visible()
         browseButton.visible()
+        timer.onTick(INIT_INTERVAL)
 
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
@@ -286,24 +300,6 @@ class CameraFragment : BaseFragment() {
         lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
     }
-
-
-    private fun setLottieTransitionAnimation() {
-        lottieAnimationView.addAnimatorListener(object : AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-
-            override fun onAnimationEnd(animation: Animator?) {
-                viewModel.onCheckLoaderAnimationConsumed()
-            }
-
-            override fun onAnimationCancel(animation: Animator?) {}
-
-            override fun onAnimationStart(animation: Animator?) {
-            }
-
-        })
-    }
-
 
     private fun deepLinkToSettings() {
         startActivity(
@@ -326,6 +322,7 @@ class CameraFragment : BaseFragment() {
 
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
+            timer.cancel()
             mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
         }
     }
@@ -343,6 +340,7 @@ class CameraFragment : BaseFragment() {
         alertDialog = dialogBuilder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.setCancelable(false)
+        timer.cancel()
         lottieAnimationView.pauseAnimation()
         dialogView.buttonPositive.text = buttonPositiveText
         dialogView.textViewTitleDialog.text = titleDialog
@@ -482,6 +480,12 @@ class CameraFragment : BaseFragment() {
     //TODO set this method for extension
     private fun initializeLottieAnimation() {
         lottieAnimationView.progress = 0.0f
+    }
+
+    //TODO set this method for extension
+    private fun clearPreviousImage() {
+        imageViewPreview.setImageDrawable(null)//we clear the view so we it won't keep  old images
+
     }
 
 }

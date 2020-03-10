@@ -24,6 +24,7 @@
     <color name="secondaryAppColor">#1ecbd0</color>
     <color name="darkBackgroundColor">#3c3c42</color>
     <color name="lightBackgroundColor">#636367</color>
+    <color name="transpLightBackgroundColor">#66636367</color>
     <color name="snackBarColor">#1432ff</color>
     <color name="bottomNavBarColor">#1c1c1f</color>
 

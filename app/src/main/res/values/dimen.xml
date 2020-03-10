@@ -29,6 +29,8 @@
     <dimen name="rect_button_height">24dp</dimen>
     <dimen name="shutter_button_margin">80dp</dimen>
 
+    <dimen name="counter_bottom_margin">28dp</dimen>
+
 
     <!-- LightFinder -->
 

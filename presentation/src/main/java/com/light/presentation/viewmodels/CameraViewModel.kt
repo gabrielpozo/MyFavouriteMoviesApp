@@ -140,10 +140,6 @@ class CameraViewModel(
         }
     }
 
-    fun onCheckLoaderAnimationConsumed() {
-
-    }
-
     fun onRequestFileImageEncoded(absolutePath: String) {
         checkCoroutineIsCancelled()
         launch {
@@ -154,7 +150,8 @@ class CameraViewModel(
     }
 
     fun onCancelRequest() {
-        cancelRequestScope() }
+        cancelRequestScope()
+    }
 
     fun onPositiveAlertDialogButtonClicked() {
         _modelDialog.value = Event(DialogModel.PositiveButton(""))

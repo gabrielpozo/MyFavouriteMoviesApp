@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/textViewResults"
         style="@style/SubtitleTextSmall"
@@ -17,6 +18,8 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutBulbType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
     <LinearLayout
         android:id="@+id/layoutBulbType"
@@ -36,11 +39,23 @@
             android:paddingBottom="@dimen/stroke_medium"
             android:text="@string/light_bulb_recognised_as"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:contentDescription="@string/back_button_alt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="@dimen/margin_xsmall"
+        android:layout_marginTop="42dp"
+        android:layout_width="@dimen/round_button_small"
+        android:layout_height="@dimen/round_button_small"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
