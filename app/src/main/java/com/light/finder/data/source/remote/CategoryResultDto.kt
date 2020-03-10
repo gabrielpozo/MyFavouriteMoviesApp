@@ -16,7 +16,9 @@ data class CategoriesDto(
     @SerializedName("category_index") val categoryIndex: Int?,
     @SerializedName("category_name") val categoryName: String?,
     @SerializedName("category_image") val categoryImage: String?,
-    @SerializedName("category_price") val categoryPrice: Price?
+    @SerializedName("category_price") val categoryPrice: Price?,
+    @SerializedName("category_filter_watt_replaced") val categoryWattReplace: List<Int>?
+
 )
 
 

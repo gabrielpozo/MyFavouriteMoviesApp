@@ -248,6 +248,7 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.setImageDrawable(null)//we clear the view so we it won't keep  old images
             layoutCamera.gone()
             layoutPermission.gone()
+            browseButton.gone()
             layoutPreview.visible()
             cameraUiContainer.gone()
             visibilityCallBack.onVisibilityChanged(true)
@@ -277,6 +278,8 @@ class CameraFragment : BaseFragment() {
     private fun revertCameraView() {
         layoutPreview.gone()
         layoutCamera.visible()
+        browseButton.visible()
+
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 
@@ -314,6 +317,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setPermissionView() {
         layoutCamera.gone()
+        browseButton.visible()
         layoutPermission.visible()
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()

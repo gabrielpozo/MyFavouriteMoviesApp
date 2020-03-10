@@ -12,7 +12,8 @@ data class Category(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
-    val wattageAvailable: Int
+    val minWattage: String,
+    val maxWattage: String
 )
 
 data class Product(

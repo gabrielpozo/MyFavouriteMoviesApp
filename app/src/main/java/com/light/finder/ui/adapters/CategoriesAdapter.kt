@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
+import com.light.finder.extensions.getStringFormatter
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -39,6 +40,15 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
+            if (category.minWattage != itemView.context.getString(R.string.no_value)) {
+                itemView.product_detail.text =
+                    itemView.context.getString(
+                        R.string.description_wattage,
+                        category.minWattage,
+                        category.maxWattage,
+                        category.categoryProductBase
+                    )
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
     val categoriesList: ArrayList<Category> = ArrayList()
     messageDto.categories?.map { categoryDto ->
-        val countWattages = getWattValuesCategory(categoryDto.categoryProducts)
         categoriesList.add(
             Category(
                 categoryProductBase = categoryDto.categoryProductBase ?: "",
@@ -23,7 +22,16 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     categoryDto.categoryPrice?.minPrice,
                     categoryDto.categoryPrice?.maxPrice
                 ),
-                wattageAvailable = countWattages
+                minWattage = categoryDto.categoryWattReplace?.let { list ->
+                    if (list.isNotEmpty()) {
+                        list[0].toString()
+                    } else ""
+                } ?: "",
+                maxWattage = categoryDto.categoryWattReplace?.let { list ->
+                    if (list.isNotEmpty()) {
+                        list[1].toString()
+                    } else ""
+                } ?: ""
             )
         )
     }
@@ -44,18 +52,6 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         productScene = productDto.productScene ?: "",
         productPrice = productDto.productPrice ?: 0.0f
     )
-}
-
-
-fun getWattValuesCategory(categoryProducts: List<ProductDto>?): Int {
-    val wattages = hashSetOf<Float>()
-    categoryProducts?.map { productDto ->
-        if (productDto.productSpecOne != null) {
-            wattages.add(productDto.productSpecOne)
-        }
-    }
-    return wattages.count()
-
 }
 
 

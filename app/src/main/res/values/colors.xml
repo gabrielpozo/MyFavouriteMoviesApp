@@ -22,11 +22,14 @@
     <color name="primarySubText">#d7d7d8</color>
     <color name="primaryAppColor">#00e487</color>
     <color name="secondaryAppColor">#1ecbd0</color>
-    <color name="darkBackgroundColor">#3c3c41</color>
+    <color name="darkBackgroundColor">#3c3c42</color>
     <color name="lightBackgroundColor">#636367</color>
     <color name="snackBarColor">#1432ff</color>
     <color name="bottomNavBarColor">#1c1c1f</color>
 
+    <!--new colors-->
+    <color name="primaryLightColor">#008550</color>
+    <color name="colorActionBar">@android:color/transparent</color>
 
 
 

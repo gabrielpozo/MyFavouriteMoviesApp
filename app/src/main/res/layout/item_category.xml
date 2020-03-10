@@ -2,10 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/card_height"
-    android:layout_marginEnd="@dimen/margin_card"
-    android:layout_marginStart="@dimen/margin_card"
+    android:layout_marginEnd="@dimen/margin_big"
+    android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
-    app:cardBackgroundColor="@color/lightBackgroundColor"
+    app:cardBackgroundColor="@color/whiteGhost"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -33,12 +33,26 @@
             android:gravity="start"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:includeFontPadding="false"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/product_detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Category Name" />
+
+        <TextView
+            android:id="@+id/product_detail"
+            style="@style/TitleTextBook"
+            android:text="@string/placeholder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/category_name"
+            app:layout_constraintStart_toEndOf="@+id/bulbCover"
+            tools:text="40W - 60W E26"
+            />
 
         <TextView
             android:id="@+id/product_description"
@@ -52,20 +66,6 @@
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/product_detail" />
-
-
-        <TextView
-            android:id="@+id/product_detail"
-            style="@style/SubtitleText"
-            android:text="@string/placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/product_description"
-            app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/category_name" />
 
         <TextView
             android:id="@+id/price"
@@ -88,8 +88,11 @@
             android:text="@string/text_bulb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/price"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_description"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/price" />
 

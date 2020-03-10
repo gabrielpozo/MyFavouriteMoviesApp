@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/textViewResults"
         style="@style/SubtitleTextSmall"
-        android:layout_marginTop="@dimen/stroke_medium"
+        android:layout_marginTop="@dimen/stroke_small"
         android:text="@string/text_results"
         android:layout_width="0dp"
         android:layout_height="40dp"
@@ -20,10 +20,11 @@
 
     <LinearLayout
         android:id="@+id/layoutBulbType"
-        android:background="@color/snackBarColor"
+        android:background="@color/darkBackgroundColor"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/default_top_margin"
+        android:layout_marginTop="42dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
