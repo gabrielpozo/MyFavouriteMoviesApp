@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/card_height"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin_big"
     android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
@@ -23,6 +23,7 @@
             android:background="@color/primaryTextColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="24dp"
             android:contentDescription="@string/lightbulb_cd" />
 
         <TextView
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:includeFontPadding="false"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/product_detail"
@@ -55,14 +56,14 @@
             />
 
         <TextView
-            android:id="@+id/product_description"
-            style="@style/SubtitleText"
+            android:id="@+id/product_color"
+            style="@style/SubTitleField"
             android:text="@string/placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/product_detail" />
@@ -75,11 +76,13 @@
             android:gravity="start"
             android:singleLine="true"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="12dp"
+
+            app:layout_constraintBottom_toTopOf="@id/energyButton"
+            android:layout_marginBottom="19dp"
+
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/product_description"
+            app:layout_constraintTop_toBottomOf="@+id/product_color"
             tools:text="$0.00-$0.00" />
 
         <TextView
@@ -88,13 +91,30 @@
             android:text="@string/text_bulb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/product_description"
+            app:layout_constraintTop_toBottomOf="@+id/product_color"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/price" />
+
+
+        <Button
+            android:id="@+id/energyButton"
+            style="@style/BlueButton"
+            android:background="@drawable/button_curvy_corners_categories"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="18dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/most_efficient_option"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

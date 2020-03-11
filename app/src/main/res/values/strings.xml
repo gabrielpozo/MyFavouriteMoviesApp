@@ -40,6 +40,8 @@
     <string name="light_bulb_recognised_as">Base identified as %s</string>
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
+    <string name="most_efficient_option">Most energy efficient option</string>
+
 
     <string name="try_again">Try again</string>
     <string name="help_me">Help me scan</string>

@@ -32,7 +32,7 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(product: Product) {
             itemView.product_name.text = product.productName
-            itemView.product_description.text = product.productDescription
+            itemView.product_color.text = product.productDescription
             itemView.productCover.loadUrl(product.productImage[0])
         }
     }

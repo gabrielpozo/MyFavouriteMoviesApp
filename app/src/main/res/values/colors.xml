@@ -17,7 +17,7 @@
 
 
     <!--LightFinder-->
-    <color name="primaryTextColor">#ffffff</color>
+    <color name="primaryTextColor">#ffffff</color>[
     <color name="secondaryTextColor">#00e880</color>
     <color name="primarySubText">#d7d7d8</color>
     <color name="primaryAppColor">#00e487</color>

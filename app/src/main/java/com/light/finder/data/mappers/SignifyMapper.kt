@@ -10,30 +10,40 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
     val categoriesList: ArrayList<Category> = ArrayList()
     messageDto.categories?.map { categoryDto ->
-        categoriesList.add(
-            Category(
-                categoryProductBase = categoryDto.categoryProductBase ?: "",
-                categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain)
-                    ?: emptyList(),
-                categoryName = categoryDto.categoryName ?: "",
-                categoryIndex = categoryDto.categoryIndex ?: 0,
-                categoryImage = categoryDto.categoryImage ?: "",
-                priceRange = getMinMaxPriceTag(
-                    categoryDto.categoryPrice?.minPrice,
-                    categoryDto.categoryPrice?.maxPrice
-                ),
-                minWattage = categoryDto.categoryWattReplace?.let { list ->
-                    if (list.isNotEmpty()) {
-                        list[0].toString()
-                    } else ""
-                } ?: "",
-                maxWattage = categoryDto.categoryWattReplace?.let { list ->
-                    if (list.isNotEmpty()) {
-                        list[1].toString()
-                    } else ""
-                } ?: ""
+        if (categoryDto.categoryProducts?.isNotEmpty() == true) {
+            categoriesList.add(
+                Category(
+                    categoryProductBase = categoryDto.categoryProductBase ?: "",
+                    categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain),
+                    categoryName = categoryDto.categoryName ?: "",
+                    categoryIndex = categoryDto.categoryIndex ?: 0,
+                    categoryImage = categoryDto.categoryImage ?: "",
+                    priceRange = getMinMaxPriceTag(
+                        categoryDto.categoryPrice?.minPrice,
+                        categoryDto.categoryPrice?.maxPrice
+                    ),
+                    minWattage = categoryDto.categoryWattReplace?.let { list ->
+                        if (list.isNotEmpty()) {
+                            list[0].toString()
+                        } else ""
+                    } ?: "",
+                    maxWattage = categoryDto.categoryWattReplace?.let { list ->
+                        if (list.isNotEmpty()) {
+                            list[1].toString()
+                        } else ""
+                    } ?: "",
+                    colors = categoryDto.categoryCctCode?.map { code ->
+                        when (code) {
+                            1 -> "Warm"
+                            2 -> "Warm white"
+                            3 -> "Cool white"
+                            4 -> "Daylight"
+                            else -> ""
+                        }
+                    } ?: emptyList()
+                )
             )
-        )
+        }
     }
 
     Message(
