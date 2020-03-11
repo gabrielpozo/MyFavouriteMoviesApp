@@ -257,7 +257,6 @@ class CameraFragment : BaseFragment() {
 
     private fun observePreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
-            //            cancelButton.alpha = 0.4f
             clearPreviousImage()
             layoutCamera.gone()
             layoutPermission.gone()
@@ -289,11 +288,10 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun revertCameraView() {
+        timer.onTick(INIT_INTERVAL)
         layoutPreview.gone()
         layoutCamera.visible()
         browseButton.visible()
-        timer.onTick(INIT_INTERVAL)
-
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 

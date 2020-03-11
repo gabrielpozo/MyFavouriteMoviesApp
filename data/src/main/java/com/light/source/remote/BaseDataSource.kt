@@ -1,8 +1,8 @@
 package com.light.source.remote
 
 import com.light.data.Result
+import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.NO_CONTENT_CODE
-import com.light.util.TIMEOUT_REQUEST
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.lang.Exception
@@ -14,7 +14,7 @@ abstract class BaseDataSource {
         call: suspend () -> Response<T>
     ): Result<D> = try {
         withContext(Dispatchers.IO) {
-            withTimeout(TIMEOUT_REQUEST) {
+            withTimeout(IMMERSIVE_FLAG_TIMEOUT) {
                 val response = call()
                 if (response.isSuccessful) {
                     if (response.code() == NO_CONTENT_CODE) {
