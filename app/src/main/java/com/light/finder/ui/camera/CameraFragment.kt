@@ -202,7 +202,8 @@ class CameraFragment : BaseFragment() {
                     showErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
-                        getString(R.string.try_again)
+                        getString(R.string.try_again),
+                        false
                     )
                 }
 
@@ -210,7 +211,8 @@ class CameraFragment : BaseFragment() {
                     showErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
-                        getString(R.string.try_again)
+                        getString(R.string.try_again),
+                        false
                     )
                 }
 
