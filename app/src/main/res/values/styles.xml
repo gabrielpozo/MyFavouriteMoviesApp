@@ -7,7 +7,8 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@color/secondaryTextColor</item>
         <item name="android:navigationBarColor">@color/lightBackgroundColor</item>
-
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 
@@ -33,16 +34,40 @@
         <item name="android:fontFamily">@font/book</item>
     </style>
 
+    <!-- New atributes -->
+    <style name="SubTitleField" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/bottomNavBarColor</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/book</item>
+        <item name="android:lineSpacingExtra">10dp</item>
+
+    </style>
+
+    <style name="BlueButton" parent="Theme.AppCompat">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:height">50dp</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <!-- End New atributes -->
+
     <style name="TitleTextGreen" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/secondaryTextColor</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/primaryLightColor</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
     <style name="TitleTextBook" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/book</item>
+        <item name="android:textColor">@color/darkBackgroundColor</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/bold</item>
     </style>
 
 
@@ -60,7 +85,7 @@
     </style>
 
     <style name="SubtitleTextGreen" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/primaryLightColor</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/book</item>
         <item name="android:lineSpacingExtra">10dp</item>

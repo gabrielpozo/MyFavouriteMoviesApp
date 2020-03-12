@@ -11,7 +11,9 @@ data class CategoryParcelable(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
-    val wattageAvailable: Int
+    val minWattage: String,
+    val maxWattage: String,
+    val colors: List<String>
 ) : Parcelable
 
 @Parcelize

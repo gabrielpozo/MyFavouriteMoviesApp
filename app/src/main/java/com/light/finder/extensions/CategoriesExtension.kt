@@ -86,7 +86,9 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         categoryName,
         categoryImage,
         priceRange,
-        wattageAvailable
+        minWattage,
+        maxWattage,
+        colors
     )
 
 
@@ -98,7 +100,9 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         categoryName,
         categoryImage,
         priceRange,
-        wattageAvailable
+        minWattage,
+        maxWattage,
+        colors
     )
 
 

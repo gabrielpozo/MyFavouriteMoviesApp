@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -43,10 +42,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun onVisibilityChanged(visible: Boolean) {
         if (visible) {
-            toolbar.gone()
             bottom_navigation_view.gone()
         } else {
-            toolbar.visible()
             bottom_navigation_view.visible()
         }
     }
@@ -64,10 +61,9 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)

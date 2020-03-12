@@ -27,7 +27,7 @@
     <string name="text_camera_subtitle">Hold light bulb in screen, ensuring as much is in view as possible</string>
     <string name="text_browse_button">Browse light bulbs</string>
     <string name="placeholder">-</string>
-    <string name="text_bulb">/bulb</string>
+    <string name="text_bulb">each</string>
     <string name="lightbulb_cd">lightBulb</string>
     <string name="settings_cd">settings</string>
     <string name="text_tap_to_identify">TAP TO IDENTIFY</string>
@@ -37,7 +37,12 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_results">%d results</string>
     <string name="min_max_price">%d$ - %d$"</string>
-    <string name="light_bulb_recognised_as">Light bulb recognised as %s</string>
+    <string name="light_bulb_recognised_as">Base identified as %s</string>
+    <string name="description_wattage">%sW-%sW %s</string>
+    <string name="no_value"></string>
+    <string name="most_efficient_option">Most energy efficient option</string>
+
+
     <string name="try_again">Try again</string>
     <string name="help_me">Help me scan</string>
     <string name="unidentified">No light bulb identified</string>

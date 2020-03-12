@@ -10,22 +10,40 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
     val categoriesList: ArrayList<Category> = ArrayList()
     messageDto.categories?.map { categoryDto ->
-        val countWattages = getWattValuesCategory(categoryDto.categoryProducts)
-        categoriesList.add(
-            Category(
-                categoryProductBase = categoryDto.categoryProductBase ?: "",
-                categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain)
-                    ?: emptyList(),
-                categoryName = categoryDto.categoryName ?: "",
-                categoryIndex = categoryDto.categoryIndex ?: 0,
-                categoryImage = categoryDto.categoryImage ?: "",
-                priceRange = getMinMaxPriceTag(
-                    categoryDto.categoryPrice?.minPrice,
-                    categoryDto.categoryPrice?.maxPrice
-                ),
-                wattageAvailable = countWattages
+        if (categoryDto.categoryProducts?.isNotEmpty() == true) {
+            categoriesList.add(
+                Category(
+                    categoryProductBase = categoryDto.categoryProductBase ?: "",
+                    categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain),
+                    categoryName = categoryDto.categoryName ?: "",
+                    categoryIndex = categoryDto.categoryIndex ?: 0,
+                    categoryImage = categoryDto.categoryImage ?: "",
+                    priceRange = getMinMaxPriceTag(
+                        categoryDto.categoryPrice?.minPrice,
+                        categoryDto.categoryPrice?.maxPrice
+                    ),
+                    minWattage = categoryDto.categoryWattReplace?.let { list ->
+                        if (list.isNotEmpty()) {
+                            list[0].toString()
+                        } else ""
+                    } ?: "",
+                    maxWattage = categoryDto.categoryWattReplace?.let { list ->
+                        if (list.isNotEmpty()) {
+                            list[1].toString()
+                        } else ""
+                    } ?: "",
+                    colors = categoryDto.categoryCctCode?.map { code ->
+                        when (code) {
+                            1 -> "Warm"
+                            2 -> "Warm white"
+                            3 -> "Cool white"
+                            4 -> "Daylight"
+                            else -> ""
+                        }
+                    } ?: emptyList()
+                )
             )
-        )
+        }
     }
 
     Message(
@@ -47,18 +65,6 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
 }
 
 
-fun getWattValuesCategory(categoryProducts: List<ProductDto>?): Int {
-    val wattages = hashSetOf<Float>()
-    categoryProducts?.map { productDto ->
-        if (productDto.productSpecOne != null) {
-            wattages.add(productDto.productSpecOne)
-        }
-    }
-    return wattages.count()
-
-}
-
-
 fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
     if (minPrice == null || maxPrice == null) {
         "-"
@@ -67,5 +73,5 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
         minPrice.toString()
 
     } else {
-        "$$minPrice - $$maxPrice"
+        "$$minPrice-$$maxPrice"
     }

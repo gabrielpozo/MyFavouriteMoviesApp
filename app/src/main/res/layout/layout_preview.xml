@@ -33,20 +33,47 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <TextView
+        android:id="@+id/countDownText"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:layout_marginBottom="@dimen/counter_bottom_margin"
+        android:layout_marginEnd="16dp"
+        style="@style/TitleText"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/button_rounded"
+        android:alpha="0.4"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </Button>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/counter_bottom_margin"
         android:layout_marginEnd="16dp"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="16dp"
-        app:lottie_rawRes="@raw/loader"
-        app:lottie_loop="false"
-        app:lottie_autoPlay="true"
         app:layout_constraintBottom_toTopOf="@+id/cancelButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/loader" />
 
     <Button
         android:id="@+id/cancelButton"
