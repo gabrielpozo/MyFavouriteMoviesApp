@@ -38,7 +38,7 @@
         android:text="Lorem ipsum dolor sit amet dolor set consectetur adipiscing elit, sed dolor eiusmod tempor incididunt ut labore et dolore magna aliqua."
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"

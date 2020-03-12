@@ -10,6 +10,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -179,7 +180,12 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.CameraViewDisplay -> setCameraSpecs()
-            is UiModel.CameraViewPermissionDenied -> deepLinkToSettings()
+            is UiModel.CameraViewPermissionDenied -> showErrorDialog(
+                getString(R.string.enable_camera_access),
+                        getString (R.string.enable_subtitle),
+                        getString (R.string.enable_camera_button),
+                true
+            )
         }
     }
 
@@ -233,7 +239,11 @@ class CameraFragment : BaseFragment() {
         modelDialogEvent.getContentIfNotHandled()?.let { dialogModel ->
             when (dialogModel) {
                 is DialogModel.PositiveButton -> {
-                    revertCameraView()
+                    when(dialogModel.message){
+                        "retry" ->  revertCameraView()
+                        "enable" -> deepLinkToSettings()
+                    }
+
                     alertDialog.dismiss()
                 }
 
@@ -302,12 +312,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun deepLinkToSettings() {
-        startActivity(
-            Intent(
-                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.parse("package:" + BuildConfig.APPLICATION_ID)
-            )
-        )
+        startActivity(Intent(Settings.ACTION_SETTINGS))
     }
 
 
@@ -346,12 +351,20 @@ class CameraFragment : BaseFragment() {
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
         dialogView.buttonPositive.setOnClickListener {
-            viewModel.onPositiveAlertDialogButtonClicked()
+            if (neutralButton) {
+                viewModel.onPositiveAlertDialogButtonClicked("enable")
+            } else {
+                viewModel.onPositiveAlertDialogButtonClicked("retry")
+            }
+
         }
 
         dialogView.buttonNegative.gone()
         if (neutralButton) {
-            dialogView.buttonNeutral.text = getString(R.string.help_me)
+            dialogView.buttonNeutral.text = getString(R.string.not_now)
+            dialogView.buttonNeutral.setOnClickListener {
+                alertDialog.dismiss()
+            }
         } else {
             dialogView.buttonNeutral.gone()
         }

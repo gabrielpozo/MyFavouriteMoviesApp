@@ -153,8 +153,8 @@ class CameraViewModel(
         cancelRequestScope()
     }
 
-    fun onPositiveAlertDialogButtonClicked() {
-        _modelDialog.value = Event(DialogModel.PositiveButton(""))
+    fun onPositiveAlertDialogButtonClicked(message : String) {
+        _modelDialog.value = Event(DialogModel.PositiveButton(message))
     }
 
     fun onFlashModeButtonClicked(flashMode: Int) {

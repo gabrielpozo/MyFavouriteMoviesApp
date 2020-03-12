@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
-import com.light.finder.extensions.basicDiffUtil
-import com.light.finder.extensions.getStringFormatter
-import com.light.finder.extensions.inflate
-import com.light.finder.extensions.loadUrl
+import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
+import kotlinx.coroutines.withContext
 
 
 class CategoriesAdapter(private val listener: (Category) -> Unit) :
@@ -53,9 +51,12 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 } else {
                     "$colorText$color"
                 }
+
             }
 
+
             itemView.product_color.text = Html.fromHtml(colorText).toString()
+            //itemView.product_color.endDrawable()
 
             if (category.minWattage != itemView.context.getString(R.string.no_value)) {
                 itemView.product_detail.text =

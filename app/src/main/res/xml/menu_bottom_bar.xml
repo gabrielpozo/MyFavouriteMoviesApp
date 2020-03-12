@@ -11,7 +11,7 @@
         title="@string/cart"
         />
     <tab
-        icon="@drawable/ic_information"
+        icon="@drawable/ic_company"
         id="@+id/expertFragment"
         title="@string/expert"
         />

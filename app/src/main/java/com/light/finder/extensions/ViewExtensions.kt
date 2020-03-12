@@ -2,6 +2,10 @@ package com.light.finder.extensions
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
@@ -41,6 +45,11 @@ fun String.getIntFormatter(number: Number): String =
     Formatter().format(this, number).toString()
 
 fun String.getStringFormatter(chain: String): String = String.format(this, chain)
+
+fun TextView.endDrawable(@DrawableRes id: Int = 0) {
+    val drawable = ContextCompat.getDrawable(context, id)
+    this.setCompoundDrawables(null, null, drawable, null)
+}
 
 
 
