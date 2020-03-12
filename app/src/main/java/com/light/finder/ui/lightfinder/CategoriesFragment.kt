@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
 import com.light.finder.R
@@ -61,12 +63,13 @@ class CategoriesFragment : BaseFragment() {
                     viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
                 }
 
-            viewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
+            viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
         }
 
         navigationObserver()
         initAdapter()
     }
+
 
     override fun onResume() {
         super.onResume()
