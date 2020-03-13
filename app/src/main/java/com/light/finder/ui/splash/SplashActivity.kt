@@ -43,7 +43,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goToCameraActivity() {
-        finish()
         overridePendingTransition(0, 0)
         startActivity(Intent(this, CameraActivity::class.java))
     }
