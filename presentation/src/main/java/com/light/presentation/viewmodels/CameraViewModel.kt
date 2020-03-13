@@ -64,24 +64,25 @@ class CameraViewModel(
     class CancelModel
 
 
-    private val _modelError = MutableLiveData<Event<ErrorModel>>()
-    val modelError: LiveData<Event<ErrorModel>>
-        get() = _modelError
-
-    sealed class ErrorModel {
-        object TimeOutError : ErrorModel()
-        object NotBulbIdentified : ErrorModel()
-        object ServerError : ErrorModel()
-
-    }
-
     private val _modelDialog = MutableLiveData<Event<DialogModel>>()
     val modelDialog: LiveData<Event<DialogModel>>
         get() = _modelDialog
 
     sealed class DialogModel {
-        class PositiveButton(val message: String) : DialogModel()
-        class SecondaryButton(val message: String) : DialogModel()
+        object TimeOutError : DialogModel()
+        object NotBulbIdentified : DialogModel()
+        object ServerError : DialogModel()
+        class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+
+    }
+
+    private val _modelResponseDialog = MutableLiveData<Event<ResponseDialogModel>>()
+    val modelResponseDialog: LiveData<Event<ResponseDialogModel>>
+        get() = _modelResponseDialog
+
+    sealed class ResponseDialogModel {
+        class PositiveButton(val message: String) : ResponseDialogModel()
+        class SecondaryButton(val message: String) : ResponseDialogModel()
     }
 
     private val _modelFlash = MutableLiveData<FlashModel>()
@@ -123,7 +124,7 @@ class CameraViewModel(
             _model.value = UiModel.CameraViewDisplay
 
         } else {
-          //  _model.value = UiModel.CameraViewPermissionDenied
+            //  _model.value = UiModel.CameraViewPermissionDenied
         }
     }
 
@@ -153,8 +154,8 @@ class CameraViewModel(
         cancelRequestScope()
     }
 
-    fun onPositiveAlertDialogButtonClicked(message : String) {
-        _modelDialog.value = Event(DialogModel.PositiveButton(message))
+    fun onPositiveAlertDialogButtonClicked(message: String) {
+        _modelResponseDialog.value = Event(ResponseDialogModel.PositiveButton(message))
     }
 
     fun onFlashModeButtonClicked(flashMode: Int) {
@@ -165,13 +166,19 @@ class CameraViewModel(
         }
     }
 
+    fun onPermissionDenied(isPermanentlyDenied: Boolean) {
+        if(isPermanentlyDenied){
+            _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        }
+    }
+
     private fun handleSuccessResponse(messages: List<Message>) {
         _modelRequest.value = Content.RequestModelContent(Event(messages))
     }
 
     private fun handleErrorResponse(hasBeenCanceled: Boolean) {
         if (!hasBeenCanceled) {
-            _modelError.value = Event(ErrorModel.ServerError)
+            _modelDialog.value = Event(DialogModel.ServerError)
 
         } else {
             _modelRequestCancel.value = Event(CancelModel())
@@ -180,7 +187,7 @@ class CameraViewModel(
     }
 
     private fun handleEmptyResponse() {
-        _modelError.value = Event(ErrorModel.NotBulbIdentified)
+        _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
 
     private fun handleFileImageRetrieved(imageEncoded: String) {
@@ -188,9 +195,8 @@ class CameraViewModel(
     }
 
     private fun handleTimeOutResponse(message: String) {
-        _modelError.value = Event(ErrorModel.TimeOutError)
+        _modelDialog.value = Event(DialogModel.TimeOutError)
     }
-
 
 }
 

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
@@ -36,7 +35,6 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
-import com.light.presentation.BuildConfig
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -156,8 +154,8 @@ class CameraFragment : BaseFragment() {
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
-        viewModel.modelError.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
-        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelResponseDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
 
 
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
@@ -195,10 +193,10 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun observeErrorResponse(modelErrorEvent: Event<ErrorModel>) {
+    private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
-                is ErrorModel.TimeOutError -> {
+                is DialogModel.TimeOutError -> {
                     showErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
@@ -207,7 +205,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
 
-                is ErrorModel.NotBulbIdentified -> {
+                is DialogModel.NotBulbIdentified -> {
                     showErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
@@ -216,7 +214,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
 
-                is ErrorModel.ServerError -> {
+                is DialogModel.ServerError -> {
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.error_sub),
@@ -225,14 +223,24 @@ class CameraFragment : BaseFragment() {
 
                     )
                 }
+
+                is DialogModel.PermissionPermanentlyDenied -> {
+                    showErrorDialog(
+                        getString(R.string.enable_camera_access),
+                        getString(R.string.enable_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+
+                }
             }
         }
     }
 
-    private fun observeDialogButtonAction(modelDialogEvent: Event<DialogModel>) {
+    private fun observeDialogButtonAction(modelDialogEvent: Event<ResponseDialogModel>) {
         modelDialogEvent.getContentIfNotHandled()?.let { dialogModel ->
             when (dialogModel) {
-                is DialogModel.PositiveButton -> {
+                is ResponseDialogModel.PositiveButton -> {
                     when (dialogModel.message) {
                         "retry" -> revertCameraView()
                         "enable" -> deepLinkToSettings()
@@ -241,7 +249,7 @@ class CameraFragment : BaseFragment() {
                     alertDialog.dismiss()
                 }
 
-                is DialogModel.SecondaryButton -> {//TODO
+                is ResponseDialogModel.SecondaryButton -> {//TODO
                 }
             }
         }
@@ -294,14 +302,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeDenyPermission(isPermanentlyDenied: Boolean) {
-        if (isPermanentlyDenied) {
-            showErrorDialog(
-                getString(R.string.enable_camera_access),
-                getString(R.string.enable_subtitle),
-                getString(R.string.enable_camera_button),
-                true
-            )
-        }
+        viewModel.onPermissionDenied(isPermanentlyDenied)
     }
 
     private fun revertCameraView() {
