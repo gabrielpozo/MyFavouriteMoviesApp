@@ -98,6 +98,8 @@ class CameraFragment : BaseFragment() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
 
+    private var isComingFromSettings: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,6 +162,14 @@ class CameraFragment : BaseFragment() {
 
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isComingFromSettings) {
+            viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            isComingFromSettings = false
+        }
     }
 
 
@@ -318,6 +328,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun deepLinkToSettings() {
+        isComingFromSettings = true
         startActivity(Intent(Settings.ACTION_SETTINGS))
     }
 
