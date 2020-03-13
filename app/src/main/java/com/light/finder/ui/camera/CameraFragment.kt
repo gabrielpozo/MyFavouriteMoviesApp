@@ -162,6 +162,11 @@ class CameraFragment : BaseFragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+    }
+
 
     private fun observeUpdateUI(model: UiModel) {
         when (model) {
