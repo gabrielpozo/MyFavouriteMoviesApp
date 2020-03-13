@@ -175,17 +175,11 @@ class CameraFragment : BaseFragment() {
                 setPermissionView()
             }
 
-            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request { isPermissionGranted ->
+            is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request({ isPermissionGranted ->
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
-            }
+            }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> setCameraSpecs()
-            is UiModel.CameraViewPermissionDenied -> showErrorDialog(
-                getString(R.string.enable_camera_access),
-                        getString (R.string.enable_subtitle),
-                        getString (R.string.enable_camera_button),
-                true
-            )
         }
     }
 
@@ -239,8 +233,8 @@ class CameraFragment : BaseFragment() {
         modelDialogEvent.getContentIfNotHandled()?.let { dialogModel ->
             when (dialogModel) {
                 is DialogModel.PositiveButton -> {
-                    when(dialogModel.message){
-                        "retry" ->  revertCameraView()
+                    when (dialogModel.message) {
+                        "retry" -> revertCameraView()
                         "enable" -> deepLinkToSettings()
                     }
 
@@ -297,6 +291,17 @@ class CameraFragment : BaseFragment() {
         }
         imageCapture?.flashMode = flashMode
 
+    }
+
+    private fun observeDenyPermission(isPermanentlyDenied: Boolean) {
+        if (isPermanentlyDenied) {
+            showErrorDialog(
+                getString(R.string.enable_camera_access),
+                getString(R.string.enable_subtitle),
+                getString(R.string.enable_camera_button),
+                true
+            )
+        }
     }
 
     private fun revertCameraView() {

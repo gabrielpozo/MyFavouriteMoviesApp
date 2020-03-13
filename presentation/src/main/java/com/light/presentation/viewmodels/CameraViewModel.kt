@@ -123,7 +123,7 @@ class CameraViewModel(
             _model.value = UiModel.CameraViewDisplay
 
         } else {
-            _model.value = UiModel.CameraViewPermissionDenied
+          //  _model.value = UiModel.CameraViewPermissionDenied
         }
     }
 
