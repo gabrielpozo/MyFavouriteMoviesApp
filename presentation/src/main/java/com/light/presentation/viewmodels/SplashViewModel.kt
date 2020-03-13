@@ -13,7 +13,7 @@ class SplashViewModel : ViewModel() {
     private val mutableLiveData = MutableLiveData<SplashState>()
     init {
         GlobalScope.launch {
-            delay(3000)
+            delay(2000)
             mutableLiveData.postValue(SplashState.CameraActivity)
         }
     }
