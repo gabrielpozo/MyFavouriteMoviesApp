@@ -25,14 +25,35 @@ data class CategoriesDto(
 
 
 data class ProductDto(
-    @SerializedName("product_image") val productImage: List<String>?,
-    @SerializedName("product_category_name") val productCategoryName: String?,
-    @SerializedName("product_name") val productName: String?,
-    @SerializedName("product_description") val productDescription: String?,
-    @SerializedName("product_spec1") val productSpecOne: Float?,
-    @SerializedName("product_spec3") val productSpecThree: List<String>?,
-    @SerializedName("product_scene") val productScene: String?,
-    @SerializedName("product_price_lamp") val productPrice: Float?
+   @SerializedName("product_name") var name: String?,
+   @SerializedName("product_index") var index: Int?,
+   @SerializedName("product_spec1") var spec1: Float?,
+   @SerializedName("product_spec3") var spec3: List<Int>?,
+   @SerializedName("product_spec2") var spec2: String?,
+   @SerializedName("product_image") var imageUrls: List<String>?,
+   @SerializedName("product_description") var description: String?,
+   @SerializedName("product_scene") var scene: String?,
+   @SerializedName("product_category_name") var categoryName: String?,
+   @SerializedName("product_SAPid_12NC") var sapID12NC: Int?,
+   @SerializedName("product_qty_lampscase") var qtyLampscase: Int?,
+   @SerializedName("product_wattage_replaced") var wattageReplaced: Int?,
+   @SerializedName("product_country") var country: String?,
+   @SerializedName("product_prio") var priority: Int?,
+   @SerializedName("product_wattage_claim") var wattageClaim: Float?,
+   @SerializedName("product_formfactor_base") var factorBase: String?,
+   @SerializedName("product_discount_proc") var discountProc: Int?,
+   @SerializedName("product_SAPid_10NC") var sapID10NC: Int?,
+   @SerializedName("product_dimming_code") var dimmingCode: Int?,
+   @SerializedName("product_finish") var finish: String?,
+   @SerializedName("product_promoted") var promoted: Int?,
+   @SerializedName("product_price_sku") var priceSku: Float?,
+   @SerializedName("product_price_lamp") var priceLamp: Float?,
+   @SerializedName("product_price_pack") var pricePack: Float?,
+   @SerializedName("product_formfactor_shape") var factorShape: String?,
+   @SerializedName("product_qty_lampsku") var qtyLampSku: Int?,
+   @SerializedName("product_discount_value") var discountValue: Int?,
+   @SerializedName("product_qty_skucase") var qtySkuCase: Int?,
+   @SerializedName("product_formfactor_type_code") var factorTypeCode: Int?
 )
 
 

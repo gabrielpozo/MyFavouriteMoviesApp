@@ -39,4 +39,5 @@
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
+    <color name="dividerOndark">#49494e</color>
 </resources>

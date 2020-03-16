@@ -91,7 +91,7 @@ class CategoriesFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            mFragmentNavigation.pushFragment(ProductsFragment.newInstance(navModel.category))
+            mFragmentNavigation.pushFragment(DetailFragment.newInstance(navModel.category))
         }
     }
 

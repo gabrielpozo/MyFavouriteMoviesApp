@@ -53,14 +53,35 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
 private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
     Product(
-        productImage = productDto.productImage ?: emptyList(),
-        productCategoryName = productDto.productCategoryName ?: "",
-        productName = productDto.productName ?: "",
-        productDescription = productDto.productDescription ?: "",
-        productSpecOne = productDto.productSpecOne ?: 0.0f,
-        productSpecThree = productDto.productSpecThree ?: emptyList(),
-        productScene = productDto.productScene ?: "",
-        productPrice = productDto.productPrice ?: 0.0f
+        name = productDto.name ?: "",
+        index = productDto.index ?: 0,
+        spec1 = productDto.spec1 ?: 0.0f,
+        spec3 = productDto.spec3 ?: emptyList(),
+        spec2 = productDto.spec2 ?: "",
+        imageUrls = productDto.imageUrls ?: emptyList(),
+        description = productDto.description ?: "",
+        scene = productDto.scene ?: "",
+        categoryName = productDto.categoryName ?: "",
+        sapID12NC = productDto.sapID12NC ?: 0,
+        qtyLampscase = productDto.qtyLampscase ?: 0,
+        wattageReplaced = productDto.wattageReplaced ?: 0,
+        country = productDto.country ?: "",
+        priority = productDto.priority ?: 0,
+        wattageClaim = productDto.wattageClaim ?: 0.0f,
+        factorBase = productDto.factorBase ?: "",
+        discountProc = productDto.discountProc ?: 0,
+        sapID10NC = productDto.sapID10NC ?: 0,
+        dimmingCode = productDto.dimmingCode ?: 0,
+        finish = productDto.finish ?: "",
+        promoted = productDto.promoted ?: 0,
+        priceSku = productDto.priceSku ?: 0.0f,
+        priceLamp = productDto.priceLamp ?: 0.0f,
+        pricePack = productDto.pricePack ?: 0.0f,
+        factorShape = productDto.factorShape ?: "",
+        qtyLampSku = productDto.qtyLampSku ?: 0,
+        discountValue = productDto.discountValue ?: 0,
+        qtySkuCase = productDto.qtySkuCase ?: 0,
+        factorTypeCode = productDto.factorTypeCode ?: 0
     )
 }
 
