@@ -1,7 +1,6 @@
 package com.light.finder.ui.splash
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
@@ -43,7 +42,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goToCameraActivity() {
-        overridePendingTransition(0, 0)
         startActivity(Intent(this, CameraActivity::class.java))
+       // overridePendingTransition(R.anim.slide_in_from_right, 0)
+        finish()
     }
 }
