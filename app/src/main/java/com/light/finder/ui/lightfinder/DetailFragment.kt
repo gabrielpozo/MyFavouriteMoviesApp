@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -14,9 +12,8 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
-import com.light.finder.ui.adapters.DetailViewPagerAdapter
 import com.light.presentation.viewmodels.DetailViewModel
-import kotlinx.android.synthetic.main.fragment_detail.*
+
 
 class DetailFragment : Fragment() {
     companion object {
@@ -49,14 +46,16 @@ class DetailFragment : Fragment() {
 
     private fun setBottomSheet() {
         val bottomSheet = ProductDetailBottomSheet()
-        // bottomSheet.show(supportFragmentManager(), "exampleBottomSheet")
-        //todo set bottomsheet
+        val bundle = Bundle()
+        //todo send actual values
+        bundle.putString("test", "oh ya")
+        bottomSheet.arguments = bundle
+        bottomSheet.show(parentFragmentManager,"")
     }
 
     private fun setViewPager() {
         //todo set viewpager with images
         //viewPagerDetail.adapter = DetailViewPagerAdapter(requireContext(), imagesArray)
-        //dotsIndicator.setViewPager(viewPagerDetail)
     }
 
     private fun observeElements() {
