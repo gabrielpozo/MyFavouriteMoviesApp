@@ -16,8 +16,9 @@ import java.io.File
 import java.util.*
 
 
-const val ANIMATION_FAST_MILLIS = 50L
-const val ANIMATION_SLOW_MILLIS = 100L
+private const val bitmapWidth = 1650
+private const val bitmapHeight = 2200
+
 
 
 fun View.visible() {
@@ -41,7 +42,7 @@ fun ImageView.loadImage(bitmap: Bitmap) {
     val matrix = Matrix()
     matrix.postRotate(90f)
     val scaledBitmap =
-        Bitmap.createScaledBitmap(bitmap, 2500, 1850, true)
+        Bitmap.createScaledBitmap(bitmap, bitmapHeight, bitmapWidth, true)
     val rotatedBitmap = Bitmap.createBitmap(
         scaledBitmap,
         0,

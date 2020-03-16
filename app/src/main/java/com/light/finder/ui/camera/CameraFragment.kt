@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -29,7 +28,7 @@ import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
-import com.light.finder.data.source.local.ImageUtil
+import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
@@ -59,15 +58,13 @@ class CameraFragment : BaseFragment() {
 
     private lateinit var component: CameraComponent
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
+    private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
-
-    //TODO
-    private val imageUtil = ImageUtil()
 
     private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
@@ -85,6 +82,8 @@ class CameraFragment : BaseFragment() {
         private const val DOWN_INTERVAL = 1000L
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
+        private const val ANIMATION_FAST_MILLIS = 50L
+        private const val ANIMATION_SLOW_MILLIS = 100L
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -133,7 +132,7 @@ class CameraFragment : BaseFragment() {
         }
 
         override fun onCaptureSuccess(image: ImageProxy) {
-            viewModel.onCameraButtonClicked2(imageUtil.getBitmap(image.image!!))
+            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
         }
     }
@@ -268,9 +267,10 @@ class CameraFragment : BaseFragment() {
 
     private fun observeModelContent(modelContent: Content) {
         when (modelContent) {
-            is Content.EncodeImage -> {
-                setEncodeImage(modelContent.bitmap)
-            }
+            is Content.EncodeImage -> imageRepository.convertImageToBase64(
+                modelContent.bitmap,
+                ::handleResultBase64
+            )
             is Content.RequestCategoriesMessages -> {
                 viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
             }
@@ -278,18 +278,9 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun setEncodeImage(bitmap: Bitmap) {
-        var result: String
-        lifecycleScope.launch(Dispatchers.Main) {
-
-            result = imageUtil.toBase64(bitmap)
-            viewModel.onRequestCategoriesMessages(result)
-        }
-    }
 
     private fun observePreviewView(previewModel: Event<PreviewModel>) {
         previewModel.getContentIfNotHandled()?.let {
-            clearPreviousImage()
             layoutCamera.gone()
             layoutPermission.gone()
             browseButton.gone()
@@ -325,6 +316,10 @@ class CameraFragment : BaseFragment() {
 
     private fun observeDenyPermission(isPermanentlyDenied: Boolean) {
         viewModel.onPermissionDenied(isPermanentlyDenied)
+    }
+
+    private fun handleResultBase64(base64: String) {
+        viewModel.onRequestCategoriesMessages(base64)
     }
 
     private fun revertCameraView() {
@@ -511,7 +506,7 @@ class CameraFragment : BaseFragment() {
 
     }
 
-    //TODO set this method for extension
+    //TODO set this method for extension when media user is implemented
     private fun createFile(baseFolder: File, format: String, extension: String) =
         File(
             baseFolder, SimpleDateFormat(format, Locale.US)
@@ -521,12 +516,6 @@ class CameraFragment : BaseFragment() {
     //TODO set this method for extension
     private fun initializeLottieAnimation() {
         lottieAnimationView.progress = 0.0f
-    }
-
-    //TODO set this method for extension
-    private fun clearPreviousImage() {
-        imageViewPreview.setImageDrawable(null)//we clear the view so we it won't keep  old images
-
     }
 
 }

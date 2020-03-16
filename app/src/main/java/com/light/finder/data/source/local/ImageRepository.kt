@@ -6,18 +6,30 @@ import android.media.Image
 import android.util.Base64
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
+import kotlin.coroutines.CoroutineContext
 
 
-class ImageUtil {
+class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : CoroutineScope {
+
+    private var job: Job = SupervisorJob()
+
+
+    override val coroutineContext: CoroutineContext
+        get() = uiDispatcher + job
 
     fun getBitmap(image: Image): Bitmap {
         return decodeBitmap(image)
     }
 
-    suspend fun toBase64(bitmap: Bitmap): String = withContext(Dispatchers.IO) {
+    fun convertImageToBase64(bitmap: Bitmap, base64: (String) -> Unit) {
+        launch {
+            base64.invoke(toBase64(bitmap))
+        }
+    }
+
+    private suspend fun toBase64(bitmap: Bitmap): String = withContext(Dispatchers.IO) {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         val b = stream.toByteArray()
@@ -26,8 +38,7 @@ class ImageUtil {
     }
 
 
-    //TODO issue is we are using
-    fun decodeBitmap(image: Image): Bitmap {
+    private fun decodeBitmap(image: Image): Bitmap {
         val buffer = image.planes[0].buffer
         val bytes = ByteArray(buffer.capacity()).also { buffer.get(it) }
 

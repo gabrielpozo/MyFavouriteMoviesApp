@@ -92,7 +92,7 @@ class CameraViewModel(
         object ModeOff : FlashModel()
     }
 
-    fun onCameraButtonClicked2(bitmap: Bitmap) {
+    fun onCameraButtonClicked(bitmap: Bitmap) {
         _modelPreview.value = Event(PreviewModel(bitmap))
         _modelRequest.value = Content.EncodeImage(bitmap)
     }
