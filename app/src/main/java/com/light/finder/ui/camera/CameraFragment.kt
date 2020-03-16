@@ -4,16 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -30,6 +29,7 @@ import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
+import com.light.finder.data.source.local.ImageUtil
 import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
@@ -65,6 +65,10 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
+
+    //TODO
+    private val imageUtil = ImageUtil()
+
     private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
             countDownText.text = "${millisUntilFinished / 1000}"
@@ -77,7 +81,7 @@ class CameraFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "CameraX"
-        private const val INIT_INTERVAL = 5000L
+        private const val INIT_INTERVAL = 6000L
         private const val DOWN_INTERVAL = 1000L
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
@@ -123,20 +127,14 @@ class CameraFragment : BaseFragment() {
         inflater.inflate(R.layout.fragment_camera, container, false)
 
 
-    private val imageSavedListener = object : ImageCapture.OnImageSavedCallback {
+    private val imageCaptureListener = object : ImageCapture.OnImageCapturedCallback() {
         override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
             Timber.e("$TAG Photo capture failed: $message cause")
         }
 
-        @SuppressLint("ObsoleteSdkInt")
-        override fun onImageSaved(photoFile: File) {
-            Timber.d("$TAG Photo capture succeeded: ${photoFile.absolutePath}")
-
-            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(photoFile.extension)
-            MediaScannerConnection.scanFile(
-                context, arrayOf(photoFile.absolutePath), arrayOf(mimeType), null
-            )
-            viewModel.onSendButtonClicked(photoFile.absolutePath)
+        override fun onCaptureSuccess(image: ImageProxy) {
+            viewModel.onCameraButtonClicked2(imageUtil.getBitmap(image.image!!))
+            image.close()
         }
     }
 
@@ -157,7 +155,10 @@ class CameraFragment : BaseFragment() {
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
-        viewModel.modelResponseDialog.observe(viewLifecycleOwner, Observer(::observeDialogButtonAction))
+        viewModel.modelResponseDialog.observe(
+            viewLifecycleOwner,
+            Observer(::observeDialogButtonAction)
+        )
 
 
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
@@ -193,7 +194,7 @@ class CameraFragment : BaseFragment() {
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
-            timer.onTick(INIT_INTERVAL)
+            //timer.onTick(INIT_INTERVAL)
             timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
@@ -268,14 +269,21 @@ class CameraFragment : BaseFragment() {
     private fun observeModelContent(modelContent: Content) {
         when (modelContent) {
             is Content.EncodeImage -> {
-                imageViewPreview.loadFile(File(modelContent.absolutePath))
-                viewModel.onRequestFileImageEncoded(modelContent.absolutePath)
+                setEncodeImage(modelContent.bitmap)
             }
             is Content.RequestCategoriesMessages -> {
-                timer.start()
                 viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
             }
             is Content.RequestModelContent -> navigateToCategories(modelContent.messages)
+        }
+    }
+
+    private fun setEncodeImage(bitmap: Bitmap) {
+        var result: String
+        lifecycleScope.launch(Dispatchers.Main) {
+
+            result = imageUtil.toBase64(bitmap)
+            viewModel.onRequestCategoriesMessages(result)
         }
     }
 
@@ -285,8 +293,12 @@ class CameraFragment : BaseFragment() {
             layoutCamera.gone()
             layoutPermission.gone()
             browseButton.gone()
+            cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
-            cameraUiContainer.gone()
+            imageViewPreview.loadImage(it.bitmap)
+            //start countdown
+            timer.start()
+
             visibilityCallBack.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
@@ -316,7 +328,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun revertCameraView() {
-        timer.onTick(INIT_INTERVAL)
+        //timer.onTick(INIT_INTERVAL)
         layoutPreview.gone()
         layoutCamera.visible()
         browseButton.visible()
@@ -433,14 +445,13 @@ class CameraFragment : BaseFragment() {
                     isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
                 }
 
-                imageCapture.takePicture(photoFile, metadata, mainExecutor, imageSavedListener)
+                imageCapture.takePicture(mainExecutor, imageCaptureListener)
 
                 container.postDelayed({
                     container.foreground = ColorDrawable(Color.WHITE)
                     container.postDelayed(
                         { container.foreground = null }, ANIMATION_FAST_MILLIS
                     )
-                    viewModel.onCameraButtonClicked()
                 }, ANIMATION_SLOW_MILLIS)
 
             }

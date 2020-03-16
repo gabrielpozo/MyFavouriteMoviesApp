@@ -23,11 +23,9 @@ class CameraModule {
 
     @Provides
     fun cameraViewModel(
-        getCategoryResultUseCase: GetCategoriesResultUseCase,
-        getFilePathImageEncodedUseCase: GetFilePathImageEncodedUseCase
+        getCategoryResultUseCase: GetCategoriesResultUseCase
     ) = CameraViewModel(
         getCategoryResultUseCase,
-        getFilePathImageEncodedUseCase,
         Dispatchers.Main
     )
 }
