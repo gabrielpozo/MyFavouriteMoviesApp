@@ -10,7 +10,7 @@ import com.light.finder.R
 
 class DetailViewPagerAdapter internal constructor(
     context: Context,
-    private val images: List<String>
+    private val images: List<String> = emptyList()
 ) : RecyclerView.Adapter<DetailViewPagerAdapter.ViewHolder>() {
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -9,7 +9,6 @@ import com.light.domain.model.Category
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
-import kotlinx.coroutines.withContext
 
 
 class CategoriesAdapter(private val listener: (Category) -> Unit) :
