@@ -13,8 +13,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.light.finder.R
 import androidx.annotation.NonNull
 
+import com.light.finder.data.source.remote.CategoryParcelable
+import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.extensions.deparcelizeCategory
 
 class ProductDetailBottomSheet : BottomSheetDialogFragment() {
+
+    companion object {
+        const val PRODUCT_DETAIL_ID_KEY = "ProductDetailBottomSheet::id"
+    }
+
+
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.layout_detail_bottom_sheet, container, false)
@@ -26,6 +35,15 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.let { bundle ->
+            bundle.getParcelable<ProductParcelable>(PRODUCT_DETAIL_ID_KEY)
+                ?.let { categoryParcelable ->
+                   // viewModel.onRetrieveProduct(categoryParcelable.deparcelizeCategory())
+                }
+            //setObservers()
+        }
+
+
         view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
 

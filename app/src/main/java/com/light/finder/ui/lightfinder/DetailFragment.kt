@@ -1,12 +1,13 @@
 package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.lifecycle.Observer
+import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -14,12 +15,8 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.newInstance
 import com.light.presentation.viewmodels.DetailViewModel
-import kotlinx.android.synthetic.main.layout_camera.*
-import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
-
-
-
 
 
 class DetailFragment : Fragment() {
@@ -41,24 +38,37 @@ class DetailFragment : Fragment() {
             component = app.applicationComponent.plus(DetailModule())
         } ?: throw Exception("Invalid Activity")
         setViewPager()
-        setBottomSheet()
+        //navigatesBottomSheet()
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
-                    viewModel.onRetrieveProductsAndFilters(categoryParcelable.deparcelizeCategory())
+                    viewModel.onRetrieveProduct(categoryParcelable.deparcelizeCategory())
                 }
-            observeElements()
+            setObservers()
         }
 
     }
 
-    private fun setBottomSheet() {
-        val bottomSheet = ProductDetailBottomSheet()
-        val bundle = Bundle()
+    private fun setObservers() {
+        viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        //viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
+    }
 
+
+    private fun observeProductContent(contentProduct: DetailViewModel.Content) {
+        navigatesBottomSheet(contentProduct.product)
+    }
+
+    private fun updateData(product: Product) {
+        Log.d("Gabriel", "setting product ${product.categoryName}")
+        //textViewDetailTitle.text = product.categoryName
+        //textViewDetailDescription.text = product.description
+    }
+
+
+    private fun navigatesBottomSheet(product: Product) {
+        val bottomSheet = ProductDetailBottomSheet.newInstance(product)
         //todo send actual values
-        bundle.putString("test", "oh ya")
-        bottomSheet.arguments = bundle
         bottomSheet.isCancelable = false
         bottomSheet.show(childFragmentManager,"")
     }
@@ -68,10 +78,6 @@ class DetailFragment : Fragment() {
         //viewPagerDetail.adapter = DetailViewPagerAdapter(requireContext(), imagesArray)
     }
 
-    private fun observeElements() {
-        //viewModel.productDetails.observe(viewLifecycleOwner, Observer(::setProductDetails))
-        // viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
-    }
 
 }
 

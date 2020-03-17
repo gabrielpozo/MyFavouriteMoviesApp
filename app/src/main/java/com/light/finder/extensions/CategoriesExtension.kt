@@ -114,7 +114,7 @@ fun MessageParcelable.deparcelizeMessage(): Message =
     Message(this.categoriesList.map { it.deparcelizeCategory() })
 
 
-private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
+val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
         product.name,
         product.index,

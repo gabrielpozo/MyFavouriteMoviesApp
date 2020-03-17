@@ -20,7 +20,6 @@
     <TextView
         android:id="@+id/textViewDetailTitle"
         android:layout_margin="24dp"
-        android:text="Title"
         style="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

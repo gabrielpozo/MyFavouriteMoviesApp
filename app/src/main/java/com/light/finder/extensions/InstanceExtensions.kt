@@ -2,11 +2,13 @@ package com.light.finder.extensions
 
 import com.light.domain.model.Category
 import com.light.domain.model.Message
+import com.light.domain.model.Product
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductDetailBottomSheet
 import com.light.finder.ui.lightfinder.ProductsFragment
 
 fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
@@ -36,6 +38,14 @@ fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragme
     val args = android.os.Bundle()
     args.putParcelable(CATEGORIES_ID_KEY, message.parcelizeMessage())
     val fragment = CategoriesFragment()
+    fragment.arguments = args
+    return fragment
+}
+
+fun ProductDetailBottomSheet.Companion.newInstance(product: Product): ProductDetailBottomSheet {
+    val args = android.os.Bundle()
+    args.putParcelable(PRODUCT_DETAIL_ID_KEY, mapDomainProductToParcelable(product))
+    val fragment = ProductDetailBottomSheet()
     fragment.arguments = args
     return fragment
 }
