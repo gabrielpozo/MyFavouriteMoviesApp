@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -61,10 +62,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(
+       /* window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+        )*/
+        window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
         fragmentHelper.setupNavController(savedInstanceState)
