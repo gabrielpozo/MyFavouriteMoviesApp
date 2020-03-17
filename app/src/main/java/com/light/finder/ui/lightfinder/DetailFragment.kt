@@ -60,7 +60,7 @@ class DetailFragment : Fragment() {
         bundle.putString("test", "oh ya")
         bottomSheet.arguments = bundle
         bottomSheet.isCancelable = false
-        bottomSheet.show(parentFragmentManager,"")
+        bottomSheet.show(childFragmentManager,"")
     }
 
     private fun setViewPager() {

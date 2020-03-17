@@ -5,6 +5,23 @@
     android:layout_height="match_parent"
     android:background="@color/lightBackgroundColor">
 
+    <!--<LinearLayout
+        android:orientation="vertical"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/transparent">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_back_arrow_with_container"/>
+
+    </LinearLayout>-->
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -18,7 +35,10 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerDetail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+
+        </androidx.viewpager.widget.ViewPager>
 
         <!-- <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
              android:id="@+id/dotsIndicator"
@@ -34,7 +54,7 @@
              app:selectedDotColor="@color/snackBarColor" />-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-   <!-- <include
+    <!--<include
         android:id="@+id/bottomSheetLayout"
         layout="@layout/layout_detail_bottom_sheet"
         android:layout_height="0dp"
