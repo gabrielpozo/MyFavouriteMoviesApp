@@ -41,6 +41,9 @@
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient option</string>
+    <string name="product_title">%s %s %sW %s %s \n %s</string>
+    <string name="change_variation">%sW, %s color, %s finish</string>
+    <string name="price_detail">$%s / $%s each</string>
 
 
     <string name="try_again">Try again</string>

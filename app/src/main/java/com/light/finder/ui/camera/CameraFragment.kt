@@ -357,6 +357,7 @@ class CameraFragment : BaseFragment() {
     }
 
 
+    //TODO make this Error Dialog Generic to the App
     private fun showErrorDialog(
         titleDialog: String,
         subtitleDialog: String,

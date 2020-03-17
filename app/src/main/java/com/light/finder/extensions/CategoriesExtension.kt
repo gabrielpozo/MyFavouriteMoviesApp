@@ -149,7 +149,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
 
 }
 
-private val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
+val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
     Product(
         product.name,
         product.index,

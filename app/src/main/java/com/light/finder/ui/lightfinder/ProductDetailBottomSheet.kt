@@ -10,10 +10,11 @@ import androidx.annotation.Nullable
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.ProductParcelable
-import com.light.finder.extensions.deparcelizeCategory
+import com.light.finder.extensions.mapParcelableProductToDomain
+import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 class ProductDetailBottomSheet : BottomSheetDialogFragment() {
 
@@ -33,20 +34,22 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let { bundle ->
             bundle.getParcelable<ProductParcelable>(PRODUCT_DETAIL_ID_KEY)
-                ?.let { categoryParcelable ->
-                   // viewModel.onRetrieveProduct(categoryParcelable.deparcelizeCategory())
+                ?.let { productParcelable ->
+                    populateProductData(mapParcelableProductToDomain(productParcelable))
                 }
             //setObservers()
         }
 
 
-        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        view.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
 
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                 val dialog = dialog as BottomSheetDialog
-                val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
+                val bottomSheet =
+                    dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
                 val behavior = BottomSheetBehavior.from(bottomSheet!!)
                 behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
@@ -57,6 +60,42 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
             }
         })
 
+    }
+
+    private fun populateProductData(product: Product) {
+        val parts = product.name.split(",")
+        val pack = parts[parts.size - 2] + " " + parts[parts.size - 1]
+        val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
+        val title = String.format(
+            getString(R.string.product_title),
+            product.categoryName,
+            isDimmable,
+            product.wattageReplaced,
+            product.factorBase,
+            product.factorShape,
+            pack.replace("-", " ").replace("Pack", "pack")
+        )
+
+        val price = String.format(
+            getString(R.string.price_detail),
+            product.pricePack,
+            product.priceLamp
+
+        )
+
+        val changeVariation = String.format(
+            getString(R.string.change_variation),
+            product.wattageReplaced,
+            product.scene,
+            product.finish
+        )
+
+
+        textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
+        textViewDetailPrice.text = price
+        textViewDetailVariation.text = changeVariation
+
+        textViewDetailDescription.text = product.description
     }
 
     override fun onDestroyView() {
