@@ -15,9 +15,8 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.newInstance
 import com.light.presentation.viewmodels.DetailViewModel
-import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
-
 
 
 class DetailFragment : Fragment() {
@@ -39,7 +38,7 @@ class DetailFragment : Fragment() {
             component = app.applicationComponent.plus(DetailModule())
         } ?: throw Exception("Invalid Activity")
         setViewPager()
-        setBottomSheet()
+        //navigatesBottomSheet()
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
@@ -57,8 +56,7 @@ class DetailFragment : Fragment() {
 
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
-        updateData(contentProduct.product)
-
+        navigatesBottomSheet(contentProduct.product)
     }
 
     private fun updateData(product: Product) {
@@ -68,15 +66,11 @@ class DetailFragment : Fragment() {
     }
 
 
-    private fun setBottomSheet() {
-        val bottomSheet = ProductDetailBottomSheet()
-        val bundle = Bundle()
-
+    private fun navigatesBottomSheet(product: Product) {
+        val bottomSheet = ProductDetailBottomSheet.newInstance(product)
         //todo send actual values
-        bundle.putString("test", "oh ya")
-        bottomSheet.arguments = bundle
         bottomSheet.isCancelable = false
-        bottomSheet.show(parentFragmentManager,"")
+        bottomSheet.show(parentFragmentManager, "")
     }
 
     private fun setViewPager() {
