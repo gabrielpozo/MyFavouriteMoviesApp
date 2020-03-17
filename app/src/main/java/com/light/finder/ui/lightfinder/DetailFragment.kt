@@ -15,6 +15,7 @@ import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.layout_camera.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
@@ -54,8 +55,7 @@ class DetailFragment : Fragment() {
     private fun setBottomSheet() {
         val bottomSheet = ProductDetailBottomSheet()
         val bundle = Bundle()
-        /*val behavior = BottomSheetBehavior.from(bottomSheet.view)
-        behavior.peekHeight = BottomSheetBehavior.STATE_EXPANDED*/
+
         //todo send actual values
         bundle.putString("test", "oh ya")
         bottomSheet.arguments = bundle
