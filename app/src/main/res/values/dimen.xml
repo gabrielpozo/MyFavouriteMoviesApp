@@ -21,7 +21,7 @@
     <dimen name="round_button_small">42dp</dimen>
     <dimen name="round_button_normal">52dp</dimen>
     <dimen name="round_button_medium">64dp</dimen>
-    <dimen name="round_button_large">92dp</dimen>
+    <dimen name="round_button_large">80dp</dimen>
 
     <dimen name="default_top_margin">38dp</dimen>
     <dimen name="rect_button_margin">12dp</dimen>
