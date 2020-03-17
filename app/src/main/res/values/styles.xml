@@ -16,9 +16,11 @@
 
     <style name="BottomSheet" parent="Theme.Design.BottomSheetDialog">
         <!-- Customize your theme here. -->
+
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
     <style name="AppModalStyle"

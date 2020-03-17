@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.light.domain.model.Product
 import com.light.finder.R
+import androidx.annotation.NonNull
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.extensions.mapParcelableProductToDomain
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -29,6 +30,8 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
         //todo set text
         return v
     }
+
+    override fun getTheme(): Int  = R.style.BottomSheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +54,19 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
                 val bottomSheet =
                     dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
                 val behavior = BottomSheetBehavior.from(bottomSheet!!)
-                behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                behavior.isHideable = false
+                behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onStateChanged(@NonNull view: View, i: Int) {
+                        behavior.peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
+                    }
+
+                    override fun onSlide(@NonNull view: View, v: Float) {
+
+                    }
+                })
+
+                //todo fix peak height
+                //behavior.peekHeight = BottomSheetBehavior.STATE_HALF_EXPANDED
 
                 val newHeight = activity?.window?.decorView?.measuredHeight
                 val viewGroupLayoutParams = bottomSheet.layoutParams
@@ -102,5 +117,10 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
         view?.viewTreeObserver?.addOnGlobalLayoutListener(null)
         super.onDestroyView()
     }
+
+   /* override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (view!!.parent.parent.parent as View).fitsSystemWindows = false
+    }*/
 
 }

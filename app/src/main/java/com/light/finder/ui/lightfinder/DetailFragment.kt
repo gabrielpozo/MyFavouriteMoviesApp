@@ -67,10 +67,10 @@ class DetailFragment : Fragment() {
 
 
     private fun navigatesBottomSheet(product: Product) {
-        val bottomSheet = ProductDetailBottomSheet.newInstance(product)
+       /* val bottomSheet = ProductDetailBottomSheet.newInstance(product)
         //todo send actual values
         bottomSheet.isCancelable = false
-        bottomSheet.show(parentFragmentManager, "")
+        bottomSheet.show(childFragmentManager,"")*/
     }
 
     private fun setViewPager() {
