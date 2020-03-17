@@ -15,4 +15,6 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
         //todo set text
         return v
     }
+
+
 }

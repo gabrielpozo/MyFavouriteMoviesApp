@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -13,6 +15,10 @@ import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+
+
+
 
 
 class DetailFragment : Fragment() {
@@ -42,14 +48,18 @@ class DetailFragment : Fragment() {
                 }
             observeElements()
         }
+
     }
 
     private fun setBottomSheet() {
         val bottomSheet = ProductDetailBottomSheet()
         val bundle = Bundle()
+        /*val behavior = BottomSheetBehavior.from(bottomSheet.view)
+        behavior.peekHeight = BottomSheetBehavior.STATE_EXPANDED*/
         //todo send actual values
         bundle.putString("test", "oh ya")
         bottomSheet.arguments = bundle
+        bottomSheet.isCancelable = false
         bottomSheet.show(parentFragmentManager,"")
     }
 
