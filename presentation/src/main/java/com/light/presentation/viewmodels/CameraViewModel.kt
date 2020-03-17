@@ -1,18 +1,17 @@
 package com.light.presentation.viewmodels
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
 import com.light.usecases.GetCategoriesResultUseCase
-import com.light.usecases.GetFilePathImageEncodedUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
 class CameraViewModel(
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
-    private val getFilePathImageUseCase: GetFilePathImageEncodedUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -34,7 +33,6 @@ class CameraViewModel(
         object RequestCameraViewDisplay : UiModel()
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
-        object CameraViewPermissionDenied : UiModel()
     }
 
 
@@ -42,7 +40,7 @@ class CameraViewModel(
     val modelPreview: LiveData<Event<PreviewModel>>
         get() = _modelPreview
 
-    class PreviewModel
+    class PreviewModel(val bitmap: Bitmap)
 
 
     private val _modelRequest = MutableLiveData<Content>()
@@ -51,7 +49,7 @@ class CameraViewModel(
 
 
     sealed class Content {
-        class EncodeImage(val absolutePath: String) : Content()
+        class EncodeImage(val bitmap: Bitmap) : Content()
         class RequestModelContent(val messages: Event<List<Message>>) : Content()
         class RequestCategoriesMessages(val encodedImage: String) : Content()
     }
@@ -94,12 +92,9 @@ class CameraViewModel(
         object ModeOff : FlashModel()
     }
 
-    fun onCameraButtonClicked() {
-        _modelPreview.value = Event(PreviewModel())
-    }
-
-    fun onSendButtonClicked(absolutePath: String) {
-        _modelRequest.value = Content.EncodeImage(absolutePath)
+    fun onCameraButtonClicked(bitmap: Bitmap) {
+        _modelPreview.value = Event(PreviewModel(bitmap))
+        _modelRequest.value = Content.EncodeImage(bitmap)
     }
 
     fun onRequestCategoriesMessages(base64: String) {
@@ -123,8 +118,6 @@ class CameraViewModel(
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
 
-        } else {
-            //  _model.value = UiModel.CameraViewPermissionDenied
         }
     }
 
@@ -138,15 +131,6 @@ class CameraViewModel(
 
         } else {
             _model.value = UiModel.PermissionsViewRequested
-        }
-    }
-
-    fun onRequestFileImageEncoded(absolutePath: String) {
-        checkCoroutineIsCancelled()
-        launch {
-            getFilePathImageUseCase.execute(
-                ::handleFileImageRetrieved, params = *arrayOf(absolutePath)
-            )
         }
     }
 
@@ -190,6 +174,7 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
 
+    //TODO it might be used on media image user story
     private fun handleFileImageRetrieved(imageEncoded: String) {
         _modelRequest.value = Content.RequestCategoriesMessages(imageEncoded)
     }
