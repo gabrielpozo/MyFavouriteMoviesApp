@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
@@ -14,42 +15,21 @@ class DetailViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
-    private lateinit var dataProducts: List<Product>
 
-    private val _productDetails = MutableLiveData<List<Product>>()
-    val productDetails: LiveData<List<Product>>
+    private val _model = MutableLiveData<Content>()
+    val model: LiveData<Content>
         get() {
-            return _productDetails
+            return _model
         }
 
+    data class Content(val product: Product)
 
-    fun onRetrieveProductsAndFilters(category: Category) {
-        setDataProducts(category.categoryProducts)
-        launch {
-            getDetailsUseCase.execute(
-                ::handleDetailResult,
-                params = *arrayOf(dataProducts, emptyList())
-            )
+    fun onRetrieveProduct(category: Category) {
+        //TODO we just take the first product for now
+        _model.value = Content(category.categoryProducts[0])
 
-            handleDetailResult(category.categoryProducts)
-        }
-    }
-
-    private fun handleDetailResult(categoryProducts: List<Product>) {
-
-        _productDetails.value = categoryProducts
 
     }
-
-    private fun setDataProducts(productList: List<Product>) {
-        dataProducts = productList
-    }
-
-
-
-
-
-
 
 
 }

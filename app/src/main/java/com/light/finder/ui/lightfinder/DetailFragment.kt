@@ -1,10 +1,13 @@
 package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -13,6 +16,7 @@ import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
 class DetailFragment : Fragment() {
@@ -38,11 +42,29 @@ class DetailFragment : Fragment() {
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
-                    viewModel.onRetrieveProductsAndFilters(categoryParcelable.deparcelizeCategory())
+                    viewModel.onRetrieveProduct(categoryParcelable.deparcelizeCategory())
                 }
-            observeElements()
+            setObservers()
         }
     }
+
+    private fun setObservers() {
+        viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        //viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
+    }
+
+
+    private fun observeProductContent(contentProduct: DetailViewModel.Content) {
+        updateData(contentProduct.product)
+
+    }
+
+    private fun updateData(product: Product) {
+        Log.d("Gabriel", "setting product ${product.categoryName}")
+        textViewDetailTitle.text = product.categoryName
+        textViewDetailDescription.text = product.description
+    }
+
 
     private fun setBottomSheet() {
         val bottomSheet = ProductDetailBottomSheet()
@@ -50,7 +72,7 @@ class DetailFragment : Fragment() {
         //todo send actual values
         bundle.putString("test", "oh ya")
         bottomSheet.arguments = bundle
-        bottomSheet.show(parentFragmentManager,"")
+        bottomSheet.show(parentFragmentManager, "")
     }
 
     private fun setViewPager() {
@@ -58,10 +80,6 @@ class DetailFragment : Fragment() {
         //viewPagerDetail.adapter = DetailViewPagerAdapter(requireContext(), imagesArray)
     }
 
-    private fun observeElements() {
-        //viewModel.productDetails.observe(viewLifecycleOwner, Observer(::setProductDetails))
-        // viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
-    }
 
 }
 
