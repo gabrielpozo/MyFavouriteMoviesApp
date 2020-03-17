@@ -114,7 +114,6 @@ fun MessageParcelable.deparcelizeMessage(): Message =
     Message(this.categoriesList.map { it.deparcelizeCategory() })
 
 
-
 private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
         product.name,
@@ -129,6 +128,7 @@ private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { pro
         product.sapID12NC,
         product.qtyLampscase,
         product.wattageReplaced,
+        product.country,
         product.priority,
         product.wattageClaim,
         product.factorBase,
@@ -151,14 +151,35 @@ private val mapDomainProductToParcelable: (Product) -> ProductParcelable = { pro
 
 private val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
     Product(
-        product.productImage,
-        product.productCategoryName,
-        product.productName,
-        product.productDescription,
-        product.productSpecOne,
-        product.productSpecThree,
-        product.productScene,
-        product.productPrice
+        product.name,
+        product.index,
+        product.spec1,
+        product.spec3,
+        product.spec2,
+        product.imageUrls,
+        product.description,
+        product.scene,
+        product.categoryName,
+        product.sapID12NC,
+        product.qtyLampscase,
+        product.wattageReplaced,
+        product.country,
+        product.priority,
+        product.wattageClaim,
+        product.factorBase,
+        product.discountProc,
+        product.sapID10NC,
+        product.dimmingCode,
+        product.finish,
+        product.promoted,
+        product.priceSku,
+        product.priceLamp,
+        product.pricePack,
+        product.factorShape,
+        product.qtyLampSku,
+        product.discountValue,
+        product.qtySkuCase,
+        product.factorTypeCode
     )
 
 }
