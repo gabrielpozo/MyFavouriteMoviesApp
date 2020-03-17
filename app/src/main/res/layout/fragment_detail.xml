@@ -2,37 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightBackgroundColor">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomSheetLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-       <!-- <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
-            android:id="@+id/dotsIndicator"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="bottom|end"
-            app:dotsColor="@color/lightBackgroundColor"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="10dp"
-            app:dotsSpacing="4dp"
-            app:dotsWidthFactor="2.5"
-            app:progressMode="true"
-            app:selectedDotColor="@color/snackBarColor" />-->
+        <!-- <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+             android:id="@+id/dotsIndicator"
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             android:layout_gravity="bottom|end"
+             app:dotsColor="@color/lightBackgroundColor"
+             app:dotsCornerRadius="8dp"
+             app:dotsSize="10dp"
+             app:dotsSpacing="4dp"
+             app:dotsWidthFactor="2.5"
+             app:progressMode="true"
+             app:selectedDotColor="@color/snackBarColor" />-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <include
+   <!-- <include
         android:id="@+id/bottomSheetLayout"
         layout="@layout/layout_detail_bottom_sheet"
         android:layout_height="0dp"
@@ -40,6 +42,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

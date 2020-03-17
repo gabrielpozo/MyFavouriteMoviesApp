@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/darkBackgroundColor">
+    android:background="@drawable/background">
     <TextView
         android:id="@+id/textViewDetailTitle"
         android:layout_margin="24dp"
@@ -90,4 +90,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayouts02"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/texts1"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:text="tesstt"
+            android:padding="7dp"
+            android:gravity="bottom|center_horizontal"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="30dp"
+            android:bottomLeftRadius="10dp"
+            android:bottomRightRadius="50dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:topLeftRadius="10dp"
+            android:topRightRadius="10dp"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

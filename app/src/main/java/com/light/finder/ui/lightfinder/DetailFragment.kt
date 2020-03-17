@@ -19,6 +19,7 @@ import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
+
 class DetailFragment : Fragment() {
     companion object {
         const val PRODUCTS_ID_KEY = "ProductsFragment::id"
@@ -46,6 +47,7 @@ class DetailFragment : Fragment() {
                 }
             setObservers()
         }
+
     }
 
     private fun setObservers() {
@@ -61,18 +63,20 @@ class DetailFragment : Fragment() {
 
     private fun updateData(product: Product) {
         Log.d("Gabriel", "setting product ${product.categoryName}")
-        textViewDetailTitle.text = product.categoryName
-        textViewDetailDescription.text = product.description
+        //textViewDetailTitle.text = product.categoryName
+        //textViewDetailDescription.text = product.description
     }
 
 
     private fun setBottomSheet() {
         val bottomSheet = ProductDetailBottomSheet()
         val bundle = Bundle()
+
         //todo send actual values
         bundle.putString("test", "oh ya")
         bottomSheet.arguments = bundle
-        bottomSheet.show(parentFragmentManager, "")
+        bottomSheet.isCancelable = false
+        bottomSheet.show(parentFragmentManager,"")
     }
 
     private fun setViewPager() {
