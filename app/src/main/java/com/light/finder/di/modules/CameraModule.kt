@@ -1,6 +1,7 @@
 package com.light.finder.di.modules
 
 import com.light.domain.CategoryRepository
+import com.light.finder.data.source.local.ImageRepository
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetFilePathImageEncodedUseCase
@@ -22,12 +23,14 @@ class CameraModule {
         GetFilePathImageEncodedUseCase(categoryRepository)
 
     @Provides
+    fun getImageRepository() =
+        ImageRepository(Dispatchers.Main)
+
+    @Provides
     fun cameraViewModel(
-        getCategoryResultUseCase: GetCategoriesResultUseCase,
-        getFilePathImageEncodedUseCase: GetFilePathImageEncodedUseCase
+        getCategoryResultUseCase: GetCategoriesResultUseCase
     ) = CameraViewModel(
         getCategoryResultUseCase,
-        getFilePathImageEncodedUseCase,
         Dispatchers.Main
     )
 }
@@ -35,4 +38,5 @@ class CameraModule {
 @Subcomponent(modules = [(CameraModule::class)])
 interface CameraComponent {
     val cameraViewModel: CameraViewModel
+    val imageRepository: ImageRepository
 }
