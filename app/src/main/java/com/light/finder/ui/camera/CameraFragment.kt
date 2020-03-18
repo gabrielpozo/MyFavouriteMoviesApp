@@ -68,7 +68,10 @@ class CameraFragment : BaseFragment() {
 
     private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
-            countDownText.text = "${millisUntilFinished / 1000}"
+            val timeText = millisUntilFinished / 1000
+            if (timeText > 0) {
+                countDownText.text = timeText.toString()
+            }
         }
 
         override fun onFinish() {
