@@ -19,6 +19,11 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+import android.view.ViewTreeObserver.OnScrollChangedListener
+import com.light.finder.extensions.gone
+import androidx.core.widget.NestedScrollView
+
+
 
 
 class DetailFragment : Fragment() {
@@ -46,6 +51,15 @@ class DetailFragment : Fragment() {
                 }
             setObservers()
         }
+
+        /*scrollDetail.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
+               viewPagerDetail.bringToFront()
+            } else {
+                scrollDetail.bringToFront()
+            }
+
+        })*/
 
     }
 
