@@ -28,6 +28,7 @@
 
             <Button
                 style="@style/GreenButton"
+                android:stateListAnimator="@null"
                 android:background="@drawable/button_curvy_corners"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
