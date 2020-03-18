@@ -369,6 +369,7 @@ class CameraFragment : BaseFragment() {
         alertDialog = dialogBuilder.create()
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
         timer.cancel()
         lottieAnimationView.pauseAnimation()
         dialogView.buttonPositive.text = buttonPositiveText
