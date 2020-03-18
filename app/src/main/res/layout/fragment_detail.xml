@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightBackgroundColor"
     android:orientation="vertical">
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerDetail"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        >
+
+
+    </androidx.viewpager.widget.ViewPager>
+
+
     <ScrollView
+        android:background="@android:color/transparent"
+        android:id="@+id/scrollDetail"
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,11 +27,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightBackgroundColor">
+            >
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="370dp" />
+
+
 
             <include
                 android:id="@+id/bottomSheetLayout"
@@ -28,22 +43,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerDetail"
-        android:layout_width="match_parent"
-        android:layout_height="370dp">
 
 
-    </androidx.viewpager.widget.ViewPager>
-
-
-    <!--<include
-        android:id="@+id/bottomSheetLayout"
-        layout="@layout/layout_detail_bottom_sheet"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".75"
-        app:layout_constraintStart_toStartOf="parent" />-->
 </RelativeLayout>

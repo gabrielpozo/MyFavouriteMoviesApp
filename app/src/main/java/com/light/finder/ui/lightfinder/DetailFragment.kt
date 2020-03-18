@@ -106,8 +106,7 @@ class DetailFragment : Fragment() {
         //todo set viewpager with images
         val myList: MutableList<String> = mutableListOf()
         myList.addAll(product.imageUrls)
-        myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
-        Log.d("Gabriel","${product.imageUrls} and size: ${product.imageUrls.size}")
+        //myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
     }
 
