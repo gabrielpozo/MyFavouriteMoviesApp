@@ -7,20 +7,8 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@color/secondaryTextColor</item>
         <item name="android:navigationBarColor">@color/lightBackgroundColor</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        <item name="bottomSheetDialogTheme">@style/BottomSheet</item>
-    </style>
-
-
-    <style name="BottomSheet" parent="Theme.Design.BottomSheetDialog">
-        <!-- Customize your theme here. -->
-
-        <item name="android:windowCloseOnTouchOutside">false</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:windowIsFloating">false</item>
+         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+         <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="AppModalStyle"
