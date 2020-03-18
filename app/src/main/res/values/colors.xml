@@ -34,6 +34,8 @@
     <color name="primaryOnDark">#01e487</color>
     <color name="colorActionBar">@android:color/transparent</color>
     <color name="transparentLightBackgroundColor">#66636367</color>
+    <color name="transp">#80000000</color>
+
 
 
 

@@ -1,6 +1,7 @@
 package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,9 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
+import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
@@ -36,8 +39,6 @@ class DetailFragment : Fragment() {
         activity?.run {
             component = app.applicationComponent.plus(DetailModule())
         } ?: throw Exception("Invalid Activity")
-        setViewPager()
-        //navigatesBottomSheet()
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
@@ -54,6 +55,7 @@ class DetailFragment : Fragment() {
 
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
+        setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
     }
 
@@ -100,9 +102,13 @@ class DetailFragment : Fragment() {
     }
 
 
-    private fun setViewPager() {
+    private fun setViewPager(product: Product) {
         //todo set viewpager with images
-        //viewPagerDetail.adapter = DetailViewPagerAdapter(requireContext(), imagesArray)
+        val myList: MutableList<String> = mutableListOf()
+        myList.addAll(product.imageUrls)
+        myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        Log.d("Gabriel","${product.imageUrls} and size: ${product.imageUrls.size}")
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
     }
 
 
