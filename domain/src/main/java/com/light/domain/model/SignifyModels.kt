@@ -47,5 +47,6 @@ data class Product(
     var discountValue: Int,
     var qtySkuCase: Int,
     var factorTypeCode: Int,
+    var colorCctCode: String,
     var filtered: Boolean = false
 )

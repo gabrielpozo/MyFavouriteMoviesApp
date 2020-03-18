@@ -81,7 +81,15 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         qtyLampSku = productDto.qtyLampSku ?: 0,
         discountValue = productDto.discountValue ?: 0,
         qtySkuCase = productDto.qtySkuCase ?: 0,
-        factorTypeCode = productDto.factorTypeCode ?: 0
+        factorTypeCode = productDto.factorTypeCode ?: 0,
+        colorCctCode = when (productDto.productCctCode) {
+            1 -> "Warm"
+            2 -> "Warm white"
+            3 -> "Cool white"
+            4 -> "Daylight"
+            else -> ""
+
+        }
     )
 }
 

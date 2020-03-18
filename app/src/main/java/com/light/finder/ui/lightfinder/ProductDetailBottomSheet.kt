@@ -101,7 +101,7 @@ class ProductDetailBottomSheet : BottomSheetDialogFragment() {
         val changeVariation = String.format(
             getString(R.string.change_variation),
             product.wattageReplaced,
-            product.scene,
+            product.colorCctCode,
             product.finish
         )
 
