@@ -89,8 +89,16 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
             4 -> "Daylight"
             else -> ""
 
+        },
+        formfactorType = when (productDto.factorTypeCode) {
+            1 -> "BULB"
+            2 -> "REFLECTOR"
+            3 -> "COIL"
+            4 -> "TUBE"
+            else -> ""
+
         }
-    )
+        )
 }
 
 

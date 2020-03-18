@@ -47,7 +47,8 @@ data class ProductParcelable(
     var discountValue: Int,
     var qtySkuCase: Int,
     var factorTypeCode: Int,
-    var colorCctCode: String
+    var colorCctCode: String,
+    var formfactorType: String
 ) : Parcelable
 
 @Parcelize

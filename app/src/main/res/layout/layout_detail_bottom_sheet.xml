@@ -25,7 +25,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textViewDetailPrice"
+            android:id="@+id/textViewDetailPricePerPack"
             style="@style/TitleTextDarkGreen"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="16dp"
@@ -34,7 +34,7 @@
             tools:text="0.00$" />
 
         <TextView
-            android:id="@+id/textViewDetailPricePerPack"
+            android:id="@+id/textViewDetailPrice"
             style="@style/TitleTextDarkGreenSmall"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
@@ -64,10 +64,10 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:text="@string/change_variation_title"
             app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Change Variation" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewDetailVariation"
@@ -107,8 +107,8 @@
         android:layout_height="1dp" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/layoutOrder"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical">
@@ -164,7 +164,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Description" />
+            android:text="@string/description" />
 
         <TextView
             android:id="@+id/textViewDetailDescription"
@@ -221,7 +221,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Specifications" />
+            android:text="Specifications" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -261,7 +261,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Delivery and Returns" />
+            android:text="Delivery \u0026 Returns" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -276,14 +276,12 @@
             app:srcCompat="@drawable/arrow_gray" />
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:background="@color/dividerOndark"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
-
 
 
 </LinearLayout>

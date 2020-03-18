@@ -48,5 +48,6 @@ data class Product(
     var qtySkuCase: Int,
     var factorTypeCode: Int,
     var colorCctCode: String,
+    var formfactorType: String,
     var filtered: Boolean = false
 )

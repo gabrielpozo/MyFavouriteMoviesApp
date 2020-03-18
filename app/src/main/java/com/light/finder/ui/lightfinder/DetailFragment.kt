@@ -1,7 +1,6 @@
 package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,8 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.newInstance
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
 class DetailFragment : Fragment() {
@@ -51,27 +50,55 @@ class DetailFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
-        //viewModel.dataFilterButtons.observe(viewLifecycleOwner, Observer(::updateFilters))
     }
 
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
-        navigatesBottomSheet(contentProduct.product)
-    }
-
-    private fun updateData(product: Product) {
-        Log.d("Gabriel", "setting product ${product.categoryName}")
-        //textViewDetailTitle.text = product.categoryName
-        //textViewDetailDescription.text = product.description
+        populateProductData(contentProduct.product)
     }
 
 
-    private fun navigatesBottomSheet(product: Product) {
-       /* val bottomSheet = ProductDetailBottomSheet.newInstance(product)
-        //todo send actual values
-        bottomSheet.isCancelable = false
-        bottomSheet.show(childFragmentManager,"")*/
+    private fun populateProductData(product: Product) {
+        val packs = String.format(
+            getString(R.string.form_factor_pack),
+            product.formfactorType,
+            product.qtyLampSku
+        )
+        val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
+        val title = String.format(
+            getString(R.string.product_title),
+            product.categoryName,
+            isDimmable,
+            product.wattageReplaced,
+            product.factorBase,
+            product.factorShape,
+            packs
+        )
+
+        val pricePack = String.format(
+            getString(R.string.price_per_pack),
+            product.pricePack
+        )
+
+        val priceLamp = String.format(
+            getString(R.string.price_detail),
+            product.priceLamp
+        )
+
+        val changeVariation = String.format(
+            getString(R.string.change_variation),
+            product.wattageReplaced,
+            product.colorCctCode,
+            product.finish
+        )
+
+        textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
+        textViewDetailPricePerPack.text = pricePack
+        textViewDetailPrice.text = priceLamp
+        textViewDetailVariation.text = changeVariation
+        textViewDetailDescription.text = product.description
     }
+
 
     private fun setViewPager() {
         //todo set viewpager with images
