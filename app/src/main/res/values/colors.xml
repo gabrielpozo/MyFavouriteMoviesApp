@@ -27,6 +27,8 @@
     <color name="lightBackgroundColor">#636367</color>
     <color name="snackBarColor">#1432ff</color>
     <color name="bottomNavBarColor">#1c1c1f</color>
+    <color name="textDisabled">#b0b0b3</color>
+    <color name="primaryPressed">#00b66c</color>
 
     <!--new colors-->
     <color name="primaryLightColor">#008550</color>
