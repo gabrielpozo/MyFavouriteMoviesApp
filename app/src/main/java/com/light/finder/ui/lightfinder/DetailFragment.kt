@@ -112,14 +112,14 @@ class DetailFragment : Fragment() {
 
     private fun setViewPager(product: Product) {
         //todo set viewpager with images
-        //addBottomDots(0, product.imageUrls)
+        //addBottomDots(0, product.imageUrls.size)
         val myList: MutableList<String> = mutableListOf()
         myList.addAll(product.imageUrls)
         myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
     }
 
-    /*private fun addBottomDots(currentPage: Int, layouts: List<String>) {
+    /*private fun addBottomDots(currentPage: Int, layouts: Int) {
 
         val dots = arrayOfNulls<TextView>(layouts.size)
 
