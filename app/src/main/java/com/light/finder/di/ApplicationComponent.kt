@@ -15,6 +15,8 @@ interface ApplicationComponent {
     fun plus(module: ProductsModule): ProductsComponent
     fun plus(module: SplashModule): SplashComponent
     fun plus(module: CameraModule): CameraComponent
+    fun plus(module: ProductsOptionsModule): ProductsOptionsComponent
+
 
     @Component.Factory
     interface Factory {
