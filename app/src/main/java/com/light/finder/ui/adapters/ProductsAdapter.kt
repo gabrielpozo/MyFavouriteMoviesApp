@@ -14,7 +14,7 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     var products: List<Product> by basicDiffUtil(
         emptyList(),
-        areItemsTheSame = { old, new -> old.productName == new.productName }
+        areItemsTheSame = { old, new -> old.name == new.name }
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,9 +31,9 @@ class ProductsAdapter : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(product: Product) {
-            itemView.product_name.text = product.productName
-            itemView.product_color.text = product.productDescription
-            itemView.productCover.loadUrl(product.productImage[0])
+            itemView.product_name.text = product.name
+            itemView.product_color.text = product.description
+            itemView.productCover.loadUrl(product.imageUrls[0])
         }
     }
 }

@@ -6,6 +6,7 @@ import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductsFragment
 
 fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
@@ -22,6 +23,14 @@ fun ProductsFragment.Companion.newInstance(category: Category): ProductsFragment
     return fragment
 }
 
+fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {
+    val args = android.os.Bundle()
+    args.putParcelable(PRODUCTS_ID_KEY, category.parcelizeCategory())
+    val fragment = DetailFragment()
+    fragment.arguments = args
+    return fragment
+}
+
 
 fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragment {
     val args = android.os.Bundle()
@@ -30,6 +39,14 @@ fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragme
     fragment.arguments = args
     return fragment
 }
+
+/*fun ProductDetailBottomSheet.Companion.newInstance(product: Product): ProductDetailBottomSheet {
+    val args = android.os.Bundle()
+    args.putParcelable(PRODUCT_DETAIL_ID_KEY, mapDomainProductToParcelable(product))
+    val fragment = ProductDetailBottomSheet()
+    fragment.arguments = args
+    return fragment
+}*/
 
 //fun CategoriesFragment.Companion.newInstance(base64: String): CategoriesFragment {
 //    val args = android.os.Bundle()

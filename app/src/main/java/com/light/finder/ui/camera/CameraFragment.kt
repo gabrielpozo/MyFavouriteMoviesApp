@@ -68,7 +68,10 @@ class CameraFragment : BaseFragment() {
 
     private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
-            countDownText.text = "${millisUntilFinished / 1000}"
+            val timeText = millisUntilFinished / 1000
+            if (timeText > 0) {
+                countDownText.text = timeText.toString()
+            }
         }
 
         override fun onFinish() {
@@ -357,6 +360,7 @@ class CameraFragment : BaseFragment() {
     }
 
 
+    //TODO make this Error Dialog Generic to the App
     private fun showErrorDialog(
         titleDialog: String,
         subtitleDialog: String,

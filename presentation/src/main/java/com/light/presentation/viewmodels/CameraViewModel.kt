@@ -1,6 +1,7 @@
 package com.light.presentation.viewmodels
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Message
@@ -162,6 +163,7 @@ class CameraViewModel(
 
     private fun handleErrorResponse(hasBeenCanceled: Boolean) {
         if (!hasBeenCanceled) {
+            Log.d("Gabriel", "handle Error Response!!")
             _modelDialog.value = Event(DialogModel.ServerError)
 
         } else {
