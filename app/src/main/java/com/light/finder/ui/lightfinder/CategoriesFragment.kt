@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
 import com.light.finder.R
@@ -91,7 +89,7 @@ class CategoriesFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            mFragmentNavigation.pushFragment(ProductsFragment.newInstance(navModel.category))
+            mFragmentNavigation.pushFragment(DetailFragment.newInstance(navModel.category))
         }
     }
 
