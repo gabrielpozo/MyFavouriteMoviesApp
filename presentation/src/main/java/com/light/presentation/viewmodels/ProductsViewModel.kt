@@ -3,7 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
-import com.light.domain.model.Filter
+import com.light.domain.model.FilterWattage
 import com.light.domain.model.Product
 import com.light.usecases.GetFilterButtonsUseCase
 import com.light.usecases.GetProductsFilteredUseCase
@@ -35,8 +35,8 @@ class ProductsViewModel(
 
     data class ProductContent(val productList: List<Product>)
     data class FilteringModel(
-        val initFilterList: List<Filter>?,
-        val filteredButtons: List<Filter> = emptyList()
+        val initFilterList: List<FilterWattage>?,
+        val filteredButtons: List<FilterWattage> = emptyList()
     )
 
 
@@ -53,7 +53,7 @@ class ProductsViewModel(
     }
 
 
-    fun onFilterTap(filter: Filter) {
+    fun onFilterTap(filter: FilterWattage) {
         launch {
             switchActiveFieldOnFilterInitList(filter)
             getProductListFiltered.execute(
@@ -77,14 +77,14 @@ class ProductsViewModel(
         _productsFiltered.value = ProductContent(productList = products)
     }
 
-    private fun handleInitFilteringButtonsResult(filterButtons: List<Filter>) {
+    private fun handleInitFilteringButtonsResult(filterButtons: List<FilterWattage>) {
         _dataFilterButtons.value = FilteringModel(
             initFilterList = filterButtons,
             filteredButtons = filterButtons
         )
     }
 
-    private fun handleFilteredButton(filteredButtons: List<Filter>){
+    private fun handleFilteredButton(filteredButtons: List<FilterWattage>){
         _dataFilterButtons.value = FilteringModel(
             initFilterList = _dataFilterButtons.value?.initFilterList,
             filteredButtons = filteredButtons
@@ -92,7 +92,7 @@ class ProductsViewModel(
     }
 
 
-    private fun switchActiveFieldOnFilterInitList(filter: Filter) {
+    private fun switchActiveFieldOnFilterInitList(filter: FilterWattage) {
         _dataFilterButtons.value?.initFilterList?.find { it.nameFilter == filter.nameFilter }
             ?.isActive = !filter.isActive
     }

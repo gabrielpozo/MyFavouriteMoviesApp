@@ -3,17 +3,17 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.Filter
+import com.light.domain.model.FilterWattage
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import kotlinx.android.synthetic.main.item_filter.view.*
 
 //todo must be horizontal gridLayout for 2 grids
-class FilterAdapter(private val listener: (Filter) -> Unit) :
+class FilterAdapter(private val listener: (FilterWattage) -> Unit) :
     RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
-    var filterList: List<Filter> by basicDiffUtil(
+    var filterList: List<FilterWattage> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter }
     )
@@ -33,7 +33,7 @@ class FilterAdapter(private val listener: (Filter) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: Filter) {
+        fun bind(filter: FilterWattage) {
             itemView.filterButton.text = filter.nameFilter
             //itemView.filterButton.setOnClickListener { listener(filter) }
         }

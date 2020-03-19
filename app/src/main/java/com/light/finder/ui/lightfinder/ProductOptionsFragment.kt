@@ -5,16 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
-import com.light.finder.data.source.remote.MessageParcelable
+import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.ProductsOptionsComponent
 import com.light.finder.di.modules.ProductsOptionsModule
 import com.light.finder.extensions.app
+import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
+import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
+import com.light.presentation.viewmodels.ProductsOptionsViewModel.FilteringVariation.*
+import com.light.presentation.viewmodels.ProductsViewModel
 import java.lang.ClassCastException
 
 
@@ -23,9 +28,6 @@ class ProductOptionsFragment : BaseFragment() {
     companion object {
         const val PRODUCTS_OPTIONS_ID_KEY = "ProductsOptionsFragment::id"
     }
-
-
-
 
     private lateinit var component: ProductsOptionsComponent
     private val viewModel: ProductsOptionsViewModel by lazy { getViewModel { component.productsOptionsViewModel } }
@@ -56,16 +58,60 @@ class ProductOptionsFragment : BaseFragment() {
             component = app.applicationComponent.plus(ProductsOptionsModule())
         } ?: throw Exception("Invalid Activity")
 
+
+         initAdapters()
+
         arguments?.let { bundle ->
-            bundle.getParcelable<MessageParcelable>(CategoriesFragment.CATEGORIES_ID_KEY)
-                ?.let { messageParcelable ->
-                   // viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
+            bundle.getParcelable<CategoryParcelable>(PRODUCTS_OPTIONS_ID_KEY)
+                ?.let { categoryParcelable ->
+                    viewModel.onRetrieveProductsVariation(
+                        categoryParcelable.deparcelizeCategory()
+                    )
                 }
 
-            //viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
+            viewModel.dataFilterWattageButtons.observe(
+                viewLifecycleOwner,
+                Observer(::observeModelContent)
+            )
+
         }
 
         //navigationObserver()
-       // initAdapter()
     }
+
+    private fun initAdapters() {
+        /*filterAdapter = FilterAdapter(::handleFilterPressed)
+        rvFilterResult.adapter = filterAdapter*/
+    }
+
+    private fun observeModelContent(filterContent: FilteringVariation) {
+        when (filterContent) {
+            is FilteringWattage -> {
+            }
+            is FilteringColor -> {
+            }
+            is FilteringFinish -> {
+            }
+        }
+
+    }
+
+
+    private fun updateWattageFilters(modelFilter: ProductsViewModel.FilteringModel) {
+        //filterAdapter.filterList = modelFilter.filteredButtons
+    }
+
+    private fun updateColorsFilters(modelFilter: ProductsViewModel.FilteringModel) {
+      //  filterAdapter.filterList = modelFilter.filteredButtons
+    }
+
+    private fun updateFilters(modelFilter: ProductsViewModel.FilteringModel) {
+       // filterAdapter.filterList = modelFilter.filteredButtons
+    }
+
+
+
+
+
+
 }
