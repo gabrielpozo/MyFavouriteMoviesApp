@@ -35,4 +35,3 @@ class ProductsModule {
 interface ProductsComponent {
     val productsViewModel: ProductsViewModel
 }
-
