@@ -61,6 +61,7 @@ ext {
     navigationFragNav = "3.2.0"
     bottombar = "2.3.1"
     tsnackBarVersion = "1.1.1"
+    dotsIndicator = "4.1.2"
 
 
     classpathDependencies = [
@@ -107,6 +108,10 @@ ext {
 
     lottieDependencies = [
             lottie: "com.airbnb.android:lottie:$lottieVersion"
+    ]
+
+    dotsDependencies = [
+            dots: "com.tbuonomo.andrui:viewpagerdotsindicator:$dotsIndicator"
     ]
 
     cameraxDependencies = [

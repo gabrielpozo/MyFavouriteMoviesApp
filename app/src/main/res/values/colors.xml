@@ -39,6 +39,10 @@
     <color name="transp">#80000000</color>
 
 
+    <!-- dots inactive colors -->
+    <color name="dot_active">#1332ff</color>
+    <color name="dot_inactive">#49494d</color>
+
 
 
 
