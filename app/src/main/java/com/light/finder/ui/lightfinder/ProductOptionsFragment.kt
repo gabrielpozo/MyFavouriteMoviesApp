@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.light.domain.model.FilterWattage
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -15,11 +16,11 @@ import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.adapters.CategoriesAdapter
+import com.light.finder.ui.adapters.*
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.FilteringVariation.*
-import com.light.presentation.viewmodels.ProductsViewModel
+import kotlinx.android.synthetic.main.layout_filter_dialog.*
 import java.lang.ClassCastException
 
 
@@ -31,15 +32,18 @@ class ProductOptionsFragment : BaseFragment() {
 
     private lateinit var component: ProductsOptionsComponent
     private val viewModel: ProductsOptionsViewModel by lazy { getViewModel { component.productsOptionsViewModel } }
-    private lateinit var adapter: CategoriesAdapter
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var filterWattageAdapter: FilterWattageAdapter
+    private lateinit var filterColorAdapter: FilterColorAdapter
+    private lateinit var filterFinishAdapter: FilterFinishAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        return inflater.inflate(R.layout.layout_filter_dialog, container, false)
     }
 
     override fun onAttach(context: Context) {
@@ -59,7 +63,7 @@ class ProductOptionsFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
 
-         initAdapters()
+        initAdapters()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_OPTIONS_ID_KEY)
@@ -80,13 +84,19 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun initAdapters() {
-        /*filterAdapter = FilterAdapter(::handleFilterPressed)
-        rvFilterResult.adapter = filterAdapter*/
+        filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
+        recyclerViewWattage.adapter = filterWattageAdapter
+
+        filterColorAdapter = FilterColorAdapter(::handleFilterColorPressed)
+        recyclerViewWattage.adapter = filterColorAdapter
+
+        filterFinishAdapter = FilterFinishAdapter(::handleFilterWattagePressed)
+        recyclerViewWattage.adapter = filterFinishAdapter
     }
 
-    private fun observeModelContent(filterContent: FilteringVariation) {
-        when (filterContent) {
-            is FilteringWattage -> {
+    private fun observeModelContent(modelContent: FilteringVariation) {
+        when (modelContent) {
+            is FilteringWattage -> { updateWattageFilters(modelContent)
             }
             is FilteringColor -> {
             }
@@ -97,21 +107,29 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
 
-    private fun updateWattageFilters(modelFilter: ProductsViewModel.FilteringModel) {
-        //filterAdapter.filterList = modelFilter.filteredButtons
+    private fun updateWattageFilters(filteringWattage: FilteringWattage) {
+        filterWattageAdapter.filterList = filteringWattage.filteredWattageButtons
     }
 
-    private fun updateColorsFilters(modelFilter: ProductsViewModel.FilteringModel) {
-      //  filterAdapter.filterList = modelFilter.filteredButtons
+    private fun updateColorsFilters(filteringColor: FilteringColor) {
+          filterColorAdapter.filterList = filteringColor.filteredColorButtons
     }
 
-    private fun updateFilters(modelFilter: ProductsViewModel.FilteringModel) {
-       // filterAdapter.filterList = modelFilter.filteredButtons
+    private fun updateFilters(filteringFinish : FilteringFinish) {
+         filterFinishAdapter.filterList = filteringFinish.filteredFinishButtons
     }
 
+    private fun handleFilterWattagePressed(filter: FilterWattage) {
+       // viewModel.onFilterTap(filter)
+    }
 
+    private fun handleFilterColorPressed(filter: FilterWattage) {
+        // viewModel.onFilterTap(filter)
+    }
 
-
+    private fun handleFilterFinishPressed(filter: FilterWattage) {
+        // viewModel.onFilterTap(filter)
+    }
 
 
 }
