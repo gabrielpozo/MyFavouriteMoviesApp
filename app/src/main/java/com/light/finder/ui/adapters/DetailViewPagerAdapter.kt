@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.light.finder.R
 import com.light.finder.extensions.loadUrl
+import com.light.finder.extensions.loadUrlCenterCrop
 import kotlinx.android.synthetic.main.slider_image_bulb.view.*
 
 class DetailViewPagerAdapter internal constructor(
@@ -50,7 +51,7 @@ class DetailImageAdapter(private val context: Context, private val images: List<
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View = layoutInflater.inflate(R.layout.slider_image_bulb, container, false)
 
-        view.bulbPoster.loadUrl(images[position])
+        view.bulbPoster.loadUrlCenterCrop(images[position])
 
         container.addView(view)
         return view

@@ -77,6 +77,10 @@ fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url).placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadUrlCenterCrop(url: String) {
+    Glide.with(context).load(url).centerInside().placeholder(R.drawable.category_placeholder).into(this)
+}
+
 
 fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(

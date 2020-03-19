@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -18,6 +20,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
+import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
@@ -27,6 +30,7 @@ class DetailFragment : BaseFragment() {
         const val PRODUCTS_ID_KEY = "ProductsFragment::id"
     }
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
@@ -54,6 +58,11 @@ class DetailFragment : BaseFragment() {
                     }
                 }
         }
+
+        val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+
     }
 
 
@@ -119,34 +128,10 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setViewPager(product: Product) {
-        //todo set viewpager with images
-        //addBottomDots(0, product.imageUrls.size)
-        val myList: MutableList<String> = mutableListOf()
-        myList.addAll(product.imageUrls)
-        myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
-        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
+        val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), product.imageUrls)
+        dotsIndicator?.setViewPager(viewPagerDetail)
+
     }
-
-    /*private fun addBottomDots(currentPage: Int, layouts: Int) {
-
-        val dots = arrayOfNulls<TextView>(layouts.size)
-
-        val colorsActive = resources.getIntArray(R.array.array_dot_active)
-        val colorsInactive = resources.getIntArray(R.array.array_dot_inactive)
-
-        dotsLayout.removeAllViews()
-        for (i in 0 until dots.length) {
-            dots[i] = TextView(this)
-            dots[i].setText(Html.fromHtml("&#8226;"))
-            dots[i].setTextSize(35)
-            dots[i].setTextColor(colorsInactive[currentPage])
-            dotsLayout.addView(dots[i])
-        }
-
-        if (dots.length > 0)
-            dots[currentPage].setTextColor(colorsActive[currentPage])
-    }*/
-
-
 }
 
