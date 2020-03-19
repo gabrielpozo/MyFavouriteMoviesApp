@@ -146,7 +146,9 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.qtySkuCase,
         product.factorTypeCode,
         product.colorCctCode,
-        product.formfactorType
+        product.formfactorType,
+        product.isSelected,
+        product.isAvailable
     )
 
 }
@@ -183,7 +185,9 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.qtySkuCase,
         product.factorTypeCode,
         product.colorCctCode,
-        product.formfactorType
+        product.formfactorType,
+        product.isSelected,
+        product.isAvailable
     )
 
 }

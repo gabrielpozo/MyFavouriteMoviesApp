@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.light.domain.model.FilterColor
+import com.light.domain.model.FilterFinish
 import com.light.domain.model.FilterWattage
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
@@ -79,29 +81,27 @@ class ProductOptionsFragment : BaseFragment() {
             )
 
         }
-
-        //navigationObserver()
     }
+
 
     private fun initAdapters() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
         recyclerViewWattage.adapter = filterWattageAdapter
 
         filterColorAdapter = FilterColorAdapter(::handleFilterColorPressed)
-        recyclerViewWattage.adapter = filterColorAdapter
+        recyclerViewColor.adapter = filterColorAdapter
 
-        filterFinishAdapter = FilterFinishAdapter(::handleFilterWattagePressed)
-        recyclerViewWattage.adapter = filterFinishAdapter
+        filterFinishAdapter = FilterFinishAdapter(::handleFilterFinishPressed)
+        recyclerViewFinish.adapter = filterFinishAdapter
     }
 
     private fun observeModelContent(modelContent: FilteringVariation) {
         when (modelContent) {
-            is FilteringWattage -> { updateWattageFilters(modelContent)
-            }
-            is FilteringColor -> {
-            }
-            is FilteringFinish -> {
-            }
+            is FilteringWattage -> updateWattageFilters(modelContent)
+
+            is FilteringColor -> updateColorsFilters(modelContent)
+
+            is FilteringFinish -> updateFinishFilters(modelContent)
         }
 
     }
@@ -112,22 +112,22 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun updateColorsFilters(filteringColor: FilteringColor) {
-          filterColorAdapter.filterList = filteringColor.filteredColorButtons
+        filterColorAdapter.filterList = filteringColor.filteredColorButtons
     }
 
-    private fun updateFilters(filteringFinish : FilteringFinish) {
-         filterFinishAdapter.filterList = filteringFinish.filteredFinishButtons
+    private fun updateFinishFilters(filteringFinish: FilteringFinish) {
+        filterFinishAdapter.filterList = filteringFinish.filteredFinishButtons
     }
 
     private fun handleFilterWattagePressed(filter: FilterWattage) {
-       // viewModel.onFilterTap(filter)
-    }
-
-    private fun handleFilterColorPressed(filter: FilterWattage) {
         // viewModel.onFilterTap(filter)
     }
 
-    private fun handleFilterFinishPressed(filter: FilterWattage) {
+    private fun handleFilterColorPressed(filter: FilterColor) {
+        // viewModel.onFilterTap(filter)
+    }
+
+    private fun handleFilterFinishPressed(filter: FilterFinish) {
         // viewModel.onFilterTap(filter)
     }
 

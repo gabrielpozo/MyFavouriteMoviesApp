@@ -94,7 +94,7 @@ class ProductsViewModel(
 
     private fun switchActiveFieldOnFilterInitList(filter: FilterWattage) {
         _dataFilterButtons.value?.initFilterList?.find { it.nameFilter == filter.nameFilter }
-            ?.isActive = !filter.isActive
+            ?.isSelected = !filter.isSelected
     }
 
 

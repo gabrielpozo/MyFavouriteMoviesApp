@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.light.domain.model.Product
 import com.light.finder.R
@@ -15,19 +13,21 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.newInstance
+import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
+import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
 
-class DetailFragment : Fragment() {
+class DetailFragment : BaseFragment() {
     companion object {
         const val PRODUCTS_ID_KEY = "ProductsFragment::id"
     }
 
     private lateinit var component: DetailComponent
-    private lateinit var alertDialog: AlertDialog
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,47 +40,41 @@ class DetailFragment : Fragment() {
         activity?.run {
             component = app.applicationComponent.plus(DetailModule())
         } ?: throw Exception("Invalid Activity")
+
+        setNavigationObserver()
+        setDetailObservers()
+
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
-                    viewModel.onRetrieveProduct(categoryParcelable.deparcelizeCategory())
+                    val category = categoryParcelable.deparcelizeCategory()
+                    viewModel.onRetrieveProduct(category)
+                    layoutChangeVariation.setOnClickListener {
+                        viewModel.onChangeVariationClick(category)
+                    }
                 }
-            setObservers()
         }
-
-        layoutChangeVariation.setOnClickListener {
-            openFilterDialog()
-        }
-
-
     }
 
-    private fun openFilterDialog() {
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        val dialogView = layoutInflater.inflate(R.layout.layout_filter_dialog, null)
-        dialogBuilder.setView(dialogView)
-        alertDialog = dialogBuilder.create()
-        alertDialog.setCanceledOnTouchOutside(false)
-        alertDialog.setCancelable(false)
-        alertDialog.window?.setDimAmount(0.6f)
-        alertDialog?.let {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            it.window?.setLayout(width, height)
-        }
-        alertDialog.show()
-    }
 
-    private fun setObservers() {
+    private fun setDetailObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
     }
-
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
     }
 
+    private fun setNavigationObserver() {
+        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
+    }
+
+    private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
+        navigationModel.getContentIfNotHandled()?.let { navModel ->
+            mFragmentNavigation.pushFragment(ProductOptionsFragment.newInstance(navModel.category))
+        }
+    }
 
     private fun populateProductData(product: Product) {
         val packs = String.format(

@@ -34,8 +34,7 @@ class CameraViewModel(
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
     }
-
-
+    
     private val _modelPreview = MutableLiveData<Event<PreviewModel>>()
     val modelPreview: LiveData<Event<PreviewModel>>
         get() = _modelPreview

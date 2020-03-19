@@ -12,12 +12,14 @@ fun FilterWattage.isMatchSpecs(product: Product): Boolean = true
 
 fun HashSet<FilterWattage>.removeDuplicateElements(activeOnInitList: List<FilterWattage>): List<FilterWattage> {
     val filterList = toMutableList()
+/*
     val groupedTypeList = filterList.groupBy { it.type }
     groupedTypeList.forEach { (_, value) ->
         if (value.count() == 1 && !activeOnInitList.contains(value[0])) {
             filterList.remove(value[0])
         }
     }
+*/
 
     return filterList
 

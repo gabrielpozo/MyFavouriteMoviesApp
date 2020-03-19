@@ -13,7 +13,7 @@ class GetProductsFilteredUseCase : BaseUseCase<List<Product>>() {
         val productDataList = params[0] as List<Product>
         val initFilterList = params[1] as List<FilterWattage>
         val productsFiltered = mutableListOf<Product>()
-        val filterActiveList = initFilterList.filter { it.isActive }
+        val filterActiveList = initFilterList.filter { it.isSelected }
 
         productDataList.forEach { product ->
             var count = 0

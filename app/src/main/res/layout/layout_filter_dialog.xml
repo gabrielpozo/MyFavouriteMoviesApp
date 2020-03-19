@@ -32,7 +32,7 @@
                 app:layout_constraintHorizontal_bias="0.628"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Variations" />
+                android:text="Variations" />
 
             <TextView
                 android:id="@+id/textViewDone"
@@ -51,7 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Done" />
+                android:text="Done" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,7 +75,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Wattage:" />
+                android:text="Wattage:" />
 
             <TextView
                 android:id="@+id/textViewWattage"
@@ -91,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewWattageTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="90 W" />
+                android:text="90 W" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -127,7 +127,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Color:" />
+                android:text="Color:" />
 
             <TextView
                 android:id="@+id/textViewColor"
@@ -143,7 +143,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewColorTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Warm White" />
+                android:text="Warm White" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -179,7 +179,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Color:" />
+                android:text="Finish:" />
 
             <TextView
                 android:id="@+id/textViewFinish"
@@ -195,7 +195,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewFinishTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Warm White" />
+                android:text="Clear" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

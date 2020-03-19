@@ -21,11 +21,11 @@ class GetFilterButtonsUseCase : BaseUseCase<List<FilterWattage>>() {
             filterHashSet.add(Filter(nameFilter = product.productScene, type = TYPE.PRODUCT_SCENE))*/
         }
 
-        val activeOnInitList = initFilterList.filter { it.isActive }
+        val activeOnInitList = initFilterList.filter { it.isSelected }
 
         if (activeOnInitList.isNotEmpty()) {
             activeOnInitList.map { filterOnInitList ->
-                filterHashSet.find { filterOnInitList.nameFilter == it.nameFilter }?.isActive =
+                filterHashSet.find { filterOnInitList.nameFilter == it.nameFilter }?.isSelected =
                     true
             }
         }
