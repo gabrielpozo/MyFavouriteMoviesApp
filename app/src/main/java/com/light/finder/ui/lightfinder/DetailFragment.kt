@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.light.domain.model.Product
@@ -26,6 +27,7 @@ class DetailFragment : Fragment() {
     }
 
     private lateinit var component: DetailComponent
+    private lateinit var alertDialog: AlertDialog
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,15 +48,27 @@ class DetailFragment : Fragment() {
             setObservers()
         }
 
-        /*scrollDetail.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY > oldScrollY) {
-               viewPagerDetail.bringToFront()
-            } else {
-                scrollDetail.bringToFront()
-            }
+        layoutChangeVariation.setOnClickListener {
+            openFilterDialog()
+        }
 
-        })*/
 
+    }
+
+    private fun openFilterDialog() {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_filter_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        alertDialog?.let {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            it.window?.setLayout(width, height)
+        }
+        alertDialog.show()
     }
 
     private fun setObservers() {
