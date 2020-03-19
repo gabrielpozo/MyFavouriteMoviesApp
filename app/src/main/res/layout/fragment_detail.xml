@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/detailLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detailLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightBackgroundColor"
+    android:background="@color/darkBackgroundColor"
     android:orientation="vertical">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerDetail"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
 
-
-    </androidx.viewpager.widget.ViewPager>
-
-
-    <ScrollView
-        android:background="@android:color/transparent"
-        android:id="@+id/scrollDetail"
-        android:scrollbars="none"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPagerDetail"
             android:layout_width="match_parent"
+            android:layout_height="375dp" />
+
+        <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+            android:id="@+id/dotsIndicator"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="370dp" />
-
-
-
-            <include
-                android:id="@+id/bottomSheetLayout"
-                layout="@layout/layout_detail_bottom_sheet"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
-        </LinearLayout>
-    </ScrollView>
+            app:dotsColor="@color/dot_active"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="10dp"
+            app:dotsSpacing="4dp"
+            app:dotsWidthFactor="2.5"
+            android:layout_marginBottom="64dp"
+            android:layout_alignEnd="@id/viewPagerDetail"
+            android:layout_alignBottom="@id/viewPagerDetail"
+            app:selectedDotColor="@color/dot_active"
+            app:progressMode="false"
+            />
 
 
+    </RelativeLayout>
 
-</RelativeLayout>
+
+    <include
+        layout="@layout/layout_detail_bottom_sheet"
+         />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

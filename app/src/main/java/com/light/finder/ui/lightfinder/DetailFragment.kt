@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -16,6 +19,7 @@ import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.viewmodels.DetailViewModel
+import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 
@@ -25,7 +29,9 @@ class DetailFragment : Fragment() {
         const val PRODUCTS_ID_KEY = "ProductsFragment::id"
     }
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
+    private lateinit var alertDialog: AlertDialog
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,15 +52,30 @@ class DetailFragment : Fragment() {
             setObservers()
         }
 
-        /*scrollDetail.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY > oldScrollY) {
-               viewPagerDetail.bringToFront()
-            } else {
-                scrollDetail.bringToFront()
-            }
+        layoutChangeVariation.setOnClickListener {
+            openFilterDialog()
+        }
 
-        })*/
+        val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
+
+    }
+
+    private fun openFilterDialog() {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_filter_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        alertDialog?.let {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            it.window?.setLayout(width, height)
+        }
+        alertDialog.show()
     }
 
     private fun setObservers() {
@@ -111,34 +132,13 @@ class DetailFragment : Fragment() {
 
 
     private fun setViewPager(product: Product) {
-        //todo set viewpager with images
-        //addBottomDots(0, product.imageUrls.size)
+        val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
         val myList: MutableList<String> = mutableListOf()
         myList.addAll(product.imageUrls)
         myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
+        dotsIndicator?.setViewPager(viewPagerDetail)
+
     }
-
-    /*private fun addBottomDots(currentPage: Int, layouts: Int) {
-
-        val dots = arrayOfNulls<TextView>(layouts.size)
-
-        val colorsActive = resources.getIntArray(R.array.array_dot_active)
-        val colorsInactive = resources.getIntArray(R.array.array_dot_inactive)
-
-        dotsLayout.removeAllViews()
-        for (i in 0 until dots.length) {
-            dots[i] = TextView(this)
-            dots[i].setText(Html.fromHtml("&#8226;"))
-            dots[i].setTextSize(35)
-            dots[i].setTextColor(colorsInactive[currentPage])
-            dotsLayout.addView(dots[i])
-        }
-
-        if (dots.length > 0)
-            dots[currentPage].setTextColor(colorsActive[currentPage])
-    }*/
-
-
 }
 
