@@ -61,8 +61,6 @@ class DetailFragment : BaseFragment() {
 
         val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-
-
     }
 
 

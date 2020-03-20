@@ -11,32 +11,25 @@ class GetFinishVariationsUseCase : BaseUseCase<List<FilterFinish>>() {
         val productList: List<Product> = params[0] as List<Product>
         val filterHashSet = hashSetOf<FilterFinish>()
 
+        // 1: Check Availables!
+        //which finish variations are available for this wattages and colors
+        val productSelected = productList.find { it.isSelected }
+        productList.forEach {
+            if (it.wattageReplaced == productSelected?.wattageReplaced && it.colorCctCode == productSelected.colorCctCode) {
+                it.isAvailable = true
+            }
+        }
+
         productList.forEach { product ->
             filterHashSet.add(
                 FilterFinish(
                     nameFilter = product.finish,
-                    isSelected = product.isSelected
+                    isSelected = product.isSelected,
+                    isAvailable = product.isAvailable
                 )
             )
         }
-/*        val filterHashSet = hashSetOf<FilterWattage>()
-        val initFilterList = params[1] as List<FilterWattage>
 
-
-        productList.forEach { product ->
-            *//*filterHashSet.add(Filter(nameFilter = product.productSpecOne, type = TYPE.SPEC1))
-            filterHashSet.add(Filter(nameFilter = product.productSpecThree, type = TYPE.SPEC3))
-            filterHashSet.add(Filter(nameFilter = product.productScene, type = TYPE.PRODUCT_SCENE))*//*
-        }
-
-        val activeOnInitList = initFilterList.filter { it.isActive }
-
-        if (activeOnInitList.isNotEmpty()) {
-            activeOnInitList.map { filterOnInitList ->
-                filterHashSet.find { filterOnInitList.nameFilter == it.nameFilter }?.isActive =
-                    true
-            }
-        }*/
 
         return DataState.Success(filterHashSet.toList())
     }

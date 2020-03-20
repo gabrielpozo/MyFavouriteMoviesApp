@@ -31,18 +31,28 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val filter = filterList[position]
         holder.bind(filter)
-        holder.itemView.setOnClickListener { listener(filter) }
-        //holder.itemView.filterButton.setOnClickListener { listener(filter) }
+        holder.itemView.wattageButton.setOnClickListener {
+            listener(filter) }
+
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterWattage) {
-            itemView.wattageButton.text = filter.nameFilter
+            itemView.wattageButton.text = filter.nameFilter.toString()
             //itemView.filterButton.setOnClickListener { listener(filter) }
-            if (filter.isSelected) {
-                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_selected)
+
+            if (!filter.isAvailable) {
+                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_disabled)
+                itemView.wattageButton.setTextAppearance(R.style.ButtonDisabled)
             } else {
                 itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView.wattageButton.setTextAppearance(R.style.ButtonUnSelected)
+            }
+
+            if (filter.isSelected) {
+                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_selected)
+                itemView.wattageButton.setTextAppearance(R.style.ButtonSelected)
+
             }
         }
     }
@@ -68,16 +78,26 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
         val filter = filterList[position]
         holder.bind(filter)
         holder.itemView.setOnClickListener { listener(filter) }
-        //holder.itemView.filterButton.setOnClickListener { listener(filter) }
+       // holder.itemView.setOnClickListener { listener(filter) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterColor) {
             itemView.variation_name.text = filter.nameFilter
+            if (!filter.isAvailable) {
+                itemView.setBackgroundResource(R.drawable.card_filter_disabled)
+                itemView.variation_name.setTextAppearance(R.style.DisabledText)
+
+            } else {
+                itemView.setBackgroundResource(R.drawable.card_filter_unselected)
+                itemView.variation_name.setTextAppearance(R.style.InactiveTextDark)
+
+            }
+
             if (filter.isSelected) {
                 itemView.setBackgroundResource(R.drawable.card_filter_selected)
-            } else {
-                itemView.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView.variation_name.setTextAppearance(R.style.ActiveText)
+
             }
             //itemView.filterButton.setOnClickListener { listener(filter) }
         }
@@ -110,10 +130,20 @@ class FilterFinishAdapter(private val listener: (FilterFinish) -> Unit) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterFinish) {
             itemView.variation_name.text = filter.nameFilter
+            if (!filter.isAvailable) {
+                itemView.setBackgroundResource(R.drawable.card_filter_disabled)
+                itemView.variation_name.setTextAppearance(R.style.DisabledText)
+
+            } else {
+                itemView.setBackgroundResource(R.drawable.card_filter_unselected)
+                itemView.variation_name.setTextAppearance(R.style.InactiveTextDark)
+
+            }
+
             if (filter.isSelected) {
                 itemView.setBackgroundResource(R.drawable.card_filter_selected)
-            } else {
-                itemView.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView.variation_name.setTextAppearance(R.style.ActiveText)
+
             }
             //itemView.imageFilterCover.loadUrl(filter.imageFinishCover)
             //itemView.filterButton.setOnClickListener { listener(filter) }

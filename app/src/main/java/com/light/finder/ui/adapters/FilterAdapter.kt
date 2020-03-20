@@ -34,7 +34,7 @@ class FilterAdapter(private val listener: (FilterWattage) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterWattage) {
-            itemView.filterButton.text = filter.nameFilter
+            itemView.filterButton.text = filter.nameFilter.toString()
             //itemView.filterButton.setOnClickListener { listener(filter) }
         }
     }

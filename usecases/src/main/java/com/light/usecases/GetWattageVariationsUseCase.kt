@@ -12,34 +12,28 @@ class GetWattageVariationsUseCase : BaseUseCase<List<FilterWattage>>() {
         val productList: List<Product> = params[0] as List<Product>
         val filterHashSet = hashSetOf<FilterWattage>()
 
+        // 1: Check Availables!
+        //which wattages are available for this colors and ALSO for the finish variations
+        val productSelected = productList.find { it.isSelected }
+        productList.forEach {
+            if (it.colorCctCode == productSelected?.colorCctCode && it.finish == productSelected.finish) {
+                it.isAvailable = true
+            }
+        }
+
         productList.forEach { product ->
             filterHashSet.add(
                 FilterWattage(
                     nameFilter = product.wattageReplaced.toString(),
-                    isSelected = product.isSelected
+                    isSelected = product.isSelected,
+                    isAvailable = product.isAvailable
                 )
             )
         }
-/*        val filterHashSet = hashSetOf<FilterWattage>()
-        val initFilterList = params[1] as List<FilterWattage>
 
-
-        productList.forEach { product ->
-            *//*filterHashSet.add(Filter(nameFilter = product.productSpecOne, type = TYPE.SPEC1))
-            filterHashSet.add(Filter(nameFilter = product.productSpecThree, type = TYPE.SPEC3))
-            filterHashSet.add(Filter(nameFilter = product.productScene, type = TYPE.PRODUCT_SCENE))*//*
-        }
-
-        val activeOnInitList = initFilterList.filter { it.isActive }
-
-        if (activeOnInitList.isNotEmpty()) {
-            activeOnInitList.map { filterOnInitList ->
-                filterHashSet.find { filterOnInitList.nameFilter == it.nameFilter }?.isActive =
-                    true
-            }
-        }*/
-
-        return DataState.Success(filterHashSet.toList())
+        return DataState.Success(filterHashSet.sortedWith(Comparator { f1, f2 ->
+            (f1?.nameFilter?.toInt() ?: -1) - (f2?.nameFilter?.toInt() ?: -1)
+        }).toList())
     }
 
 }

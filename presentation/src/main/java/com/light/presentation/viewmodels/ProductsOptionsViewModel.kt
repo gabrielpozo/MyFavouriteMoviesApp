@@ -1,11 +1,9 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.light.domain.model.Category
-import com.light.domain.model.FilterColor
-import com.light.domain.model.FilterFinish
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.*
 import com.light.usecases.GetColorVariationsUseCase
 import com.light.usecases.GetFinishVariationsUseCase
 import com.light.usecases.GetWattageVariationsUseCase
@@ -19,6 +17,8 @@ class ProductsOptionsViewModel(
     private val getFinishVariationsUseCase: GetFinishVariationsUseCase
 ) :
     BaseViewModel(uiDispatcher) {
+
+    private lateinit var dataProducts: List<Product>
 
 
     private val _dataFilterWattageButtons = MutableLiveData<FilteringVariation>()
@@ -39,24 +39,26 @@ class ProductsOptionsViewModel(
     }
 
 
-    fun onRetrieveProductsVariation(category: Category) {
-        //setDataProducts(category.categoryProducts)
+    fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
+        categoryProducts.forEach {
+            Log.d("Gabriel","WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}")
+        }
+        dataProducts = categoryProducts
         launch {
             getWattageVariationsUseCase.execute(
                 ::handleWattageUseCaseResult,
-                params = *arrayOf(category.categoryProducts)
+                params = *arrayOf(categoryProducts)
             )
 
             getColorVariationsUseCase.execute(
                 ::handleColorUseCaseResult,
-                params = *arrayOf(category.categoryProducts)
+                params = *arrayOf(categoryProducts)
             )
 
             getFinishVariationsUseCase.execute(
                 ::handleFinishUseCaseResult,
-                params = *arrayOf(category.categoryProducts)
+                params = *arrayOf(categoryProducts)
             )
-
         }
     }
 
@@ -79,6 +81,17 @@ class ProductsOptionsViewModel(
         _dataFilterWattageButtons.value = FilteringVariation.FilteringFinish(
             filteredFinishButtons = filterFinishButtons
         )
+    }
+
+    fun onFilterWattageTap(filter: FilterWattage) {
+        if (filter.isAvailable){
+            //TODO all the logic here
+            //set new filter to the view with live data
+            //(_dataFilterWattageButtons.value as FilteringVariation.FilteringWattage).filteredWattageButtons
+            //get the reference of the new product
+
+        }
+
     }
 
 

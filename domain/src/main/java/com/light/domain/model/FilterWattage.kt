@@ -1,7 +1,11 @@
 package com.light.domain.model
 
 
-data class FilterWattage(val nameFilter: String, var isSelected: Boolean = false) {
+data class FilterWattage(
+    val nameFilter: String,
+    var isSelected: Boolean = false,
+    var isAvailable: Boolean = false
+) {
 
 
     override fun equals(other: Any?): Boolean {
@@ -17,7 +21,11 @@ data class FilterWattage(val nameFilter: String, var isSelected: Boolean = false
     }
 }
 
-data class FilterColor(val nameFilter: String, var isSelected: Boolean = false){
+data class FilterColor(
+    val nameFilter: String,
+    var isSelected: Boolean = false,
+    var isAvailable: Boolean = false
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
@@ -31,7 +39,12 @@ data class FilterColor(val nameFilter: String, var isSelected: Boolean = false){
     }
 
 }
-data class FilterFinish(val nameFilter: String, var isSelected: Boolean = false) {
+
+data class FilterFinish(
+    val nameFilter: String,
+    var isSelected: Boolean = false,
+    var isAvailable: Boolean = false
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false

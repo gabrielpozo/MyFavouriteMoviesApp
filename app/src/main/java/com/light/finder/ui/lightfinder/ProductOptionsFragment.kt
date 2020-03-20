@@ -64,14 +64,13 @@ class ProductOptionsFragment : BaseFragment() {
             component = app.applicationComponent.plus(ProductsOptionsModule())
         } ?: throw Exception("Invalid Activity")
 
-
         initAdapters()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_OPTIONS_ID_KEY)
                 ?.let { categoryParcelable ->
                     viewModel.onRetrieveProductsVariation(
-                        categoryParcelable.deparcelizeCategory()
+                        categoryParcelable.deparcelizeCategory().categoryProducts
                     )
                 }
 
@@ -120,7 +119,7 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun handleFilterWattagePressed(filter: FilterWattage) {
-        // viewModel.onFilterTap(filter)
+         viewModel.onFilterWattageTap(filter)
     }
 
     private fun handleFilterColorPressed(filter: FilterColor) {
