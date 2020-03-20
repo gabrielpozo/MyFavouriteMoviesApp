@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/textViewResults"
-        style="@style/SubtitleTextSmall"
+        style="@style/SubtitleTextXSmall"
         android:layout_marginTop="@dimen/stroke_small"
         android:text="@string/text_results"
         android:layout_width="0dp"
