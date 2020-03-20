@@ -135,7 +135,7 @@
             <Button
                 android:id="@+id/buttonOrder"
                 style="@style/WhiteButton"
-                android:background="@color/primaryDisable"
+                android:background="@color/primaryDisabled"
                 android:layout_marginStart="24dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="24dp"

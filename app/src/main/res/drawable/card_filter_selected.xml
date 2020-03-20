@@ -17,7 +17,7 @@
         android:bottomRightRadius="4dp"
         />
     <solid
-        android:color="@color/primaryTextColor"
+        android:color="@color/backgroundLight"
 
         />
     <padding

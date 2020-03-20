@@ -7,7 +7,7 @@
         android:bottomRightRadius="2dp"
         />
     <solid
-        android:color="@color/snackBarColor"
+        android:color="@color/informationDefault"
         />
     <padding
         android:left="0dp"
