@@ -18,22 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="375dp" />
 
-        <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
-            android:id="@+id/dotsIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:dotsColor="@color/dot_active"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="10dp"
-            app:dotsSpacing="4dp"
-            app:dotsWidthFactor="2.5"
-            android:layout_marginBottom="64dp"
-            android:layout_alignEnd="@id/viewPagerDetail"
-            android:layout_alignBottom="@id/viewPagerDetail"
-            app:selectedDotColor="@color/dot_active"
-            app:progressMode="false"
-            />
-
 
     </RelativeLayout>
 
