@@ -2,7 +2,7 @@ package com.light.domain.model
 
 
 data class FilterWattage(
-    val nameFilter: String,
+    var nameFilter: String,
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false
 ) {

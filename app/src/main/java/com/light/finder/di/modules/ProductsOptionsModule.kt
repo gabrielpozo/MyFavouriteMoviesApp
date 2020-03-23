@@ -22,6 +22,14 @@ class ProductsOptionsModule {
     fun getFinishVariationsUseCase() =
         GetFinishVariationsUseCase()
 
+    @Provides
+    fun getAvailableSelectedFilterUseCase() =
+        GetAvailableSelectedFilterUseCase()
+
+    @Provides
+    fun getNewSelectedProduct() =
+        GetNewSelectedProduct()
+
 
     @Provides
     fun productsOptionsViewModel(
@@ -29,7 +37,9 @@ class ProductsOptionsModule {
         Dispatchers.Main,
         getWattageVariationsUseCase(),
         getColorVariationsUseCase(),
-        getFinishVariationsUseCase()
+        getFinishVariationsUseCase(),
+        getAvailableSelectedFilterUseCase(),
+        getNewSelectedProduct()
     )
 }
 

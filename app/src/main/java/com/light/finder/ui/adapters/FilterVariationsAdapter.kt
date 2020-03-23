@@ -1,5 +1,6 @@
 package com.light.finder.ui.adapters
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,23 +17,56 @@ import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
     RecyclerView.Adapter<FilterWattageAdapter.ViewHolder>() {
 
-    var filterList: List<FilterWattage> by basicDiffUtil(
+    private val viewItemsMap = hashMapOf<String, View>()
+
+
+    var filterListWattage: List<FilterWattage> by basicDiffUtil(
         emptyList(),
-        areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter }
-    )
+        areItemsTheSame = { old, new ->
+            old.nameFilter == new.nameFilter
+        })
+
+    fun updateLayoutBackground(filterWattageList: List<FilterWattage>) {
+        filterWattageList.forEach { filter ->
+            val itemView = viewItemsMap[filter.nameFilter]
+            if (!filter.isAvailable) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
+
+            } else {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
+            }
+
+            if (filter.isSelected) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
+            }
+
+        }
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_button_filter_unselected, false)
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = filterList.size
+    override fun getItemCount(): Int = filterListWattage.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val filter = filterList[position]
+        val filter = filterListWattage[position]
+        if (!viewItemsMap.containsKey(filter.nameFilter)) {
+            viewItemsMap[filter.nameFilter] = holder.itemView
+        }
+        Log.d("Gabriel", " Filter ONBIND VIEW HOLDER!!!")
+
+
         holder.bind(filter)
         holder.itemView.wattageButton.setOnClickListener {
-            listener(filter) }
+            listener(filter)
+            // holder.bindBackground(filter)
+        }
 
     }
 
@@ -52,8 +86,12 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
             if (filter.isSelected) {
                 itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_selected)
                 itemView.wattageButton.setTextAppearance(R.style.ButtonSelected)
-
             }
+        }
+
+        fun bindBackground(filter: FilterWattage) {
+            itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_selected)
+            itemView.wattageButton.setTextAppearance(R.style.ButtonSelected)
         }
     }
 }
@@ -62,23 +100,47 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
 class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
     RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
-    var filterList: List<FilterColor> by basicDiffUtil(
+    private val viewItemsMap = hashMapOf<String, View>()
+
+
+    var filterListColor: List<FilterColor> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter }
     )
+
+    fun updateLayoutBackground(filterColorList: List<FilterColor>) {
+        filterColorList.forEach { filter ->
+            val itemView = viewItemsMap[filter.nameFilter]
+            if (!filter.isAvailable) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
+
+            } else {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
+            }
+
+            if (filter.isSelected) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
+            }
+
+        }
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_card_filter_unselected, false)
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = filterList.size
+    override fun getItemCount(): Int = filterListColor.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val filter = filterList[position]
+        val filter = filterListColor[position]
         holder.bind(filter)
         holder.itemView.setOnClickListener { listener(filter) }
-       // holder.itemView.setOnClickListener { listener(filter) }
+        // holder.itemView.setOnClickListener { listener(filter) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -107,21 +169,45 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
 
 class FilterFinishAdapter(private val listener: (FilterFinish) -> Unit) :
     RecyclerView.Adapter<FilterFinishAdapter.ViewHolder>() {
+    private val viewItemsMap = hashMapOf<String, View>()
 
-    var filterList: List<FilterFinish> by basicDiffUtil(
+    var filterListFinish: List<FilterFinish> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter }
     )
+
+
+    fun updateLayoutBackground(filterFinishList: List<FilterFinish>) {
+        filterFinishList.forEach { filter ->
+            val itemView = viewItemsMap[filter.nameFilter]
+            if (!filter.isAvailable) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
+
+            } else {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
+            }
+
+            if (filter.isSelected) {
+                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
+                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
+            }
+        }
+
+    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_card_filter_unselected, false)
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = filterList.size
+    override fun getItemCount(): Int = filterListFinish.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val filter = filterList[position]
+        val filter = filterListFinish[position]
         holder.bind(filter)
         holder.itemView.setOnClickListener { listener(filter) }
         // holder.itemView.filterButton.setOnClickListener { listener(filter) }

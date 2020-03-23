@@ -57,14 +57,6 @@ class ProductsFragment : Fragment() {
 
             observeElements()
         }
-
-    }
-
-    private fun initFilterAdapter() {
-        rvFilterResult.layoutManager =
-            GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
-        filterAdapter = FilterAdapter(::handleFilterPressed)
-        rvFilterResult.adapter = filterAdapter
     }
 
     private fun initProductsAdapter() {
@@ -72,6 +64,13 @@ class ProductsFragment : Fragment() {
         rvProducts.adapter = productsAdapter
     }
 
+
+    private fun initFilterAdapter() {
+        rvFilterResult.layoutManager =
+            GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false)
+        filterAdapter = FilterAdapter(::handleFilterPressed)
+        rvFilterResult.adapter = filterAdapter
+    }
 
     private fun observeElements() {
         viewModel.productsFiltered.observe(viewLifecycleOwner, Observer(::updateProducts))
@@ -84,6 +83,7 @@ class ProductsFragment : Fragment() {
     }
 
     private fun updateProducts(modelProduct: ProductsViewModel.ProductContent) {
+        productsAdapter.products
         productsAdapter.products = modelProduct.productList
     }
 
