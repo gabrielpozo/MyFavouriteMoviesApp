@@ -113,12 +113,13 @@
 
         <LinearLayout
             android:id="@+id/layoutOrder"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="vertical">
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/buttonStock"
                 style="@style/WhiteButton"
                 android:clickable="false"
@@ -131,16 +132,9 @@
                 android:layout_height="wrap_content"
                 tools:text="Currently out of stock" />
 
-            <Button
-                android:id="@+id/buttonOrder"
-                style="@style/WhiteButton"
-                android:background="@color/primaryDisabled"
-                android:layout_marginStart="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Add to cart" />
+            <include
+                layout="@layout/custom_button_cart"
+               />
 
         </LinearLayout>
 
