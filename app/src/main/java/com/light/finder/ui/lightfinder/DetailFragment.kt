@@ -1,5 +1,6 @@
 package com.light.finder.ui.lightfinder
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,20 +10,24 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.deparcelizeCategory
-import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.concurrent.timerTask
 
 
 class DetailFragment : Fragment() {
@@ -57,6 +62,44 @@ class DetailFragment : Fragment() {
             openFilterDialog()
         }
 
+        buttonAddTocart.setOnClickListener {
+            cartAnimation.visible()
+            cartAnimation.playAnimation()
+            buttonAddTocart.isClickable = false
+            buttonAddTocart.isFocusable = false
+        }
+
+        cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                cartButtonText.text = getString(R.string.added_to_cart)
+
+                //todo make call
+                //todo get cart item number from api and set badge
+                //todo block bottombar navigation
+
+                MainScope().launch {
+                    delay(3000)
+                    cartButtonText.text = getString(R.string.add_to_cart)
+                    cartAnimation.gone()
+                    buttonAddTocart.isClickable = true
+                    buttonAddTocart.isFocusable = true
+
+                }
+
+
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+
+
         val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
@@ -64,12 +107,10 @@ class DetailFragment : Fragment() {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
-                height = (dpHeight/2)
+                height = (dpHeight / 2)
             }
-            bottomSheetBehavior.peekHeight = (dpHeight/2)
+            bottomSheetBehavior.peekHeight = (dpHeight / 2)
         }
-
-
 
 
     }
