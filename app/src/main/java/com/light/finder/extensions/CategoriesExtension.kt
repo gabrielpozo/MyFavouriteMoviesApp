@@ -1,6 +1,7 @@
 package com.light.finder.extensions
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,10 +54,12 @@ val Context.app: SignifyApp
 inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(
     initialValue: List<T>,
     crossinline areItemsTheSame: (T, T) -> Boolean = { old, new -> old == new },
-    crossinline areContentsTheSame: (T, T) -> Boolean = { old, new -> old == new }
+    crossinline areContentsTheSame: (T, T) -> Boolean = { old, new -> old == new },
+    shouldRefreshData: Boolean = true
 ) =
     Delegates.observable(initialValue) { _, old, new ->
-        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+        var count = 0
+        val diffUtil = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                 areItemsTheSame(old[oldItemPosition], new[newItemPosition])
 
@@ -66,7 +69,16 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
             override fun getOldListSize(): Int = old.size
 
             override fun getNewListSize(): Int = new.size
-        }).dispatchUpdatesTo(this@basicDiffUtil)
+        })
+
+        if (count == 1 && !shouldRefreshData){
+            Log.d("GabrielOBs","Before returning")
+            return@observable
+        }
+
+        count += 1
+        diffUtil.dispatchUpdatesTo(this@basicDiffUtil)
+
     }
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): View =
@@ -78,7 +90,8 @@ fun ImageView.loadUrl(url: String) {
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).centerInside().placeholder(R.drawable.category_placeholder).into(this)
+    Glide.with(context).load(url).centerInside().placeholder(R.drawable.category_placeholder)
+        .into(this)
 }
 
 

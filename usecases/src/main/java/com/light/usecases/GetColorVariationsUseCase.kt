@@ -21,16 +21,28 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterColor>>() {
         }
 
         productList.forEach { product ->
-            filterHashSet.add(
-                FilterColor(
-                    nameFilter = product.colorCctCode,
-                    isSelected = product.isSelected,
-                    isAvailable = product.isAvailable
+            //do some checks here before???
+            if (product.isSelected || product.isAvailable) {
+                filterHashSet.add(
+                    FilterColor(
+                        nameFilter = product.colorCctCode,
+                        isSelected = product.isSelected,
+                        isAvailable = product.isAvailable
+                    )
                 )
-            )
+            }
         }
 
         return DataState.Success(filterHashSet.toList())
     }
+
+}
+
+private fun checkifThereisAnActiveState(productList: List<Product>, wattageReplace: Int): Boolean {
+    val product = productList.find {
+        it.isAvailable || it.isSelected
+    }
+
+    return true
 
 }

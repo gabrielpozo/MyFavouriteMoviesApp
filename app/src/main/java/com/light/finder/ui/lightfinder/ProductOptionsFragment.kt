@@ -105,17 +105,6 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun observeFilteringWattage(filteringWattage: FilteringWattage) {
-        /*     Log.d(
-                 "Gabriel",
-                 "FilterNew observeFilteringWattage SIZE ${filteringWattage.filteredWattageButtons.size}"
-             )
-             filteringWattage.filteredWattageButtons.forEach {
-                 Log.d(
-                     "Gabriel",
-                     "FilterNew: ${it.nameFilter} is selected?? ${it.isSelected} and is available?? ${it.isAvailable}"
-                 )
-             }
-     */
         filteringWattage.filteredWattageButtons.forEach {
             Log.d(
                 "GabrielDebug",
@@ -126,8 +115,8 @@ class ProductOptionsFragment : BaseFragment() {
             filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
         } else {
             Log.d("GabrielUPDATE","UPDATING  HERE WATTAGE")
-            filterWattageAdapter.updateLayoutBackground(filteringWattage.filteredWattageButtons)
-
+            filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
+            filterWattageAdapter.updateBackgroundAppearance(filteringWattage.filteredWattageButtons)
         }
 
     }
@@ -136,7 +125,8 @@ class ProductOptionsFragment : BaseFragment() {
         if (!filteringColor.isUpdated) {
             filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
         } else {
-            filterColorAdapter.updateLayoutBackground(filteringColor.filteredColorButtons)
+            filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
+            filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
         }
     }
 
@@ -145,27 +135,22 @@ class ProductOptionsFragment : BaseFragment() {
         if (!filterFinish.isUpdated) {
             filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
         } else {
-            filterFinishAdapter.updateLayoutBackground(filterFinish.filteredFinishButtons)
-
+            filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
+            filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
         }
     }
 
     private fun handleFilterWattagePressed(filter: FilterWattage) {
-        val mylist = mutableListOf<FilterWattage>()
-        // filter.isSelected = true
-        //mylist.add(filter.copy(nameFilter = "60", isSelected = true))
-
-        //filterWattageAdapter.filterListWattage = mylist.toList()
-
         viewModel.onFilterWattageTap(filter)
     }
 
     private fun handleFilterColorPressed(filter: FilterColor) {
-        // viewModel.onFilterTap(filter)
+        Log.d("GabrielDebugV","handleFilterColorPre ${filter.nameFilter}")
+         viewModel.onFilterColorTap(filter)
     }
 
     private fun handleFilterFinishPressed(filter: FilterFinish) {
-        // viewModel.onFilterTap(filter)
+         viewModel.onFilterFinishTap(filter)
     }
 
 

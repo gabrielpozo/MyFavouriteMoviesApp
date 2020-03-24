@@ -22,13 +22,15 @@ class GetWattageVariationsUseCase : BaseUseCase<List<FilterWattage>>() {
         }
 
         productList.forEach { product ->
-            filterHashSet.add(
-                FilterWattage(
-                    nameFilter = product.wattageReplaced.toString(),
-                    isSelected = product.isSelected,
-                    isAvailable = product.isAvailable
+            if (product.isSelected || product.isAvailable) {
+                filterHashSet.add(
+                    FilterWattage(
+                        nameFilter = product.wattageReplaced.toString(),
+                        isSelected = product.isSelected,
+                        isAvailable = product.isAvailable
+                    )
                 )
-            )
+            }
         }
 
         return DataState.Success(filterHashSet.sortedWith(Comparator { f1, f2 ->

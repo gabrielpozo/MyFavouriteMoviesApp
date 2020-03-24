@@ -54,11 +54,6 @@ class ProductsOptionsViewModel(
     )
 
 
-    /**
-     *
-     */
-
-
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         categoryProducts.forEach {
             Log.d(
@@ -72,34 +67,79 @@ class ProductsOptionsViewModel(
 
     fun onFilterWattageTap(filter: FilterWattage) {
         if (filter.isAvailable) {
-            launch {
-                getNewSelectedProduct.execute(
-                    { handleSelectedProduct(it, true) },
-                    params = *arrayOf(dataProducts, filter)
-                )
+            //check for the data products
+            val productSelected = dataProducts.find {
+                it.isSelected
             }
+
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            dataProducts.forEach {
+                if (it.wattageReplaced.toString() == filter.nameFilter
+                    && productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish
+                ) {
+                    it.isSelected = true
+                }
+            }
+            /*       dataProducts.find {
+                       it.wattageReplaced.toString() == filter.nameFilter
+                   }?.also {
+                       if (productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish)
+                           it.isSelected = true
+                   }*/
+
+            handleSelectedProduct(dataProducts, true)
         }
     }
 
-    fun onFilterColorTap(filter: FilterColor) {
-        if (filter.isAvailable) {
-            launch {
-                getNewSelectedProduct.execute(
-                    { handleSelectedProduct(it, true) },
-                    params = *arrayOf(dataProducts, filter)
-                )
+    fun onFilterColorTap(filterColor: FilterColor) {
+        if (filterColor.isAvailable) {
+            val productSelected = dataProducts.find {
+                it.isSelected
             }
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            dataProducts.forEach { product ->
+                if (product.colorCctCode == filterColor.nameFilter
+                    && productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString() && productSelected?.finish == product.finish
+                ) {
+                    product.isSelected = true
+                }
+            }
+            /*     dataProducts.find {
+                     it.colorCctCode == filter.nameFilter
+                 }?.isSelected = true*/
+
+            handleSelectedProduct(dataProducts, true)
         }
     }
 
-    fun onFilterFinishTap(filter: FilterColor) {
+    fun onFilterFinishTap(filter: FilterFinish) {
         if (filter.isAvailable) {
-            launch {
-                getNewSelectedProduct.execute(
-                    { handleSelectedProduct(it, true) },
-                    params = *arrayOf(dataProducts, filter)
-                )
+            val productSelected = dataProducts.find {
+                it.isSelected
             }
+
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            dataProducts.forEach {
+                if (it.finish == filter.nameFilter
+                    && productSelected?.colorCctCode == it.colorCctCode && productSelected.wattageReplaced.toString() == it.wattageReplaced.toString()
+                ) {
+                    it.isSelected = true
+                }
+            }
+
+            handleSelectedProduct(dataProducts, true)
         }
     }
 
@@ -112,7 +152,7 @@ class ProductsOptionsViewModel(
                         isAnUpdate
                     )
                 },
-                params = *arrayOf(productList)
+                params = *arrayOf(dataProducts)
             )
 
             getColorVariationsUseCase.execute(
@@ -122,7 +162,7 @@ class ProductsOptionsViewModel(
                         isAnUpdate
                     )
                 },
-                params = *arrayOf(productList)
+                params = *arrayOf(dataProducts)
             )
 
             getFinishVariationsUseCase.execute(
@@ -132,7 +172,7 @@ class ProductsOptionsViewModel(
                         isAnUpdate
                     )
                 },
-                params = *arrayOf(productList)
+                params = *arrayOf(dataProducts)
             )
         }
 
@@ -142,14 +182,17 @@ class ProductsOptionsViewModel(
         filterWattageButtons: List<FilterWattage>,
         isAnUpdate: Boolean = false
     ) {
-        dataFiltersWattage = filterWattageButtons
-        /*  filterWattageButtons.forEach {
-              if(it.isSelected){
-                  Log.d("Gabriel","Filter Selected!! ${it.nameFilter}")
-              }
-          }*/
+        //dataFiltersWattage = filterWattageButtons
+        filterWattageButtons.forEach {
+
+            Log.d(
+                "GabrielDebugV",
+                "ViewModel Filter Name!! WATTAGE ${it.nameFilter} Available: ${it.isAvailable} and isSelected ${it.isSelected}"
+            )
+
+        }
         _dataFilterWattageButtons.value = FilteringWattage(
-            filteredWattageButtons = dataFiltersWattage, isUpdated = isAnUpdate
+            filteredWattageButtons = filterWattageButtons, isUpdated = isAnUpdate
         )
     }
 
@@ -157,6 +200,14 @@ class ProductsOptionsViewModel(
     private fun handleColorUseCaseResult(
         filterColorButtons: List<FilterColor>, isAnUpdate: Boolean = false
     ) {
+        filterColorButtons.forEach {
+            Log.d(
+                "GabrielDebugV",
+                "ViewModel Filter Name!! COLOR: ${it.nameFilter}, Available: ${it.isAvailable} and isSelected ${it.isSelected}"
+            )
+
+        }
+
         _dataFilterColorButtons.value = FilteringColor(
             filteredColorButtons = filterColorButtons,
             isUpdated = isAnUpdate
