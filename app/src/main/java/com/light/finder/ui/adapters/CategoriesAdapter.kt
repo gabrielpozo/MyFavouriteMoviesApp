@@ -57,14 +57,17 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             itemView.product_color.text = Html.fromHtml(colorText).toString()
             //itemView.product_color.endDrawable()
 
+            val minMaxWattage = itemView.context.getString(
+                R.string.description_wattage,
+                category.minWattage,
+                category.maxWattage,
+                category.categoryProductBase
+            )
+
+            
             if (category.minWattage != itemView.context.getString(R.string.no_value)) {
-                itemView.product_detail.text =
-                    itemView.context.getString(
-                        R.string.description_wattage,
-                        category.minWattage,
-                        category.maxWattage,
-                        category.categoryProductBase
-                    )
+                itemView.product_detail.text = minMaxWattage.replace("-W", "")
+
             }
         }
     }
