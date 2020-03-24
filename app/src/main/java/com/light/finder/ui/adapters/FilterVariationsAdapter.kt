@@ -43,7 +43,6 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
                 itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
                 itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
             }
-
         }
 
     }
@@ -104,17 +103,17 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
         filterColorList.forEach { filter ->
             val itemView = viewItemsMap[filter.nameFilter]
             if (!filter.isAvailable) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
+                itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
+                itemView?.variation_name?.setTextAppearance(R.style.DisabledText)
 
             } else {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
+                itemView?.setBackgroundResource(R.drawable.card_filter_unselected)
+                itemView?.variation_name?.setTextAppearance(R.style.InactiveTextDark)
             }
 
             if (filter.isSelected) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
+                itemView?.setBackgroundResource(R.drawable.card_filter_selected)
+                itemView?.variation_name?.setTextAppearance(R.style.ActiveText)
             }
 
         }
@@ -157,7 +156,6 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
             if (filter.isSelected) {
                 itemView.setBackgroundResource(R.drawable.card_filter_selected)
                 itemView.variation_name.setTextAppearance(R.style.ActiveText)
-
             }
             //itemView.filterButton.setOnClickListener { listener(filter) }
         }
@@ -180,17 +178,17 @@ class FilterFinishAdapter(private val listener: (FilterFinish) -> Unit) :
         filterFinishList.forEach { filter ->
             val itemView = viewItemsMap[filter.nameFilter]
             if (!filter.isAvailable) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
+                itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
+                itemView?.variation_name?.setTextAppearance(R.style.DisabledText)
 
             } else {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
+                itemView?.setBackgroundResource(R.drawable.card_filter_unselected)
+                itemView?.variation_name?.setTextAppearance(R.style.InactiveTextDark)
             }
 
             if (filter.isSelected) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
+                itemView?.setBackgroundResource(R.drawable.card_filter_selected)
+                itemView?.variation_name?.setTextAppearance(R.style.ActiveText)
             }
         }
 

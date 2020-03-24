@@ -57,7 +57,7 @@ class ProductsOptionsViewModel(
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         categoryProducts.forEach {
             Log.d(
-                "GabrielDebug",
+                "GabrielDebugGuide",
                 "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}"
             )
         }
@@ -84,13 +84,6 @@ class ProductsOptionsViewModel(
                     it.isSelected = true
                 }
             }
-            /*       dataProducts.find {
-                       it.wattageReplaced.toString() == filter.nameFilter
-                   }?.also {
-                       if (productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish)
-                           it.isSelected = true
-                   }*/
-
             handleSelectedProduct(dataProducts, true)
         }
     }
@@ -112,10 +105,6 @@ class ProductsOptionsViewModel(
                     product.isSelected = true
                 }
             }
-            /*     dataProducts.find {
-                     it.colorCctCode == filter.nameFilter
-                 }?.isSelected = true*/
-
             handleSelectedProduct(dataProducts, true)
         }
     }

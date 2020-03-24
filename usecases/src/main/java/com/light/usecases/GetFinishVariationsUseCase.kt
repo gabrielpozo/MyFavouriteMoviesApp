@@ -1,5 +1,6 @@
 package com.light.usecases
 
+import com.light.common.checkThereIsPreviousActiveStateF
 import com.light.domain.model.FilterFinish
 import com.light.domain.model.Product
 import com.light.domain.state.DataState
@@ -14,20 +15,39 @@ class GetFinishVariationsUseCase : BaseUseCase<List<FilterFinish>>() {
         // 1: Check Availables!
         //which finish variations are available for this wattages and colors
         val productSelected = productList.find { it.isSelected }
+        productSelected?.let {
+            filterHashSet.add(
+                FilterFinish(
+                    nameFilter = productSelected.finish,
+                    isSelected = productSelected.isSelected,
+                    isAvailable = productSelected.isAvailable
+                )
+            )
+        }
+
         productList.forEach {
             if (it.wattageReplaced == productSelected?.wattageReplaced && it.colorCctCode == productSelected.colorCctCode) {
                 it.isAvailable = true
+                filterHashSet.add(
+                    FilterFinish(
+                        nameFilter = it.finish,
+                        isSelected = it.isSelected,
+                        isAvailable = it.isAvailable
+                    )
+                )
             }
         }
 
         productList.forEach { product ->
-            filterHashSet.add(
-                FilterFinish(
-                    nameFilter = product.finish,
-                    isSelected = product.isSelected,
-                    isAvailable = product.isAvailable
+            if (!filterHashSet.checkThereIsPreviousActiveStateF(product)) {
+                filterHashSet.add(
+                    FilterFinish(
+                        nameFilter = product.finish,
+                        isSelected = product.isSelected,
+                        isAvailable = product.isAvailable
+                    )
                 )
-            )
+            }
         }
 
 
