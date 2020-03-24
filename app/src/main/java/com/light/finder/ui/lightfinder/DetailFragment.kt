@@ -1,6 +1,7 @@
 package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
@@ -37,6 +39,7 @@ class DetailFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
+    private lateinit var visibilityCallBack: VisibilityCallBack
     private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
@@ -93,6 +96,15 @@ class DetailFragment : Fragment() {
 
             override fun onAnimationCancel(animation: Animator) {
 
+                MainScope().launch {
+                    delay(3000)
+                    cartButtonText.text = getString(R.string.add_to_cart)
+                    cartAnimation.gone()
+                    buttonAddTocart.isClickable = true
+                    buttonAddTocart.isFocusable = true
+
+                }
+
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -137,13 +149,34 @@ class DetailFragment : Fragment() {
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
+
 
     private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
-        cartButtonText.text = getString(R.string.added_to_cart)
+
+        if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
+            Timber.d("ege ${contentCart.cartItem.peekContent().product.name}")
+            cartButtonText.text = getString(R.string.added_to_cart)
+
+            //todo set actual badge count with get count call
+            //visibilityCallBack.onBadgeCountChanged(1)
+        } else {
+            Timber.e("ege add to cart failed!")
+            cartAnimation.cancelAnimation()
+        }
+
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
         Timber.e("Add to cart failed")
+        cartAnimation.cancelAnimation()
     }
 
 
