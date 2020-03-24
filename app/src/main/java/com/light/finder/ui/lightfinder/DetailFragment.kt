@@ -18,16 +18,15 @@ import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
+import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.concurrent.timerTask
+import timber.log.Timber
 
 
 class DetailFragment : Fragment() {
@@ -38,6 +37,7 @@ class DetailFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
+    private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +63,7 @@ class DetailFragment : Fragment() {
         }
 
         buttonAddTocart.setOnClickListener {
+            viewModel.onRequestAddToCart(productSapId = productSapId)
             cartAnimation.visible()
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
@@ -74,9 +75,7 @@ class DetailFragment : Fragment() {
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                cartButtonText.text = getString(R.string.added_to_cart)
 
-                //todo make call
                 //todo get cart item number from api and set badge
                 //todo block bottombar navigation
 
@@ -93,6 +92,7 @@ class DetailFragment : Fragment() {
             }
 
             override fun onAnimationCancel(animation: Animator) {
+
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -133,12 +133,25 @@ class DetailFragment : Fragment() {
 
     private fun setObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+    }
+
+
+    private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
+        cartButtonText.text = getString(R.string.added_to_cart)
+    }
+
+    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+        Timber.e("Add to cart failed")
     }
 
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
+        productSapId = contentProduct.product.sapID12NC.toString()
+
     }
 
 
@@ -185,6 +198,7 @@ class DetailFragment : Fragment() {
 
 
     private fun setViewPager(product: Product) {
+        //todo add dot indicator
         //val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
         val myList: MutableList<String> = mutableListOf()
         myList.addAll(product.imageUrls)

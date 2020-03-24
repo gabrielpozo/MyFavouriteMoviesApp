@@ -1,8 +1,8 @@
 package com.light.finder.data.mappers
 
-import com.light.domain.model.Category
-import com.light.domain.model.Message
-import com.light.domain.model.Product
+import com.light.domain.model.*
+import com.light.finder.data.source.remote.CartProductDto
+import com.light.finder.data.source.remote.CartResultDto
 import com.light.finder.data.source.remote.MessageDto
 import com.light.finder.data.source.remote.ProductDto
 
@@ -99,6 +99,25 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
 
         }
         )
+}
+
+
+val mapCartToDomain: (CartResultDto) -> Cart = {cartDto ->
+
+    Cart(
+        success = cartDto.success ?: "",
+        error = cartDto.error ?: "",
+        product = mapCartProductToDomain(cartDto.product!!)
+    )
+
+}
+
+private val mapCartProductToDomain: (CartProductDto) -> CartProduct = { cartDto ->
+
+    CartProduct(
+        name = cartDto.name ?: ""
+    )
+
 }
 
 
