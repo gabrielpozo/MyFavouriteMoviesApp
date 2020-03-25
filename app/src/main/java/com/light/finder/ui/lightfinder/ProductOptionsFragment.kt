@@ -172,16 +172,11 @@ class ProductOptionsFragment : BaseFragment() {
 
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            /**
-             *
-             */
-            //how do we get the target fragment
             initializeIntent<ProductOptionsFragment> {
                 putParcelableArrayListExtra(PRODUCT_LIST_EXTRA,navModel.categoryProducts.parcelizeProductList())
                 targetFragment?.onActivityResult(targetRequestCode, RESULT_OK, this)
                 mFragmentNavigation.popFragment()
             }
-
         }
     }
 

@@ -83,9 +83,9 @@ class ProductsOptionsViewModel(
         }
 
         productSelected?.let {
-            setProductSelected(it)
+            setProductSelectedOnView(it)
         }
-        handleSelectedProduct(dataProducts)
+        handleSelectedProduct()
     }
 
     fun onFilterWattageTap(filter: FilterWattage) {
@@ -105,12 +105,43 @@ class ProductsOptionsViewModel(
                     && productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish
                 ) {
                     it.isSelected = true
-                    setProductSelected(it)
+                    setProductSelectedOnView(it)
                 }
             }
-            handleSelectedProduct(dataProducts, true)
+            handleSelectedProduct(true)
         } else {
-            Log.d("GabrielTag", "NOT SELECTED!!")
+            //TODO
+
+            //1.We get the product selected
+            val productSelected = dataProducts.find {
+                it.isSelected
+            }
+            //reset list
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            //2. check if there is one option with one of the remain variations
+            dataProducts.forEach { product ->
+                if (productSelected?.wattageReplaced.toString() == filter.nameFilter) {
+                    if (productSelected?.colorCctCode == product.colorCctCode
+                        || productSelected?.finish == product.finish
+                    ) {
+                        handleSelectedProduct(true)
+                        return
+                    }
+                }
+            }
+
+            //3. otherwise we get the first product option on the list with this wattage
+            dataProducts.find { product ->
+                product.wattageReplaced.toString()  == filter.nameFilter
+            }.also {
+                it?.isSelected = true
+            }
+            handleSelectedProduct(true)
+
         }
     }
 
@@ -119,7 +150,7 @@ class ProductsOptionsViewModel(
 
     }
 
-    private fun setProductSelected(productSelected: Product) {
+    private fun setProductSelectedOnView(productSelected: Product) {
         _productSelected.value = ProductSelectedModel(productSelected)
     }
 
@@ -139,12 +170,11 @@ class ProductsOptionsViewModel(
                     && productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString() && productSelected?.finish == product.finish
                 ) {
                     product.isSelected = true
-                    setProductSelected(product)
+                    setProductSelectedOnView(product)
                 }
             }
-            handleSelectedProduct(dataProducts, true)
+            handleSelectedProduct(true)
         } else {
-            Log.d("GabrielTag", "NOT SELECTED!! COLOR")
         }
     }
 
@@ -164,17 +194,16 @@ class ProductsOptionsViewModel(
                     && productSelected?.colorCctCode == it.colorCctCode && productSelected.wattageReplaced.toString() == it.wattageReplaced.toString()
                 ) {
                     it.isSelected = true
-                    setProductSelected(it)
+                    setProductSelectedOnView(it)
                 }
             }
 
-            handleSelectedProduct(dataProducts, true)
+            handleSelectedProduct(true)
         } else {
-            Log.d("GabrielTag", "NOT SELECTED!! FINISH")
         }
     }
 
-    private fun handleSelectedProduct(productList: List<Product>, isAnUpdate: Boolean = false) {
+    private fun handleSelectedProduct(isAnUpdate: Boolean = false) {
         launch {
             getWattageVariationsUseCase.execute(
                 { filterWattageButtons ->
@@ -213,15 +242,6 @@ class ProductsOptionsViewModel(
         filterWattageButtons: List<FilterWattage>,
         isAnUpdate: Boolean = false
     ) {
-        //dataFiltersWattage = filterWattageButtons
-        filterWattageButtons.forEach {
-
-            Log.d(
-                "GabrielDebugV",
-                "ViewModel Filter Name!! WATTAGE ${it.nameFilter} Available: ${it.isAvailable} and isSelected ${it.isSelected}"
-            )
-
-        }
         _dataFilterWattageButtons.value = FilteringWattage(
             filteredWattageButtons = filterWattageButtons, isUpdated = isAnUpdate
         )
@@ -231,14 +251,6 @@ class ProductsOptionsViewModel(
     private fun handleColorUseCaseResult(
         filterColorButtons: List<FilterColor>, isAnUpdate: Boolean = false
     ) {
-        filterColorButtons.forEach {
-            Log.d(
-                "GabrielDebugV",
-                "ViewModel Filter Name!! COLOR: ${it.nameFilter}, Available: ${it.isAvailable} and isSelected ${it.isSelected}"
-            )
-
-        }
-
         _dataFilterColorButtons.value = FilteringColor(
             filteredColorButtons = filterColorButtons,
             isUpdated = isAnUpdate
