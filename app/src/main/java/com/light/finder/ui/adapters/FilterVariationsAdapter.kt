@@ -69,7 +69,10 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterWattage) {
-            itemView.wattageButton.text = filter.nameFilter
+            itemView.wattageButton.text = String.format(
+                itemView.context.getString(R.string.wattage_variation),
+                filter.nameFilter
+            )
             if (!filter.isAvailable) {
                 itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_disabled)
                 itemView.wattageButton.setTextAppearance(R.style.ButtonDisabled)

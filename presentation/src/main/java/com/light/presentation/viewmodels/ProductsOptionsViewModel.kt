@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
+import com.light.presentation.common.Event
 import com.light.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -19,7 +20,6 @@ class ProductsOptionsViewModel(
     BaseViewModel(uiDispatcher) {
 
     private lateinit var dataProducts: List<Product>
-    private lateinit var dataFiltersWattage: List<FilterWattage>
 
     private val _dataFilterWattageButtons = MutableLiveData<FilteringWattage>()
     val dataFilterWattageButtons: LiveData<FilteringWattage>
@@ -40,6 +40,12 @@ class ProductsOptionsViewModel(
             return _dataFilterFinishButtons
         }
 
+    private val _productSelected = MutableLiveData<ProductSelectedModel>()
+    val productSelected: LiveData<ProductSelectedModel>
+        get() {
+            return _productSelected
+        }
+
     data class FilteringWattage(
         val filteredWattageButtons: List<FilterWattage> = emptyList(),
         val isUpdated: Boolean = false
@@ -53,6 +59,16 @@ class ProductsOptionsViewModel(
         val filteredFinishButtons: List<FilterFinish> = emptyList(), val isUpdated: Boolean = false
     )
 
+    data class ProductSelectedModel(
+        val productSelected: Product
+    )
+
+    private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
+    val modelNavigation: LiveData<Event<NavigationModel>>
+        get() = _modelNavigation
+
+    class NavigationModel(val categoryProducts: List<Product>)
+
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         categoryProducts.forEach {
@@ -62,6 +78,13 @@ class ProductsOptionsViewModel(
             )
         }
         dataProducts = categoryProducts
+        val productSelected = dataProducts.find {
+            it.isSelected
+        }
+
+        productSelected?.let {
+            setProductSelected(it)
+        }
         handleSelectedProduct(dataProducts)
     }
 
@@ -82,13 +105,22 @@ class ProductsOptionsViewModel(
                     && productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish
                 ) {
                     it.isSelected = true
+                    setProductSelected(it)
                 }
             }
             handleSelectedProduct(dataProducts, true)
+        } else {
+            Log.d("GabrielTag", "NOT SELECTED!!")
         }
-        else {
-            Log.d("GabrielTag","NOT SELECTED!!")
-        }
+    }
+
+    fun onDoneButtonClicked() {
+        _modelNavigation.value = Event(NavigationModel(dataProducts))
+
+    }
+
+    private fun setProductSelected(productSelected: Product) {
+        _productSelected.value = ProductSelectedModel(productSelected)
     }
 
     fun onFilterColorTap(filterColor: FilterColor) {
@@ -96,6 +128,7 @@ class ProductsOptionsViewModel(
             val productSelected = dataProducts.find {
                 it.isSelected
             }
+
             dataProducts.forEach {
                 it.isAvailable = false
                 it.isSelected = false
@@ -106,12 +139,12 @@ class ProductsOptionsViewModel(
                     && productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString() && productSelected?.finish == product.finish
                 ) {
                     product.isSelected = true
+                    setProductSelected(product)
                 }
             }
             handleSelectedProduct(dataProducts, true)
-        }
-        else {
-            Log.d("GabrielTag","NOT SELECTED!! COLOR")
+        } else {
+            Log.d("GabrielTag", "NOT SELECTED!! COLOR")
         }
     }
 
@@ -131,14 +164,13 @@ class ProductsOptionsViewModel(
                     && productSelected?.colorCctCode == it.colorCctCode && productSelected.wattageReplaced.toString() == it.wattageReplaced.toString()
                 ) {
                     it.isSelected = true
+                    setProductSelected(it)
                 }
             }
 
             handleSelectedProduct(dataProducts, true)
-        }
-
-        else {
-            Log.d("GabrielTag","NOT SELECTED!! FINISH")
+        } else {
+            Log.d("GabrielTag", "NOT SELECTED!! FINISH")
         }
     }
 

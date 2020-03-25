@@ -138,4 +138,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         fragmentHelper.pushFragment(fragment)
     }
 
+    override fun popFragment() {
+        fragmentHelper.popFragmentNot()
+    }
+
 }

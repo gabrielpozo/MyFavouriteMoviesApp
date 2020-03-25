@@ -1,7 +1,12 @@
 package com.light.finder.extensions
 
+import android.content.Context
+import android.content.Intent
+import androidx.fragment.app.Fragment
 import com.light.domain.model.Category
 import com.light.domain.model.Message
+import com.light.domain.model.Product
+import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
@@ -42,13 +47,24 @@ fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {
 }
 
 
-fun ProductOptionsFragment.Companion.newInstance(category: Category): ProductOptionsFragment {
+fun ProductOptionsFragment.Companion.newInstance(productList: List<Product>, originFragment: DetailFragment): ProductOptionsFragment {
     val args = android.os.Bundle()
-    args.putParcelable(PRODUCTS_OPTIONS_ID_KEY, category.parcelizeCategory())
+    args.putParcelableArrayList(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
     val fragment = ProductOptionsFragment()
+    fragment.setTargetFragment(originFragment,REQUEST_CODE_PRODUCT)
     fragment.arguments = args
     return fragment
 }
+
+
+
+inline fun <reified T : Fragment> Context.intentFor(body: Intent.() -> Unit): Intent =
+    Intent(this, T::class.java).apply(body)
+
+
+inline fun <reified T : Fragment> BaseFragment.initializeIntent(body: Intent.() -> Unit): Intent =
+    Intent(activity, T::class.java).apply(body)
+
 
 /*fun ProductDetailBottomSheet.Companion.newInstance(product: Product): ProductDetailBottomSheet {
     val args = android.os.Bundle()

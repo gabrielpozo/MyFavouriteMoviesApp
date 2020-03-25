@@ -14,12 +14,13 @@ class DetailViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    private lateinit var dataProducts: List<Product>
 
     private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
     val modelNavigation: LiveData<Event<NavigationModel>>
         get() = _modelNavigation
 
-    class NavigationModel(val category: Category)
+    class NavigationModel(val productList: List<Product>)
 
 
     private val _model = MutableLiveData<Content>()
@@ -30,12 +31,30 @@ class DetailViewModel(
 
     data class Content(val product: Product)
 
+    private val _modelContentVariation = MutableLiveData<ContentVariation>()
+    val modelContentVariation: LiveData<ContentVariation>
+        get() {
+            return _modelContentVariation
+        }
+
+    data class ContentVariation(val product: Product)
+
     fun onRetrieveProduct(category: Category) {
-        _model.value = Content(category.categoryProducts[0].also { it.isSelected = true })
+        if (!::dataProducts.isInitialized) {
+            dataProducts = category.categoryProducts
+            _model.value = Content(category.categoryProducts[0].also { it.isSelected = true })
+        }
     }
 
-    fun onChangeVariationClick(category: Category) {
-        _modelNavigation.value = Event(NavigationModel(category))
+    fun onRetrieveListFromProductVariation(productList: List<Product>) {
+        dataProducts = productList
+        val productSelected = dataProducts.find { it.isSelected }
+        if (productSelected != null) {
+            _modelContentVariation.value = ContentVariation(productSelected)
+        }
     }
 
+    fun onChangeVariationClick() {
+        _modelNavigation.value = Event(NavigationModel(dataProducts))
+    }
 }

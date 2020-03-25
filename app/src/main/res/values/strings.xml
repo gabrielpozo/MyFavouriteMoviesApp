@@ -48,6 +48,8 @@
     <string name="price_per_pack">$%s</string>
     <string name="price_detail">/ $%s each</string>
     <string name="form_factor_pack">%s %s pack</string>
+    <string name="wattage_variation">%sW</string>
+
 
 
 

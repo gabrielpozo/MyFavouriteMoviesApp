@@ -1,8 +1,8 @@
 package com.light.finder.ui.lightfinder
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +13,13 @@ import com.light.domain.model.FilterWattage
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
+import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.ProductsOptionsComponent
 import com.light.finder.di.modules.ProductsOptionsModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.deparcelizeCategory
-import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.*
+import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
@@ -30,6 +30,8 @@ class ProductOptionsFragment : BaseFragment() {
 
     companion object {
         const val PRODUCTS_OPTIONS_ID_KEY = "ProductsOptionsFragment::id"
+        const val PRODUCT_LIST_EXTRA = "productListId"
+        const val REQUEST_CODE_PRODUCT = 1
     }
 
     private lateinit var component: ProductsOptionsComponent
@@ -67,31 +69,55 @@ class ProductOptionsFragment : BaseFragment() {
         initAdapters()
 
         arguments?.let { bundle ->
-            bundle.getParcelable<CategoryParcelable>(PRODUCTS_OPTIONS_ID_KEY)
-                ?.let { categoryParcelable ->
+
+            bundle.getParcelableArrayList<ProductParcelable>(PRODUCTS_OPTIONS_ID_KEY)
+                ?.let { productList ->
                     viewModel.onRetrieveProductsVariation(
-                        categoryParcelable.deparcelizeCategory().categoryProducts
+                        productList.deparcelizeProductList()
                     )
                 }
 
-            viewModel.dataFilterWattageButtons.observe(
-                viewLifecycleOwner,
-                Observer(::observeFilteringWattage)
-            )
-
-            viewModel.dataFilterColorButtons.observe(
-                viewLifecycleOwner,
-                Observer(::observeFilteringColor)
-            )
-
-            viewModel.dataFilterFinishButtons.observe(
-                viewLifecycleOwner,
-                Observer(::observeFinishWattage)
-            )
-
+            setVariationsObservers()
+            navigationObserver()
+            setDoneClickListener()
         }
     }
 
+    private fun setVariationsObservers() {
+        viewModel.dataFilterWattageButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringWattage)
+        )
+
+        viewModel.dataFilterColorButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringColor)
+        )
+
+        viewModel.dataFilterFinishButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFinishWattage)
+        )
+
+        viewModel.productSelected.observe(
+            viewLifecycleOwner,
+            Observer(::observeProductSelectedResult)
+        )
+    }
+
+    private fun navigationObserver() {
+        viewModel.modelNavigation.observe(
+            viewLifecycleOwner,
+            Observer(::navigateBackToDetail)
+        )
+    }
+
+    private fun setDoneClickListener() {
+        textViewDone.setOnClickListener {
+            viewModel.onDoneButtonClicked()
+        }
+
+    }
 
     private fun initAdapters() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
@@ -105,16 +131,9 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun observeFilteringWattage(filteringWattage: FilteringWattage) {
-        filteringWattage.filteredWattageButtons.forEach {
-            Log.d(
-                "GabrielDebug",
-                "FilterWattage: ${it.nameFilter} -- IsSelected: ${it.isSelected} -- isAvailable: ${it.isAvailable}"
-            )
-        }
         if (!filteringWattage.isUpdated) {
             filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
         } else {
-            Log.d("GabrielUPDATE","UPDATING  HERE WATTAGE")
             filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
             filterWattageAdapter.updateBackgroundAppearance(filteringWattage.filteredWattageButtons)
         }
@@ -140,18 +159,41 @@ class ProductOptionsFragment : BaseFragment() {
         }
     }
 
+    private fun observeProductSelectedResult(productSelectedModel: ProductSelectedModel) {
+        //String.format(getString(R.string.wattage_variation),productSelectedModel.productSelected.wattageReplaced.toString() )
+        textViewWattage.text = String.format(
+            getString(R.string.wattage_variation),
+            productSelectedModel.productSelected.wattageReplaced.toString()
+        )
+        textViewColor.text = productSelectedModel.productSelected.colorCctCode
+        textViewFinish.text = productSelectedModel.productSelected.finish
+
+    }
+
+    private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
+        navigationModel.getContentIfNotHandled()?.let { navModel ->
+            /**
+             *
+             */
+            //how do we get the target fragment
+            initializeIntent<ProductOptionsFragment> {
+                putParcelableArrayListExtra(PRODUCT_LIST_EXTRA,navModel.categoryProducts.parcelizeProductList())
+                targetFragment?.onActivityResult(targetRequestCode, RESULT_OK, this)
+                mFragmentNavigation.popFragment()
+            }
+
+        }
+    }
+
     private fun handleFilterWattagePressed(filter: FilterWattage) {
         viewModel.onFilterWattageTap(filter)
     }
 
     private fun handleFilterColorPressed(filter: FilterColor) {
-        Log.d("GabrielDebugV","handleFilterColorPre ${filter.nameFilter}")
-         viewModel.onFilterColorTap(filter)
+        viewModel.onFilterColorTap(filter)
     }
 
     private fun handleFilterFinishPressed(filter: FilterFinish) {
-         viewModel.onFilterFinishTap(filter)
+        viewModel.onFilterFinishTap(filter)
     }
-
-
 }

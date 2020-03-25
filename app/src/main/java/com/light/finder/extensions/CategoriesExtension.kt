@@ -71,8 +71,8 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
             override fun getNewListSize(): Int = new.size
         })
 
-        if (count == 1 && !shouldRefreshData){
-            Log.d("GabrielOBs","Before returning")
+        if (count == 1 && !shouldRefreshData) {
+            Log.d("GabrielOBs", "Before returning")
             return@observable
         }
 
@@ -122,6 +122,22 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         colors
     )
 
+
+fun List<Product>.parcelizeProductList(): ArrayList<ProductParcelable> {
+    val parcelizeProducts = ArrayList<ProductParcelable>()
+        forEach {product ->
+            parcelizeProducts.add(mapDomainProductToParcelable(product))
+        }
+    return parcelizeProducts
+}
+
+fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
+    val parcelizeProducts = ArrayList<Product>()
+    forEach {productParcelable ->
+        parcelizeProducts.add(mapParcelableProductToDomain(productParcelable))
+    }
+    return parcelizeProducts
+}
 
 fun Message.parcelizeMessage(): MessageParcelable =
     MessageParcelable(categories.map { it.parcelizeCategory() })
