@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/darkBackgroundColor"
+    android:background="@color/backgroundDark"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <TextView
         android:id="@+id/textViewResults"
-        style="@style/SubtitleTextSmall"
+        style="@style/SubtitleTextXSmall"
         android:layout_marginTop="@dimen/stroke_small"
         android:text="@string/text_results"
         android:layout_width="0dp"
@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:id="@+id/layoutBulbType"
-        android:background="@color/darkBackgroundColor"
+        android:background="@color/backgroundDark"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_top_margin"

@@ -1,9 +1,11 @@
 package com.light.finder.ui.lightfinder
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -17,12 +19,18 @@ import com.light.finder.extensions.deparcelizeCategory
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
+import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 
 class DetailFragment : BaseFragment() {
@@ -59,8 +67,55 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
+        buttonAddTocart.setOnClickListener {
+            cartAnimation.visible()
+            cartAnimation.playAnimation()
+            buttonAddTocart.isClickable = false
+            buttonAddTocart.isFocusable = false
+        }
+
+        cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                cartButtonText.text = getString(R.string.added_to_cart)
+
+                //todo make call
+                //todo get cart item number from api and set badge
+                //todo block bottombar navigation
+
+                MainScope().launch {
+                    delay(3000)
+                    cartButtonText.text = getString(R.string.add_to_cart)
+                    cartAnimation.gone()
+                    buttonAddTocart.isClickable = true
+                    buttonAddTocart.isFocusable = true
+
+                }
+
+
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+
+
         val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+        context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val dpHeight = displayMetrics.heightPixels
+            viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
+                height = (dpHeight / 2)
+            }
+            bottomSheetBehavior.peekHeight = (dpHeight / 2)
+        }
     }
 
 
@@ -126,9 +181,12 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setViewPager(product: Product) {
-        val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
-        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), product.imageUrls)
-        dotsIndicator?.setViewPager(viewPagerDetail)
+        //val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
+        val myList: MutableList<String> = mutableListOf()
+        myList.addAll(product.imageUrls)
+       // myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
+       // dotsIndicator?.setViewPager(viewPagerDetail)
 
     }
 }

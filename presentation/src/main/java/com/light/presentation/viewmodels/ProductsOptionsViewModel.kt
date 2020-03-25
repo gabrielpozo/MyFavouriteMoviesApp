@@ -86,6 +86,9 @@ class ProductsOptionsViewModel(
             }
             handleSelectedProduct(dataProducts, true)
         }
+        else {
+            Log.d("GabrielTag","NOT SELECTED!!")
+        }
     }
 
     fun onFilterColorTap(filterColor: FilterColor) {
@@ -106,6 +109,9 @@ class ProductsOptionsViewModel(
                 }
             }
             handleSelectedProduct(dataProducts, true)
+        }
+        else {
+            Log.d("GabrielTag","NOT SELECTED!! COLOR")
         }
     }
 
@@ -129,6 +135,10 @@ class ProductsOptionsViewModel(
             }
 
             handleSelectedProduct(dataProducts, true)
+        }
+
+        else {
+            Log.d("GabrielTag","NOT SELECTED!! FINISH")
         }
     }
 

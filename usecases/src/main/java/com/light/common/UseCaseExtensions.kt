@@ -26,7 +26,6 @@ fun HashSet<FilterWattage>.removeDuplicateElements(activeOnInitList: List<Filter
 
 
     return filterList
-
 }
 
 fun HashSet<FilterWattage>.checkIsTherePreviousActiveState(product: Product): Boolean {

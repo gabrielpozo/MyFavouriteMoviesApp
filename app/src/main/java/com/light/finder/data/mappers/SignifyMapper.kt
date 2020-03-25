@@ -28,7 +28,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                         } else ""
                     } ?: "",
                     maxWattage = categoryDto.categoryWattReplace?.let { list ->
-                        if (list.isNotEmpty()) {
+                        if (list.isNotEmpty() && list.size > 1) {
                             list[1].toString()
                         } else ""
                     } ?: "",
@@ -98,7 +98,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
             else -> ""
 
         }
-        )
+    )
 }
 
 
