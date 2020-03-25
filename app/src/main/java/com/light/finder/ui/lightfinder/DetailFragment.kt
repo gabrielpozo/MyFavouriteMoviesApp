@@ -75,12 +75,16 @@ class DetailFragment : Fragment() {
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
+
+                //todo block bottombar navigation
             }
 
             override fun onAnimationEnd(animation: Animator) {
 
-                //todo get cart item number from api and set badge
-                //todo block bottombar navigation
+
+                //todo unblock bottombar navigation
+
+                cartButtonText.text = getString(R.string.added_to_cart)
 
                 MainScope().launch {
                     delay(3000)
@@ -162,13 +166,13 @@ class DetailFragment : Fragment() {
     private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
 
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
-            Timber.d("ege ${contentCart.cartItem.peekContent().product.name}")
-            cartButtonText.text = getString(R.string.added_to_cart)
+            Timber.d("egeee ${contentCart.cartItem.peekContent().product.name}")
 
+            //todo get cart item number from api and set badge
             //todo set actual badge count with get count call
             //visibilityCallBack.onBadgeCountChanged(1)
         } else {
-            Timber.e("ege add to cart failed!")
+            Timber.e("egeee add to cart failed!")
             cartAnimation.cancelAnimation()
         }
 

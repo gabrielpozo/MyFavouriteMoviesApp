@@ -13,7 +13,7 @@ interface SignifyApiService {
     ): Response<CategoryResultDto>
 
     @Headers("Content-Type: application/json")
-    @GET("{product_SAPid_12NC}")
+    @GET("addToCart/sku/{product_SAPid_12NC}")
     suspend fun fetchCartAsync(
         @Path("product_SAPid_12NC") productSapId : String
     ): Response<CartResultDto>
