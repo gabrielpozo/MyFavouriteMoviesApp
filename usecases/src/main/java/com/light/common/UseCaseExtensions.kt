@@ -3,6 +3,7 @@ package com.light.common
 
 import com.light.domain.model.FilterVariation
 import com.light.domain.model.Product
+import com.light.domain.model.TYPE
 
 
 fun FilterVariation.isMatchSpecs(product: Product): Boolean = true
@@ -64,4 +65,75 @@ fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateF(product: Product):
         }
     }
     return false
+}
+
+fun List<Product>.setSelectedProductToCompatibleList(
+    productSelected: Product,
+    filter: FilterVariation
+) {
+
+    forEach { product ->
+        when (filter.type) {
+            TYPE.WATTAGE -> {
+                if (product.wattageReplaced.toString() == filter.nameFilter) {
+                    if (productSelected.colorCctCode == product.colorCctCode && productSelected.finish == product.finish) {
+                        product.isSelected = true
+                    }
+                }
+            }
+
+            TYPE.COLOR -> {
+                if (product.colorCctCode == filter.nameFilter) {
+
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.finish == product.finish) {
+                        product.isSelected = true
+                    }
+                }
+            }
+            TYPE.FINISH -> {
+                if (product.finish.toString() == filter.nameFilter) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode) {
+                        product.isSelected = true
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+fun List<Product>.setSelectedProduct(
+    productSelected: Product,
+    filter: FilterVariation
+) {
+
+    forEach { product ->
+        when (filter.type) {
+            TYPE.WATTAGE -> {
+                if (product.wattageReplaced.toString() == filter.nameFilter) {
+                    if (productSelected.colorCctCode == product.colorCctCode || productSelected.finish == product.finish) {
+                        product.isSelected = true
+                    }
+                }
+            }
+
+            TYPE.COLOR -> {
+                if (product.wattageReplaced.toString() == filter.nameFilter) {
+
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.finish == product.finish) {
+                        product.isSelected = true
+                    }
+                }
+            }
+            TYPE.FINISH -> {
+                if (product.wattageReplaced.toString() == filter.nameFilter) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode) {
+                        product.isSelected = true
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
 import com.light.presentation.common.Event
+import com.light.presentation.common.getSelectedProduct
 import com.light.presentation.common.setSelectedProduct
 import com.light.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,8 +16,8 @@ class ProductsOptionsViewModel(
     private val getWattageVariationsUseCase: GetWattageVariationsUseCase,
     private val getColorVariationsUseCase: GetColorVariationsUseCase,
     private val getFinishVariationsUseCase: GetFinishVariationsUseCase,
-    private val getAvailableSelectedFilterUseCase: GetAvailableSelectedFilterUseCase,
-    private val getNewSelectedProduct: GetNewSelectedProduct
+    private val getNewCompatibleListUseCase: GetNewCompatibleVariationListUseCase,
+    private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase
 ) :
     BaseViewModel(uiDispatcher) {
 
@@ -93,33 +94,19 @@ class ProductsOptionsViewModel(
 
     fun onFilterWattageTap(filter: FilterVariation) {
         if (filter.isAvailable) {
-            //check for the data products
-            val productSelected = dataProducts.find {
-                it.isSelected
+            launch {
+                getNewCompatibleListUseCase.execute(
+                    { productList -> handleCompatibleResult(filter, productList) },
+                    params = *arrayOf(dataProducts, filter)
+                )
             }
-
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            dataProducts.forEach {
-                if (it.wattageReplaced.toString() == filter.nameFilter
-                    && productSelected?.colorCctCode == it.colorCctCode && productSelected.finish == it.finish
-                ) {
-                    it.isSelected = true
-                    setProductSelectedOnView(it)
-                }
-            }
-            handleSelectedProduct(true)
         } else {
             launch {
-                getNewSelectedProduct.execute(
+                getNewIncompatibleListUseCase.execute(
                     { productList -> handleIncompatibleResult(filter, productList) },
                     params = *arrayOf(dataProducts, filter)
                 )
             }
-
         }
     }
 
@@ -136,65 +123,35 @@ class ProductsOptionsViewModel(
 
     fun onFilterColorTap(filterColor: FilterVariation) {
         if (filterColor.isAvailable) {
-            val productSelected = dataProducts.find {
-                it.isSelected
+            launch {
+                getNewCompatibleListUseCase.execute(
+                    { productList -> handleCompatibleResult(filterColor, productList) },
+                    params = *arrayOf(dataProducts, filterColor)
+                )
             }
 
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            dataProducts.forEach { product ->
-                if (product.colorCctCode == filterColor.nameFilter
-                    && productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString() && productSelected?.finish == product.finish
-                ) {
-                    product.isSelected = true
-                    setProductSelectedOnView(product)
-                }
-            }
-            handleSelectedProduct(true)
         } else {
             launch {
-                getNewSelectedProduct.execute(
+                getNewIncompatibleListUseCase.execute(
                     { productList -> handleIncompatibleResult(filterColor, productList) },
                     params = *arrayOf(dataProducts, filterColor)
-
                 )
             }
         }
     }
 
-    private fun handleIncompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
-        dataProducts = newListProduct
-        setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
-        handleSelectedProduct(true)
-    }
-
     fun onFilterFinishTap(filterFinish: FilterVariation) {
         if (filterFinish.isAvailable) {
-            val productSelected = dataProducts.find {
-                it.isSelected
+            launch {
+                getNewCompatibleListUseCase.execute(
+                    { productList -> handleCompatibleResult(filterFinish, productList) },
+                    params = *arrayOf(dataProducts, filterFinish)
+                )
             }
 
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            dataProducts.forEach {
-                if (it.finish == filterFinish.nameFilter
-                    && productSelected?.colorCctCode == it.colorCctCode && productSelected.wattageReplaced.toString() == it.wattageReplaced.toString()
-                ) {
-                    it.isSelected = true
-                    setProductSelectedOnView(it)
-                }
-            }
-
-            handleSelectedProduct(true)
         } else {
             launch {
-                getNewSelectedProduct.execute(
+                getNewIncompatibleListUseCase.execute(
                     { productList -> handleIncompatibleResult(filterFinish, productList) },
                     params = *arrayOf(dataProducts, filterFinish)
                 )
@@ -234,8 +191,22 @@ class ProductsOptionsViewModel(
                 params = *arrayOf(dataProducts)
             )
         }
-
     }
+
+
+    private fun handleIncompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
+        dataProducts = newListProduct
+        setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
+        handleSelectedProduct(true)
+    }
+
+
+    private fun handleCompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
+        dataProducts = newListProduct
+        setProductSelectedOnView(getSelectedProduct(dataProducts))
+        handleSelectedProduct(true)
+    }
+
 
     private fun handleWattageUseCaseResult(
         filterWattageButtons: List<FilterVariation>,

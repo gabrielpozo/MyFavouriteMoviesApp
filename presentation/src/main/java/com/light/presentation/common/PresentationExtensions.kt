@@ -19,31 +19,35 @@ import com.light.domain.model.TYPE
 
 
 fun FilterVariation.setSelectedProduct(dataProducts: List<Product>): Product? {
-    dataProducts.find { product ->
-        when (type) {
-            TYPE.WATTAGE -> { product.wattageReplaced.toString() == nameFilter }
-            TYPE.COLOR -> { product.colorCctCode == nameFilter }
-            TYPE.FINISH -> { product.colorCctCode == nameFilter }
-        }
-    }.also { product ->
-        product?.let {
-            it.isSelected = true
-            return product
+    val product = dataProducts.find {
+        it.isSelected
+    }
+    if (product == null) {
+        dataProducts.find { product ->
+            when (type) {
+                TYPE.WATTAGE -> {
+                    product.wattageReplaced.toString() == nameFilter
+                }
+                TYPE.COLOR -> {
+                    product.colorCctCode == nameFilter
+                }
+                TYPE.FINISH -> {
+                    product.finish == nameFilter
+                }
+            }
+        }.also { product ->
+            product?.let {
+                it.isSelected = true
+                return product
+            }
         }
     }
-    return null
+    return product
 }
 
 
-/*fun FilterVariation.setSelectedProductF(dataProducts: List<Product>): Product? {
-    dataProducts.find { product ->
-        product.finish == nameFilter
-    }.also { product ->
-        product?.let {
-            it.isSelected = true
-            return product
-        }
-    }
-    return null
-}*/
+fun getSelectedProduct(dataProducts: List<Product>): Product? = dataProducts.find {
+    it.isSelected
+}
+
 

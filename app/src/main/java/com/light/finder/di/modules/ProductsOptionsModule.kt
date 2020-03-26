@@ -24,11 +24,11 @@ class ProductsOptionsModule {
 
     @Provides
     fun getAvailableSelectedFilterUseCase() =
-        GetAvailableSelectedFilterUseCase()
+        GetNewCompatibleVariationListUseCase()
 
     @Provides
     fun getNewSelectedProduct() =
-        GetNewSelectedProduct()
+        GetNewIncompatibleVariationListUseCase()
 
 
     @Provides
