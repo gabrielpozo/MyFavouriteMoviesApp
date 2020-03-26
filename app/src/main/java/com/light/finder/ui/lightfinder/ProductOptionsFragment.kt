@@ -128,32 +128,25 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun observeFilteringWattage(filteringWattage: FilteringWattage) {
-        if (!filteringWattage.isUpdated) {
-            filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
-        } else {
-            filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
+        if (filteringWattage.isUpdated) {
             filterWattageAdapter.updateBackgroundAppearance(filteringWattage.filteredWattageButtons)
         }
-
+        filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
     }
 
     private fun observeFilteringColor(filteringColor: FilteringColor) {
-        if (!filteringColor.isUpdated) {
-            filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
-        } else {
-            filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
+        if (filteringColor.isUpdated) {
             filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
         }
+        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
+
     }
 
-
     private fun observeFinishWattage(filterFinish: FilteringFinish) {
-        if (!filterFinish.isUpdated) {
-            filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
-        } else {
-            filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
+        if (filterFinish.isUpdated) {
             filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
         }
+        filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
     }
 
     private fun observeProductSelectedResult(productSelectedModel: ProductSelectedModel) {
@@ -170,7 +163,10 @@ class ProductOptionsFragment : BaseFragment() {
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             initializeIntent<ProductOptionsFragment> {
-                putParcelableArrayListExtra(PRODUCT_LIST_EXTRA,navModel.categoryProducts.parcelizeProductList())
+                putParcelableArrayListExtra(
+                    PRODUCT_LIST_EXTRA,
+                    navModel.categoryProducts.parcelizeProductList()
+                )
                 targetFragment?.onActivityResult(targetRequestCode, RESULT_OK, this)
                 mFragmentNavigation.popFragment()
             }
