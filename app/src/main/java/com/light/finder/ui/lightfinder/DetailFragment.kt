@@ -76,14 +76,11 @@ class DetailFragment : Fragment() {
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
-
-                //todo block bottombar navigation
+                visibilityCallBack.onBottomBarBlocked(isClickable = false)
             }
 
             override fun onAnimationEnd(animation: Animator) {
-
-
-                //todo unblock bottombar navigation
+                visibilityCallBack.onBottomBarBlocked(isClickable = true)
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 

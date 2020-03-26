@@ -61,7 +61,13 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         cart.removeBadge()
     }
 
-   
+    override fun onBottomBarBlocked(isClickable: Boolean) {
+
+        //TODO disable bottombar click
+        
+    }
+
+
     companion object {
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
