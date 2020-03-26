@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
 import com.light.presentation.common.Event
+import com.light.presentation.common.setSelectedProduct
 import com.light.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -137,14 +138,7 @@ class ProductsOptionsViewModel(
             }
 
             //3. otherwise we get the first product option on the list with this wattage
-            dataProducts.find { product ->
-                product.wattageReplaced.toString()  == filter.nameFilter
-            }.also {product ->
-                product?.let {
-                    setProductSelectedOnView(it)
-                    it.isSelected = true
-                }
-            }
+            setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
 
             handleSelectedProduct(true)
 
@@ -156,8 +150,10 @@ class ProductsOptionsViewModel(
 
     }
 
-    private fun setProductSelectedOnView(productSelected: Product) {
-        _productSelected.value = ProductSelectedModel(productSelected)
+    private fun setProductSelectedOnView(productSelected: Product?) {
+        if(productSelected !=null) {
+            _productSelected.value = ProductSelectedModel(productSelected)
+        }
     }
 
     fun onFilterColorTap(filterColor: FilterColor) {
@@ -208,14 +204,8 @@ class ProductsOptionsViewModel(
             }
 
             //3. otherwise we get the first product option on the list with this wattage
-            dataProducts.find { product ->
-                product.wattageReplaced.toString()  == filterColor.nameFilter
-            }.also {product ->
-                product?.let {
-                    setProductSelectedOnView(it)
-                    it.isSelected = true
-                }
-            }
+            setProductSelectedOnView(filterColor.setSelectedProduct(dataProducts))
+
 
             handleSelectedProduct(true)
 
@@ -269,14 +259,7 @@ class ProductsOptionsViewModel(
             }
 
             //3. otherwise we get the first product option on the list with this wattage
-            dataProducts.find { product ->
-                product.wattageReplaced.toString()  == filterFinish.nameFilter
-            }.also {product ->
-                product?.let {
-                    setProductSelectedOnView(it)
-                    it.isSelected = true
-                }
-            }
+            setProductSelectedOnView(filterFinish.setSelectedProduct(dataProducts))
 
             handleSelectedProduct(true)
 
