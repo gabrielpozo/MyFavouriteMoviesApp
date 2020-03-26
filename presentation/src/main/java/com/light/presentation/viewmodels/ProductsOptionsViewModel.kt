@@ -124,10 +124,12 @@ class ProductsOptionsViewModel(
 
             //2. check if there is one option with one of the remain variations
             dataProducts.forEach { product ->
-                if (productSelected?.wattageReplaced.toString() == filter.nameFilter) {
+                if (product.wattageReplaced.toString() == filter.nameFilter) {
                     if (productSelected?.colorCctCode == product.colorCctCode
                         || productSelected?.finish == product.finish
                     ) {
+                        setProductSelectedOnView(product)
+                        product.isSelected = true
                         handleSelectedProduct(true)
                         return
                     }
@@ -137,9 +139,13 @@ class ProductsOptionsViewModel(
             //3. otherwise we get the first product option on the list with this wattage
             dataProducts.find { product ->
                 product.wattageReplaced.toString()  == filter.nameFilter
-            }.also {
-                it?.isSelected = true
+            }.also {product ->
+                product?.let {
+                    setProductSelectedOnView(it)
+                    it.isSelected = true
+                }
             }
+
             handleSelectedProduct(true)
 
         }
@@ -175,11 +181,49 @@ class ProductsOptionsViewModel(
             }
             handleSelectedProduct(true)
         } else {
+            //TODO
+
+            //1.We get the product selected
+            val productSelected = dataProducts.find {
+                it.isSelected
+            }
+            //reset list
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            //2. check if there is one option with one of the remain variations
+            dataProducts.forEach { product ->
+                if (product.colorCctCode == filterColor.nameFilter) {
+                    if (productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString()
+                        || productSelected?.finish == product.finish
+                    ) {
+                        setProductSelectedOnView(product)
+                        product.isSelected = true
+                        handleSelectedProduct(true)
+                        return
+                    }
+                }
+            }
+
+            //3. otherwise we get the first product option on the list with this wattage
+            dataProducts.find { product ->
+                product.wattageReplaced.toString()  == filterColor.nameFilter
+            }.also {product ->
+                product?.let {
+                    setProductSelectedOnView(it)
+                    it.isSelected = true
+                }
+            }
+
+            handleSelectedProduct(true)
+
         }
     }
 
-    fun onFilterFinishTap(filter: FilterFinish) {
-        if (filter.isAvailable) {
+    fun onFilterFinishTap(filterFinish: FilterFinish) {
+        if (filterFinish.isAvailable) {
             val productSelected = dataProducts.find {
                 it.isSelected
             }
@@ -190,7 +234,7 @@ class ProductsOptionsViewModel(
             }
 
             dataProducts.forEach {
-                if (it.finish == filter.nameFilter
+                if (it.finish == filterFinish.nameFilter
                     && productSelected?.colorCctCode == it.colorCctCode && productSelected.wattageReplaced.toString() == it.wattageReplaced.toString()
                 ) {
                     it.isSelected = true
@@ -200,6 +244,42 @@ class ProductsOptionsViewModel(
 
             handleSelectedProduct(true)
         } else {
+            //1.We get the product selected
+            val productSelected = dataProducts.find {
+                it.isSelected
+            }
+            //reset list
+            dataProducts.forEach {
+                it.isAvailable = false
+                it.isSelected = false
+            }
+
+            //2. check if there is one option with one of the remain variations
+            dataProducts.forEach { product ->
+                if (product.finish == filterFinish.nameFilter) {
+                    if (productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString()
+                        || productSelected?.colorCctCode == product.colorCctCode
+                    ) {
+                        setProductSelectedOnView(product)
+                        product.isSelected = true
+                        handleSelectedProduct(true)
+                        return
+                    }
+                }
+            }
+
+            //3. otherwise we get the first product option on the list with this wattage
+            dataProducts.find { product ->
+                product.wattageReplaced.toString()  == filterFinish.nameFilter
+            }.also {product ->
+                product?.let {
+                    setProductSelectedOnView(it)
+                    it.isSelected = true
+                }
+            }
+
+            handleSelectedProduct(true)
+
         }
     }
 
