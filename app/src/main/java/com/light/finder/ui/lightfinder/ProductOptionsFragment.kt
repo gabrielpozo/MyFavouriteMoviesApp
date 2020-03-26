@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.light.domain.model.FilterColor
-import com.light.domain.model.FilterFinish
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
-import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.ProductsOptionsComponent
 import com.light.finder.di.modules.ProductsOptionsModule
@@ -180,15 +177,15 @@ class ProductOptionsFragment : BaseFragment() {
         }
     }
 
-    private fun handleFilterWattagePressed(filter: FilterWattage) {
+    private fun handleFilterWattagePressed(filter: FilterVariation) {
         viewModel.onFilterWattageTap(filter)
     }
 
-    private fun handleFilterColorPressed(filter: FilterColor) {
+    private fun handleFilterColorPressed(filter: FilterVariation) {
         viewModel.onFilterColorTap(filter)
     }
 
-    private fun handleFilterFinishPressed(filter: FilterFinish) {
+    private fun handleFilterFinishPressed(filter: FilterVariation) {
         viewModel.onFilterFinishTap(filter)
     }
 }

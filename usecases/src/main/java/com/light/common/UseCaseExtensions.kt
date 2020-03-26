@@ -1,18 +1,17 @@
 package com.light.common
 
-import com.light.domain.model.FilterColor
-import com.light.domain.model.FilterFinish
-import com.light.domain.model.FilterWattage
+
+import com.light.domain.model.FilterVariation
 import com.light.domain.model.Product
 
 
-fun FilterWattage.isMatchSpecs(product: Product): Boolean = true
+fun FilterVariation.isMatchSpecs(product: Product): Boolean = true
 /*    nameFilter == product.productSpecOne
             || nameFilter == product.productScene
             || nameFilter == product.productSpecThree*/
 
 
-fun HashSet<FilterWattage>.removeDuplicateElements(activeOnInitList: List<FilterWattage>): List<FilterWattage> {
+fun HashSet<FilterVariation>.removeDuplicateElements(activeOnInitList: List<FilterVariation>): List<FilterVariation> {
     val filterList = toMutableList()
 /*
 
@@ -28,7 +27,7 @@ fun HashSet<FilterWattage>.removeDuplicateElements(activeOnInitList: List<Filter
     return filterList
 }
 
-fun HashSet<FilterWattage>.checkIsTherePreviousActiveState(product: Product): Boolean {
+fun HashSet<FilterVariation>.checkIsTherePreviousActiveState(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
             if (filterWattage.nameFilter == product.wattageReplaced.toString()) {
@@ -41,7 +40,7 @@ fun HashSet<FilterWattage>.checkIsTherePreviousActiveState(product: Product): Bo
     return false
 }
 
-fun HashSet<FilterColor>.checkThereIsPreviousActiveStateC(product: Product): Boolean {
+fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateC(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
             if (filterWattage.nameFilter == product.colorCctCode) {
@@ -54,7 +53,7 @@ fun HashSet<FilterColor>.checkThereIsPreviousActiveStateC(product: Product): Boo
     return false
 }
 
-fun HashSet<FilterFinish>.checkThereIsPreviousActiveStateF(product: Product): Boolean {
+fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateF(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
             if (filterWattage.nameFilter == product.finish) {

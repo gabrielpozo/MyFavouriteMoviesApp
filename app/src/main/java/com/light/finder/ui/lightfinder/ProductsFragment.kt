@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.finder.R
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.ProductsComponent
@@ -78,7 +78,7 @@ class ProductsFragment : Fragment() {
     }
 
 
-    private fun handleFilterPressed(filter: FilterWattage) {
+    private fun handleFilterPressed(filter: FilterVariation) {
         viewModel.onFilterTap(filter)
     }
 

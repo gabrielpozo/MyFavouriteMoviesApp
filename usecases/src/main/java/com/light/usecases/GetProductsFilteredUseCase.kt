@@ -1,7 +1,7 @@
 package com.light.usecases
 
 import com.light.common.isMatchSpecs
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.domain.model.Product
 import com.light.domain.state.DataState
 
@@ -11,7 +11,7 @@ class GetProductsFilteredUseCase : BaseUseCase<List<Product>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Product>> {
         val productDataList = params[0] as List<Product>
-        val initFilterList = params[1] as List<FilterWattage>
+        val initFilterList = params[1] as List<FilterVariation>
         val productsFiltered = mutableListOf<Product>()
         val filterActiveList = initFilterList.filter { it.isSelected }
 

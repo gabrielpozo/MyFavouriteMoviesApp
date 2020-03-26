@@ -3,9 +3,7 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.FilterColor
-import com.light.domain.model.FilterFinish
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
@@ -13,13 +11,13 @@ import kotlinx.android.synthetic.main.item_button_filter_unselected.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 
-class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
+class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
     RecyclerView.Adapter<FilterWattageAdapter.ViewHolder>() {
 
     private val viewItemsMap = hashMapOf<String, View>()
 
 
-    var filterListWattage: List<FilterWattage> by basicDiffUtil(
+    var filterListWattage: List<FilterVariation> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new ->
             old.nameFilter == new.nameFilter
@@ -27,7 +25,7 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
     )
 
 
-    fun updateBackgroundAppearance(filterWattageList: List<FilterWattage>) {
+    fun updateBackgroundAppearance(filterWattageList: List<FilterVariation>) {
         filterWattageList.forEach { filter ->
             val itemView = viewItemsMap[filter.nameFilter]
             if (!filter.isAvailable) {
@@ -68,7 +66,7 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterWattage) {
+        fun bind(filter: FilterVariation) {
             itemView.wattageButton.text = String.format(
                 itemView.context.getString(R.string.wattage_variation),
                 filter.nameFilter
@@ -91,19 +89,19 @@ class FilterWattageAdapter(private val listener: (FilterWattage) -> Unit) :
 }
 
 
-class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
+class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
     RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
     private val viewItemsMap = hashMapOf<String, View>()
 
-    var filterListColor: List<FilterColor> by basicDiffUtil(
+    var filterListColor: List<FilterVariation> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter },
         shouldRefreshData = false
     )
 
-    fun updateBackgroundAppearance(filterColorList: List<FilterColor>) {
-        filterColorList.forEach { filter ->
+    fun updateBackgroundAppearance(FilterVariationList: List<FilterVariation>) {
+        FilterVariationList.forEach { filter ->
             val itemView = viewItemsMap[filter.nameFilter]
             if (!filter.isAvailable) {
                 itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
@@ -144,7 +142,7 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterColor) {
+        fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
             if (!filter.isAvailable) {
                 itemView.setBackgroundResource(R.drawable.card_filter_disabled)
@@ -166,19 +164,19 @@ class FilterColorAdapter(private val listener: (FilterColor) -> Unit) :
 }
 
 
-class FilterFinishAdapter(private val listener: (FilterFinish) -> Unit) :
+class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
     RecyclerView.Adapter<FilterFinishAdapter.ViewHolder>() {
     private val viewItemsMap = hashMapOf<String, View>()
 
-    var filterListFinish: List<FilterFinish> by basicDiffUtil(
+    var filterListFinish: List<FilterVariation> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter },
         shouldRefreshData = false
     )
 
 
-    fun updateBackgroundAppearance(filterFinishList: List<FilterFinish>) {
-        filterFinishList.forEach { filter ->
+    fun updateBackgroundAppearance(FilterVariationList: List<FilterVariation>) {
+        FilterVariationList.forEach { filter ->
             val itemView = viewItemsMap[filter.nameFilter]
             if (!filter.isAvailable) {
                 itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
@@ -218,7 +216,7 @@ class FilterFinishAdapter(private val listener: (FilterFinish) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterFinish) {
+        fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
             if (!filter.isAvailable) {
                 itemView.setBackgroundResource(R.drawable.card_filter_disabled)

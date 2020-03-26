@@ -1,14 +1,14 @@
 package com.light.usecases
 
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.domain.state.DataState
 
 
 @Suppress("UNCHECKED_CAST")
-class GetAvailableSelectedFilterUseCase : BaseUseCase<List<FilterWattage>>() {
-    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterWattage>> {
-        val filterList: List<FilterWattage> = params[0] as List<FilterWattage>
-        val filter: FilterWattage = params[1] as FilterWattage
+class GetAvailableSelectedFilterUseCase : BaseUseCase<List<FilterVariation>>() {
+    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariation>> {
+        val filterList: List<FilterVariation> = params[0] as List<FilterVariation>
+        val filter: FilterVariation = params[1] as FilterVariation
 
         val filterListManipulated = filterList.toMutableList()
 

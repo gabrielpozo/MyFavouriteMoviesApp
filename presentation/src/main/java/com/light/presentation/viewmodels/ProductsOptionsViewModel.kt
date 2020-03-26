@@ -48,16 +48,18 @@ class ProductsOptionsViewModel(
         }
 
     data class FilteringWattage(
-        val filteredWattageButtons: List<FilterWattage> = emptyList(),
+        val filteredWattageButtons: List<FilterVariation> = emptyList(),
         val isUpdated: Boolean = false
     )
 
     data class FilteringColor(
-        val filteredColorButtons: List<FilterColor> = emptyList(), val isUpdated: Boolean = false
+        val filteredColorButtons: List<FilterVariation> = emptyList(),
+        val isUpdated: Boolean = false
     )
 
     data class FilteringFinish(
-        val filteredFinishButtons: List<FilterFinish> = emptyList(), val isUpdated: Boolean = false
+        val filteredFinishButtons: List<FilterVariation> = emptyList(),
+        val isUpdated: Boolean = false
     )
 
     data class ProductSelectedModel(
@@ -89,7 +91,7 @@ class ProductsOptionsViewModel(
         handleSelectedProduct()
     }
 
-    fun onFilterWattageTap(filter: FilterWattage) {
+    fun onFilterWattageTap(filter: FilterVariation) {
         if (filter.isAvailable) {
             //check for the data products
             val productSelected = dataProducts.find {
@@ -111,36 +113,12 @@ class ProductsOptionsViewModel(
             }
             handleSelectedProduct(true)
         } else {
-            //TODO
-
-            //1.We get the product selected
-            val productSelected = dataProducts.find {
-                it.isSelected
+            launch {
+                getNewSelectedProduct.execute(
+                    { productList -> handleIncompatibleResult(filter, productList) },
+                    params = *arrayOf(dataProducts, filter)
+                )
             }
-            //reset list
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            //2. check if there is one option with one of the remain variations
-            dataProducts.forEach { product ->
-                if (product.wattageReplaced.toString() == filter.nameFilter) {
-                    if (productSelected?.colorCctCode == product.colorCctCode
-                        || productSelected?.finish == product.finish
-                    ) {
-                        setProductSelectedOnView(product)
-                        product.isSelected = true
-                        handleSelectedProduct(true)
-                        return
-                    }
-                }
-            }
-
-            //3. otherwise we get the first product option on the list with this wattage
-            setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
-
-            handleSelectedProduct(true)
 
         }
     }
@@ -151,12 +129,12 @@ class ProductsOptionsViewModel(
     }
 
     private fun setProductSelectedOnView(productSelected: Product?) {
-        if(productSelected !=null) {
+        if (productSelected != null) {
             _productSelected.value = ProductSelectedModel(productSelected)
         }
     }
 
-    fun onFilterColorTap(filterColor: FilterColor) {
+    fun onFilterColorTap(filterColor: FilterVariation) {
         if (filterColor.isAvailable) {
             val productSelected = dataProducts.find {
                 it.isSelected
@@ -177,42 +155,23 @@ class ProductsOptionsViewModel(
             }
             handleSelectedProduct(true)
         } else {
-            //TODO
+            launch {
+                getNewSelectedProduct.execute(
+                    { productList -> handleIncompatibleResult(filterColor, productList) },
+                    params = *arrayOf(dataProducts, filterColor)
 
-            //1.We get the product selected
-            val productSelected = dataProducts.find {
-                it.isSelected
+                )
             }
-            //reset list
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            //2. check if there is one option with one of the remain variations
-            dataProducts.forEach { product ->
-                if (product.colorCctCode == filterColor.nameFilter) {
-                    if (productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString()
-                        || productSelected?.finish == product.finish
-                    ) {
-                        setProductSelectedOnView(product)
-                        product.isSelected = true
-                        handleSelectedProduct(true)
-                        return
-                    }
-                }
-            }
-
-            //3. otherwise we get the first product option on the list with this wattage
-            setProductSelectedOnView(filterColor.setSelectedProduct(dataProducts))
-
-
-            handleSelectedProduct(true)
-
         }
     }
 
-    fun onFilterFinishTap(filterFinish: FilterFinish) {
+    private fun handleIncompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
+        dataProducts = newListProduct
+        setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
+        handleSelectedProduct(true)
+    }
+
+    fun onFilterFinishTap(filterFinish: FilterVariation) {
         if (filterFinish.isAvailable) {
             val productSelected = dataProducts.find {
                 it.isSelected
@@ -234,35 +193,12 @@ class ProductsOptionsViewModel(
 
             handleSelectedProduct(true)
         } else {
-            //1.We get the product selected
-            val productSelected = dataProducts.find {
-                it.isSelected
+            launch {
+                getNewSelectedProduct.execute(
+                    { productList -> handleIncompatibleResult(filterFinish, productList) },
+                    params = *arrayOf(dataProducts, filterFinish)
+                )
             }
-            //reset list
-            dataProducts.forEach {
-                it.isAvailable = false
-                it.isSelected = false
-            }
-
-            //2. check if there is one option with one of the remain variations
-            dataProducts.forEach { product ->
-                if (product.finish == filterFinish.nameFilter) {
-                    if (productSelected?.wattageReplaced.toString() == product.wattageReplaced.toString()
-                        || productSelected?.colorCctCode == product.colorCctCode
-                    ) {
-                        setProductSelectedOnView(product)
-                        product.isSelected = true
-                        handleSelectedProduct(true)
-                        return
-                    }
-                }
-            }
-
-            //3. otherwise we get the first product option on the list with this wattage
-            setProductSelectedOnView(filterFinish.setSelectedProduct(dataProducts))
-
-            handleSelectedProduct(true)
-
         }
     }
 
@@ -302,7 +238,7 @@ class ProductsOptionsViewModel(
     }
 
     private fun handleWattageUseCaseResult(
-        filterWattageButtons: List<FilterWattage>,
+        filterWattageButtons: List<FilterVariation>,
         isAnUpdate: Boolean = false
     ) {
         _dataFilterWattageButtons.value = FilteringWattage(
@@ -312,7 +248,7 @@ class ProductsOptionsViewModel(
 
 
     private fun handleColorUseCaseResult(
-        filterColorButtons: List<FilterColor>, isAnUpdate: Boolean = false
+        filterColorButtons: List<FilterVariation>, isAnUpdate: Boolean = false
     ) {
         _dataFilterColorButtons.value = FilteringColor(
             filteredColorButtons = filterColorButtons,
@@ -322,7 +258,7 @@ class ProductsOptionsViewModel(
 
 
     private fun handleFinishUseCaseResult(
-        filterFinishButtons: List<FilterFinish>, isAnUpdate: Boolean = false
+        filterFinishButtons: List<FilterVariation>, isAnUpdate: Boolean = false
     ) {
         _dataFilterFinishButtons.value = FilteringFinish(
             filteredFinishButtons = filterFinishButtons,

@@ -3,7 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
-import com.light.domain.model.FilterWattage
+import com.light.domain.model.FilterVariation
 import com.light.domain.model.Product
 import com.light.usecases.GetFilterButtonsUseCase
 import com.light.usecases.GetProductsFilteredUseCase
@@ -35,8 +35,8 @@ class ProductsViewModel(
 
     data class ProductContent(val productList: List<Product>)
     data class FilteringModel(
-        val initFilterList: List<FilterWattage>?,
-        val filteredButtons: List<FilterWattage> = emptyList()
+        val initFilterList: List<FilterVariation>?,
+        val filteredButtons: List<FilterVariation> = emptyList()
     )
 
 
@@ -53,7 +53,7 @@ class ProductsViewModel(
     }
 
 
-    fun onFilterTap(filter: FilterWattage) {
+    fun onFilterTap(filter: FilterVariation) {
         launch {
             switchActiveFieldOnFilterInitList(filter)
             getProductListFiltered.execute(
@@ -77,14 +77,14 @@ class ProductsViewModel(
         _productsFiltered.value = ProductContent(productList = products)
     }
 
-    private fun handleInitFilteringButtonsResult(filterButtons: List<FilterWattage>) {
+    private fun handleInitFilteringButtonsResult(filterButtons: List<FilterVariation>) {
         _dataFilterButtons.value = FilteringModel(
             initFilterList = filterButtons,
             filteredButtons = filterButtons
         )
     }
 
-    private fun handleFilteredButton(filteredButtons: List<FilterWattage>){
+    private fun handleFilteredButton(filteredButtons: List<FilterVariation>){
         _dataFilterButtons.value = FilteringModel(
             initFilterList = _dataFilterButtons.value?.initFilterList,
             filteredButtons = filteredButtons
@@ -92,7 +92,7 @@ class ProductsViewModel(
     }
 
 
-    private fun switchActiveFieldOnFilterInitList(filter: FilterWattage) {
+    private fun switchActiveFieldOnFilterInitList(filter: FilterVariation) {
         _dataFilterButtons.value?.initFilterList?.find { it.nameFilter == filter.nameFilter }
             ?.isSelected = !filter.isSelected
     }
