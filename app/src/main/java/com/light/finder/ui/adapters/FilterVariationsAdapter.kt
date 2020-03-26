@@ -24,27 +24,6 @@ class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
         }, shouldRefreshData = false
     )
 
-
-    fun updateBackgroundAppearance(filterWattageList: List<FilterVariation>) {
-        filterWattageList.forEach { filter ->
-            val itemView = viewItemsMap[filter.nameFilter]
-            if (!filter.isAvailable) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_disabled)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonDisabled)
-
-            } else {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_unselected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonUnSelected)
-            }
-
-            if (filter.isSelected) {
-                itemView?.wattageButton?.setBackgroundResource(R.drawable.button_filter_selected)
-                itemView?.wattageButton?.setTextAppearance(R.style.ButtonSelected)
-            }
-        }
-
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_button_filter_unselected, false)
         return ViewHolder(view)
@@ -71,18 +50,15 @@ class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
                 itemView.context.getString(R.string.wattage_variation),
                 filter.nameFilter
             )
-            if (!filter.isAvailable) {
-                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_disabled)
-                itemView.wattageButton.setTextAppearance(R.style.ButtonDisabled)
-            } else {
-                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_unselected)
-                itemView.wattageButton.setTextAppearance(R.style.ButtonUnSelected)
-            }
+            itemView.setDrawableBackgroundWattage(filter)
+        }
 
-            if (filter.isSelected) {
-                itemView.wattageButton.setBackgroundResource(R.drawable.button_filter_selected)
-                itemView.wattageButton.setTextAppearance(R.style.ButtonSelected)
-            }
+    }
+
+    fun updateBackgroundAppearance(filterWattageList: List<FilterVariation>) {
+        filterWattageList.forEach { filter ->
+            val itemView = viewItemsMap[filter.nameFilter]
+            itemView?.setDrawableBackgroundWattage(filter)
         }
 
     }
@@ -100,25 +76,8 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
         shouldRefreshData = false
     )
 
-    fun updateBackgroundAppearance(FilterVariationList: List<FilterVariation>) {
-        FilterVariationList.forEach { filter ->
-            val itemView = viewItemsMap[filter.nameFilter]
-            if (!filter.isAvailable) {
-                itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
-                itemView?.variation_name?.setTextAppearance(R.style.DisabledText)
-
-            } else {
-                itemView?.setBackgroundResource(R.drawable.card_filter_unselected)
-                itemView?.variation_name?.setTextAppearance(R.style.InactiveTextDark)
-            }
-
-            if (filter.isSelected) {
-                itemView?.setBackgroundResource(R.drawable.card_filter_selected)
-                itemView?.variation_name?.setTextAppearance(R.style.ActiveText)
-            }
-
-        }
-
+    fun updateBackgroundAppearance(filterVariationList: List<FilterVariation>) {
+        filterVariationList.setBackgroundLayout(viewItemsMap)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -138,27 +97,12 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
         holder.itemView.setOnClickListener {
             listener(filterListColor[position])
         }
-        // holder.itemView.setOnClickListener { listener(filter) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
-            if (!filter.isAvailable) {
-                itemView.setBackgroundResource(R.drawable.card_filter_disabled)
-                itemView.variation_name.setTextAppearance(R.style.DisabledText)
-
-            } else {
-                itemView.setBackgroundResource(R.drawable.card_filter_unselected)
-                itemView.variation_name.setTextAppearance(R.style.InactiveTextDark)
-
-            }
-
-            if (filter.isSelected) {
-                itemView.setBackgroundResource(R.drawable.card_filter_selected)
-                itemView.variation_name.setTextAppearance(R.style.ActiveText)
-            }
-            //itemView.filterButton.setOnClickListener { listener(filter) }
+            itemView.setDrawableOnBackground(filter)
         }
     }
 }
@@ -175,24 +119,8 @@ class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
     )
 
 
-    fun updateBackgroundAppearance(FilterVariationList: List<FilterVariation>) {
-        FilterVariationList.forEach { filter ->
-            val itemView = viewItemsMap[filter.nameFilter]
-            if (!filter.isAvailable) {
-                itemView?.setBackgroundResource(R.drawable.card_filter_disabled)
-                itemView?.variation_name?.setTextAppearance(R.style.DisabledText)
-
-            } else {
-                itemView?.setBackgroundResource(R.drawable.card_filter_unselected)
-                itemView?.variation_name?.setTextAppearance(R.style.InactiveTextDark)
-            }
-
-            if (filter.isSelected) {
-                itemView?.setBackgroundResource(R.drawable.card_filter_selected)
-                itemView?.variation_name?.setTextAppearance(R.style.ActiveText)
-            }
-        }
-
+    fun updateBackgroundAppearance(filterVariationList: List<FilterVariation>) {
+        filterVariationList.setBackgroundLayout(viewItemsMap)
     }
 
 
@@ -212,29 +140,12 @@ class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
         holder.itemView.setOnClickListener {
             listener(filterListFinish[position])
         }
-        // holder.itemView.filterButton.setOnClickListener { listener(filter) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
-            if (!filter.isAvailable) {
-                itemView.setBackgroundResource(R.drawable.card_filter_disabled)
-                itemView.variation_name.setTextAppearance(R.style.DisabledText)
-
-            } else {
-                itemView.setBackgroundResource(R.drawable.card_filter_unselected)
-                itemView.variation_name.setTextAppearance(R.style.InactiveTextDark)
-
-            }
-
-            if (filter.isSelected) {
-                itemView.setBackgroundResource(R.drawable.card_filter_selected)
-                itemView.variation_name.setTextAppearance(R.style.ActiveText)
-
-            }
-            //itemView.imageFilterCover.loadUrl(filter.imageFinishCover)
-            //itemView.filterButton.setOnClickListener { listener(filter) }
+            itemView.setDrawableOnBackground(filter)
         }
     }
 }
