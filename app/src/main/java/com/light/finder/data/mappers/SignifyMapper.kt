@@ -1,10 +1,7 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
-import com.light.finder.data.source.remote.CartProductDto
-import com.light.finder.data.source.remote.CartResultDto
-import com.light.finder.data.source.remote.MessageDto
-import com.light.finder.data.source.remote.ProductDto
+import com.light.finder.data.source.remote.*
 
 val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
@@ -118,6 +115,16 @@ private val mapCartProductToDomain: (CartProductDto) -> CartProduct = { cartDto 
         name = cartDto.name ?: ""
     )
 
+}
+
+
+val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = {
+    countResultDto ->
+
+    CartItemCount(
+        itemCount = countResultDto.itemsCount ?: 0,
+        itemQuantity = countResultDto.itemsQuantity ?: 0
+    )
 }
 
 

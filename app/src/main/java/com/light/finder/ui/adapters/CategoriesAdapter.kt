@@ -40,9 +40,9 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
             //TODO it will change once we have the field on the api(most efficient option)
-            if (position == 0) {
+            /*if (position == 0) {
                 itemView.energyButton.visibility = View.VISIBLE
-            }
+            }*/
             //
             category.colors.forEachIndexed { index, color ->
                 colorText = if (index != category.colors.size - 1) {

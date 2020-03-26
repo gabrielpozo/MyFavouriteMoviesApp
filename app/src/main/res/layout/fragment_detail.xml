@@ -26,5 +26,10 @@
         layout="@layout/layout_detail_bottom_sheet"
          />
 
+    <View
+        android:layout_gravity="bottom"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

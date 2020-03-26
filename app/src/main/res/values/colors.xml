@@ -33,6 +33,7 @@
     <color name="gallerySelected">#1332ff</color>
     <color name="dividerOnLight">#f4f5f5</color>
     <color name="galleryUnselected">#49494d</color>
+    <color name="divider">#696969</color>
 
 
     <!-- TODO change old colors -->

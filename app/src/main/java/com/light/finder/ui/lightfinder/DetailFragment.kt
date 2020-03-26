@@ -29,6 +29,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 
 class DetailFragment : Fragment() {
@@ -100,14 +101,12 @@ class DetailFragment : Fragment() {
 
             override fun onAnimationCancel(animation: Animator) {
 
-                MainScope().launch {
-                    delay(3000)
-                    cartButtonText.text = getString(R.string.add_to_cart)
-                    cartAnimation.gone()
-                    buttonAddTocart.isClickable = true
-                    buttonAddTocart.isFocusable = true
 
-                }
+                cartButtonText.text = getString(R.string.add_to_cart)
+                cartAnimation.gone()
+                buttonAddTocart.isClickable = true
+                buttonAddTocart.isFocusable = true
+
 
             }
 
@@ -207,7 +206,7 @@ class DetailFragment : Fragment() {
             product.factorBase,
             product.factorShape,
             packs
-        )
+        ).capitalize()
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
