@@ -113,7 +113,6 @@ class ProductOptionsFragment : BaseFragment() {
         textViewDone.setOnClickListener {
             viewModel.onDoneButtonClicked()
         }
-
     }
 
     private fun initAdapters() {

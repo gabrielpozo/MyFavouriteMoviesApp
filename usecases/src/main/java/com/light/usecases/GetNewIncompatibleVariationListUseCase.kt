@@ -18,13 +18,13 @@ class GetNewIncompatibleVariationListUseCase : BaseUseCase<List<Product>>() {
         val productSelected = productList.find {
             it.isSelected
         }
-        //reset list
+        //2.reset list
         productList.forEach {
             it.isAvailable = false
             it.isSelected = false
         }
 
-        //2. check if there is one option with one of the remain variations
+        //3. check if there is one option with one of the remain variations
         productList.setSelectedProduct(productSelected!!, filter)
 
         return DataState.Success(productList)

@@ -89,7 +89,7 @@ class ProductsOptionsViewModel(
         productSelected?.let {
             setProductSelectedOnView(it)
         }
-        handleSelectedProduct()
+        getFilterVariationList()
     }
 
     fun onFilterWattageTap(filter: FilterVariation) {
@@ -159,7 +159,7 @@ class ProductsOptionsViewModel(
         }
     }
 
-    private fun handleSelectedProduct(isAnUpdate: Boolean = false) {
+    private fun getFilterVariationList(isAnUpdate: Boolean = false) {
         launch {
             getWattageVariationsUseCase.execute(
                 { filterWattageButtons ->
@@ -197,14 +197,14 @@ class ProductsOptionsViewModel(
     private fun handleIncompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
         dataProducts = newListProduct
         setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
-        handleSelectedProduct(true)
+        getFilterVariationList(true)
     }
 
 
     private fun handleCompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
         dataProducts = newListProduct
         setProductSelectedOnView(getSelectedProduct(dataProducts))
-        handleSelectedProduct(true)
+        getFilterVariationList(true)
     }
 
 
