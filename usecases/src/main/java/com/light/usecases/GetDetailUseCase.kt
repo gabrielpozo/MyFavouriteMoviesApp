@@ -7,6 +7,9 @@ import com.light.domain.state.DataState
 class GetDetailUseCase : BaseUseCase<List<Product>>() {
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Product>> {
         val productDataList = params[0] as List<Product>
+        val product = params[1] as Product
+
+
         return DataState.Success(productDataList.sortedBy { it.priority }.take(0))
     }
 }

@@ -18,8 +18,8 @@
         />
     <solid
         android:color="@android:color/transparent"
-
         />
+
     <padding
         android:left="0dp"
         android:top="0dp"

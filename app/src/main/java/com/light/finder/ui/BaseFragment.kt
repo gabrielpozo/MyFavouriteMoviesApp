@@ -18,5 +18,6 @@ abstract class BaseFragment : Fragment() {
 
     interface FragmentNavigation {
         fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>? = null)
+        fun popFragment()
     }
 }
