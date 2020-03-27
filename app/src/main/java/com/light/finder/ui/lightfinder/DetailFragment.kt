@@ -180,7 +180,7 @@ class DetailFragment : Fragment() {
         } else {
             Timber.d("egee Cart is empty")
         }
-        
+
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {

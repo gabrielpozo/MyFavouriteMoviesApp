@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit
 object MessageRemoteUtil {
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .hostnameVerifier { _, _ -> true }
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
