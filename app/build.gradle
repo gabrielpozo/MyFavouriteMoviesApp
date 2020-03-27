@@ -3,6 +3,8 @@ apply plugin: 'jacoco'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
@@ -85,7 +87,7 @@ dependencies {
     implementation navigationDependencies.values()
     implementation lottieDependencies.values()
     implementation dotsDependencies.values()
-
+    implementation googleServicesDependencies.values()
 
 }
 

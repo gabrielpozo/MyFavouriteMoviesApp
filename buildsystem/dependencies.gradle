@@ -63,11 +63,10 @@ ext {
     bottombar = "2.3.1"
     tsnackBarVersion = "1.1.1"
     dotsIndicator = "4.1.2"
-
+    googleAnalyticsFirebase="17.2.2"
+    googleCrashAnalyticsFirebase="2.10.1"
 
     classpathDependencies = [
-            androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
-            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
     ]
@@ -186,5 +185,12 @@ ext {
             workManagerTest : "androidx.work:work-testing:$workVersion",
             archTest        : "androidx.arch.core:core-testing:$coreTestingVersion",
             mockitoAndroid  : "org.mockito:mockito-android:$mockitoAndroidVersion"
+    ]
+
+    googleServicesDependencies = [
+            analytics: "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase"
+
+
     ]
 }
