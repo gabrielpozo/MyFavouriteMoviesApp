@@ -169,6 +169,7 @@ class DetailFragment : Fragment() {
         } else {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
+            //todo error dialog
         }
 
     }
@@ -186,6 +187,7 @@ class DetailFragment : Fragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
+        //todo error dialog
     }
 
 
