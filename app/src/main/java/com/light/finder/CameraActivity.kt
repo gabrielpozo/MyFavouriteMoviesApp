@@ -64,7 +64,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun onBottomBarBlocked(isClickable: Boolean) {
 
         //TODO disable bottombar click
-        
+       /* if (!isClickable) {
+            bottom_navigation_view.removeOnTabSelectListener()
+        }*/
+
+
     }
 
 

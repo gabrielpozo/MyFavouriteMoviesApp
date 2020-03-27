@@ -86,10 +86,10 @@ class DetailFragment : Fragment() {
 
                 MainScope().launch {
                     delay(3000)
-                    cartButtonText.text = getString(R.string.add_to_cart)
-                    cartAnimation.gone()
-                    buttonAddTocart.isClickable = true
-                    buttonAddTocart.isFocusable = true
+                    cartButtonText?.text = getString(R.string.add_to_cart)
+                    cartAnimation?.gone()
+                    buttonAddTocart?.isClickable = true
+                    buttonAddTocart?.isFocusable = true
 
                 }
 
@@ -99,10 +99,10 @@ class DetailFragment : Fragment() {
             override fun onAnimationCancel(animation: Animator) {
 
 
-                cartButtonText.text = getString(R.string.add_to_cart)
-                cartAnimation.gone()
-                buttonAddTocart.isClickable = true
-                buttonAddTocart.isFocusable = true
+                cartButtonText?.text = getString(R.string.add_to_cart)
+                cartAnimation?.gone()
+                buttonAddTocart?.isClickable = true
+                buttonAddTocart?.isFocusable = true
 
 
             }
@@ -147,6 +147,7 @@ class DetailFragment : Fragment() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
     }
 
     override fun onAttach(context: Context) {
@@ -163,15 +164,23 @@ class DetailFragment : Fragment() {
 
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             Timber.d("egeee ${contentCart.cartItem.peekContent().product.name}")
+            viewModel.onRequestGetItemCount()
 
-            //todo get cart item number from api and set badge
-            //todo set actual badge count with get count call
-            //visibilityCallBack.onBadgeCountChanged(1)
         } else {
-            Timber.e("egeee add to cart failed!")
+            Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
         }
 
+    }
+
+    private fun observeItemCount(itemCount: DetailViewModel.RequestModelItemCount) {
+        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
+        if (itemQuantity > 0) {
+            visibilityCallBack.onBadgeCountChanged(itemQuantity)
+        } else {
+            Timber.d("egee Cart is empty")
+        }
+        
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {

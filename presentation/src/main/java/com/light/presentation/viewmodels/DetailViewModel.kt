@@ -4,17 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Cart
+import com.light.domain.model.CartItemCount
 import com.light.domain.model.Category
-import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.presentation.common.Event
 import com.light.usecases.GetAddToCartUseCase
+import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
 class DetailViewModel(
     private val getAddToCart: GetAddToCartUseCase,
+    private val getItemCount: GetItemCountUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -39,8 +41,14 @@ class DetailViewModel(
     val modelRequest: LiveData<RequestModelContent>
         get() = _modelRequest
 
+    private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
+    val modelItemCountRequest: LiveData<RequestModelItemCount>
+        get() = _modelItemCountRequest
+
 
     data class RequestModelContent(val cartItem: Event<Cart>)
+
+    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
     data class Content(val product: Product)
 
@@ -67,6 +75,17 @@ class DetailViewModel(
 
     }
 
+    fun onRequestGetItemCount() {
+        checkCoroutineIsCancelled()
+        launch {
+            getItemCount.execute(
+                ::handleItemCountSuccessResponse,
+                ::handleItemCountErrorResponse,
+                ::handleItemCountTimeOutResponse,
+                ::handleItemCountEmptyResponse
+            )
+        }
+    }
 
     private fun handleSuccessResponse(cartItem: Cart) {
         _modelRequest.value = RequestModelContent(Event(cartItem))
@@ -81,6 +100,22 @@ class DetailViewModel(
     }
 
     private fun handleTimeOutResponse(message: String) {
+        _modelDialog.value = Event(DialogModel.TimeOutError)
+    }
+
+    private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
+        _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
+    }
+
+    private fun handleItemCountErrorResponse(hasBeenCancelled: Boolean) {
+        _modelDialog.value = Event(DialogModel.ServerError)
+    }
+
+    private fun handleItemCountEmptyResponse() {
+        _modelDialog.value = Event(DialogModel.NotBulbIdentified)
+    }
+
+    private fun handleItemCountTimeOutResponse(message: String) {
         _modelDialog.value = Event(DialogModel.TimeOutError)
     }
 

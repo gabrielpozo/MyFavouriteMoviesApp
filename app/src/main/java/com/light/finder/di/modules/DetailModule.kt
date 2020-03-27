@@ -1,9 +1,11 @@
 package com.light.finder.di.modules
 
 
+import com.light.domain.CartItemCountRepository
 import com.light.domain.CartRepository
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.usecases.GetAddToCartUseCase
+import com.light.usecases.GetItemCountUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -17,10 +19,16 @@ class DetailModule {
         GetAddToCartUseCase(cartRepository)
 
     @Provides
+    fun getItemCountUseCase(cartItemCountRepository: CartItemCountRepository) =
+        GetItemCountUseCase(cartItemCountRepository)
+
+    @Provides
     fun categoryViewModel(
-        detailsUseCase: GetAddToCartUseCase
+        detailsUseCase: GetAddToCartUseCase,
+        getItemCountUseCase: GetItemCountUseCase
     ) = DetailViewModel(
         detailsUseCase,
+        getItemCountUseCase,
         Dispatchers.Main
     )
 
