@@ -103,6 +103,22 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
         fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
             itemView.setDrawableOnBackground(filter)
+            when (filter.nameFilter) {
+                itemView.context.getString(R.string.warm) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.warm)
+                }
+                itemView.context.getString(R.string.white_warm) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.warm_white)
+                }
+
+                itemView.context.getString(R.string.cool_white) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.cool_white)
+                }
+
+                itemView.context.getString(R.string.daylight) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.daylight)
+                }
+            }
         }
     }
 }
@@ -146,6 +162,16 @@ class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
         fun bind(filter: FilterVariation) {
             itemView.variation_name.text = filter.nameFilter
             itemView.setDrawableOnBackground(filter)
+            when (filter.nameFilter) {
+                itemView.context.getString(R.string.frosted) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.frosted)
+                }
+                itemView.context.getString(R.string.clear) -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.clear)
+                }
+
+
+            }
         }
     }
 }

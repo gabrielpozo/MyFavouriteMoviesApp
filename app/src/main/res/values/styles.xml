@@ -178,6 +178,12 @@
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/book</item>
     </style>
+    <style name="DisableTextDarkSubtitle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDisabled</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/book</item>
+    </style>
+
 
     <style name="DisabledTextSmall" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/textDisabled</item>

@@ -91,7 +91,7 @@ fun List<Product>.setSelectedProductToCompatibleList(
                 }
             }
             TYPE.FINISH -> {
-                if (product.finish.toString() == filter.nameFilter) {
+                if (product.finish == filter.nameFilter) {
                     if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode) {
                         product.isSelected = true
                     }

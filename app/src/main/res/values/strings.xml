@@ -49,8 +49,12 @@
     <string name="price_detail">/ $%s each</string>
     <string name="form_factor_pack">%s %s pack</string>
     <string name="wattage_variation">%sW</string>
-
-
+    <string name="warm">Warm</string>
+    <string name="white_warm">Warm white</string>
+    <string name="cool_white">Cool white</string>
+    <string name="clear">Clear</string>
+    <string name="frosted">Frosted</string>
+    <string name="daylight">Daylight</string>
 
 
     <string name="try_again">Try again</string>

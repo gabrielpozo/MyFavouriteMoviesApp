@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
@@ -75,12 +74,6 @@ class ProductsOptionsViewModel(
 
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
-        categoryProducts.forEach {
-            Log.d(
-                "GabrielDebugGuide",
-                "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}"
-            )
-        }
         dataProducts = categoryProducts
         val productSelected = dataProducts.find {
             it.isSelected

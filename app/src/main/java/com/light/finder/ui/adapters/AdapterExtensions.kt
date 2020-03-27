@@ -33,15 +33,19 @@ fun View.setDrawableOnBackground(filter: FilterVariation) {
     if (!filter.isAvailable) {
         setBackgroundResource(R.drawable.card_filter_disabled)
         variation_name.setTextAppearance(R.style.DisabledText)
+        availableOptions.visibility = View.VISIBLE
 
     } else {
         setBackgroundResource(R.drawable.card_filter_unselected)
         variation_name.setTextAppearance(R.style.InactiveTextDark)
+        availableOptions.visibility = View.GONE
+
     }
 
     if (filter.isSelected) {
         setBackgroundResource(R.drawable.card_filter_selected)
         variation_name.setTextAppearance(R.style.ActiveText)
+        availableOptions.visibility = View.GONE
     }
 
 }
