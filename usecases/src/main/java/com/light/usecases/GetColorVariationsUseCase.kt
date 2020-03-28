@@ -1,25 +1,25 @@
 package com.light.usecases
 
 import com.light.common.checkThereIsPreviousActiveStateC
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.model.TYPE
 import com.light.domain.state.DataState
 
 @Suppress("UNCHECKED_CAST")
-class GetColorVariationsUseCase : BaseUseCase<List<FilterVariation>>() {
+class GetColorVariationsUseCase : BaseUseCase<List<FilterVariationCF>>() {
 
-    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariation>> {
+    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariationCF>> {
         val productList: List<Product> = params[0] as List<Product>
-        val filterHashSet = hashSetOf<FilterVariation>()
+        val filterHashSet = hashSetOf<FilterVariationCF>()
 
         // 1: Check Availables!
         //which colors are available for this wattages and finish variations
         val productSelected = productList.find { it.isSelected }
         productSelected?.let {
             filterHashSet.add(
-                FilterVariation(
-                    nameFilter = productSelected.colorCctCode,
+                FilterVariationCF(
+                    codeFilter = productSelected.colorCctCode,
                     isSelected = productSelected.isSelected,
                     isAvailable = productSelected.isAvailable,
                     type = TYPE.COLOR
@@ -31,8 +31,8 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterVariation>>() {
             if (it.wattageReplaced == productSelected?.wattageReplaced && it.finish == productSelected.finish) {
                 it.isAvailable = true
                 filterHashSet.add(
-                    FilterVariation(
-                        nameFilter = it.colorCctCode,
+                    FilterVariationCF(
+                        codeFilter = it.colorCctCode,
                         isSelected = it.isSelected,
                         isAvailable = it.isAvailable,
                         type = TYPE.COLOR
@@ -45,8 +45,8 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterVariation>>() {
             //do some checks here before adding???
             if (!filterHashSet.checkThereIsPreviousActiveStateC(product)) {
                 filterHashSet.add(
-                    FilterVariation(
-                        nameFilter = product.colorCctCode,
+                    FilterVariationCF(
+                        codeFilter = product.colorCctCode,
                         isSelected = product.isSelected,
                         isAvailable = product.isAvailable,
                         type = TYPE.COLOR
@@ -55,8 +55,11 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterVariation>>() {
             }
         }
 
-        return DataState.Success(filterHashSet.toList())
+        return DataState.Success(filterHashSet.sortedWith(Comparator { f1, f2 ->
+            (f1?.codeFilter ?: -1) - (f2?.codeFilter ?: -1)
+        }).toList())
     }
 
 }
+
 

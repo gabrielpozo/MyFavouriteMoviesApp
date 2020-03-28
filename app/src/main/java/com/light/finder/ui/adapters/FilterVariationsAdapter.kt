@@ -3,7 +3,7 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
@@ -11,16 +11,16 @@ import kotlinx.android.synthetic.main.item_button_filter_unselected.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 
-class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
+class FilterWattageAdapter(private val listener: (FilterVariationCF) -> Unit) :
     RecyclerView.Adapter<FilterWattageAdapter.ViewHolder>() {
 
-    private val viewItemsMap = hashMapOf<String, View>()
+    private val viewItemsMap = hashMapOf<Int, View>()
 
 
-    var filterListWattage: List<FilterVariation> by basicDiffUtil(
+    var filterListWattage: List<FilterVariationCF> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new ->
-            old.nameFilter == new.nameFilter
+            old.codeFilter == new.codeFilter
         }, shouldRefreshData = false
     )
 
@@ -33,8 +33,8 @@ class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val filter = filterListWattage[position]
-        if (!viewItemsMap.containsKey(filter.nameFilter)) {
-            viewItemsMap[filter.nameFilter] = holder.itemView
+        if (!viewItemsMap.containsKey(filter.codeFilter)) {
+            viewItemsMap[filter.codeFilter] = holder.itemView
         }
 
         holder.bind(filter)
@@ -45,19 +45,19 @@ class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariation) {
+        fun bind(filter: FilterVariationCF) {
             itemView.wattageButton.text = String.format(
                 itemView.context.getString(R.string.wattage_variation),
-                filter.nameFilter
+                filter.codeFilter.toString()
             )
             itemView.setDrawableBackgroundWattage(filter)
         }
 
     }
 
-    fun updateBackgroundAppearance(filterWattageList: List<FilterVariation>) {
+    fun updateBackgroundAppearance(filterWattageList: List<FilterVariationCF>) {
         filterWattageList.forEach { filter ->
-            val itemView = viewItemsMap[filter.nameFilter]
+            val itemView = viewItemsMap[filter.codeFilter]
             itemView?.setDrawableBackgroundWattage(filter)
         }
 
@@ -65,18 +65,18 @@ class FilterWattageAdapter(private val listener: (FilterVariation) -> Unit) :
 }
 
 
-class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
+class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
     RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
-    private val viewItemsMap = hashMapOf<String, View>()
+    private val viewItemsMap = hashMapOf<Int, View>()
 
-    var filterListColor: List<FilterVariation> by basicDiffUtil(
+    var filterListColor: List<FilterVariationCF> by basicDiffUtil(
         emptyList(),
-        areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter },
+        areItemsTheSame = { old, new -> old.codeFilter == new.codeFilter },
         shouldRefreshData = false
     )
 
-    fun updateBackgroundAppearance(filterVariationList: List<FilterVariation>) {
+    fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
         filterVariationList.setBackgroundLayout(viewItemsMap)
     }
 
@@ -89,8 +89,8 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val filter = filterListColor[position]
-        if (!viewItemsMap.containsKey(filter.nameFilter)) {
-            viewItemsMap[filter.nameFilter] = holder.itemView
+        if (!viewItemsMap.containsKey(filter.codeFilter)) {
+            viewItemsMap[filter.codeFilter] = holder.itemView
         }
         holder.bind(filter)
 
@@ -100,22 +100,22 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariation) {
-            itemView.variation_name.text = filter.nameFilter
+        fun bind(filter: FilterVariationCF) {
+            itemView.variation_name.text = filter.codeFilter.getColorString(itemView.context)
             itemView.setDrawableOnBackground(filter)
-            when (filter.nameFilter) {
-                itemView.context.getString(R.string.warm) -> {
+            when (filter.codeFilter) {
+                1 -> {
                     itemView.imageFilterCover.setBackgroundResource(R.drawable.warm)
                 }
-                itemView.context.getString(R.string.white_warm) -> {
+                2 -> {
                     itemView.imageFilterCover.setBackgroundResource(R.drawable.warm_white)
                 }
 
-                itemView.context.getString(R.string.cool_white) -> {
+                3 -> {
                     itemView.imageFilterCover.setBackgroundResource(R.drawable.cool_white)
                 }
 
-                itemView.context.getString(R.string.daylight) -> {
+                4 -> {
                     itemView.imageFilterCover.setBackgroundResource(R.drawable.daylight)
                 }
             }
@@ -124,18 +124,18 @@ class FilterColorAdapter(private val listener: (FilterVariation) -> Unit) :
 }
 
 
-class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
+class FilterFinishAdapter(private val listener: (FilterVariationCF) -> Unit) :
     RecyclerView.Adapter<FilterFinishAdapter.ViewHolder>() {
-    private val viewItemsMap = hashMapOf<String, View>()
+    private val viewItemsMap = hashMapOf<Int, View>()
 
-    var filterListFinish: List<FilterVariation> by basicDiffUtil(
+    var filterListFinish: List<FilterVariationCF> by basicDiffUtil(
         emptyList(),
-        areItemsTheSame = { old, new -> old.nameFilter == new.nameFilter },
+        areItemsTheSame = { old, new -> old.codeFilter == new.codeFilter },
         shouldRefreshData = false
     )
 
 
-    fun updateBackgroundAppearance(filterVariationList: List<FilterVariation>) {
+    fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
         filterVariationList.setBackgroundLayout(viewItemsMap)
     }
 
@@ -149,8 +149,8 @@ class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val filter = filterListFinish[position]
-        if (!viewItemsMap.containsKey(filter.nameFilter)) {
-            viewItemsMap[filter.nameFilter] = holder.itemView
+        if (!viewItemsMap.containsKey(filter.codeFilter)) {
+            viewItemsMap[filter.codeFilter] = holder.itemView
         }
         holder.bind(filter)
         holder.itemView.setOnClickListener {
@@ -159,18 +159,16 @@ class FilterFinishAdapter(private val listener: (FilterVariation) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariation) {
-            itemView.variation_name.text = filter.nameFilter
+        fun bind(filter: FilterVariationCF) {
+            itemView.variation_name.text = filter.codeFilter.getFinishString(itemView.context)
             itemView.setDrawableOnBackground(filter)
-            when (filter.nameFilter) {
-                itemView.context.getString(R.string.frosted) -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.frosted)
-                }
-                itemView.context.getString(R.string.clear) -> {
+            when (filter.codeFilter) {
+                1 -> {
                     itemView.imageFilterCover.setBackgroundResource(R.drawable.clear)
                 }
-
-
+                2 -> {
+                    itemView.imageFilterCover.setBackgroundResource(R.drawable.frosted)
+                }
             }
         }
     }

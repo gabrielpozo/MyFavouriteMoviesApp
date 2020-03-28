@@ -125,15 +125,15 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
 
 fun List<Product>.parcelizeProductList(): ArrayList<ProductParcelable> {
     val parcelizeProducts = ArrayList<ProductParcelable>()
-        forEach {product ->
-            parcelizeProducts.add(mapDomainProductToParcelable(product))
-        }
+    forEach { product ->
+        parcelizeProducts.add(mapDomainProductToParcelable(product))
+    }
     return parcelizeProducts
 }
 
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
-    forEach {productParcelable ->
+    forEach { productParcelable ->
         parcelizeProducts.add(mapParcelableProductToDomain(productParcelable))
     }
     return parcelizeProducts
@@ -180,6 +180,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.factorTypeCode,
         product.colorCctCode,
         product.formfactorType,
+        product.productFinishCode,
         product.isSelected,
         product.isAvailable
     )
@@ -219,6 +220,7 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.factorTypeCode,
         product.colorCctCode,
         product.formfactorType,
+        product.productFinishCode,
         product.isSelected,
         product.isAvailable
     )

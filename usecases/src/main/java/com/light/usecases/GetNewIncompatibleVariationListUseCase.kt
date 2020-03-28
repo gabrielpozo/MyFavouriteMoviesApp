@@ -1,9 +1,8 @@
 package com.light.usecases
 
 import com.light.common.setSelectedProduct
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
-import com.light.domain.model.TYPE
 import com.light.domain.state.DataState
 
 
@@ -11,7 +10,7 @@ import com.light.domain.state.DataState
 class GetNewIncompatibleVariationListUseCase : BaseUseCase<List<Product>>() {
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Product>> {
         val productList: List<Product> = params[0] as List<Product>
-        val filter: FilterVariation = params[1] as FilterVariation
+        val filter: FilterVariationCF = params[1] as FilterVariationCF
 
 
         //1.We get the product selected

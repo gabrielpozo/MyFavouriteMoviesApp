@@ -1,18 +1,18 @@
 package com.light.usecases
 
 import com.light.common.removeDuplicateElements
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.state.DataState
 
 
 @Suppress("UNCHECKED_CAST")
-class GetFilterButtonsUseCase : BaseUseCase<List<FilterVariation>>() {
+class GetFilterButtonsUseCase : BaseUseCase<List<FilterVariationCF>>() {
 
-    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariation>> {
+    override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariationCF>> {
         val productList: List<Product> = params[0] as List<Product>
-        val filterHashSet = hashSetOf<FilterVariation>()
-        val initFilterList = params[1] as List<FilterVariation>
+        val filterHashSet = hashSetOf<FilterVariationCF>()
+        val initFilterList = params[1] as List<FilterVariationCF>
 
 
         productList.forEach { product ->
@@ -25,7 +25,7 @@ class GetFilterButtonsUseCase : BaseUseCase<List<FilterVariation>>() {
 
         if (activeOnInitList.isNotEmpty()) {
             activeOnInitList.map { filterOnInitList ->
-                filterHashSet.find { filterOnInitList.nameFilter == it.nameFilter }?.isSelected =
+                filterHashSet.find { filterOnInitList.codeFilter == it.codeFilter }?.isSelected =
                     true
             }
         }

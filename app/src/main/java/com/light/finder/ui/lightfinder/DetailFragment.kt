@@ -24,6 +24,8 @@ import com.light.finder.extensions.newInstance
 import com.light.finder.ui.BaseFragment
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
+import com.light.finder.ui.adapters.getColorString
+import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
@@ -132,8 +134,8 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
-            setViewPager(contentProduct.product)
-            populateProductData(contentProduct.product)
+        setViewPager(contentProduct.product)
+        populateProductData(contentProduct.product)
     }
 
     private fun observeProductContentVariation(contentProductVariation: DetailViewModel.ContentVariation) {
@@ -194,8 +196,8 @@ class DetailFragment : BaseFragment() {
         val changeVariation = String.format(
             getString(R.string.change_variation),
             product.wattageReplaced,
-            product.colorCctCode,
-            product.finish
+            product.colorCctCode.getColorString(requireContext()),
+            product.productFinishCode.getFinishString(requireContext())
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")

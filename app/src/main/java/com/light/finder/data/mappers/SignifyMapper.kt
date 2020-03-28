@@ -82,14 +82,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         discountValue = productDto.discountValue ?: 0,
         qtySkuCase = productDto.qtySkuCase ?: 0,
         factorTypeCode = productDto.factorTypeCode ?: 0,
-        colorCctCode = when (productDto.productCctCode) {
-            1 -> "Warm"
-            2 -> "Warm white"
-            3 -> "Cool white"
-            4 -> "Daylight"
-            else -> ""
-
-        },
+        colorCctCode = productDto.productCctCode ?: 0,
         formfactorType = when (productDto.factorTypeCode) {
             1 -> "BULB"
             2 -> "REFLECTOR"
@@ -97,7 +90,9 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
             4 -> "TUBE"
             else -> ""
 
-        }
+        },
+        productFinishCode = productDto.productFinishCode ?: 0
+
     )
 }
 
@@ -112,3 +107,4 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
     } else {
         "$$minPrice-$$maxPrice"
     }
+
