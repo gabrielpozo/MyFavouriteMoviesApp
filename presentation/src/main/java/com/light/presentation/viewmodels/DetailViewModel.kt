@@ -65,7 +65,7 @@ class DetailViewModel(
             dataProducts = category.categoryProducts
             _model.value = Content(
                 category.categoryProducts[0].also { it.isSelected = true },
-                isSingleProduct = dataProducts.isEmpty()
+                isSingleProduct = dataProducts.size <= 1
             )
         }
     }
