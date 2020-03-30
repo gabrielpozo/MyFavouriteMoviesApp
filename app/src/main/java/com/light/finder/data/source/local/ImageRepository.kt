@@ -42,10 +42,7 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         val buffer = image.planes[0].buffer
         val bytes = ByteArray(buffer.capacity()).also { buffer.get(it) }
 
-        val bitmapOrg = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-
-
-        return bitmapOrg
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 
     //todo change this to efficient way
@@ -65,7 +62,7 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
 
         val b = baos.toByteArray()
         System.gc()
-        return Base64.encodeToString(b, Base64.NO_WRAP)
+        return encodeToString(b, Base64.NO_WRAP)
 
     }
 }

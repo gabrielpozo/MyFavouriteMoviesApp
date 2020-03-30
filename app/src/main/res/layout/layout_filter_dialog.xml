@@ -22,7 +22,7 @@
                 style="@style/ActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
+                android:layout_margin="16dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:layout_marginBottom="16dp"
@@ -32,7 +32,7 @@
                 app:layout_constraintHorizontal_bias="0.628"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Variations" />
+                android:text="Variations" />
 
             <TextView
                 android:id="@+id/textViewDone"
@@ -41,7 +41,7 @@
                 android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
+                android:layout_margin="16dp"
                 android:layout_gravity="center|end"
                 android:layout_alignParentEnd="true"
                 android:textAlignment="center"
@@ -51,7 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Done" />
+                android:text="Done" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -66,32 +66,30 @@
                 style="@style/ActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Wattage:" />
+                android:text="Wattage:" />
 
             <TextView
                 android:id="@+id/textViewWattage"
                 style="@style/InActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewWattageTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="90 W" />
+                android:text="90 W" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -118,32 +116,30 @@
                 style="@style/ActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Color:" />
+                android:text="Color:" />
 
             <TextView
                 android:id="@+id/textViewColor"
                 style="@style/InActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewColorTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Warm White" />
+                android:text="Warm White" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -170,32 +166,30 @@
                 style="@style/ActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Color:" />
+                android:text="Finish:" />
 
             <TextView
                 android:id="@+id/textViewFinish"
                 style="@style/InActiveTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textViewFinishTitle"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Warm White" />
+                android:text="Clear" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

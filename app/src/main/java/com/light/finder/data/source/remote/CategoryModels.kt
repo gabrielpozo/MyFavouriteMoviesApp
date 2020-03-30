@@ -1,6 +1,7 @@
 package com.light.finder.data.source.remote
 
 import android.os.Parcelable
+import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -47,8 +48,11 @@ data class ProductParcelable(
     var discountValue: Int,
     var qtySkuCase: Int,
     var factorTypeCode: Int,
-    var colorCctCode: String,
-    var formfactorType: String
+    var colorCctCode: Int,
+    var formfactorType: String,
+    var productFinishCode: Int,
+    var isSelected: Boolean,
+    var isAvailable: Boolean
 ) : Parcelable
 
 @Parcelize

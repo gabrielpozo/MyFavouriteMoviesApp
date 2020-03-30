@@ -47,7 +47,10 @@ data class Product(
     var discountValue: Int,
     var qtySkuCase: Int,
     var factorTypeCode: Int,
-    var colorCctCode: String,
-    var formfactorType:String,
+    var colorCctCode: Int,
+    var formfactorType: String,
+    var productFinishCode: Int,
+    var isSelected: Boolean = false,
+    var isAvailable: Boolean = false,
     var filtered: Boolean = false
 )
