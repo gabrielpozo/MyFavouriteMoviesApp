@@ -103,7 +103,7 @@ class DetailFragment : BaseFragment() {
                 MainScope().launch {
                     delay(3000)
                     cartButtonText?.text = getString(R.string.add_to_cart)
-                    cartAnimation?.gone()
+                    cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
 
@@ -114,7 +114,7 @@ class DetailFragment : BaseFragment() {
 
 
                 cartButtonText?.text = getString(R.string.add_to_cart)
-                cartAnimation?.gone()
+                cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
 
