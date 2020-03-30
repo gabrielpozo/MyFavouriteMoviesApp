@@ -179,10 +179,10 @@ class DetailFragment : BaseFragment() {
 
     private fun observeItemCount(itemCount: DetailViewModel.RequestModelItemCount) {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
-        if (itemQuantity > 0) {
-            visibilityCallBack.onBadgeCountChanged(itemQuantity)
-        } else {
-            Timber.d("egee Cart is empty")
+        when {
+            itemQuantity in 1..99 -> visibilityCallBack.onBadgeCountChanged(itemQuantity)
+            itemQuantity > 99 -> visibilityCallBack.onBadgeCountChanged(99)
+            else -> Timber.d("egee Cart is empty")
         }
 
     }
