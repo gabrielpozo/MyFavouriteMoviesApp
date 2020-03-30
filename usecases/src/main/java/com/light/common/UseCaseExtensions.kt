@@ -78,6 +78,7 @@ fun List<Product>.setSelectedProductToCompatibleList(
                 if (product.wattageReplaced == filter.codeFilter) {
                     if (productSelected.colorCctCode == product.colorCctCode && productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
@@ -87,6 +88,7 @@ fun List<Product>.setSelectedProductToCompatibleList(
 
                     if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
@@ -94,6 +96,7 @@ fun List<Product>.setSelectedProductToCompatibleList(
                 if (product.productFinishCode == filter.codeFilter) {
                     if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
@@ -111,25 +114,28 @@ fun List<Product>.setSelectedProductToIncompatibleList(
     forEach { product ->
         when (filter.type) {
             TYPE.WATTAGE -> {
-                if (productSelected.wattageReplaced == filter.codeFilter) {
+                if (product.wattageReplaced == filter.codeFilter) {
                     if (productSelected.colorCctCode == product.colorCctCode || productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
 
             TYPE.COLOR -> {
-                if (productSelected.colorCctCode == filter.codeFilter) {
+                if (product.colorCctCode == filter.codeFilter) {
 
                     if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
             TYPE.FINISH -> {
-                if (productSelected.productFinishCode == filter.codeFilter) {
+                if (product.productFinishCode == filter.codeFilter) {
                     if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode) {
                         product.isSelected = true
+                        return
                     }
                 }
             }
