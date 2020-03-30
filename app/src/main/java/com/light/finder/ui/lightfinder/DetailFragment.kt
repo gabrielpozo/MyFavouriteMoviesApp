@@ -37,6 +37,8 @@ import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_preview.*
+import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -170,7 +172,7 @@ class DetailFragment : BaseFragment() {
         } else {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
-            //todo error dialog
+            showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
         }
 
     }
@@ -188,7 +190,33 @@ class DetailFragment : BaseFragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
-        //todo error dialog
+        showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
+    }
+
+    private fun showErrorDialog(
+        titleDialog: String,
+        subtitleDialog: String,
+        buttonPositiveText: String,
+        neutralButton: Boolean = true
+    ) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        dialogView.textViewTitleDialog.text = titleDialog
+        dialogView.textViewSubTitleDialog.text = subtitleDialog
+
+        dialogView.buttonPositive.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        dialogView.buttonNegative.gone()
+        dialogView.buttonNeutral.gone()
+        alertDialog.show()
+
     }
 
     private fun setNavigationObserver() {
