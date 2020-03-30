@@ -46,8 +46,8 @@
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
     <string name="change_variation">%sW, %s color, %s finish</string>
-    <string name="price_per_pack">$%s</string>
-    <string name="price_detail">/ $%s each</string>
+    <string name="price_per_pack">$%.2f</string>
+    <string name="price_detail">/ $%.2f each</string>
     <string name="form_factor_pack">%s %s pack</string>
     <string name="wattage_variation">%sW</string>
     <string name="warm">Warm</string>
