@@ -1,6 +1,6 @@
 package com.light.usecases
 
-import com.light.common.setSelectedProduct
+import com.light.common.setSelectedProductToIncompatibleList
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.state.DataState
@@ -24,7 +24,7 @@ class GetNewIncompatibleVariationListUseCase : BaseUseCase<List<Product>>() {
         }
 
         //3. check if there is one option with one of the remain variations
-        productList.setSelectedProduct(productSelected!!, filter)
+        productList.setSelectedProductToIncompatibleList(productSelected!!, filter)
 
         return DataState.Success(productList)
     }
