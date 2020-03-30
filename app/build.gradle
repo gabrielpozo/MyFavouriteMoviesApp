@@ -30,6 +30,7 @@ android {
         versionName "1"
         vectorDrawables.useSupportLibrary true
         buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
+        buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
     }
 
     buildTypes {

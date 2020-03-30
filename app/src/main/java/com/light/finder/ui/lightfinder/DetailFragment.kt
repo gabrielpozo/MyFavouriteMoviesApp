@@ -2,17 +2,20 @@ package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -26,6 +29,8 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.getColorString
 import com.light.finder.ui.adapters.getFinishString
+import com.light.finder.ui.adapters.getColorString
+import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
@@ -35,6 +40,8 @@ import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -44,6 +51,9 @@ class DetailFragment : BaseFragment() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
+    private lateinit var alertDialog: AlertDialog
+    private lateinit var visibilityCallBack: VisibilityCallBack
+    private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +82,7 @@ class DetailFragment : BaseFragment() {
         }
 
         buttonAddTocart.setOnClickListener {
+            viewModel.onRequestAddToCart(productSapId = productSapId)
             cartAnimation.visible()
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
@@ -80,26 +91,33 @@ class DetailFragment : BaseFragment() {
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
+                visibilityCallBack.onBottomBarBlocked(isClickable = false)
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                cartButtonText.text = getString(R.string.added_to_cart)
+                visibilityCallBack.onBottomBarBlocked(isClickable = true)
 
-                //todo make call
-                //todo get cart item number from api and set badge
-                //todo block bottombar navigation
+                cartButtonText.text = getString(R.string.added_to_cart)
 
                 MainScope().launch {
                     delay(3000)
-                    cartButtonText.text = getString(R.string.add_to_cart)
-                    cartAnimation.gone()
-                    buttonAddTocart.isClickable = true
-                    buttonAddTocart.isFocusable = true
+                    cartButtonText?.text = getString(R.string.add_to_cart)
+                    cartAnimation?.gone()
+                    buttonAddTocart?.isClickable = true
+                    buttonAddTocart?.isFocusable = true
 
                 }
             }
 
             override fun onAnimationCancel(animation: Animator) {
+
+
+                cartButtonText?.text = getString(R.string.add_to_cart)
+                cartAnimation?.gone()
+                buttonAddTocart?.isClickable = true
+                buttonAddTocart?.isFocusable = true
+
+
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -127,6 +145,49 @@ class DetailFragment : BaseFragment() {
             viewLifecycleOwner,
             Observer(::observeProductContentVariation)
         )
+        viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
+
+
+    private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
+
+        if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
+            Timber.d("egeee ${contentCart.cartItem.peekContent().product.name}")
+            viewModel.onRequestGetItemCount()
+
+        } else {
+            Timber.e("egeee add to cart failed! probably item is out of stock")
+            cartAnimation.cancelAnimation()
+            //todo error dialog
+        }
+
+    }
+
+    private fun observeItemCount(itemCount: DetailViewModel.RequestModelItemCount) {
+        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
+        if (itemQuantity > 0) {
+            visibilityCallBack.onBadgeCountChanged(itemQuantity)
+        } else {
+            Timber.d("egee Cart is empty")
+        }
+
+    }
+
+    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+        Timber.e("Add to cart failed")
+        cartAnimation.cancelAnimation()
+        //todo error dialog
     }
 
     private fun setNavigationObserver() {
@@ -136,6 +197,8 @@ class DetailFragment : BaseFragment() {
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
+        productSapId = contentProduct.product.sapID12NC.toString()
+
     }
 
     private fun observeProductContentVariation(contentProductVariation: DetailViewModel.ContentVariation) {
@@ -181,7 +244,7 @@ class DetailFragment : BaseFragment() {
             product.factorBase,
             product.factorShape,
             packs
-        )
+        ).capitalize()
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
@@ -209,6 +272,7 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setViewPager(product: Product) {
+        //todo add dot indicator
         //val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
         val myList: MutableList<String> = mutableListOf()
         myList.addAll(product.imageUrls)

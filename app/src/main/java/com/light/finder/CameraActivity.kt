@@ -29,6 +29,7 @@ import com.light.finder.ui.expert.ExpertFragment
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import com.roughike.bottombar.BottomBarTab
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
@@ -49,7 +50,28 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
-   
+    override fun onBadgeCountChanged(badgeCount: Int) {
+        val cart: BottomBarTab = bottom_navigation_view.getTabWithId(R.id.cartFragment)
+        cart.badgeBackgroundColor = getColor(R.color.informationDefault)
+        cart.setBadgeCount(badgeCount)
+    }
+
+    override fun onCartCleared() {
+        val cart: BottomBarTab = bottom_navigation_view.getTabWithId(R.id.cartFragment)
+        cart.removeBadge()
+    }
+
+    override fun onBottomBarBlocked(isClickable: Boolean) {
+
+        //TODO disable bottombar click
+       /* if (!isClickable) {
+            bottom_navigation_view.removeOnTabSelectListener()
+        }*/
+
+
+    }
+
+
     companion object {
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
@@ -73,6 +95,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         setContentView(R.layout.activity_camera)
         fragmentHelper.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
+
 
         observeConnection()
 

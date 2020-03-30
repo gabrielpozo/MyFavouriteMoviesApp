@@ -21,10 +21,11 @@
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:background="@color/backgroundLight"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="24dp"
-            android:contentDescription="@string/lightbulb_cd" />
+            android:contentDescription="@string/lightbulb_cd"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/category_name"

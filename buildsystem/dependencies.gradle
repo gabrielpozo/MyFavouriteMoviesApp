@@ -35,6 +35,7 @@ ext {
     pagingVersion = '2.1.1'
     gsonVersion = '2.8.2'
     okhttp = '3.10.0'
+    okhttpCookie = '4.2.2'
     retrofit = '2.6.0'
     stetho = '1.5.1'
     lottieVersion = '3.4.0'
@@ -156,7 +157,8 @@ ext {
             retrofit     : "com.squareup.retrofit2:retrofit:$retrofit",
             gsonConverter: "com.squareup.retrofit2:converter-gson:$retrofit",
             okhttp       : "com.squareup.okhttp3:okhttp:$okhttp",
-            okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp"
+            okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp",
+            okhttpCookie: "com.squareup.okhttp3:okhttp-urlconnection:$okhttpCookie"
     ]
 
     testDependencies = [
