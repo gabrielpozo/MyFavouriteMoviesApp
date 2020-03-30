@@ -18,7 +18,6 @@ import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
-import java.lang.ClassCastException
 
 class CategoriesFragment : BaseFragment() {
 
@@ -94,10 +93,10 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateData(categories: List<Category>) {
-        if (categories.size == 1) {
-            textViewResults.text = getString(R.string.text_result).getIntFormatter(categories.size)
+        textViewResults.text = if (categories.size == 1) {
+            getString(R.string.text_result).getIntFormatter(categories.size)
         } else {
-            textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
+            getString(R.string.text_results).getIntFormatter(categories.size)
         }
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)

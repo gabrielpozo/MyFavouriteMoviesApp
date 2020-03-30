@@ -71,5 +71,6 @@
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>
+    <string name="adding_to_cart">Adding to cart</string>
     <string name="add_to_cart">Add to cart</string>
 </resources>
