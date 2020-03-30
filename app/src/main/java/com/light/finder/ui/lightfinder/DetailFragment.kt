@@ -29,21 +29,17 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.getColorString
 import com.light.finder.ui.adapters.getFinishString
-import com.light.finder.ui.adapters.getColorString
-import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
-import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -144,10 +140,6 @@ class DetailFragment : BaseFragment() {
 
     private fun setDetailObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
-        viewModel.modelContentVariation.observe(
-            viewLifecycleOwner,
-            Observer(::observeProductContentVariation)
-        )
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
@@ -172,7 +164,12 @@ class DetailFragment : BaseFragment() {
         } else {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
-            showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
+            showErrorDialog(
+                "Unable to add to cart",
+                "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
+                "OK",
+                false
+            )
         }
 
     }
@@ -190,7 +187,12 @@ class DetailFragment : BaseFragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
-        showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
+        showErrorDialog(
+            "Unable to add to cart",
+            "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
+            "OK",
+            false
+        )
     }
 
     private fun showErrorDialog(
@@ -225,14 +227,9 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         setViewPager(contentProduct.product)
-        populateProductData(contentProduct.product)
+        populateProductData(contentProduct.product, contentProduct.isSingleProduct)
         productSapId = contentProduct.product.sapID12NC.toString()
 
-    }
-
-    private fun observeProductContentVariation(contentProductVariation: DetailViewModel.ContentVariation) {
-        setViewPager(contentProductVariation.product)
-        populateProductData(contentProductVariation.product)
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
@@ -258,7 +255,7 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    private fun populateProductData(product: Product) {
+    private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
         val packs = String.format(
             getString(R.string.form_factor_pack),
             product.formfactorType,
@@ -297,6 +294,12 @@ class DetailFragment : BaseFragment() {
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
         textViewDetailDescription.text = product.description
+        if (isSingleProduct) {
+            layoutChangeVariation.isClickable = false
+            textViewDetailChange.visibility = View.GONE
+            imageViewArrow.visibility = View.INVISIBLE
+
+        }
     }
 
 
