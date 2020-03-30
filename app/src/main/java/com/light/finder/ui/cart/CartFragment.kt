@@ -64,6 +64,11 @@ class CartFragment : BaseFragment() {
         loadWebView(URL)
     }
 
+   /* override fun onResume() {
+        super.onResume()
+        loadWebView(URL)
+    }*/
+
     private fun loadWebView(url: String) {
         try {
             webView.settings.setSupportZoom(true)
