@@ -1,7 +1,7 @@
 package com.light.usecases
 
 import com.light.common.setSelectedProductToCompatibleList
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.state.DataState
 
@@ -11,7 +11,7 @@ class GetNewCompatibleVariationListUseCase : BaseUseCase<List<Product>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Product>> {
         val productList: List<Product> = params[0] as List<Product>
-        val filter: FilterVariation = params[1] as FilterVariation
+        val filter: FilterVariationCF = params[1] as FilterVariationCF
         //check for the data products
         val productSelected = productList.find {
             it.isSelected

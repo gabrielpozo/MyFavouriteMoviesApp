@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.ProductParcelable
@@ -154,7 +154,7 @@ class ProductOptionsFragment : BaseFragment() {
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text = productSelectedModel.productSelected.colorCctCode
+        textViewColor.text =productSelectedModel.productSelected.colorCctCode.getColorString(requireContext())
         textViewFinish.text = productSelectedModel.productSelected.finish
 
     }
@@ -172,15 +172,15 @@ class ProductOptionsFragment : BaseFragment() {
         }
     }
 
-    private fun handleFilterWattagePressed(filter: FilterVariation) {
+    private fun handleFilterWattagePressed(filter: FilterVariationCF) {
         viewModel.onFilterWattageTap(filter)
     }
 
-    private fun handleFilterColorPressed(filter: FilterVariation) {
+    private fun handleFilterColorPressed(filter: FilterVariationCF) {
         viewModel.onFilterColorTap(filter)
     }
 
-    private fun handleFilterFinishPressed(filter: FilterVariation) {
+    private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
     }
 }

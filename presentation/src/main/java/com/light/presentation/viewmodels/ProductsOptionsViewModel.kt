@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
@@ -48,17 +49,17 @@ class ProductsOptionsViewModel(
         }
 
     data class FilteringWattage(
-        val filteredWattageButtons: List<FilterVariation> = emptyList(),
+        val filteredWattageButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
     )
 
     data class FilteringColor(
-        val filteredColorButtons: List<FilterVariation> = emptyList(),
+        val filteredColorButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
     )
 
     data class FilteringFinish(
-        val filteredFinishButtons: List<FilterVariation> = emptyList(),
+        val filteredFinishButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
     )
 
@@ -74,6 +75,12 @@ class ProductsOptionsViewModel(
 
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
+        categoryProducts.forEach {
+            Log.d(
+                "GabrielDebugGuide",
+                "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}"
+            )
+        }
         dataProducts = categoryProducts
         val productSelected = dataProducts.find {
             it.isSelected
@@ -85,20 +92,22 @@ class ProductsOptionsViewModel(
         getFilterVariationList()
     }
 
-    fun onFilterWattageTap(filter: FilterVariation) {
-        if (filter.isAvailable) {
-            launch {
-                getNewCompatibleListUseCase.execute(
-                    { productList -> handleCompatibleResult(filter, productList) },
-                    params = *arrayOf(dataProducts, filter)
-                )
-            }
-        } else {
-            launch {
-                getNewIncompatibleListUseCase.execute(
-                    { productList -> handleIncompatibleResult(filter, productList) },
-                    params = *arrayOf(dataProducts, filter)
-                )
+    fun onFilterWattageTap(filter: FilterVariationCF) {
+        if (!filter.isSelected) {
+            if (filter.isAvailable) {
+                launch {
+                    getNewCompatibleListUseCase.execute(
+                        { productList -> handleCompatibleResult(filter, productList) },
+                        params = *arrayOf(dataProducts, filter)
+                    )
+                }
+            } else {
+                launch {
+                    getNewIncompatibleListUseCase.execute(
+                        { productList -> handleIncompatibleResult(filter, productList) },
+                        params = *arrayOf(dataProducts, filter)
+                    )
+                }
             }
         }
     }
@@ -114,40 +123,44 @@ class ProductsOptionsViewModel(
         }
     }
 
-    fun onFilterColorTap(filterColor: FilterVariation) {
-        if (filterColor.isAvailable) {
-            launch {
-                getNewCompatibleListUseCase.execute(
-                    { productList -> handleCompatibleResult(filterColor, productList) },
-                    params = *arrayOf(dataProducts, filterColor)
-                )
-            }
+    fun onFilterColorTap(filterColor: FilterVariationCF) {
+        if (!filterColor.isSelected) {
+            if (filterColor.isAvailable) {
+                launch {
+                    getNewCompatibleListUseCase.execute(
+                        { productList -> handleCompatibleResult(filterColor, productList) },
+                        params = *arrayOf(dataProducts, filterColor)
+                    )
+                }
 
-        } else {
-            launch {
-                getNewIncompatibleListUseCase.execute(
-                    { productList -> handleIncompatibleResult(filterColor, productList) },
-                    params = *arrayOf(dataProducts, filterColor)
-                )
+            } else {
+                launch {
+                    getNewIncompatibleListUseCase.execute(
+                        { productList -> handleIncompatibleResult(filterColor, productList) },
+                        params = *arrayOf(dataProducts, filterColor)
+                    )
+                }
             }
         }
     }
 
-    fun onFilterFinishTap(filterFinish: FilterVariation) {
-        if (filterFinish.isAvailable) {
-            launch {
-                getNewCompatibleListUseCase.execute(
-                    { productList -> handleCompatibleResult(filterFinish, productList) },
-                    params = *arrayOf(dataProducts, filterFinish)
-                )
-            }
+    fun onFilterFinishTap(filterFinish: FilterVariationCF) {
+        if (!filterFinish.isSelected) {
+            if (filterFinish.isAvailable) {
+                launch {
+                    getNewCompatibleListUseCase.execute(
+                        { productList -> handleCompatibleResult(filterFinish, productList) },
+                        params = *arrayOf(dataProducts, filterFinish)
+                    )
+                }
 
-        } else {
-            launch {
-                getNewIncompatibleListUseCase.execute(
-                    { productList -> handleIncompatibleResult(filterFinish, productList) },
-                    params = *arrayOf(dataProducts, filterFinish)
-                )
+            } else {
+                launch {
+                    getNewIncompatibleListUseCase.execute(
+                        { productList -> handleIncompatibleResult(filterFinish, productList) },
+                        params = *arrayOf(dataProducts, filterFinish)
+                    )
+                }
             }
         }
     }
@@ -187,14 +200,14 @@ class ProductsOptionsViewModel(
     }
 
 
-    private fun handleIncompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
+    private fun handleIncompatibleResult(filter: FilterVariationCF, newListProduct: List<Product>) {
         dataProducts = newListProduct
         setProductSelectedOnView(filter.setSelectedProduct(dataProducts))
         getFilterVariationList(true)
     }
 
 
-    private fun handleCompatibleResult(filter: FilterVariation, newListProduct: List<Product>) {
+    private fun handleCompatibleResult(filter: FilterVariationCF, newListProduct: List<Product>) {
         dataProducts = newListProduct
         setProductSelectedOnView(getSelectedProduct(dataProducts))
         getFilterVariationList(true)
@@ -202,7 +215,7 @@ class ProductsOptionsViewModel(
 
 
     private fun handleWattageUseCaseResult(
-        filterWattageButtons: List<FilterVariation>,
+        filterWattageButtons: List<FilterVariationCF>,
         isAnUpdate: Boolean = false
     ) {
         _dataFilterWattageButtons.value = FilteringWattage(
@@ -212,7 +225,7 @@ class ProductsOptionsViewModel(
 
 
     private fun handleColorUseCaseResult(
-        filterColorButtons: List<FilterVariation>, isAnUpdate: Boolean = false
+        filterColorButtons: List<FilterVariationCF>, isAnUpdate: Boolean = false
     ) {
         _dataFilterColorButtons.value = FilteringColor(
             filteredColorButtons = filterColorButtons,
@@ -222,7 +235,7 @@ class ProductsOptionsViewModel(
 
 
     private fun handleFinishUseCaseResult(
-        filterFinishButtons: List<FilterVariation>, isAnUpdate: Boolean = false
+        filterFinishButtons: List<FilterVariationCF>, isAnUpdate: Boolean = false
     ) {
         _dataFilterFinishButtons.value = FilteringFinish(
             filteredFinishButtons = filterFinishButtons,

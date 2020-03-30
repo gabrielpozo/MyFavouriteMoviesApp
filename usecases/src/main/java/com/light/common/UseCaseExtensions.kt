@@ -1,18 +1,18 @@
 package com.light.common
 
 
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.model.TYPE
 
 
-fun FilterVariation.isMatchSpecs(product: Product): Boolean = true
+fun FilterVariationCF.isMatchSpecs(product: Product): Boolean = true
 /*    nameFilter == product.productSpecOne
             || nameFilter == product.productScene
             || nameFilter == product.productSpecThree*/
 
 
-fun HashSet<FilterVariation>.removeDuplicateElements(activeOnInitList: List<FilterVariation>): List<FilterVariation> {
+fun HashSet<FilterVariationCF>.removeDuplicateElements(activeOnInitList: List<FilterVariationCF>): List<FilterVariationCF> {
     val filterList = toMutableList()
 /*
 
@@ -28,10 +28,10 @@ fun HashSet<FilterVariation>.removeDuplicateElements(activeOnInitList: List<Filt
     return filterList
 }
 
-fun HashSet<FilterVariation>.checkIsTherePreviousActiveState(product: Product): Boolean {
+fun HashSet<FilterVariationCF>.checkIsTherePreviousActiveState(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
-            if (filterWattage.nameFilter == product.wattageReplaced.toString()) {
+            if (filterWattage.codeFilter == product.wattageReplaced) {
                 if(filterWattage.isAvailable || filterWattage.isSelected){
                     return true
                 }
@@ -41,10 +41,10 @@ fun HashSet<FilterVariation>.checkIsTherePreviousActiveState(product: Product): 
     return false
 }
 
-fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateC(product: Product): Boolean {
+fun HashSet<FilterVariationCF>.checkThereIsPreviousActiveStateC(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
-            if (filterWattage.nameFilter == product.colorCctCode) {
+            if (filterWattage.codeFilter == product.colorCctCode) {
                 if(filterWattage.isAvailable || filterWattage.isSelected){
                     return true
                 }
@@ -54,10 +54,10 @@ fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateC(product: Product):
     return false
 }
 
-fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateF(product: Product): Boolean {
+fun HashSet<FilterVariationCF>.checkThereIsPreviousActiveStateF(product: Product): Boolean {
     if (!product.isAvailable) {
         forEach { filterWattage ->
-            if (filterWattage.nameFilter == product.finish) {
+            if (filterWattage.codeFilter == product.productFinishCode) {
                 if(filterWattage.isAvailable || filterWattage.isSelected){
                     return true
                 }
@@ -69,29 +69,29 @@ fun HashSet<FilterVariation>.checkThereIsPreviousActiveStateF(product: Product):
 
 fun List<Product>.setSelectedProductToCompatibleList(
     productSelected: Product,
-    filter: FilterVariation
+    filter: FilterVariationCF
 ) {
 
     forEach { product ->
         when (filter.type) {
             TYPE.WATTAGE -> {
-                if (product.wattageReplaced.toString() == filter.nameFilter) {
-                    if (productSelected.colorCctCode == product.colorCctCode && productSelected.finish == product.finish) {
+                if (product.wattageReplaced == filter.codeFilter) {
+                    if (productSelected.colorCctCode == product.colorCctCode && productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                     }
                 }
             }
 
             TYPE.COLOR -> {
-                if (product.colorCctCode == filter.nameFilter) {
+                if (product.colorCctCode == filter.codeFilter) {
 
-                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.finish == product.finish) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                     }
                 }
             }
             TYPE.FINISH -> {
-                if (product.finish == filter.nameFilter) {
+                if (product.productFinishCode == filter.codeFilter) {
                     if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode) {
                         product.isSelected = true
                     }
@@ -105,29 +105,29 @@ fun List<Product>.setSelectedProductToCompatibleList(
 
 fun List<Product>.setSelectedProduct(
     productSelected: Product,
-    filter: FilterVariation
+    filter: FilterVariationCF
 ) {
 
     forEach { product ->
         when (filter.type) {
             TYPE.WATTAGE -> {
-                if (product.wattageReplaced.toString() == filter.nameFilter) {
-                    if (productSelected.colorCctCode == product.colorCctCode || productSelected.finish == product.finish) {
+                if (product.wattageReplaced == filter.codeFilter) {
+                    if (productSelected.colorCctCode == product.colorCctCode || productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                     }
                 }
             }
 
             TYPE.COLOR -> {
-                if (product.wattageReplaced.toString() == filter.nameFilter) {
+                if (product.wattageReplaced == filter.codeFilter) {
 
-                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.finish == product.finish) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                     }
                 }
             }
             TYPE.FINISH -> {
-                if (product.wattageReplaced.toString() == filter.nameFilter) {
+                if (product.wattageReplaced == filter.codeFilter) {
                     if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode) {
                         product.isSelected = true
                     }

@@ -1,12 +1,13 @@
 package com.light.finder.ui.adapters
 
+import android.content.Context
 import android.view.View
-import com.light.domain.model.FilterVariation
+import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
 import kotlinx.android.synthetic.main.item_button_filter_unselected.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
-fun View.setDrawableBackgroundWattage(filter: FilterVariation) {
+fun View.setDrawableBackgroundWattage(filter: FilterVariationCF) {
     if (!filter.isAvailable) {
         wattageButton.setBackgroundResource(R.drawable.button_filter_disabled)
         wattageButton.setTextAppearance(R.style.ButtonDisabled)
@@ -22,14 +23,14 @@ fun View.setDrawableBackgroundWattage(filter: FilterVariation) {
 
 }
 
-fun List<FilterVariation>.setBackgroundLayout(viewItemsMap: HashMap<String, View>) {
+fun List<FilterVariationCF>.setBackgroundLayout(viewItemsMap: HashMap<Int, View>) {
     forEach { filter ->
-        val itemView = viewItemsMap[filter.nameFilter]
+        val itemView = viewItemsMap[filter.codeFilter]
         itemView?.setDrawableOnBackground(filter)
     }
 }
 
-fun View.setDrawableOnBackground(filter: FilterVariation) {
+fun View.setDrawableOnBackground(filter: FilterVariationCF) {
     if (!filter.isAvailable) {
         setBackgroundResource(R.drawable.card_filter_disabled)
         variation_name.setTextAppearance(R.style.DisabledText)
@@ -48,4 +49,18 @@ fun View.setDrawableOnBackground(filter: FilterVariation) {
         availableOptions.visibility = View.GONE
     }
 
+}
+
+fun Int.getColorString(context: Context): String = when (this) {
+    1 -> "Warm"
+    2 -> "Warm white"
+    3 -> "Cool white"
+    4 -> "Daylight"
+    else -> ""
+}
+
+fun Int.getFinishString(context: Context): String = when (this) {
+    1 -> "Clear"
+    2 -> "Frosted"
+    else -> ""
 }
