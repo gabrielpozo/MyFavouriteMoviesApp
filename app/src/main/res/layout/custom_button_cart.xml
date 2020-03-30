@@ -31,7 +31,7 @@
 
 
     <com.airbnb.lottie.LottieAnimationView
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/cartAnimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
