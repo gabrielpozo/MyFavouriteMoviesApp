@@ -137,10 +137,6 @@ class DetailFragment : BaseFragment() {
 
     private fun setDetailObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
-        viewModel.modelContentVariation.observe(
-            viewLifecycleOwner,
-            Observer(::observeProductContentVariation)
-        )
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
@@ -165,7 +161,12 @@ class DetailFragment : BaseFragment() {
         } else {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
-            showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
+            showErrorDialog(
+                "Unable to add to cart",
+                "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
+                "OK",
+                false
+            )
         }
 
     }
@@ -183,7 +184,12 @@ class DetailFragment : BaseFragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
-        showErrorDialog("Unable to add to cart", "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.", "OK", false)
+        showErrorDialog(
+            "Unable to add to cart",
+            "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
+            "OK",
+            false
+        )
     }
 
     private fun showErrorDialog(
@@ -201,6 +207,7 @@ class DetailFragment : BaseFragment() {
         alertDialog.window?.setDimAmount(0.6f)
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
             alertDialog.dismiss()
@@ -218,14 +225,9 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         setViewPager(contentProduct.product)
-        populateProductData(contentProduct.product)
+        populateProductData(contentProduct.product, contentProduct.isSingleProduct)
         productSapId = contentProduct.product.sapID12NC.toString()
 
-    }
-
-    private fun observeProductContentVariation(contentProductVariation: DetailViewModel.ContentVariation) {
-        setViewPager(contentProductVariation.product)
-        populateProductData(contentProductVariation.product)
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
@@ -251,14 +253,14 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    private fun populateProductData(product: Product) {
+    private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
         val packs = String.format(
             getString(R.string.form_factor_pack),
             product.formfactorType,
             product.qtyLampSku
         )
         val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
-        val title = String.format(
+        var title = String.format(
             getString(R.string.product_title),
             product.categoryName,
             isDimmable,
@@ -266,7 +268,13 @@ class DetailFragment : BaseFragment() {
             product.factorBase,
             product.factorShape,
             packs
-        ).capitalize()
+        )
+
+        val space = " "
+        val splitedStr = title.split(space)
+        title = splitedStr.joinToString (space){
+            it.capitalize()
+        }
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
@@ -290,6 +298,12 @@ class DetailFragment : BaseFragment() {
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
         textViewDetailDescription.text = product.description
+        if (isSingleProduct) {
+            layoutChangeVariation.isClickable = false
+            textViewDetailChange.visibility = View.GONE
+            imageViewArrow.visibility = View.INVISIBLE
+
+        }
     }
 
 
