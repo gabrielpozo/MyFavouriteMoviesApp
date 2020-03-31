@@ -269,7 +269,6 @@ class DetailFragment : BaseFragment() {
             isDimmable,
             product.wattageReplaced,
             product.factorBase,
-            product.factorShape,
             packs
         )
 
