@@ -58,21 +58,17 @@ class DetailViewModel(
 
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
-    data class Content(val product: Product)
-
-    private val _modelContentVariation = MutableLiveData<ContentVariation>()
-    val modelContentVariation: LiveData<ContentVariation>
-        get() {
-            return _modelContentVariation
-        }
-
-    data class ContentVariation(val product: Product)
+    data class Content(val product: Product, val isSingleProduct: Boolean = false)
 
     fun onRetrieveProduct(category: Category) {
         if (!::dataProducts.isInitialized) {
             dataProducts = category.categoryProducts
-            _model.value = Content(category.categoryProducts[0].also { it.isSelected = true })
-        }   }
+            _model.value = Content(
+                category.categoryProducts[0].also { it.isSelected = true },
+                isSingleProduct = dataProducts.size <= 1
+            )
+        }
+    }
 
     fun onRequestAddToCart(productSapId: String) {
         if (productSapId.isNotEmpty()) {
@@ -140,7 +136,8 @@ class DetailViewModel(
         dataProducts = productList
         val productSelected = dataProducts.find { it.isSelected }
         if (productSelected != null) {
-            _modelContentVariation.value = ContentVariation(productSelected)
+            _model.value =
+                Content(productSelected)
         }
     }
 

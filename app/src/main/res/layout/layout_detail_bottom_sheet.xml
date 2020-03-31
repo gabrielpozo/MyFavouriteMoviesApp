@@ -69,10 +69,13 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                app:layout_goneMarginTop="50dp"
                 android:text="@string/change_variation_title"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textViewDetailVariation"/>
 
             <TextView
                 android:id="@+id/textViewDetailVariation"
@@ -80,8 +83,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                app:layout_goneMarginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
