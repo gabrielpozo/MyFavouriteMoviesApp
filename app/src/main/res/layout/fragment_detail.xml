@@ -18,13 +18,24 @@
             android:layout_width="match_parent"
             android:layout_height="375dp" />
 
+        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            android:id="@+id/dots_indicator"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/viewPagerDetail"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="70dp"
+            app:dotsSize="10dp"
+            app:dotsSpacing="3dp"
+            app:dotsStrokeWidth="1dp"
+            app:dotsStrokeColor="@color/galleryUnselected"
+            app:dotsColor="@color/gallerySelected" />
 
     </RelativeLayout>
 
-
     <include
-        layout="@layout/layout_detail_bottom_sheet"
-         />
+        layout="@layout/layout_detail_bottom_sheet" />
 
     <View
         android:layout_gravity="bottom"
