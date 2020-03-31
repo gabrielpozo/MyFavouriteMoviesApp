@@ -210,6 +210,7 @@ class DetailFragment : BaseFragment() {
         alertDialog.window?.setDimAmount(0.6f)
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
             alertDialog.dismiss()
@@ -262,7 +263,7 @@ class DetailFragment : BaseFragment() {
             product.qtyLampSku
         )
         val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
-        val title = String.format(
+        var title = String.format(
             getString(R.string.product_title),
             product.categoryName,
             isDimmable,
@@ -270,7 +271,13 @@ class DetailFragment : BaseFragment() {
             product.factorBase,
             product.factorShape,
             packs
-        ).capitalize()
+        )
+
+        val space = " "
+        val splitedStr = title.split(space)
+        title = splitedStr.joinToString (space){
+            it.capitalize()
+        }
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
