@@ -208,6 +208,7 @@ class DetailFragment : BaseFragment() {
         alertDialog.window?.setDimAmount(0.6f)
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
             alertDialog.dismiss()
