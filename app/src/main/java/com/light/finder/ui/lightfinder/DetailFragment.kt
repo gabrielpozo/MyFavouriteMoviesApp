@@ -20,30 +20,23 @@ import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.deparcelizeCategory
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.newInstance
-import com.light.finder.ui.BaseFragment
 import com.light.finder.extensions.*
+import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.getColorString
-import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.adapters.getColorString
 import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
-import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -137,7 +130,7 @@ class DetailFragment : BaseFragment() {
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = (dpHeight / 2)
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2)
+            bottomSheetBehavior.peekHeight = (dpHeight / 2) - 100
         }
     }
 
@@ -301,14 +294,16 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setViewPager(product: Product) {
-        //todo add dot indicator
-        //val dotsIndicator = view?.findViewById<SpringDotsIndicator>(R.id.dotsIndicator)
         val myList: MutableList<String> = mutableListOf()
+        //myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         myList.addAll(product.imageUrls)
-        // myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
-        // dotsIndicator?.setViewPager(viewPagerDetail)
 
+        if (myList.size > 1) {
+            val dotsIndicator = view?.findViewById<WormDotsIndicator>(R.id.dots_indicator)
+            dotsIndicator?.visibility = View.VISIBLE
+            dotsIndicator?.setViewPager(viewPagerDetail)
+        }
     }
 }
 
