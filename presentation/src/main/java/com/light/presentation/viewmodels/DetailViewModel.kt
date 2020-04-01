@@ -92,10 +92,7 @@ class DetailViewModel(
         checkCoroutineIsCancelled()
         launch {
             getItemCount.execute(
-                ::handleItemCountSuccessResponse,
-                ::handleItemCountErrorResponse,
-                ::handleItemCountTimeOutResponse,
-                ::handleItemCountEmptyResponse
+                ::handleItemCountSuccessResponse
             )
         }
     }
