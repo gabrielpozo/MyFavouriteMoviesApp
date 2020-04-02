@@ -2,8 +2,11 @@ package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
@@ -44,17 +47,46 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 itemView.energyButton.visibility = View.VISIBLE
             }*/
             //
+
             category.colors.forEachIndexed { index, color ->
-                colorText = if (index != category.colors.size - 1) {
-                    "$colorText$color <br>"
-                } else {
-                    "$colorText$color"
-                }
+
+                val d = when (color) {
+                    "Warm" -> {
+                        R.drawable.ic_warm
+                    }
+                    "Warm white" -> {
+                        R.drawable.ic_warm_white
+                    }
+                    "Cool white" -> {
+                        R.drawable.ic_cool_white
+                    }
+                    "Daylight" -> {
+                        R.drawable.ic_daylight
+                    }
+
+                    else -> R.drawable.ic_warm }
+
+                val textView = TextView(itemView.context)
+                textView.text = color
+               // textView.setPadding(12,0,12,0)
+                Log.d("Gabriel","Margin End ${textView.marginEnd} and paddind End ${textView.paddingEnd} andicon paddin")
+
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    0,
+                    0,
+                    d,
+                    0
+                )
+              //  textView.compoundDrawablePadding = 0
+                textView.setTextAppearance(R.style.SubTitleField)
+
+
+                itemView.textViewsLayout.addView(textView)
 
             }
 
 
-            itemView.product_color.text = Html.fromHtml(colorText).toString()
+            // itemView.product_color.text = Html.fromHtml(colorText).toString()
             //itemView.product_color.endDrawable()
 
             val minMaxWattage = itemView.context.getString(
@@ -64,7 +96,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 category.categoryProductBase
             )
 
-            
+
             if (category.minWattage != itemView.context.getString(R.string.no_value)) {
                 itemView.product_detail.text = minMaxWattage.replace("-W", "")
 
