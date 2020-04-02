@@ -30,7 +30,6 @@ import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
-import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -151,7 +150,7 @@ class DetailFragment : BaseFragment() {
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = (dpHeight / 2)
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2) - 100
+            bottomSheetBehavior.peekHeight = (dpHeight / 2)
         }
     }
 
@@ -323,11 +322,11 @@ class DetailFragment : BaseFragment() {
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
         textViewDetailDescription.text = product.description
+
         if (isSingleProduct) {
             layoutChangeVariation.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
-
         }
     }
 
@@ -339,10 +338,28 @@ class DetailFragment : BaseFragment() {
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
 
         if (myList.size > 1) {
-            val dotsIndicator = view?.findViewById<WormDotsIndicator>(R.id.dots_indicator)
-            dotsIndicator?.visibility = View.VISIBLE
-            dotsIndicator?.setViewPager(viewPagerDetail)
+            setImageGalleryDots()
         }
+    }
+
+    private fun setImageGalleryDots() {
+        dots_indicator?.visibility = View.VISIBLE
+        dots_indicator?.setViewPager(viewPagerDetail)
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(p0: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        dots_indicator.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        dots_indicator.visibility = View.GONE
+                    }
+                }
+            }
+            override fun onSlide(p0: View, p1: Float) {
+                // no use but have to implement
+            }
+        })
     }
 }
 
