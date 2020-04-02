@@ -332,7 +332,7 @@ class DetailFragment : BaseFragment() {
 
     private fun setViewPager(product: Product) {
         val productImageList: MutableList<String> = mutableListOf()
-        productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         productImageList.addAll(product.imageUrls)
 
         when (productImageList.size) {
@@ -340,7 +340,7 @@ class DetailFragment : BaseFragment() {
                 productImageList.add("")
             }
         }
-        
+
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
         setImageGalleryDots(productImageList)
     }
