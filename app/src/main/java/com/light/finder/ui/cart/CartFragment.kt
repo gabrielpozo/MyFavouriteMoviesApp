@@ -1,6 +1,7 @@
 package com.light.finder.ui.cart
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,6 +22,10 @@ class CartFragment : BaseFragment() {
         const val URL = "https://www.store.lightguide.signify.com/us/checkout/cart/"
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,8 +39,12 @@ class CartFragment : BaseFragment() {
         setupWebView()
     }
 
+
+    fun reloadWebView() = webView.reload()
+
+
     @SuppressLint("SetJavaScriptEnabled")
-    private fun setupWebView() {
+     fun setupWebView() {
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 
@@ -62,12 +71,8 @@ class CartFragment : BaseFragment() {
         webView.settings.defaultTextEncodingName = "utf-8"
 
         loadWebView(URL)
-    }
 
-   /* override fun onResume() {
-        super.onResume()
-        loadWebView(URL)
-    }*/
+    }
 
     private fun loadWebView(url: String) {
         try {

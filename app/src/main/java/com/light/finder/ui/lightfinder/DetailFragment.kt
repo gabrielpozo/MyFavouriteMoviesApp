@@ -150,7 +150,7 @@ class DetailFragment : BaseFragment() {
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = (dpHeight / 2)
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2) - 100
+            bottomSheetBehavior.peekHeight = (dpHeight / 2)
         }
     }
 
@@ -322,32 +322,52 @@ class DetailFragment : BaseFragment() {
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
         textViewDetailDescription.text = product.description
+
         if (isSingleProduct) {
             layoutChangeVariation.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
-
         }
     }
 
-
     private fun setViewPager(product: Product) {
         val productImageList: MutableList<String> = mutableListOf()
-        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         productImageList.addAll(product.imageUrls)
 
-        when {
-            productImageList.size > 1 -> {
-                dots_indicator?.visibility = View.VISIBLE
-                dots_indicator?.setViewPager(viewPagerDetail)
-            }
-            else -> {
+        when (productImageList.size) {
+            0 -> {
                 productImageList.add("")
             }
         }
-
+        
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
+        setImageGalleryDots(productImageList)
+    }
 
+    private fun setImageGalleryDots(productImageList: MutableList<String>) {
+        // no need to set dots if photos less than 2
+        if (productImageList.size < 2) {
+            return
+        }
+
+        dots_indicator?.visibility = View.VISIBLE
+        dots_indicator?.setViewPager(viewPagerDetail)
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(p0: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        dots_indicator.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        dots_indicator.visibility = View.GONE
+                    }
+                }
+            }
+            override fun onSlide(p0: View, p1: Float) {
+                // no use but have to implement
+            }
+        })
     }
 }
 
