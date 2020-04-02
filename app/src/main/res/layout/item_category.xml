@@ -56,18 +56,19 @@
             tools:text="40W - 60W E26"
             />
 
-        <TextView
-            android:id="@+id/product_color"
-            style="@style/SubTitleField"
-            android:text="@string/placeholder"
+        <LinearLayout
+            android:id="@+id/textViewsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
+            android:gravity="fill"
+            android:orientation="vertical"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/product_detail" />
+            app:layout_constraintTop_toBottomOf="@+id/product_detail">
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/price"
@@ -78,12 +79,10 @@
             android:singleLine="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-
             app:layout_constraintBottom_toTopOf="@id/energyButton"
             android:layout_marginBottom="19dp"
-
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/product_color"
+            app:layout_constraintTop_toBottomOf="@+id/textViewsLayout"
             tools:text="$0.00-$0.00" />
 
         <TextView
@@ -94,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginStart="6dp"
-            app:layout_constraintTop_toBottomOf="@+id/product_color"
+            app:layout_constraintTop_toBottomOf="@+id/textViewsLayout"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/price" />
 

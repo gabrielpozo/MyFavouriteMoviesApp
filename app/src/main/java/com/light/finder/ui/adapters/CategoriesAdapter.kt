@@ -1,9 +1,10 @@
 package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
-import android.text.Html
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
@@ -44,18 +45,22 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 itemView.energyButton.visibility = View.VISIBLE
             }*/
             //
+
             category.colors.forEachIndexed { index, color ->
-                colorText = if (index != category.colors.size - 1) {
-                    "$colorText$color <br>"
-                } else {
-                    "$colorText$color"
+                val textView = TextView(itemView.context)
+                textView.text = color
+                textView.endDrawableIcon(textView.getColorString(color))
+                textView.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                textView.setTextAppearance(R.style.SubTitleField)
+                if(index < category.colors.size -1) {
+                    textView.setPadding(0, 0, 0, 36)
                 }
-
+                textView.compoundDrawablePadding = 32
+                itemView.textViewsLayout.addView(textView)
             }
-
-
-            itemView.product_color.text = Html.fromHtml(colorText).toString()
-            //itemView.product_color.endDrawable()
 
             val minMaxWattage = itemView.context.getString(
                 R.string.description_wattage,
@@ -64,7 +69,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 category.categoryProductBase
             )
 
-            
+
             if (category.minWattage != itemView.context.getString(R.string.no_value)) {
                 itemView.product_detail.text = minMaxWattage.replace("-W", "")
 
