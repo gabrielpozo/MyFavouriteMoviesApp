@@ -2,8 +2,6 @@ package com.light.finder.extensions
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.media.Image
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,6 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.light.finder.R
 import com.light.finder.common.SafeClickListener
 import java.io.File
 import java.util.*
@@ -18,7 +17,6 @@ import java.util.*
 
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
-
 
 
 fun View.visible() {
@@ -73,6 +71,31 @@ fun TextView.endDrawable(@DrawableRes id: Int = 0) {
     val drawable = ContextCompat.getDrawable(context, id)
     this.setCompoundDrawables(null, null, drawable, null)
 }
+
+fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
+    setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
+}
+
+fun TextView.getColorString(color: String): Int = when (color) {
+    context.getString(R.string.warm) -> {
+        R.drawable.ic_warm
+    }
+    context.getString(R.string.white_warm) -> {
+        R.drawable.ic_warm_white
+    }
+    context.getString(R.string.cool_white) -> {
+        R.drawable.ic_cool_white
+    }
+    context.getString(R.string.daylight) -> {
+        R.drawable.ic_daylight
+    }
+
+    else -> R.drawable.ic_warm
+}
+
+
+
+
 
 
 

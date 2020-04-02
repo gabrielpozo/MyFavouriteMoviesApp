@@ -1,12 +1,10 @@
 package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
-import android.text.Html
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
@@ -49,45 +47,20 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             //
 
             category.colors.forEachIndexed { index, color ->
-
-                val d = when (color) {
-                    "Warm" -> {
-                        R.drawable.ic_warm
-                    }
-                    "Warm white" -> {
-                        R.drawable.ic_warm_white
-                    }
-                    "Cool white" -> {
-                        R.drawable.ic_cool_white
-                    }
-                    "Daylight" -> {
-                        R.drawable.ic_daylight
-                    }
-
-                    else -> R.drawable.ic_warm }
-
                 val textView = TextView(itemView.context)
                 textView.text = color
-               // textView.setPadding(12,0,12,0)
-                Log.d("Gabriel","Margin End ${textView.marginEnd} and paddind End ${textView.paddingEnd} andicon paddin")
-
-                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    0,
-                    0,
-                    d,
-                    0
+                textView.endDrawableIcon(textView.getColorString(color))
+                textView.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-              //  textView.compoundDrawablePadding = 0
                 textView.setTextAppearance(R.style.SubTitleField)
-
-
+                if(index < category.colors.size -1) {
+                    textView.setPadding(0, 0, 0, 36)
+                }
+                textView.compoundDrawablePadding = 32
                 itemView.textViewsLayout.addView(textView)
-
             }
-
-
-            // itemView.product_color.text = Html.fromHtml(colorText).toString()
-            //itemView.product_color.endDrawable()
 
             val minMaxWattage = itemView.context.getString(
                 R.string.description_wattage,

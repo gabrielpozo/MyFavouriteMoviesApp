@@ -128,7 +128,7 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
         "-"
 
     } else if (minPrice == maxPrice && minPrice != 0.0f) {
-        minPrice.toString()
+        "$$minPrice"
 
     } else {
         "$$minPrice-$$maxPrice"
