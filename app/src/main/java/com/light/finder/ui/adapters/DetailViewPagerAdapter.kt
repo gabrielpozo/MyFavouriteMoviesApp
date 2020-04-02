@@ -2,6 +2,7 @@ package com.light.finder.ui.adapters
 
 import android.content.Context
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,8 +60,6 @@ class DetailImageAdapter(private val context: Context, private val images: List<
 
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeAllViews()
-    }
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {}
 
 }

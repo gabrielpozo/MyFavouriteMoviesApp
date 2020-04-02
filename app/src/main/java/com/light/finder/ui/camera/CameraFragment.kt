@@ -286,7 +286,7 @@ class CameraFragment : BaseFragment() {
         previewModel.getContentIfNotHandled()?.let {
             layoutCamera.gone()
             layoutPermission.gone()
-            browseButton.gone()
+            //browseButton.gone()
             cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
             imageViewPreview.loadImage(it.bitmap)
@@ -329,7 +329,7 @@ class CameraFragment : BaseFragment() {
         //timer.onTick(INIT_INTERVAL)
         layoutPreview.gone()
         layoutCamera.visible()
-        browseButton.visible()
+        //browseButton.visible()
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 
@@ -345,7 +345,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setPermissionView() {
         layoutCamera.gone()
-        browseButton.visible()
+        //browseButton.visible()
         layoutPermission.visible()
         textViewEnableAccess.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()

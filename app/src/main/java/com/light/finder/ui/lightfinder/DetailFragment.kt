@@ -5,10 +5,12 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -81,6 +83,23 @@ class DetailFragment : BaseFragment() {
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
             buttonAddTocart.isFocusable = false
+            buttonAddTocart.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primaryPressed
+                )
+            )
+
+            val handler = Handler()
+            handler.postDelayed({
+                buttonAddTocart.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.primaryOnDark
+                    )
+                )
+            }, 200)
+
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
@@ -100,6 +119,8 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
+
+
 
                 }
             }
@@ -173,8 +194,13 @@ class DetailFragment : BaseFragment() {
     private fun observeItemCount(itemCount: DetailViewModel.RequestModelItemCount) {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
         when {
-            itemQuantity in 1..99 -> visibilityCallBack.onBadgeCountChanged(itemQuantity)
-            itemQuantity > 99 -> visibilityCallBack.onBadgeCountChanged(99)
+            itemQuantity > 0 -> {
+                val handler = Handler()
+                handler.postDelayed({
+                    visibilityCallBack.onBadgeCountChanged(itemQuantity)
+                }, 4000)
+
+            }
             else -> Timber.d("egee Cart is empty")
         }
 
@@ -265,13 +291,12 @@ class DetailFragment : BaseFragment() {
             isDimmable,
             product.wattageReplaced,
             product.factorBase,
-            product.factorShape,
             packs
         )
 
         val space = " "
         val splitedStr = title.split(space)
-        title = splitedStr.joinToString (space){
+        title = splitedStr.joinToString(space) {
             it.capitalize()
         }
 

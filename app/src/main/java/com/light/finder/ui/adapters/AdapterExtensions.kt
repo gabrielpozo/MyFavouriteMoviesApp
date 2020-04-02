@@ -35,12 +35,13 @@ fun View.setDrawableOnBackground(filter: FilterVariationCF) {
         setBackgroundResource(R.drawable.card_filter_disabled)
         variation_name.setTextAppearance(R.style.DisabledText)
         availableOptions.visibility = View.VISIBLE
+        gradientView.visibility = View.VISIBLE
 
     } else {
         setBackgroundResource(R.drawable.card_filter_unselected)
         variation_name.setTextAppearance(R.style.InactiveTextDark)
         availableOptions.visibility = View.GONE
-
+        gradientView.visibility = View.GONE
     }
 
     if (filter.isSelected) {
