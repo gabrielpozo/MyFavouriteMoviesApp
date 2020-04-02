@@ -90,7 +90,12 @@ fun ImageView.loadUrl(url: String) {
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).centerInside().placeholder(R.drawable.category_placeholder)
+    Glide.with(context).load(url).centerInside()
+        .into(this)
+}
+
+fun ImageView.setPlaceholder() {
+    Glide.with(context).load(R.drawable.category_placeholder).centerInside()
         .into(this)
 }
 

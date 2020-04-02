@@ -1,8 +1,6 @@
 package com.light.finder.ui.adapters
 
 import android.content.Context
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +8,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.light.finder.R
-import com.light.finder.extensions.loadUrl
 import com.light.finder.extensions.loadUrlCenterCrop
+import com.light.finder.extensions.setPlaceholder
 import kotlinx.android.synthetic.main.slider_image_bulb.view.*
 
 class DetailViewPagerAdapter internal constructor(
@@ -42,7 +40,6 @@ class DetailImageAdapter(private val context: Context, private val images: List<
     PagerAdapter() {
     lateinit var layoutInflater: LayoutInflater
 
-
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
 
     override fun getCount(): Int = images.size
@@ -52,12 +49,17 @@ class DetailImageAdapter(private val context: Context, private val images: List<
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View = layoutInflater.inflate(R.layout.slider_image_bulb, container, false)
 
-        view.bulbPoster.loadUrlCenterCrop(images[position])
+        when {
+            images[position].isBlank() -> {
+                view.bulbPoster.setPlaceholder()
+            }
+            else -> {
+                view.bulbPoster.loadUrlCenterCrop(images[position])
+            }
+        }
 
         container.addView(view)
         return view
-
-
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {}

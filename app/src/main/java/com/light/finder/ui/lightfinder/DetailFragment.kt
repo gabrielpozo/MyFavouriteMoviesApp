@@ -30,7 +30,6 @@ import com.light.finder.ui.adapters.getFinishString
 import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
-import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -333,16 +332,22 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setViewPager(product: Product) {
-        val myList: MutableList<String> = mutableListOf()
-        //myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
-        myList.addAll(product.imageUrls)
-        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
+        val productImageList: MutableList<String> = mutableListOf()
+        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        productImageList.addAll(product.imageUrls)
 
-        if (myList.size > 1) {
-            val dotsIndicator = view?.findViewById<WormDotsIndicator>(R.id.dots_indicator)
-            dotsIndicator?.visibility = View.VISIBLE
-            dotsIndicator?.setViewPager(viewPagerDetail)
+        when {
+            productImageList.size > 1 -> {
+                dots_indicator?.visibility = View.VISIBLE
+                dots_indicator?.setViewPager(viewPagerDetail)
+            }
+            else -> {
+                productImageList.add("")
+            }
         }
+
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
+
     }
 }
 
