@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.ui.cart.CartFragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -42,6 +43,8 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
                     activity.bottom_navigation_view.selectTabAtPosition(index)
+
+                   
                 }
             })
         }
