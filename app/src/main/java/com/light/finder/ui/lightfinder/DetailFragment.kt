@@ -330,19 +330,27 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-
     private fun setViewPager(product: Product) {
-        val myList: MutableList<String> = mutableListOf()
-        //myList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
-        myList.addAll(product.imageUrls)
-        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), myList)
+        val productImageList: MutableList<String> = mutableListOf()
+        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        productImageList.addAll(product.imageUrls)
 
-        if (myList.size > 1) {
-            setImageGalleryDots()
+        when (productImageList.size) {
+            0 -> {
+                productImageList.add("")
+            }
         }
+
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
+        setImageGalleryDots(productImageList)
     }
 
-    private fun setImageGalleryDots() {
+    private fun setImageGalleryDots(productImageList: MutableList<String>) {
+        // no need to set dots if photos less than 2
+        if (productImageList.size < 2) {
+            return
+        }
+
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.setViewPager(viewPagerDetail)
         bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
