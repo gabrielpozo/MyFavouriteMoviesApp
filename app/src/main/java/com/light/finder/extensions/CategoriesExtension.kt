@@ -95,7 +95,7 @@ fun ImageView.loadUrlCenterCrop(url: String) {
 }
 
 fun ImageView.setPlaceholder() {
-    Glide.with(context).load(R.drawable.category_placeholder).centerInside()
+    Glide.with(context).load(R.drawable.fallback_image).centerInside()
         .into(this)
 }
 
