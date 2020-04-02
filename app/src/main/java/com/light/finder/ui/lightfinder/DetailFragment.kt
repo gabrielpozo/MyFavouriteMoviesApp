@@ -10,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
@@ -84,6 +84,23 @@ class DetailFragment : BaseFragment() {
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
             buttonAddTocart.isFocusable = false
+            buttonAddTocart.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primaryPressed
+                )
+            )
+
+            val handler = Handler()
+            handler.postDelayed({
+                buttonAddTocart.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.primaryOnDark
+                    )
+                )
+            }, 200)
+
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
@@ -103,6 +120,8 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
+
+
 
                 }
             }
@@ -278,7 +297,7 @@ class DetailFragment : BaseFragment() {
 
         val space = " "
         val splitedStr = title.split(space)
-        title = splitedStr.joinToString (space){
+        title = splitedStr.joinToString(space) {
             it.capitalize()
         }
 
