@@ -98,7 +98,7 @@ class DetailFragment : BaseFragment() {
                         R.color.primaryOnDark
                     )
                 )
-            }, 200)
+            }, 3000)
 
         }
 
