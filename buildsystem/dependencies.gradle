@@ -60,7 +60,7 @@ ext {
     testRunnerVersion = "1.1.1"
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
-    bottombar = "2.3.4"
+    bottombar = "2.3.1"
     tsnackBarVersion = "1.1.1"
     dotsIndicator = "4.1.2"
     googleAnalyticsFirebase="17.2.2"
@@ -148,7 +148,7 @@ ext {
 
     navigationDependencies = [
             fragnav: "com.ncapdevi:frag-nav:$navigationFragNav",
-            bottom : "com.aurelhubert:ahbottomnavigation:$bottombar"
+            bottom : "com.roughike:bottom-bar:$bottombar"
     ]
 
     networkDependencies = [
