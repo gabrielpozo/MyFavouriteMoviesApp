@@ -6,12 +6,14 @@ import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.adapters.Tips
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductOptionsFragment
+import com.light.finder.ui.lightfinder.TipsAndTricksFragment
 
 fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
 
@@ -44,6 +46,10 @@ fun ProductOptionsFragment.Companion.newInstance(productList: List<Product>, ori
     fragment.arguments = args
     return fragment
 }
+
+
+fun TipsAndTricksFragment.Companion.newInstance(): TipsAndTricksFragment  = TipsAndTricksFragment()
+
 
 
 inline fun <reified T : Fragment> BaseFragment.initializeIntent(body: Intent.() -> Unit): Intent =
