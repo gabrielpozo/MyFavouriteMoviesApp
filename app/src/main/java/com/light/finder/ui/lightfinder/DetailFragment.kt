@@ -198,7 +198,7 @@ class DetailFragment : BaseFragment() {
                 val handler = Handler()
                 handler.postDelayed({
                     visibilityCallBack.onBadgeCountChanged(itemQuantity)
-                }, 4000)
+                }, 3000)
 
             }
             else -> Timber.d("egee Cart is empty")
