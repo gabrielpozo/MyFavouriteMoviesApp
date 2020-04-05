@@ -100,7 +100,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun onCartCleared() {
         bottom_navigation_view.setNotification(AHNotification(), INDEX_CART)
-        
+
     }
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
