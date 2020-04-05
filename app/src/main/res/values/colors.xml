@@ -15,8 +15,53 @@
     <color name="gold">#DAA520</color>
     <color name="openGreen">#008000</color>
 
+
+    <!--LightFinder-->
+    <color name="backgroundLight">#ffffff</color>
+    <color name="textLight">#fefefe</color>
+    <color name="textDisabled">#b0b0b3</color>
+    <color name="primaryPressed">#00b66c</color>
+    <color name="backgroundDark">#3c3c41</color>
+    <color name="textDark">#3c3c42</color>
+    <color name="primaryDisabled">#f5f5f5</color>
+    <color name="backgroundDarkPressed">#636367</color>
+    <color name="primaryOnLight">#008550</color>
+    <color name="informationDefault">#1331ff</color>
+    <color name="informationError">#d8d8d9</color>
+    <color name="incompatible">#d8d8d8</color>
+    <color name="dividerOnDark">#49494e</color>
+    <color name="gallerySelected">#1332ff</color>
+    <color name="dividerOnLight">#f4f5f5</color>
+    <color name="galleryUnselected">#49494d</color>
+    <color name="divider">#696969</color>
+
+
+    <!-- TODO change old colors -->
+    <color name="secondaryTextColor">#00e880</color>
+    <color name="primarySubText">#d7d7d8</color>
+    <color name="primaryAppColor">#00e487</color>
+    <color name="secondaryAppColor">#1ecbd0</color>
+    <color name="lightBackgroundColor">#636367</color>
+    <color name="bottomNavBarColor">#1c1c1f</color>
+
+
+    <!--new colors-->
+
+
+    <color name="primaryOnDark">#01e487</color>
+    <color name="colorActionBar">@android:color/transparent</color>
+    <color name="transparentLightBackgroundColor">#66636367</color>
+    <color name="transp">#80000000</color>
+
+
+    <!-- dots inactive colors -->
+    <color name="dot_active">#1332ff</color>
+    <color name="dot_inactive">#49494d</color>
+
+
     <!--Camera -->
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
+    <color name="dividerOndark">#49494e</color>
 </resources>

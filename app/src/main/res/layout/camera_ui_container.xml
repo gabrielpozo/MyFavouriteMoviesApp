@@ -1,50 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cameraUiContainer"
-    android:layoutDirection="ltr"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr">
+
+    <TextView
+        android:id="@+id/textViewCameraTitle"
+        style="@style/TitleText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/text_permissions_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCameraSubtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/textViewCameraSubtitle"
+        style="@style/SubtitleText"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/backgroundLight"
+        android:text="@string/text_camera_subtitle"
+        android:textAlignment="center"
+        android:lineSpacingExtra="0.5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/helpButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraTitle" />
+
+    <Button
+        android:id="@+id/helpButton"
+        style="@style/GrayButton"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_curvy_corners_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="@string/text_help"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cameraCaptureButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCameraSubtitle" />
 
     <ImageButton
-        android:id="@+id/cameraSwitchButton"
+        android:id="@+id/flashSwitchButton"
         android:layout_width="@dimen/round_button_medium"
-        android:layout_height="@dimen/round_button_medium"
-        android:layout_marginBottom="@dimen/margin_xlarge"
-        android:layout_marginStart="@dimen/margin_small"
+        android:layout_height="42dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/switch_camera_button_alt"
         android:padding="@dimen/spacing_small"
         android:scaleType="fitCenter"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_switch"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/switch_camera_button_alt" />
+        app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
+        app:srcCompat="@drawable/ic_flash_off" />
 
     <ImageButton
         android:id="@+id/cameraCaptureButton"
+        android:layout_marginBottom="24dp"
         android:layout_width="@dimen/round_button_large"
         android:layout_height="@dimen/round_button_large"
-        android:layout_marginBottom="@dimen/shutter_button_margin"
+        android:background="@drawable/ic_scan"
+        android:contentDescription="@string/capture_button_alt"
         android:scaleType="fitCenter"
-        android:background="@drawable/ic_shutter"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/capture_button_alt" />
+        app:layout_constraintEnd_toStartOf="@+id/flashSwitchButton"
+        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton" />
 
     <ImageButton
         android:id="@+id/photoPreviewButton"
-        android:layout_width="@dimen/round_button_medium"
+        android:visibility="invisible"
+        android:layout_width="64dp"
         android:layout_height="@dimen/round_button_medium"
-        android:layout_marginBottom="@dimen/margin_xlarge"
-        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/ic_outer_circle"
+        android:contentDescription="@string/gallery_button_alt"
         android:padding="@dimen/spacing_large"
         android:scaleType="fitCenter"
-        android:background="@drawable/ic_outer_circle"
-        app:srcCompat="@drawable/ic_photo"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/gallery_button_alt" />
+        app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
+        app:srcCompat="@drawable/ic_photo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

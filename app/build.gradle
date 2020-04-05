@@ -3,9 +3,18 @@ apply plugin: 'jacoco'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        release {
+            storeFile rootProject.file('keystore.jks')
+            storePassword 'MJKArakam2p5ckMh'
+            keyPassword 'MJKArakam2p5ckMh'
+            keyAlias = 'releaseKey'
+        }
+    }
     compileSdkVersion 29
     dataBinding {
         enabled = true
@@ -14,27 +23,39 @@ android {
         experimental = true
     }
     defaultConfig {
-        applicationId "com.accenture.signify"
+        applicationId "com.light.finder"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1"
         vectorDrawables.useSupportLibrary true
         buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
+        buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
     }
+
     buildTypes {
         debug {
             testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+        }
+
+    }
+
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            jvmTarget = "1.8"
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     // work-runtime-ktx 2.1.0 and above now requires Java 8
     kotlinOptions {
         jvmTarget = "1.8"
@@ -52,7 +73,6 @@ dependencies {
     implementation project(':domain')
     implementation project(':data')
 
-    implementation  'com.squareup.retrofit2:converter-scalars:2.1.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation debugToolsDependencies.values()
     kapt kaptJetpackDependencies.values()
@@ -64,6 +84,11 @@ dependencies {
     implementation cameraxDependencies.values()
     testImplementation testDependencies.values()
     androidTestImplementation androidTestDependencies.values()
+    implementation navigationDependencies.values()
+    implementation lottieDependencies.values()
+    implementation dotsDependencies.values()
+    implementation googleServicesDependencies.values()
+    
 }
 
 task fullCoverageReport(type: JacocoReport) {

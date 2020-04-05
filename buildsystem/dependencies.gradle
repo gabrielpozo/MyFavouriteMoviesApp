@@ -4,6 +4,7 @@ allprojects {
         jcenter()
     }
 }
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
@@ -27,8 +28,6 @@ ext {
     ktxVersion = '1.1.0'
     lifecycleVersion = '2.2.0'
     materialVersion = '1.0.0'
-    navigationVersion = '2.1.0'
-    safeargs_version = "2.1.0-rc01"
     recyclerViewVersion = '1.2.0-alpha01'
     recyclerViewSelectionVersion = '1.0.0'
     roomVersion = '2.2.3'
@@ -36,8 +35,10 @@ ext {
     pagingVersion = '2.1.1'
     gsonVersion = '2.8.2'
     okhttp = '3.10.0'
+    okhttpCookie = '4.2.2'
     retrofit = '2.6.0'
     stetho = '1.5.1'
+    lottieVersion = '3.4.0'
     timberVersion = '4.7.1'
     daggerVersion = '2.25'
     cameraVersion = '1.0.0-alpha08'
@@ -58,13 +59,16 @@ ext {
     testCoreVersion = "1.1.0"
     testRunnerVersion = "1.1.1"
     testRulesVersion = "1.1.1"
+    navigationFragNav = "3.2.0"
+    bottombar = "2.3.4"
+    tsnackBarVersion = "1.1.1"
+    dotsIndicator = "4.1.2"
+    googleAnalyticsFirebase="17.2.2"
+    googleCrashAnalyticsFirebase="2.10.1"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
             kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-            androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
-            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-            safeArgs          : "androidx.navigation:navigation-safe-args-gradle-plugin:${safeargs_version}"
     ]
 
 
@@ -83,34 +87,39 @@ ext {
 
     jetPackDependencies = [
             //implementation
-            glide             : "com.github.bumptech.glide:glide:$glideVersion",
-            appCompat         : "androidx.appcompat:appcompat:$appCompatVersion",
-            constraint        : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
-            ktx               : "androidx.core:core-ktx:$ktxVersion",
-            viewModel         : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
-            fragment          : "androidx.fragment:fragment-ktx:$fragmentVersion",
-            lifeCycle         : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
-            liveData          : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
-
-            navigationFragment: "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
-            navigationUi      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
-
-            recyclerView      : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            glide                : "com.github.bumptech.glide:glide:$glideVersion",
+            appCompat            : "androidx.appcompat:appcompat:$appCompatVersion",
+            constraint           : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
+            ktx                  : "androidx.core:core-ktx:$ktxVersion",
+            viewModel            : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+            fragment             : "androidx.fragment:fragment-ktx:$fragmentVersion",
+            lifeCycle            : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+            liveData             : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+            recyclerView         : "androidx.recyclerview:recyclerview:$recyclerViewVersion",
             recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$recyclerViewSelectionVersion",
-            room              : "androidx.room:room-runtime:$roomVersion",
-            paging            : "androidx.paging:paging-runtime:$pagingVersion",
-            roomKtx           : "androidx.room:room-ktx:$roomVersion",
-            workManager       : "androidx.work:work-runtime-ktx:$workVersion",
-            material          : "com.google.android.material:material:$materialVersion",
-            kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+            room                 : "androidx.room:room-runtime:$roomVersion",
+            paging               : "androidx.paging:paging-runtime:$pagingVersion",
+            roomKtx              : "androidx.room:room-ktx:$roomVersion",
+            workManager          : "androidx.work:work-runtime-ktx:$workVersion",
+            material             : "com.google.android.material:material:$materialVersion",
+            kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     ]
 
+    lottieDependencies = [
+            lottie: "com.airbnb.android:lottie:$lottieVersion"
+    ]
+
+    dotsDependencies = [
+            dots: "com.tbuonomo.andrui:viewpagerdotsindicator:$dotsIndicator"
+    ]
+
     cameraxDependencies = [
-            cameraxCore: "androidx.camera:camera-core:$cameraVersion",
-            cameraTwo  : "androidx.camera:camera-camera2:$cameraVersion",
-            cameraxLifeCyle : "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
-            cameraxView : "androidx.camera:camera-view:$cameraViewVersion"
+            cameraxCore    : "androidx.camera:camera-core:$cameraVersion",
+            cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
+            cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
+            cameraxView    : "androidx.camera:camera-view:$cameraViewVersion",
+            dexter         : 'com.karumi:dexter:5.0.0'
     ]
 
     coroutinesDependencies = [
@@ -136,13 +145,20 @@ ext {
             daggerAndroid: "com.google.dagger:dagger-android:$daggerVersion",
             daggerSupport: "com.google.dagger:dagger-android-support:$daggerVersion"
     ]
+
+    navigationDependencies = [
+            fragnav: "com.ncapdevi:frag-nav:$navigationFragNav",
+            bottom : "com.aurelhubert:ahbottomnavigation:$bottombar"
+    ]
+
     networkDependencies = [
             //implementation
             gson         : "com.google.code.gson:gson:$gsonVersion",
             retrofit     : "com.squareup.retrofit2:retrofit:$retrofit",
             gsonConverter: "com.squareup.retrofit2:converter-gson:$retrofit",
             okhttp       : "com.squareup.okhttp3:okhttp:$okhttp",
-            okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp"
+            okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp",
+            okhttpCookie: "com.squareup.okhttp3:okhttp-urlconnection:$okhttpCookie"
     ]
 
     testDependencies = [
@@ -169,5 +185,12 @@ ext {
             workManagerTest : "androidx.work:work-testing:$workVersion",
             archTest        : "androidx.arch.core:core-testing:$coreTestingVersion",
             mockitoAndroid  : "org.mockito:mockito-android:$mockitoAndroidVersion"
+    ]
+
+    googleServicesDependencies = [
+            analytics: "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase"
+
+
     ]
 }

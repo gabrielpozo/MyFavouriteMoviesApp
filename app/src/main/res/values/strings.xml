@@ -2,13 +2,12 @@
     <string name="app_name">Light Finder</string>
 
     //Bottom navigation task
-    <string name="categories">Categories</string>
+    <string name="light_finder">LightFinder</string>
     <string name="cart">My Cart</string>
     <string name="expert">Expert</string>
 
-    <!--Camera -->
     <string name="capture_button_alt">Capture</string>
-    <string name="switch_camera_button_alt">Switch camera</string>
+    <string name="switch_camera_button_alt">Switch flash</string>
     <string name="gallery_button_alt">Gallery</string>
     <string name="back_button_alt">Back</string>
     <string name="send_button_alt">Send</string>
@@ -19,6 +18,62 @@
     <string name="delete_button_alt">Delete</string>
     <string name="delete_dialog">Delete current photo?</string>
     <string name="delete_title">Confirm</string>
-    <string name="text_enable_access">Enable Access</string>
+    <string name="text_enable_access">Enable camera access</string>
+    <string name="text_help">Help</string>
     <string name="text_filter">filter</string>
+    <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
+    <string name="text_permissions_title">Identify a light bulb</string>
+    <string name="text_camera_title">Identify a light bulb</string>
+    <string name="text_camera_subtitle">Hold light bulb in screen, ensuring as much is in view as possible</string>
+    <string name="text_browse_button">Browse light bulbs</string>
+    <string name="placeholder">-</string>
+    <string name="text_bulb">each</string>
+    <string name="lightbulb_cd">lightBulb</string>
+    <string name="settings_cd">settings</string>
+    <string name="text_tap_to_identify">TAP TO IDENTIFY</string>
+    <string name="text_no_internet_connection">No internet connection</string>
+    <string name="text_identifying">Identifying…</string>
+    <string name="identify_cd">identify</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_results">%d results</string>
+    <string name="text_result">%d result</string>
+    <string name="min_max_price">%d$ - %d$"</string>
+    <string name="light_bulb_recognised_as">Base identified as %s</string>
+    <string name="description_wattage">%sW-%sW %s</string>
+    <string name="no_value"></string>
+    <string name="most_efficient_option">Most energy efficient option</string>
+    <string name="product_title">%s %s %sW %s \n %s</string>
+    <string name="change_variation_title">Change variation</string>
+    <string name="description">Description</string>
+    <string name="change_variation">%sW, %s color, %s finish</string>
+    <string name="price_per_pack">$%.2f</string>
+    <string name="price_detail">/ $%.2f each</string>
+    <string name="form_factor_pack">%s %s pack</string>
+    <string name="wattage_variation">%sW</string>
+    <string name="warm">Warm</string>
+    <string name="white_warm">Warm white</string>
+    <string name="cool_white">Cool white</string>
+    <string name="clear">Clear</string>
+    <string name="frosted">Frosted</string>
+    <string name="daylight">Daylight</string>
+
+
+    <string name="try_again">Try again</string>
+    <string name="help_me">Help me scan</string>
+    <string name="unidentified">No light bulb identified</string>
+    <string name="time_out_error">Time out error</string>
+    <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
+    <string name="ok">OK</string>
+    <string name="oops">Oops!</string>
+    <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
+    <string name="not_now">Not now</string>
+    <string name="enable_camera_access">Enable camera access</string>
+    <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
+    <string name="enable_camera_button">Go to Settings</string>
+    <string name="added_to_cart">Added to cart</string>
+    <string name="adding_to_cart">Adding to cart</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="my_cart">My Cart</string>
+    <string name="badge_plus_100">99+</string>
+
 </resources>

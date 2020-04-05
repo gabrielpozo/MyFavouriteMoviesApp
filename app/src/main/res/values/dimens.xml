@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_nav_bar_height">76dp</dimen>
+    <dimen name="marginx_small">4dp</dimen>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_card">4dp</dimen>
+    <dimen name="card_height">220dp</dimen>
+    <dimen name="no_internet_header_height">60dp</dimen>
+    <dimen name="dots_height">30dp</dimen>
+    <dimen name="dots_margin_bottom">20dp</dimen>
+    <dimen name="active_tab">12dp</dimen>
+    <dimen name="inactive_tab">12dp</dimen>
+</resources>

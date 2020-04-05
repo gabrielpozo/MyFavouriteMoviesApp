@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_margin="4dp"
+    android:background="@drawable/card_filter_unselected"
+    android:layout_width="150dp"
+    android:layout_height="170dp">
+
+    <com.light.finder.ui.common.CircleImageView
+        android:id="@+id/imageFilterCover"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="28dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="center|top"
+        android:background="@drawable/category_placeholder"
+        app:layout_constraintBottom_toTopOf="@id/variation_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228" />
+
+    <View
+        android:id="@+id/gradientView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="28dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="center|top"
+        app:layout_constraintBottom_toTopOf="@id/variation_name"
+        android:background="@drawable/image_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.228"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/variation_name"
+        style="@style/InactiveTextDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        app:layout_goneMarginBottom="28dp"
+        android:text="Variant"
+        app:layout_constraintBottom_toTopOf="@+id/availableOptions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/availableOptions"
+        style="@style/DisableTextDarkSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        android:layout_gravity="center"
+        android:text="See available options"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

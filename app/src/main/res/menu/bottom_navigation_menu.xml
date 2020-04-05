@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/categoriesFragment"
-        android:title="@string/categories"
-        android:icon="@drawable/ic_highlight_24px"/>
+        android:id="@+id/camera_fragment"
+        android:title="@string/light_finder"
+        app:itemTextAppearance="@style/NavBarText"
+
+        android:icon="@drawable/ic_bulbb"/>
 
     <item
         android:id="@+id/cartFragment"
         android:title="@string/cart"
-        android:icon="@drawable/ic_shopping_cart_24px"/>
+
+        android:icon="@drawable/ic_shopping_cart"/>
 
     <item
         android:id="@+id/expertFragment"
         android:title="@string/expert"
-        android:icon="@drawable/ic_phone_24px"/>
+        android:icon="@drawable/ic_company"/>
 </menu>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detailLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundDark"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPagerDetail"
+            android:layout_width="match_parent"
+            android:layout_height="375dp" />
+
+    </RelativeLayout>
+
+    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+        android:id="@+id/dots_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignBottom="@id/viewPagerDetail"
+        app:dotsSize="10dp"
+        app:dotsSpacing="3dp"
+        app:dotsStrokeWidth="5dp"
+        app:layout_anchor="@id/space"
+        app:layout_anchorGravity="right"
+        app:dotsStrokeColor="@color/galleryUnselected"
+        app:dotsColor="@color/gallerySelected" />
+
+    <View
+        android:id="@+id/space"
+        app:layout_anchor="@id/bottomSheetLayout"
+        app:layout_anchorGravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <include
+        layout="@layout/layout_detail_bottom_sheet" />
+
+    <View
+        android:layout_gravity="bottom"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imageViewDialog"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/whiteGhost" />
+
+    <TextView
+        android:id="@+id/textViewTitleDialog"
+        style="@style/TitleTextGray"
+        android:textAlignment="textStart"
+        android:text="Title for dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDialog" />
+
+    <TextView
+        android:id="@+id/textViewSubTitleDialog"
+        style="@style/SubTitleTextGray"
+        android:textAlignment="textStart"
+        android:text="Lorem ipsum dolor sit amet dolor set consectetur adipiscing elit, sed dolor eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleDialog" />
+
+    <Button
+        android:id="@+id/buttonPositive"
+        style="@style/TitleTextGray"
+        android:text="Button"
+        android:stateListAnimator="@null"
+        android:background="@drawable/button_curvy_corners"
+        android:textAllCaps="false"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNegative"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubTitleDialog" />
+
+    <Button
+        android:id="@+id/buttonNegative"
+        style="@style/ActiveText"
+        android:text="Button"
+        android:stateListAnimator="@null"
+        android:textAllCaps="false"
+        android:background="@drawable/button_curvy_corners_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNeutral"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPositive" />
+
+    <Button
+        android:id="@+id/buttonNeutral"
+        style="@style/ActiveText"
+        android:text="Button"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:stateListAnimator="@null"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNegative"
+        app:layout_constraintVertical_bias="0.019" />
+</androidx.constraintlayout.widget.ConstraintLayout>

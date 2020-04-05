@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        icon="@drawable/ic_bulbb"
+        id="@+id/camera_fragment"
+        title="@string/light_finder"
+        />
+    <tab
+        icon="@drawable/ic_shopping_cart"
+        id ="@+id/cartFragment"
+        title="@string/cart"
+        />
+    <tab
+        icon="@drawable/ic_company"
+        id="@+id/expertFragment"
+        title="@string/expert"
+        />
+</tabs>
