@@ -7,9 +7,6 @@ import okhttp3.Request
 import okhttp3.Response
 
 class HttpErrorInterceptor : Interceptor {
-    companion object {
-        //val httpErrorCodes = arrayOf(204, 401, 404, 405, 500)
-    }
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
         val response = chain.proceed(request)
