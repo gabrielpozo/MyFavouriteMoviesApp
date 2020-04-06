@@ -116,11 +116,15 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = false)
+                layoutChangeVariation.isClickable = false
+                layoutChangeVariation.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                layoutChangeVariation.isClickable = true
+                layoutChangeVariation.isFocusable = true
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
