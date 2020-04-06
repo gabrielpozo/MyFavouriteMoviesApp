@@ -1,7 +1,9 @@
 package com.light.finder.common
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.ui.cart.CartFragment
@@ -42,9 +44,8 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    activity.bottom_navigation_view.selectTabAtPosition(index)
-
-                   
+                    Log.d("GabrielBottom","switch Tabs")
+                    activity.bottom_navigation_view.currentItem = index
                 }
             })
         }
@@ -52,20 +53,19 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
         fragNavController.initialize(INDEX_LIGHT_FINDER, savedInstanceState)
         val initial = savedInstanceState == null
         if (initial) {
-            activity.bottom_navigation_view.selectTabAtPosition(INDEX_LIGHT_FINDER)
+            activity.bottom_navigation_view.currentItem = INDEX_CART
         }
 
-        activity.bottom_navigation_view.setOnTabSelectListener({ tabId ->
-            when (tabId) {
-                R.id.camera_fragment -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
-                R.id.cartFragment -> fragNavController.switchTab(INDEX_CART)
-                R.id.expertFragment -> fragNavController.switchTab(INDEX_EXPERT)
+
+        activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
+
+            when(position){
+                INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
+                INDEX_CART -> fragNavController.switchTab(INDEX_CART)
+                INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
             }
-        }, initial)
-
-        activity.bottom_navigation_view.setOnTabReselectListener { fragNavController.clearStack() }
-
-
+            true
+        }
     }
 
     fun pushFragment(fragment: Fragment) {
