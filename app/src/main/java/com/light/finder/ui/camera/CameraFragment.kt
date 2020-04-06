@@ -43,6 +43,7 @@ import com.light.presentation.viewmodels.CameraViewModel.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*

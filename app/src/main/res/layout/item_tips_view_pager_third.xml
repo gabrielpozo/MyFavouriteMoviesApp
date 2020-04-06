@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/backgroundLight"
     android:layout_margin="24dp"
-    app:cardElevation="9dp"
+    app:cardElevation="4dp"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="500dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,10 +15,15 @@
 
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/imageViewTips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/category_placeholder" />
+            app:srcCompat="@drawable/tips3" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
         <TextView
             android:id="@+id/textViewTipsTitle"
@@ -42,6 +47,10 @@
             android:layout_marginTop="8dp"
             android:text="@string/if_the_light_bulb"
             />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

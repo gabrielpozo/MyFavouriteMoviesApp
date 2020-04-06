@@ -9,9 +9,12 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.light.finder.common.ConnectionLiveData
 import com.light.finder.common.ConnectionModel
 import com.light.finder.common.FragmentFrameHelper
@@ -29,7 +32,6 @@ import com.light.finder.ui.expert.ExpertFragment
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
-import com.roughike.bottombar.BottomBarTab
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
@@ -42,39 +44,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
 
-    override fun onVisibilityChanged(visible: Boolean) {
-        if (visible) {
-            bottom_navigation_view.gone()
-        } else {
-            bottom_navigation_view.visible()
-        }
-    }
-
-    override fun onBadgeCountChanged(badgeCount: Int) {
-        val cart: BottomBarTab = bottom_navigation_view.getTabWithId(R.id.cartFragment)
-        cart.badgeBackgroundColor = getColor(R.color.informationDefault)
-        cart.setBadgeCount(badgeCount)
-    }
-
-    override fun onCartCleared() {
-        val cart: BottomBarTab = bottom_navigation_view.getTabWithId(R.id.cartFragment)
-        cart.removeBadge()
-    }
-
-    override fun onBottomBarBlocked(isClickable: Boolean) {
-
-        //TODO disable bottombar click
-       /* if (!isClickable) {
-            bottom_navigation_view.removeOnTabSelectListener()
-        }*/
-
-
-    }
-
-
-    
-
     companion object {
+        const val LIMITED_NUMBER_BADGE = 100
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
             val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
@@ -98,9 +69,63 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         fragmentHelper.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
 
+        setBottomBar()
 
         observeConnection()
 
+    }
+
+    override fun onVisibilityChanged(invisible: Boolean) {
+        if (invisible) {
+            bottom_navigation_view.gone()
+        } else {
+            bottom_navigation_view.visible()
+        }
+    }
+
+    override fun onBadgeCountChanged(badgeCount: Int) {
+        val textCount = if (badgeCount < LIMITED_NUMBER_BADGE) {
+            badgeCount.toString()
+        } else {
+            getString(R.string.badge_plus_100)
+        }
+        val notification: AHNotification = AHNotification.Builder().setText(textCount)
+            .setBackgroundColor(getColor(R.color.informationDefault)).build()
+
+
+        bottom_navigation_view.setNotification(notification, INDEX_CART)
+    }
+
+    override fun onCartCleared() {
+        bottom_navigation_view.setNotification(AHNotification(), INDEX_CART)
+    }
+
+    override fun onBottomBarBlocked(isClickable: Boolean) {
+        if (!isClickable) {
+            bottom_navigation_view.setItemDisableColor(getColor(R.color.colorOnSecondary))
+            bottom_navigation_view.disableItemAtPosition(INDEX_CART)
+            bottom_navigation_view.disableItemAtPosition(INDEX_EXPERT)
+        } else {
+            bottom_navigation_view.enableItemAtPosition(INDEX_CART)
+            bottom_navigation_view.enableItemAtPosition(INDEX_EXPERT)
+        }
+    }
+
+
+    private fun setBottomBar() {
+
+        val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)
+        navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
+        // Set background color
+        bottom_navigation_view.defaultBackgroundColor = getColor(R.color.backgroundDark)
+        bottom_navigation_view.accentColor = getColor(R.color.primaryAppColor)
+        bottom_navigation_view.inactiveColor = getColor(R.color.colorOnSecondary)
+
+        val face = ResourcesCompat.getFont(this, R.font.bold)
+        bottom_navigation_view.setTitleTextSize(resources.getDimension(R.dimen.active_tab), resources.getDimension(R.dimen.inactive_tab))
+        bottom_navigation_view.setPadding(0, 20, 0, 0)
+
+        bottom_navigation_view.setTitleTypeface(face)
     }
 
     private fun observeConnection() {

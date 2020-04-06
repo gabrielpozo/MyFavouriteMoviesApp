@@ -81,4 +81,6 @@
     <string name="hold_light">Hold light bulb from the top so the base fitting is completely visible.</string>
     <string name="how_to_focus">How to focus</string>
     <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
+    <string name="badge_plus_100">99+</string>
+
 </resources>

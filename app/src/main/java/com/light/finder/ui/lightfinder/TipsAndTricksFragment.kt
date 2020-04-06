@@ -3,16 +3,17 @@ package com.light.finder.ui.lightfinder
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
+import com.light.finder.common.WrappingViewPager
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.TipsViewPagerAdapter
-import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
-import kotlinx.android.synthetic.main.fragment_tips_and_tricks.dots_indicator
+import kotlin.math.abs
+
 
 class TipsAndTricksFragment : BaseFragment() {
 
@@ -42,8 +43,7 @@ class TipsAndTricksFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        visibilityCallBack.onVisibilityChanged(false)
-
+        visibilityCallBack.onVisibilityChanged(true)
         initAdapters()
         setDoneClickListener()
     }
@@ -55,18 +55,55 @@ class TipsAndTricksFragment : BaseFragment() {
     }
 
     private fun initAdapters() {
-        val viewPager = view?.findViewById<View>(R.id.viewPagerTips) as ViewPager
+        val viewPager = view?.findViewById<View>(R.id.viewPagerTips) as WrappingViewPager
         viewPager.adapter = TipsViewPagerAdapter(requireContext())
         viewPager.clipToPadding = false
-        viewPager.setPadding(60, 0, 60, 0)
+        viewPager.setPadding(60, 20, 60, 20)
         viewPager.pageMargin = 24
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.setViewPager(viewPager)
+        setScrollInterceptor()
+    }
+
+    private fun setScrollInterceptor() {
+        viewPagerTips.setOnTouchListener(object : View.OnTouchListener {
+
+            var dragthreshold = 30
+            var downX: Int = 0
+            var downY: Int = 0
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        downX = event.rawX.toInt()
+                        downY = event.rawY.toInt()
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val distanceX = abs(event.rawX.toInt() - downX)
+                        val distanceY = abs(event.rawY.toInt() - downY)
+
+                        if (distanceY > distanceX && distanceY > dragthreshold) {
+                            viewPagerTips.parent.requestDisallowInterceptTouchEvent(false)
+                            scrollViewTips.parent.requestDisallowInterceptTouchEvent(true)
+                        } else if (distanceX > distanceY && distanceX > dragthreshold) {
+                            viewPagerTips.parent.requestDisallowInterceptTouchEvent(true)
+                            scrollViewTips.parent.requestDisallowInterceptTouchEvent(false)
+                        }
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        scrollViewTips.parent.requestDisallowInterceptTouchEvent(false)
+                        viewPagerTips.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                return false
+            }
+        })
     }
 
 
     private fun navigateBackToCamera() {
-        visibilityCallBack.onVisibilityChanged(true)
+        visibilityCallBack.onVisibilityChanged(false)
         mFragmentNavigation.popFragment()
     }
 
