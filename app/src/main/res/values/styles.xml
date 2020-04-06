@@ -91,6 +91,12 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="TitleTextBookSmall" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
 
     <style name="SubtitleText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/primarySubText</item>

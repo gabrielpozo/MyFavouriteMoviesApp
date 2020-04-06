@@ -10,6 +10,7 @@
     android:keepScreenOn="true"
     tools:context=".CameraActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
