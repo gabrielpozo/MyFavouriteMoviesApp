@@ -88,7 +88,7 @@ dependencies {
     implementation lottieDependencies.values()
     implementation dotsDependencies.values()
     implementation googleServicesDependencies.values()
-
+    
 }
 
 task fullCoverageReport(type: JacocoReport) {
