@@ -83,33 +83,48 @@ class DetailFragment : BaseFragment() {
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
             buttonAddTocart.isFocusable = false
-            buttonAddTocart.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.primaryPressed
-                )
-            )
-
-            val handler = Handler()
-            handler.postDelayed({
-                buttonAddTocart.setBackgroundColor(
+            if (isAdded) {
+                context?.let { it1 ->
                     ContextCompat.getColor(
-                        requireContext(),
-                        R.color.primaryOnDark
+                        it1,
+                        R.color.primaryPressed
                     )
-                )
-            }, 3000)
+                }?.let { it2 ->
+                    buttonAddTocart.setBackgroundColor(
+                        it2
+                    )
+                }
+
+                val handler = Handler()
+                handler.postDelayed({
+                    context?.let { it1 ->
+                        ContextCompat.getColor(
+                            it1,
+                            R.color.primaryOnDark
+                        )
+                    }?.let { it2 ->
+                        buttonAddTocart.setBackgroundColor(
+                            it2
+                        )
+                    }
+                }, 3000)
+
+            }
 
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = false)
+                layoutChangeVariation.isClickable = false
+                layoutChangeVariation.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                layoutChangeVariation.isClickable = true
+                layoutChangeVariation.isFocusable = true
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 

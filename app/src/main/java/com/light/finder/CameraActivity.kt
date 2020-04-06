@@ -2,7 +2,6 @@ package com.light.finder
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -11,7 +10,6 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -77,8 +75,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     }
 
-    override fun onVisibilityChanged(visible: Boolean) {
-        if (visible) {
+    override fun onVisibilityChanged(invisible: Boolean) {
+        if (invisible) {
             bottom_navigation_view.gone()
         } else {
             bottom_navigation_view.visible()

@@ -74,6 +74,13 @@
     <string name="adding_to_cart">Adding to cart</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="my_cart">My Cart</string>
+    <string name="got_it">Got it!</string>
+    <string name="how_to_position">How to position</string>
+    <string name="ensure_whole">Ensure whole light bulb can be seen within your phone screen.</string>
+    <string name="how_to_hold">How to hold</string>
+    <string name="hold_light">Hold light bulb from the top so the base fitting is completely visible.</string>
+    <string name="how_to_focus">How to focus</string>
+    <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
     <string name="badge_plus_100">99+</string>
 
 </resources>

@@ -34,12 +34,16 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductOptionsFragment
+import com.light.finder.ui.lightfinder.TipsAndTricksFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
@@ -165,7 +169,10 @@ class CameraFragment : BaseFragment() {
 
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
+
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -406,6 +413,7 @@ class CameraFragment : BaseFragment() {
         layoutCamera.visible()
         layoutPermission.gone()
 
+
         outputDirectory = CameraActivity.getOutputDirectory(requireContext())
 
         viewFinder.post {
@@ -503,6 +511,10 @@ class CameraFragment : BaseFragment() {
         camera = cameraProvider.bindToLifecycle(
             this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
         )
+
+        helpButton.setOnClickListener {
+            mFragmentNavigation.pushFragment(TipsAndTricksFragment.newInstance())
+        }
 
         /**
          * once camera container is initialize we start observing camera events from camera viewmodels
