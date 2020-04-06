@@ -84,21 +84,29 @@ class DetailFragment : BaseFragment() {
             buttonAddTocart.isClickable = false
             buttonAddTocart.isFocusable = false
             if (isAdded) {
-                buttonAddTocart.setBackgroundColor(
+                context?.let { it1 ->
                     ContextCompat.getColor(
-                        requireContext(),
+                        it1,
                         R.color.primaryPressed
                     )
-                )
+                }?.let { it2 ->
+                    buttonAddTocart.setBackgroundColor(
+                        it2
+                    )
+                }
 
                 val handler = Handler()
                 handler.postDelayed({
-                    buttonAddTocart.setBackgroundColor(
+                    context?.let { it1 ->
                         ContextCompat.getColor(
-                            requireContext(),
+                            it1,
                             R.color.primaryOnDark
                         )
-                    )
+                    }?.let { it2 ->
+                        buttonAddTocart.setBackgroundColor(
+                            it2
+                        )
+                    }
                 }, 3000)
 
             }
