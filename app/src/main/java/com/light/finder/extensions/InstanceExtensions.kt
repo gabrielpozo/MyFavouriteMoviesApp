@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.Category
 import com.light.domain.model.Message
-import com.light.domain.model.Product
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
@@ -15,7 +14,7 @@ import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.finder.ui.lightfinder.ProductVariationsActivity.Companion.REQUEST_CODE_PRODUCT
-import com.light.finder.ui.lightfinder.TipsAndTricksFragment
+import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 
 
 inline fun <reified T : Activity> Context.intentFor(body: Intent.() -> Unit): Intent =
@@ -58,7 +57,7 @@ fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {
 }
 
 
-fun TipsAndTricksFragment.Companion.newInstance(): TipsAndTricksFragment = TipsAndTricksFragment()
+fun TipsAndTricksActivity.Companion.newInstance(): TipsAndTricksActivity = TipsAndTricksActivity()
 
 
 //inline fun <reified T : Fragment> BaseFragment.initializeIntent(body: Intent.() -> Unit): Intent =

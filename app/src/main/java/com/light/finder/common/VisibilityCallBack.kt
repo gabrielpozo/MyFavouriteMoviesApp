@@ -8,4 +8,5 @@ interface VisibilityCallBack{
     fun onCartCleared()
     fun onBottomBarBlocked(isClickable: Boolean)
     fun navigateToVariationActivity(productList: List<Product>)
+    fun navigateToTipsAndTricksActivity()
 }
