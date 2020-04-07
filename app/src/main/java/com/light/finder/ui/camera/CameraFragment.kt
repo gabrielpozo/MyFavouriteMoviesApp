@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.local.ImageRepository
@@ -62,6 +63,7 @@ class CameraFragment : BaseFragment() {
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var  navigationCallBack: NavigationCallBack
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
@@ -117,6 +119,7 @@ class CameraFragment : BaseFragment() {
         super.onAttach(context)
         try {
             visibilityCallBack = context as VisibilityCallBack
+            navigationCallBack = context as NavigationCallBack
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -510,8 +513,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            visibilityCallBack.navigateToTipsAndTricksActivity()
-
+            navigationCallBack.navigateToTipsAndTricksActivity()
         }
 
         /**

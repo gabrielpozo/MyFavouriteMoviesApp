@@ -17,13 +17,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.light.domain.model.Product
-import com.light.finder.common.ConnectionLiveData
-import com.light.finder.common.ConnectionModel
-import com.light.finder.common.FragmentFrameHelper
+import com.light.finder.common.*
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
-import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
@@ -43,7 +40,7 @@ import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation, VisibilityCallBack {
+    BaseFragment.FragmentNavigation, VisibilityCallBack, NavigationCallBack {
 
     private lateinit var container: FrameLayout
     private val fragmentHelper = FragmentFrameHelper(this)
