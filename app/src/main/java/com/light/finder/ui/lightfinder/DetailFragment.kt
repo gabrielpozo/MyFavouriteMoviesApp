@@ -83,33 +83,34 @@ class DetailFragment : BaseFragment() {
             cartAnimation.playAnimation()
             buttonAddTocart.isClickable = false
             buttonAddTocart.isFocusable = false
-            buttonAddTocart.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.primaryPressed
-                )
-            )
-
-            val handler = Handler()
-            handler.postDelayed({
-                buttonAddTocart.setBackgroundColor(
+            if (isAdded) {
+                context?.let { it1 ->
                     ContextCompat.getColor(
-                        requireContext(),
-                        R.color.primaryOnDark
+                        it1,
+                        R.color.primaryPressed
                     )
-                )
-            }, 200)
+                }?.let { it2 ->
+                    buttonAddTocart.setBackgroundColor(
+                        it2
+                    )
+                }
+
+            }
 
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = false)
+                layoutChangeVariation.isClickable = false
+                layoutChangeVariation.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                layoutChangeVariation.isClickable = true
+                layoutChangeVariation.isFocusable = true
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
@@ -119,6 +120,17 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
+
+                    context?.let { it1 ->
+                        ContextCompat.getColor(
+                            it1,
+                            R.color.primaryOnDark
+                        )
+                    }?.let { it2 ->
+                        buttonAddTocart.setBackgroundColor(
+                            it2
+                        )
+                    }
 
 
 

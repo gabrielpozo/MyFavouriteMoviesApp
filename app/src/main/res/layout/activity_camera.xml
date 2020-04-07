@@ -10,6 +10,7 @@
     android:keepScreenOn="true"
     tools:context=".CameraActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -71,8 +72,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <com.roughike.bottombar.BottomBar
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_bar_height"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+ <!--   <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottom_navigation_view2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_bar_height"
         android:layout_gravity="bottom"
@@ -86,7 +96,7 @@
         app:bb_titleTextAppearance="@style/NavBarText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
