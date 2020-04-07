@@ -62,43 +62,7 @@ class TipsAndTricksFragment : BaseFragment() {
         viewPager.pageMargin = 24
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.setViewPager(viewPager)
-        setScrollInterceptor()
-    }
 
-    private fun setScrollInterceptor() {
-        viewPagerTips.setOnTouchListener(object : View.OnTouchListener {
-
-            var dragthreshold = 30
-            var downX: Int = 0
-            var downY: Int = 0
-
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        downX = event.rawX.toInt()
-                        downY = event.rawY.toInt()
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        val distanceX = abs(event.rawX.toInt() - downX)
-                        val distanceY = abs(event.rawY.toInt() - downY)
-
-                        if (distanceY > distanceX && distanceY > dragthreshold) {
-                            viewPagerTips.parent.requestDisallowInterceptTouchEvent(false)
-                            scrollViewTips.parent.requestDisallowInterceptTouchEvent(true)
-                        } else if (distanceX > distanceY && distanceX > dragthreshold) {
-                            viewPagerTips.parent.requestDisallowInterceptTouchEvent(true)
-                            scrollViewTips.parent.requestDisallowInterceptTouchEvent(false)
-                        }
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        scrollViewTips.parent.requestDisallowInterceptTouchEvent(false)
-                        viewPagerTips.parent.requestDisallowInterceptTouchEvent(false)
-                    }
-                }
-                return false
-            }
-        })
     }
 
 
