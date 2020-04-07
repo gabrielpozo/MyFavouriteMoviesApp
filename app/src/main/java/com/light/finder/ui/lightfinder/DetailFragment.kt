@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -45,6 +46,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var navigationCallBack: NavigationCallBack
+
     private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
     override fun onCreateView(
@@ -173,6 +176,7 @@ class DetailFragment : BaseFragment() {
         super.onAttach(context)
         try {
             visibilityCallBack = context as VisibilityCallBack
+            navigationCallBack = context as NavigationCallBack
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -264,7 +268,7 @@ class DetailFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            visibilityCallBack.navigateToVariationActivity(navModel.productList)
+            navigationCallBack.navigateToVariationActivity(navModel.productList)
         }
     }
 
