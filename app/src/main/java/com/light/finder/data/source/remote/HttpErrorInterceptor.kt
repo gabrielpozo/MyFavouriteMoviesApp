@@ -1,6 +1,5 @@
 package com.light.finder.data.source.remote
 
-import android.util.Log
 import com.crashlytics.android.Crashlytics
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -8,21 +7,19 @@ import okhttp3.Response
 
 class HttpErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request()
-        val response = chain.proceed(request)
-
-        val tx = response.sentRequestAtMillis
-        val rx = response.receivedResponseAtMillis
-        val isTimeout = rx - tx > 5000L
+        val response = chain.proceed(chain.request())
+        val timeSent = response.sentRequestAtMillis
+        val timeReceived = response.receivedResponseAtMillis
+        val isTimeout = timeReceived - timeSent > 5000L
+        var code = response.code
 
         if (isTimeout) {
-            Crashlytics.logException(CrashlyticsException(604))
+            // 604 custom timeout error
+            code = 604
         }
 
-        when (response.code) {
-            204 -> Crashlytics.logException(CrashlyticsException(response.code))
-            422 -> Crashlytics.logException(CrashlyticsException(response.code))
-            500 -> Crashlytics.logException(CrashlyticsException(response.code))
+        when (response.code != 200) {
+           true -> Crashlytics.logException(CrashlyticsException(code))
         }
 
         return response
@@ -38,7 +35,6 @@ class CrashlyticsException(var tag: Int) : Exception() {
             204 -> msg = "Image Recognition failed to recognise"
             422 -> msg = "Image Recognition format not valid"
             500 -> msg = "Image Recognition server error"
-            // 604 custom timeout error
             604 -> msg = "Image Recognition timeout error"
         }
 
