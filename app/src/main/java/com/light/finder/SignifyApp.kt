@@ -21,8 +21,9 @@ class SignifyApp : Application(), CameraXConfig.Provider {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
+            enableDebugMode()
         }
-        enableDebugMode()
+
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
     }
@@ -32,13 +33,10 @@ class SignifyApp : Application(), CameraXConfig.Provider {
     }
 
     private fun enableDebugMode() {
-        // [START crash_enable_debug_mode]
         val fabric = Fabric.Builder(this)
             .kits(Crashlytics())
-            .debuggable(true) // Enables Crashlytics debugger
+            .debuggable(true)
             .build()
         Fabric.with(fabric)
-        // [END crash_enable_debug_mode]
     }
-
 }
