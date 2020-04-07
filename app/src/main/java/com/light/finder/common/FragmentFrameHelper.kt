@@ -44,7 +44,7 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    Log.d("GabrielBottom","switch Tabs")
+                    Log.d("GabrielBottom", "switch Tabs")
                     activity.bottom_navigation_view.currentItem = index
                 }
             })
@@ -59,7 +59,7 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
         activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
 
-            when(position){
+            when (position) {
                 INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
                 INDEX_CART -> fragNavController.switchTab(INDEX_CART)
                 INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
@@ -67,6 +67,9 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
             true
         }
     }
+
+    fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
+
 
     fun pushFragment(fragment: Fragment) {
         fragNavController.pushFragment(fragment)
