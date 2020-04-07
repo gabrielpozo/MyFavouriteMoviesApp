@@ -1,5 +1,6 @@
 package com.light.finder.data.source.remote
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.light.finder.BuildConfig
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit
 object MessageRemoteUtil {
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpErrorInterceptor())
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 

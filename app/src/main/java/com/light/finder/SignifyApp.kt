@@ -3,9 +3,11 @@ package com.light.finder
 import android.app.Application
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
+import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 
@@ -19,6 +21,7 @@ class SignifyApp : Application(), CameraXConfig.Provider {
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
+            enableDebugMode()
         }
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
@@ -27,5 +30,13 @@ class SignifyApp : Application(), CameraXConfig.Provider {
 
     override fun getCameraXConfig(): CameraXConfig {
         return Camera2Config.defaultConfig()
+    }
+
+    private fun enableDebugMode() {
+        val fabric = Fabric.Builder(this)
+            .kits(Crashlytics())
+            .debuggable(true)
+            .build()
+        Fabric.with(fabric)
     }
 }
