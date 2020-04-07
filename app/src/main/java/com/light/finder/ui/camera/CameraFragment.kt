@@ -34,7 +34,7 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
-import com.light.finder.ui.lightfinder.TipsAndTricksFragment
+import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -510,7 +510,8 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            mFragmentNavigation.pushFragment(TipsAndTricksFragment.newInstance())
+            visibilityCallBack.navigateToTipsAndTricksActivity()
+
         }
 
         /**

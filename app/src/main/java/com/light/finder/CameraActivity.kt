@@ -33,6 +33,7 @@ import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.finder.ui.lightfinder.ProductVariationsActivity.Companion.PRODUCTS_OPTIONS_ID_KEY
+import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -119,6 +120,14 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         startActivityForResult<ProductVariationsActivity> {
             putParcelableArrayListExtra(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
         }
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    override fun navigateToTipsAndTricksActivity() {
+        startActivity<TipsAndTricksActivity>{}
+     /*   startActivity<ProductVariationsActivity> {
+            putParcelableArrayListExtra(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
+        }*/
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
