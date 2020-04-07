@@ -16,3 +16,8 @@ const val NO_CONTENT_CODE = 204
 const val FILE_NAME = "gallery_file_name"
 
 const val BASE64_PREFIX = "data:image/jpeg;base64,"
+
+const val FAILED_RECOGNITION = "Image Recognition failed to recognise"
+const val FORMAT_INVALID = "Image Recognition format not valid"
+const val SERVER_ERROR_RECOGNITION = "Image Recognition server error"
+const val TIMEOUT_ERROR_RECOGNITION = "Image Recognition timeout error"
