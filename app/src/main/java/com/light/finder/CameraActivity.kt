@@ -1,5 +1,6 @@
 package com.light.finder
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
+import com.light.domain.model.Product
 import com.light.finder.common.ConnectionLiveData
 import com.light.finder.common.ConnectionModel
 import com.light.finder.common.FragmentFrameHelper
@@ -22,13 +24,15 @@ import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
 import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.common.VisibilityCallBack
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.visible
+import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductVariationsActivity
+import com.light.finder.ui.lightfinder.ProductVariationsActivity.Companion.PRODUCTS_OPTIONS_ID_KEY
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -111,9 +115,31 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
+    override fun navigateToVariationActivity(productList: List<Product>) {
+        startActivityForResult<ProductVariationsActivity> {
+            putParcelableArrayListExtra(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
+        }
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ProductVariationsActivity.REQUEST_CODE_PRODUCT) {
+                val productList: List<Product> =
+                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
+                        ?.deparcelizeProductList() ?: emptyList()
+                val currentFragment = fragmentHelper.getCurrentFragment()
+                if(currentFragment is DetailFragment){
+                    currentFragment.retrieveLisFromProductVariation(productList)
+                }
+            }
+        }
+    }
+
 
     private fun setBottomBar() {
-
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)
         navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
         // Set background color
@@ -122,7 +148,10 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         bottom_navigation_view.inactiveColor = getColor(R.color.colorOnSecondary)
 
         val face = ResourcesCompat.getFont(this, R.font.bold)
-        bottom_navigation_view.setTitleTextSize(resources.getDimension(R.dimen.active_tab), resources.getDimension(R.dimen.inactive_tab))
+        bottom_navigation_view.setTitleTextSize(
+            resources.getDimension(R.dimen.active_tab),
+            resources.getDimension(R.dimen.inactive_tab)
+        )
         bottom_navigation_view.setPadding(0, 20, 0, 0)
 
         bottom_navigation_view.setTitleTypeface(face)

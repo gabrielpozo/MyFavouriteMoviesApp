@@ -1,9 +1,7 @@
 package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.*
@@ -27,7 +24,6 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.getColorString
 import com.light.finder.ui.adapters.getFinishString
-import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
@@ -131,7 +127,6 @@ class DetailFragment : BaseFragment() {
                             it2
                         )
                     }
-
 
 
                 }
@@ -269,25 +264,13 @@ class DetailFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            mFragmentNavigation.pushFragment(
-                ProductOptionsFragment.newInstance(
-                    navModel.productList,
-                    this
-                )
-            )
+            visibilityCallBack.navigateToVariationActivity(navModel.productList)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ProductOptionsFragment.REQUEST_CODE_PRODUCT) {
-                val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(PRODUCT_LIST_EXTRA)
-                        ?.deparcelizeProductList() ?: emptyList()
-                viewModel.onRetrieveListFromProductVariation(productList)
-            }
-        }
+
+    fun retrieveLisFromProductVariation(productList: List<Product>) {
+        viewModel.onRetrieveListFromProductVariation(productList)
     }
 
     private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
@@ -365,7 +348,8 @@ class DetailFragment : BaseFragment() {
 
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.setViewPager(viewPagerDetail)
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.setBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(p0: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -376,6 +360,7 @@ class DetailFragment : BaseFragment() {
                     }
                 }
             }
+
             override fun onSlide(p0: View, p1: Float) {
                 // no use but have to implement
             }
