@@ -17,6 +17,26 @@
     </style>
 
 
+    <!-- Variations Dialog -->
+    <style name="FullScreenDialogTheme" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
+        <item name="colorPrimary">@color/backgroundLight</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@color/secondaryTextColor</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+
+        <item name="android:windowAnimationStyle">@style/dialog_animation_fade</item>
+
+    </style>
+
+    <style
+        name="dialog_animation_fade" >
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_right</item>
+    </style>
+
+
+
     <!-- LightFinder -->
     <style name="TitleText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/backgroundLight</item>
@@ -278,6 +298,8 @@
     <style name="ButtonUnSelected" parent="Theme.AppCompat">
         <item name="android:minHeight">40dp</item>
         <item name="android:height">40dp</item>
+        <item name="android:minWidth">96dp</item>
+        <item name="android:width">96dp</item>
         <item name="android:fontFamily">@font/book</item>
         <item name="android:textColor">@color/backgroundDark</item>
         <item name="android:textSize">18sp</item>
