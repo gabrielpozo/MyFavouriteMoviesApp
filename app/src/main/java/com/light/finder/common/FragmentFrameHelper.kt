@@ -61,7 +61,13 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
             when (position) {
                 INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
-                INDEX_CART -> fragNavController.switchTab(INDEX_CART)
+                INDEX_CART -> {
+                    fragNavController.switchTab(INDEX_CART)
+                    val current = fragNavController.currentFrag
+                    if (current is CartFragment) {
+                        current.reloadWebView()
+                    }
+                }
                 INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
             }
             true

@@ -19,7 +19,7 @@ interface SignifyApiService {
     ): Response<CartResultDto>
 
     @Headers("Content-Type: application/json")
-    @GET("getCart")
+    @POST("getCart")
     suspend fun fetchCartItemCountAsync(
     ): Response<CartItemCountResultDto>
 }
