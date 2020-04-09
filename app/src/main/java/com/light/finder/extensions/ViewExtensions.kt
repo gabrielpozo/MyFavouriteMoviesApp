@@ -31,6 +31,11 @@ fun View.gone() {
     visibility = View.GONE
 }
 
+fun View.slideVertically(distance: Float, duration: Long = 1000) {
+    this.animate().translationY(distance).setDuration(500)
+
+}
+
 fun ImageView.loadFile(file: File) {
     Glide.with(this).load(file).diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true).into(this)

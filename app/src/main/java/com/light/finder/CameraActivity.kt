@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
 import android.view.Window
@@ -144,6 +145,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
+    override fun onInternetConnectionLost() {
+        no_internet_banner?.slideVertically(0F)
+        Handler().postDelayed({
+            no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
+        }, 5000)
+    }
 
     private fun setBottomBar() {
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)
