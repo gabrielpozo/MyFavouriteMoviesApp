@@ -8,11 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.CookieHandler
 import java.net.CookieManager
-import java.net.CookiePolicy
-import java.net.CookiePolicy.ACCEPT_ALL
-
 
 
 object CartRemoteUtil {
