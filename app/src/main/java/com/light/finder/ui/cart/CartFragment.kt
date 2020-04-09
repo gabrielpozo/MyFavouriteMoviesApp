@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.cart_fragment.*
 import timber.log.Timber
 
 
+
+
 class CartFragment : BaseFragment() {
     companion object {
         const val URL = "https://www.store.lightguide.signify.com/us/checkout/cart/"
@@ -72,7 +74,7 @@ class CartFragment : BaseFragment() {
 
     }
 
-    //todo needs to be called from bottomnav manager
+    
     fun requestItemCount() =  viewModel.onRequestGetItemCount()
 
     fun reloadWebView() = webView.reload()
