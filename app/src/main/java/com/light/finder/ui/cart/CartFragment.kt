@@ -74,7 +74,7 @@ class CartFragment : BaseFragment() {
 
     }
 
-    //todo needs to be called from bottomnav manager
+    
     fun requestItemCount() =  viewModel.onRequestGetItemCount()
 
     fun reloadWebView() = webView.reload()

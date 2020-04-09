@@ -66,6 +66,7 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
                     val current = fragNavController.currentFrag
                     if (current is CartFragment) {
                         current.reloadWebView()
+                        current.requestItemCount()
                     }
                 }
                 INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
