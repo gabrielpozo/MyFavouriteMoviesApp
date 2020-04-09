@@ -29,6 +29,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                             list[1].toString()
                         } else ""
                     } ?: "",
+                    maxEnergySaving = categoryDto.categoryEnergySave?.maxEnergySaving ?: 0.0f,
+                    minEnergySaving = categoryDto.categoryEnergySave?.minEnergySaving ?: 0.0f,
                     colors = categoryDto.categoryCctCode?.map { code ->
                         when (code) {
                             1 -> "Warm"
@@ -38,6 +40,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                             else -> ""
                         }
                     } ?: emptyList()
+
                 )
             )
         }
@@ -94,7 +97,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
 }
 
 
-val mapCartToDomain: (CartResultDto) -> Cart = {cartDto ->
+val mapCartToDomain: (CartResultDto) -> Cart = { cartDto ->
 
     Cart(
         success = cartDto.success ?: "",
@@ -113,8 +116,7 @@ private val mapCartProductToDomain: (CartProductDto) -> CartProduct = { cartDto 
 }
 
 
-val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = {
-    countResultDto ->
+val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = { countResultDto ->
 
     CartItemCount(
         itemCount = countResultDto.itemsCount ?: 0,

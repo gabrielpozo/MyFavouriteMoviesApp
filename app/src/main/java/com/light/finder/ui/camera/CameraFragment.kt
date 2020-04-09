@@ -233,9 +233,9 @@ class CameraFragment : BaseFragment() {
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
                     showErrorDialog(
-                        getString(R.string.unidentified),
-                        getString(R.string.unidentified_sub),
-                        getString(R.string.try_again),
+                        getString(R.string.oops),
+                        getString(R.string.timeout_sub),
+                        getString(R.string.ok),
                         false
                     )
                 }

@@ -14,6 +14,8 @@ data class CategoryParcelable(
     val priceRange: String,
     val minWattage: String,
     val maxWattage: String,
+    val maxEnergySaving: Float,
+    val minEnergySaving: Float,
     val colors: List<String>
 ) : Parcelable
 
