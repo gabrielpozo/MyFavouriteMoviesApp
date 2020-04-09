@@ -59,7 +59,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 )
                 textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
-                    textView.setPadding(0, 0, 0, 36)
+                    textView.setPadding(0, 0, 0, 32)
                 } else if( category.colors.size == 1){
                     textView.setPadding(0, 0, 0, 8)
                 }
