@@ -29,22 +29,25 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
-        holder.bind(category, position)
+
+
+        holder.bind(category,  categories.maxBy { it.maxEnergySaving }?.maxEnergySaving!!)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
-        fun bind(category: Category, position: Int) {
+        fun bind(category: Category, maxSaving: Float) {
             var colorText = ""
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
+            category.maxEnergySaving
             //TODO it will change once we have the field on the api(most efficient option)
-            /*if (position == 0) {
+            if (maxSaving == category.maxEnergySaving) {
                 itemView.energyButton.visibility = View.VISIBLE
-            }*/
-            //
+            }
+
 
             category.colors.forEachIndexed { index, color ->
                 val textView = TextView(itemView.context)
