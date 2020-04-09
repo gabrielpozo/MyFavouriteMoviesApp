@@ -35,15 +35,12 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
-import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
-import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
-import kotlinx.android.synthetic.main.layout_no_internet.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
@@ -162,18 +159,32 @@ class CameraFragment : BaseFragment() {
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelResponseDialog.observe(
             viewLifecycleOwner,
             Observer(::observeDialogButtonAction)
+
         )
 
 
+        requestItemCount()
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
 
     }
 
+    private fun requestItemCount() =  viewModel.onRequestGetItemCount()
+
+    private fun observeItemCount(itemCount: CameraViewModel.RequestModelItemCount) {
+        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
+        when {
+            itemQuantity > 0 ->
+                visibilityCallBack.onBadgeCountChanged(itemQuantity)
+            else -> Timber.d("egee Cart is empty")
+        }
+
+    }
 
 
     override fun onResume() {

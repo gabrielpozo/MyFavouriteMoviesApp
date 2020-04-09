@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
@@ -86,11 +87,11 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): 
 
 
 fun ImageView.loadUrl(url: String) {
-    Glide.with(context).load(url).placeholder(R.drawable.category_placeholder).into(this)
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.category_placeholder).into(this)
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).centerInside()
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
         .into(this)
 }
 
@@ -110,6 +111,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         priceRange,
         minWattage,
         maxWattage,
+        maxEnergySaving,
+        minEnergySaving,
         colors
     )
 
@@ -124,6 +127,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         priceRange,
         minWattage,
         maxWattage,
+        maxEnergySaving,
+        minEnergySaving,
         colors
     )
 
