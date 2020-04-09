@@ -1,10 +1,12 @@
 package com.light.finder.di.modules
 
+import com.light.domain.CartItemCountRepository
 import com.light.domain.CategoryRepository
 import com.light.finder.data.source.local.ImageRepository
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetFilePathImageEncodedUseCase
+import com.light.usecases.GetItemCountUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -23,13 +25,19 @@ class CameraModule {
         GetFilePathImageEncodedUseCase(categoryRepository)
 
     @Provides
+    fun getItemCountUseCase(cartItemCountRepository: CartItemCountRepository) =
+        GetItemCountUseCase(cartItemCountRepository)
+
+    @Provides
     fun getImageRepository() =
         ImageRepository(Dispatchers.Main)
 
     @Provides
     fun cameraViewModel(
+        getItemCountUseCase: GetItemCountUseCase,
         getCategoryResultUseCase: GetCategoriesResultUseCase
     ) = CameraViewModel(
+        getItemCountUseCase,
         getCategoryResultUseCase,
         Dispatchers.Main
     )

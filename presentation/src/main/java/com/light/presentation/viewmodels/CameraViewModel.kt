@@ -3,14 +3,17 @@ package com.light.presentation.viewmodels
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.light.domain.model.CartItemCount
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
 import com.light.usecases.GetCategoriesResultUseCase
+import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
 class CameraViewModel(
+    private val getItemCount: GetItemCountUseCase,
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
@@ -89,6 +92,27 @@ class CameraViewModel(
     sealed class FlashModel {
         object ModeOn : FlashModel()
         object ModeOff : FlashModel()
+    }
+
+    private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
+    val modelItemCountRequest: LiveData<RequestModelItemCount>
+        get() = _modelItemCountRequest
+
+
+    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
+
+
+    fun onRequestGetItemCount() {
+        checkCoroutineIsCancelled()
+        launch {
+            getItemCount.execute(
+                ::handleItemCountSuccessResponse
+            )
+        }
+    }
+
+    private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
+        _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
     }
 
     fun onCameraButtonClicked(bitmap: Bitmap) {
