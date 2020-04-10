@@ -46,6 +46,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     private lateinit var container: FrameLayout
     private val fragmentHelper = FragmentFrameHelper(this)
     override val numberOfRootFragments: Int = 3
+    private var carToReload = false
 
     companion object {
         const val LIMITED_NUMBER_BADGE = 100
@@ -122,10 +123,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun navigateToTipsAndTricksActivity() {
-        startActivity<TipsAndTricksActivity>{}
-     /*   startActivity<ProductVariationsActivity> {
-            putParcelableArrayListExtra(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
-        }*/
+        startActivity<TipsAndTricksActivity> {}
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
@@ -138,7 +136,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                     data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = fragmentHelper.getCurrentFragment()
-                if(currentFragment is DetailFragment){
+                if (currentFragment is DetailFragment) {
                     currentFragment.retrieveLisFromProductVariation(productList)
                 }
             }
@@ -151,6 +149,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
             no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
         }, 5000)
     }
+
+    override fun setReload(reloadCart: Boolean) {
+        carToReload = reloadCart
+    }
+
+    override fun getReload(): Boolean = carToReload
 
     private fun setBottomBar() {
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)

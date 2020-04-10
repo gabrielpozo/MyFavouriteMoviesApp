@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +15,11 @@ import androidx.lifecycle.Observer
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CartComponent
 import com.light.finder.di.modules.CartModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.visible
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
 import timber.log.Timber
-
-
 
 
 class CartFragment : BaseFragment() {
@@ -58,26 +54,37 @@ class CartFragment : BaseFragment() {
         activity?.run {
             component = app.applicationComponent.plus(CartModule())
         } ?: throw Exception("Invalid Activity")
-        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         setupWebView()
+        setObserver()
     }
 
+    private fun setObserver() {
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+        viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
+    }
+
+
+    private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
+        //todo(create a separate interface for set and get Reload methods )
+        if (modelReload.shouldReload) {
+            webView.reload()
+            visibilityCallBack.setReload(false)
+        }
+    }
 
 
     private fun observeItemCount(itemCount: CartViewModel.RequestModelItemCount) {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
-        when {
-            itemQuantity > 0 ->
-                visibilityCallBack.onBadgeCountChanged(itemQuantity)
-            else -> Timber.d("egee Cart is empty")
-        }
-
+        //todo(change the name of visibility callback )
+        visibilityCallBack.onBadgeCountChanged(itemQuantity)
     }
 
-    
-    fun requestItemCount() =  viewModel.onRequestGetItemCount()
 
-    fun reloadWebView() = webView.reload()
+    fun requestItemCount() = viewModel.onRequestGetItemCount()
+
+    fun onReloadWebView() {
+        viewModel.onCheckReloadCartWebView(visibilityCallBack.getReload())
+    }
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -99,6 +106,8 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("Gabriel", "set URL Fragment: $url")
+                viewModel.onSetWebUrl(url.getSplitUrl())
                 progressBar.gone()
                 super.onPageFinished(view, url)
             }
@@ -108,7 +117,6 @@ class CartFragment : BaseFragment() {
         webView.settings.defaultTextEncodingName = "utf-8"
 
         loadWebView(URL)
-
     }
 
     private fun loadWebView(url: String) {

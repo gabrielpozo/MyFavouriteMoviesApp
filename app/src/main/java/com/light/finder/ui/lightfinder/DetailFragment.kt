@@ -122,20 +122,14 @@ class DetailFragment : BaseFragment() {
                             it2
                         )
                     }
-
-
                 }
             }
 
             override fun onAnimationCancel(animation: Animator) {
-
-
                 cartButtonText?.text = getString(R.string.add_to_cart)
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
-
-
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -163,6 +157,7 @@ class DetailFragment : BaseFragment() {
         buttonAddTocart.isClickable = false
         buttonAddTocart.isFocusable = false
         if (isAdded) {
+            visibilityCallBack.setReload(true)
             context?.let { it1 ->
                 ContextCompat.getColor(
                     it1,
