@@ -1,6 +1,7 @@
 package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -19,7 +20,6 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
         emptyList(),
         areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
-    private val maxEnergySaving = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_category, false)
@@ -31,6 +31,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
 
+        val maxEnergySaving = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
 
         holder.bind(category, maxEnergySaving ?: -0.0f)
         holder.itemView.setOnClickListener { listener(category) }
@@ -58,7 +59,9 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 )
                 textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
-                    textView.setPadding(0, 0, 0, 36)
+                    textView.setPadding(0, 0, 0, 32)
+                } else if( category.colors.size == 1){
+                    textView.setPadding(0, 0, 0, 8)
                 }
                 textView.compoundDrawablePadding = 32
                 itemView.textViewsLayout.addView(textView)
