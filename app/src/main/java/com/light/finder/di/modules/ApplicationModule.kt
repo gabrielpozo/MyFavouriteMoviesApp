@@ -14,7 +14,7 @@ import dagger.Provides
 
 @Module
 class ApplicationModule {
-    
+
     @Provides
     fun getRemoteDataSource(): RemoteDataSource = SignifyRemoteDataSource()
 
