@@ -77,25 +77,10 @@ class DetailFragment : BaseFragment() {
         }
 
         buttonAddTocart.setOnClickListener {
-            viewModel.onRequestAddToCart(productSapId = productSapId)
-            cartAnimation.visible()
-            cartAnimation.playAnimation()
-            buttonAddTocart.isClickable = false
-            buttonAddTocart.isFocusable = false
-            if (isAdded) {
-                context?.let { it1 ->
-                    ContextCompat.getColor(
-                        it1,
-                        R.color.primaryPressed
-                    )
-                }?.let { it2 ->
-                    buttonAddTocart.setBackgroundColor(
-                        it2
-                    )
-                }
-
+            when(isConnected()) {
+                true -> addToCart()
+                false -> visibilityCallBack.onInternetConnectionLost()
             }
-
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
@@ -161,6 +146,27 @@ class DetailFragment : BaseFragment() {
                 height = (dpHeight / 2)
             }
             bottomSheetBehavior.peekHeight = (dpHeight / 2)
+        }
+    }
+
+    private fun addToCart() {
+        viewModel.onRequestAddToCart(productSapId = productSapId)
+        cartAnimation.visible()
+        cartAnimation.playAnimation()
+        buttonAddTocart.isClickable = false
+        buttonAddTocart.isFocusable = false
+        if (isAdded) {
+            context?.let { it1 ->
+                ContextCompat.getColor(
+                    it1,
+                    R.color.primaryPressed
+                )
+            }?.let { it2 ->
+                buttonAddTocart.setBackgroundColor(
+                    it2
+                )
+            }
+
         }
     }
 

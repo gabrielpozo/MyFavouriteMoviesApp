@@ -6,5 +6,5 @@ interface VisibilityCallBack{
     fun onBadgeCountChanged(badgeCount: Int)
     fun onCartCleared()
     fun onBottomBarBlocked(isClickable: Boolean)
-
+    fun onInternetConnectionLost()
 }
