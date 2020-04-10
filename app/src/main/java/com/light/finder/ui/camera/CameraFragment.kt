@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
@@ -61,8 +62,9 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
+    private lateinit var connectivityRequester: ConnectivityRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
-    private lateinit var  navigationCallBack: NavigationCallBack
+    private lateinit var navigationCallBack: NavigationCallBack
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
@@ -150,6 +152,7 @@ class CameraFragment : BaseFragment() {
         activity?.run {
             component = app.applicationComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+            connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
         container = view as ConstraintLayout
@@ -174,7 +177,7 @@ class CameraFragment : BaseFragment() {
 
     }
 
-    private fun requestItemCount() =  viewModel.onRequestGetItemCount()
+    private fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     private fun observeItemCount(itemCount: CameraViewModel.RequestModelItemCount) {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
@@ -478,9 +481,10 @@ class CameraFragment : BaseFragment() {
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
         controls.cameraCaptureButton.setSafeOnClickListener {
-            when (isConnected()) {
-                true -> onCameraCaptureClick()
-                false -> {
+            connectivityRequester.checkConnection { isConnected ->
+                if (isConnected) {
+                    onCameraCaptureClick()
+                } else {
                     visibilityCallBack.onInternetConnectionLost()
                 }
             }

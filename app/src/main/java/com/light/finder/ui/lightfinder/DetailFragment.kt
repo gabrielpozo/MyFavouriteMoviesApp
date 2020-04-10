@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -47,6 +48,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var alertDialog: AlertDialog
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var navigationCallBack: NavigationCallBack
+    private lateinit var connectivityRequester: ConnectivityRequester
 
     private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
@@ -60,6 +62,8 @@ class DetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = app.applicationComponent.plus(DetailModule())
+            connectivityRequester = ConnectivityRequester(this)
+
         } ?: throw Exception("Invalid Activity")
 
         setNavigationObserver()
@@ -77,9 +81,12 @@ class DetailFragment : BaseFragment() {
         }
 
         buttonAddTocart.setOnClickListener {
-            when(isConnected()) {
-                true -> addToCart()
-                false -> visibilityCallBack.onInternetConnectionLost()
+            connectivityRequester.checkConnection { isConnected ->
+                if (isConnected) {
+                    addToCart()
+                } else {
+                    visibilityCallBack.onInternetConnectionLost()
+                }
             }
         }
 
