@@ -1,5 +1,6 @@
 package com.light.finder.di.modules
 
+import android.content.Context
 import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.remote.CartItemCountRemoteDataSource
 import com.light.finder.data.source.remote.CartItemRemoteDataSource
@@ -13,15 +14,15 @@ import dagger.Provides
 
 @Module
 class ApplicationModule {
-
+    
     @Provides
     fun getRemoteDataSource(): RemoteDataSource = SignifyRemoteDataSource()
 
     @Provides
-    fun getCartRemoteDataSource(): CartRemoteDataSource = CartItemRemoteDataSource()
+    fun getCartRemoteDataSource(context: Context): CartRemoteDataSource = CartItemRemoteDataSource(context)
 
     @Provides
-    fun getCartItemCountRemoteDataSource(): ItemRemoteDataSource = CartItemCountRemoteDataSource()
+    fun getCartItemCountRemoteDataSource(context: Context): ItemRemoteDataSource = CartItemCountRemoteDataSource(context)
 
     @Provides
     fun getLocalMediaDataSource(): LocalMediaDataSource = LocalMediaDataSourceImpl()
