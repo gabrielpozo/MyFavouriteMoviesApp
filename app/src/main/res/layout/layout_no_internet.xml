@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/noInternetBanner"
-    android:visibility="visible"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:translationY="-60dp"
     android:background="@color/informationError"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -14,8 +14,9 @@
 
     <TextView
         style="TitleTextBookSmall"
-        android:letterSpacing="0.5"
         android:layout_margin="24dp"
+        android:fontFamily="@font/bold"
+        android:textSize="18sp"
         android:text="@string/no_internet_connection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

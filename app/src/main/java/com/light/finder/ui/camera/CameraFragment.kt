@@ -35,11 +35,9 @@ import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
-import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
-import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
@@ -451,6 +449,25 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    fun onCameraCaptureClick() {
+        imageCapture?.let { imageCapture ->
+            val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
+            val metadata = ImageCapture.Metadata().apply {
+
+                isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            }
+
+            imageCapture.takePicture(mainExecutor, imageCaptureListener)
+
+            container.postDelayed({
+                container.foreground = ColorDrawable(Color.WHITE)
+                container.postDelayed(
+                    { container.foreground = null }, ANIMATION_FAST_MILLIS
+                )
+            }, ANIMATION_SLOW_MILLIS)
+
+        }
+    }
 
     private fun initCameraUi() {
 
@@ -461,22 +478,11 @@ class CameraFragment : BaseFragment() {
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
         controls.cameraCaptureButton.setSafeOnClickListener {
-            imageCapture?.let { imageCapture ->
-                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
-                val metadata = ImageCapture.Metadata().apply {
-
-                    isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            when (isConnected()) {
+                true -> onCameraCaptureClick()
+                false -> {
+                    visibilityCallBack.onInternetConnectionLost()
                 }
-
-                imageCapture.takePicture(mainExecutor, imageCaptureListener)
-
-                container.postDelayed({
-                    container.foreground = ColorDrawable(Color.WHITE)
-                    container.postDelayed(
-                        { container.foreground = null }, ANIMATION_FAST_MILLIS
-                    )
-                }, ANIMATION_SLOW_MILLIS)
-
             }
         }
 
