@@ -3,7 +3,6 @@ package com.light.finder.common
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.ui.cart.CartFragment
@@ -63,11 +62,7 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
                 INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
                 INDEX_CART -> {
                     fragNavController.switchTab(INDEX_CART)
-                    val current = fragNavController.currentFrag
-                    if (current is CartFragment) {
-                        current.reloadWebView()
-                        current.requestItemCount()
-                    }
+                    reloadCartFragment()
                 }
                 INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
             }
@@ -87,5 +82,14 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
     }
 
     fun popFragmentNot(): Boolean = fragNavController.popFragment().not()
+
+   private  fun reloadCartFragment() {
+        val current = fragNavController.currentFrag
+        if (current is CartFragment) {
+            current.onReloadWebView()
+            current.requestItemCount()
+        }
+
+    }
 
 }
