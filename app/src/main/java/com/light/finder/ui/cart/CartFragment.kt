@@ -69,8 +69,8 @@ class CartFragment : BaseFragment() {
         setupWebView()
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        viewModel.connectionModel.observe(viewLifecycleOwner, Observer { observeNetworkConnection() })
     }
-
 
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         if (modelReload.shouldReload) {
@@ -88,7 +88,8 @@ class CartFragment : BaseFragment() {
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
                 visibilityCallBack.onCartCleared()
             }
-        } }
+        }
+    }
 
 
     fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -97,7 +98,7 @@ class CartFragment : BaseFragment() {
         connectivityRequester.checkConnection { isConnected ->
             if (!isConnected) {
                 webView.invisible()
-                onInternetConnectionLost()
+                viewModel.onInternetConnectionLost()
             } else {
                 webView.reload()
                 webView.visible()
@@ -139,7 +140,7 @@ class CartFragment : BaseFragment() {
         loadWebView(URL)
     }
 
-    fun onInternetConnectionLost() {
+    private fun observeNetworkConnection() {
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
