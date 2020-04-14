@@ -172,7 +172,7 @@ class DetailFragment : BaseFragment() {
         buttonAddTocart.isClickable = false
         buttonAddTocart.isFocusable = false
         if (isAdded) {
-            reloadingCallback.setReload(true)
+            reloadingCallback.setCurrentlyReloaded(true)
             context?.let { it1 ->
                 ContextCompat.getColor(
                     it1,

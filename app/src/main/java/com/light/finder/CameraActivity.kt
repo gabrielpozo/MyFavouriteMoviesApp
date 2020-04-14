@@ -150,11 +150,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }, 5000)
     }
 
-    override fun setReload(reloadCart: Boolean) {
+    override fun setCurrentlyReloaded(reloadCart: Boolean) {
         carToReload = reloadCart
     }
 
-    override fun getReload(): Boolean = carToReload
+    override fun hasBeenReload(): Boolean = carToReload
 
     private fun setBottomBar() {
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)

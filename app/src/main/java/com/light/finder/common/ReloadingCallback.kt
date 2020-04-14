@@ -3,6 +3,6 @@ package com.light.finder.common
 
 
 interface ReloadingCallback {
-    fun setReload(reloadCart: Boolean)
-    fun getReload():Boolean
+    fun setCurrentlyReloaded(reloadCart: Boolean)
+    fun hasBeenReload():Boolean
 }

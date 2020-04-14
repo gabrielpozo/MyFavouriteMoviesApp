@@ -69,7 +69,7 @@ class CartFragment : BaseFragment() {
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         if (modelReload.shouldReload) {
             webView.reload()
-            reloadingCallback.setReload(false)
+            reloadingCallback.setCurrentlyReloaded(false)
         }
     }
 
@@ -89,7 +89,7 @@ class CartFragment : BaseFragment() {
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
-        viewModel.onCheckReloadCartWebView(reloadingCallback.getReload())
+        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
 
