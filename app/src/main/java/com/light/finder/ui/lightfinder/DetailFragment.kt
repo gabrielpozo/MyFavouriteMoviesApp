@@ -129,7 +129,7 @@ class DetailFragment : BaseFragment() {
 
             override fun onAnimationCancel(animation: Animator) {
 
-
+                visibilityCallBack.onBottomBarBlocked(isClickable = true)
                 cartButtonText?.text = getString(R.string.add_to_cart)
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
