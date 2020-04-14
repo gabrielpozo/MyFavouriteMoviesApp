@@ -8,20 +8,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.PrefManager
 import com.light.finder.di.modules.SplashComponent
 import com.light.finder.di.modules.SplashModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
+import com.light.finder.ui.terms.TermsAndConditionsActivity
 import com.light.presentation.viewmodels.SplashState
 import com.light.presentation.viewmodels.SplashViewModel
 
 
 class SplashActivity : AppCompatActivity() {
 
+    private var prefManager: PrefManager? = null
     private lateinit var component: SplashComponent
     private val splashViewModel: SplashViewModel by lazy { getViewModel { component.splashViewModel } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        prefManager = PrefManager(this)
+
 
         component = app.applicationComponent.plus(SplashModule())
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -35,15 +41,23 @@ class SplashActivity : AppCompatActivity() {
         splashViewModel.liveData.observe(this, Observer {
             when (it) {
                 is SplashState.CameraActivity -> {
-                    goToCameraActivity()
+                    if (prefManager?.isTermsAccepted!!) {
+                        goToCameraActivity()
+                    } else {
+                        goToTermsAndConditionsActivity()
+                    }
                 }
             }
         })
     }
 
+    private fun goToTermsAndConditionsActivity() {
+        startActivity(Intent(this, TermsAndConditionsActivity::class.java))
+        finish()
+    }
+
     private fun goToCameraActivity() {
         startActivity(Intent(this, CameraActivity::class.java))
-       // overridePendingTransition(R.anim.slide_in_from_right, 0)
         finish()
     }
 }
