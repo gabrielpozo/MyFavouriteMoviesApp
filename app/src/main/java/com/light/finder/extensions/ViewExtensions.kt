@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.R
@@ -91,10 +90,16 @@ fun String.getIntFormatter(number: Number): String =
 
 fun String.getStringFormatter(chain: String): String = String.format(this, chain)
 
-fun TextView.endDrawable(@DrawableRes id: Int = 0) {
-    val drawable = ContextCompat.getDrawable(context, id)
-    this.setCompoundDrawables(null, null, drawable, null)
+fun String?.getSplitUrl(): String {
+    var chain = "/"
+    val splitedList = this?.split("/") ?: return ""
+    for (index in (splitedList.size - 4) until splitedList.size - 1) {
+        chain += splitedList[index] + "/"
+    }
+
+    return chain
 }
+
 
 fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
     setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)

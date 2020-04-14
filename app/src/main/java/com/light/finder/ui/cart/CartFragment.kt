@@ -13,6 +13,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CartComponent
 import com.light.finder.di.modules.CartModule
@@ -30,15 +31,17 @@ class CartFragment : BaseFragment() {
 
     private lateinit var component: CartComponent
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         try {
             visibilityCallBack = context as VisibilityCallBack
+            reloadingCallback = context as ReloadingCallback
+
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -58,23 +61,39 @@ class CartFragment : BaseFragment() {
             component = app.applicationComponent.plus(CartModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
-        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
-        setupWebView()
+        setObserver()
     }
 
-    private fun observeItemCount(itemCount: CartViewModel.RequestModelItemCount) {
-        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
-        when {
-            itemQuantity > 0 ->
-                visibilityCallBack.onBadgeCountChanged(itemQuantity)
-            else -> Timber.d("egee Cart is empty")
+
+    private fun setObserver() {
+        setupWebView()
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+        viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
+    }
+
+
+    private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
+        if (modelReload.shouldReload) {
+            webView.reload()
+            reloadingCallback.setCurrentlyReloaded(false)
         }
     }
 
-    
-    fun requestItemCount() =  viewModel.onRequestGetItemCount()
 
-    fun reloadWebView() {
+    private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
+        when (countModel) {
+            is CartViewModel.CountItemsModel.RequestModelItemCount -> {
+                visibilityCallBack.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
+            }
+            is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                visibilityCallBack.onCartCleared()
+            }
+        } }
+
+
+    fun requestItemCount() = viewModel.onRequestGetItemCount()
+
+    fun onReloadWebView() {
         connectivityRequester.checkConnection { isConnected ->
             if (!isConnected) {
                 webView.invisible()
@@ -84,6 +103,7 @@ class CartFragment : BaseFragment() {
                 webView.visible()
             }
         }
+        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
 
@@ -106,6 +126,7 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                viewModel.onSetWebUrl(url.getSplitUrl())
                 progressBar.gone()
                 super.onPageFinished(view, url)
             }
@@ -115,7 +136,6 @@ class CartFragment : BaseFragment() {
         webView.settings.defaultTextEncodingName = "utf-8"
 
         loadWebView(URL)
-
     }
 
     fun onInternetConnectionLost() {

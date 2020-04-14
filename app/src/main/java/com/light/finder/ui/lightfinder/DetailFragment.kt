@@ -17,6 +17,7 @@ import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.NavigationCallBack
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.DetailComponent
@@ -48,10 +49,24 @@ class DetailFragment : BaseFragment() {
     private lateinit var alertDialog: AlertDialog
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var navigationCallBack: NavigationCallBack
+    private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
 
     private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+            navigationCallBack = context as NavigationCallBack
+            reloadingCallback = context as ReloadingCallback
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -122,20 +137,15 @@ class DetailFragment : BaseFragment() {
                             it2
                         )
                     }
-
-
                 }
             }
 
             override fun onAnimationCancel(animation: Animator) {
-
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
                 cartButtonText?.text = getString(R.string.add_to_cart)
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
-
-
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -163,6 +173,7 @@ class DetailFragment : BaseFragment() {
         buttonAddTocart.isClickable = false
         buttonAddTocart.isFocusable = false
         if (isAdded) {
+            reloadingCallback.setCurrentlyReloaded(true)
             context?.let { it1 ->
                 ContextCompat.getColor(
                     it1,
@@ -183,16 +194,6 @@ class DetailFragment : BaseFragment() {
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            visibilityCallBack = context as VisibilityCallBack
-            navigationCallBack = context as NavigationCallBack
-        } catch (e: ClassCastException) {
-            throw ClassCastException()
-        }
     }
 
 
