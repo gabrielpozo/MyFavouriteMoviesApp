@@ -24,6 +24,7 @@
 
 
         <activity
+            android:resizeableActivity="false"
             android:name="com.light.finder.ui.splash.SplashActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
@@ -37,6 +38,7 @@
         </activity>
 
         <activity
+            android:resizeableActivity="false"
             android:name=".ui.lightfinder.ProductVariationsActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
@@ -45,6 +47,7 @@
         </activity>
 
         <activity
+            android:resizeableActivity="false"
             android:name=".ui.lightfinder.TipsAndTricksActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
@@ -56,6 +59,7 @@
 
 
         <activity
+            android:resizeableActivity="false"
             android:name="com.light.finder.CameraActivity"
             android:configChanges="orientation|keyboardHidden"
             android:clearTaskOnLaunch="true"
