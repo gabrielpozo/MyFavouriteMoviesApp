@@ -1,11 +1,8 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.work.Operation
 import com.light.domain.model.CartItemCount
-import com.light.domain.model.Product
 import com.light.presentation.common.Event
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,12 +18,15 @@ class CartViewModel(
     }
 
 
-    private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
-    val modelItemCountRequest: LiveData<RequestModelItemCount>
+    private val _modelItemCountRequest = MutableLiveData<CountItemsModel>()
+    val modelItemCountRequest: LiveData<CountItemsModel>
         get() = _modelItemCountRequest
 
 
-    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
+    sealed class CountItemsModel {
+        data class RequestModelItemCount(val itemCount: Event<CartItemCount>) : CountItemsModel()
+        object ClearedBadgeItemCount : CountItemsModel()
+    }
 
     private val _modelReload = MutableLiveData<ContentReload>()
     val modelReload: LiveData<ContentReload>
@@ -42,26 +42,23 @@ class CartViewModel(
     data class ContentUrl(val url: String)
 
     fun onRequestGetItemCount() {
-      requestItemsCount()
+        requestItemsCount()
     }
 
     fun onCheckReloadCartWebView(shouldReload: Boolean) {
-        if (shouldReload || _modelUrl.value?.url?.equals(URL_SUCCESS) == true){
+        if (shouldReload || _modelUrl.value?.url?.equals(URL_SUCCESS) == true) {
             _modelReload.value = ContentReload(true)
-            //todo call get cart item count again here
-            requestItemsCount()
-            Log.d("Gabriel", "Reloading Web View")
-        } else {
-            Log.d("Gabriel", "It is not reloading the web View")
         }
     }
 
     fun onSetWebUrl(url: String) {
-        Log.d("Gabriel","URL ON VIEW MODEL: $url")
         _modelUrl.value = ContentUrl(url)
+        if (_modelUrl.value?.url?.equals(URL_SUCCESS) == true) {
+            _modelItemCountRequest.value = CountItemsModel.ClearedBadgeItemCount
+        }
     }
 
-    private fun  requestItemsCount(){
+    private fun requestItemsCount() {
         launch {
             getItemCount.execute(
                 ::handleItemCountSuccessResponse
@@ -70,7 +67,13 @@ class CartViewModel(
     }
 
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
-        _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
+        if (cartItemCount.itemQuantity > 0) {
+            _modelItemCountRequest.value =
+                CountItemsModel.RequestModelItemCount(Event(cartItemCount))
+        } else {
+            _modelItemCountRequest.value = CountItemsModel.ClearedBadgeItemCount
+
+        }
     }
 
 }

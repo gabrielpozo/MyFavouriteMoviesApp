@@ -41,7 +41,7 @@ import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation, VisibilityCallBack, NavigationCallBack {
+    BaseFragment.FragmentNavigation, VisibilityCallBack, NavigationCallBack, ReloadingCallback {
 
     private lateinit var container: FrameLayout
     private val fragmentHelper = FragmentFrameHelper(this)

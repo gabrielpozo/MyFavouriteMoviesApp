@@ -74,7 +74,7 @@ fun String.getStringFormatter(chain: String): String = String.format(this, chain
 fun String?.getSplitUrl(): String {
     var chain = "/"
     val splitedList = this?.split("/") ?: return ""
-    for (index in (splitedList.size - 4) until splitedList.size -1) {
+    for (index in (splitedList.size - 4) until splitedList.size - 1) {
         chain += splitedList[index] + "/"
     }
 

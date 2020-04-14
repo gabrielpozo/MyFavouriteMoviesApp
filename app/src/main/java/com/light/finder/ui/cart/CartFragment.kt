@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CartComponent
 import com.light.finder.di.modules.CartModule
@@ -29,13 +29,15 @@ class CartFragment : BaseFragment() {
 
     private lateinit var component: CartComponent
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         try {
             visibilityCallBack = context as VisibilityCallBack
+            reloadingCallback = context as ReloadingCallback
+
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -65,25 +67,29 @@ class CartFragment : BaseFragment() {
 
 
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
-        //todo(create a separate interface for set and get Reload methods )
         if (modelReload.shouldReload) {
             webView.reload()
-            visibilityCallBack.setReload(false)
+            reloadingCallback.setReload(false)
         }
     }
 
 
-    private fun observeItemCount(itemCount: CartViewModel.RequestModelItemCount) {
-        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
-        //todo(change the name of visibility callback )
-        visibilityCallBack.onBadgeCountChanged(itemQuantity)
+    private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
+        when (countModel) {
+            is CartViewModel.CountItemsModel.RequestModelItemCount -> {
+                visibilityCallBack.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
+            }
+            is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                visibilityCallBack.onCartCleared()
+            }
+        }
     }
 
 
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
-        viewModel.onCheckReloadCartWebView(visibilityCallBack.getReload())
+        viewModel.onCheckReloadCartWebView(reloadingCallback.getReload())
     }
 
 
@@ -106,7 +112,6 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                Log.d("Gabriel", "set URL Fragment: $url")
                 viewModel.onSetWebUrl(url.getSplitUrl())
                 progressBar.gone()
                 super.onPageFinished(view, url)
