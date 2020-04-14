@@ -17,17 +17,7 @@ abstract class BaseFragment : Fragment() {
             mFragmentNavigation = context
         }
     }
-
-    fun isConnected(): Boolean {
-        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork
-        val connection =
-            connectivityManager.getNetworkCapabilities(network)
-
-        return connection != null && (
-                connection.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                        connection.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
-    }
+    
 
     interface FragmentNavigation {
         fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>? = null)
