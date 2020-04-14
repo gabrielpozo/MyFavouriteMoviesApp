@@ -63,7 +63,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 } else if( category.colors.size == 1){
                     textView.setPadding(0, 0, 0, 8)
                 }
-                textView.compoundDrawablePadding = 32
+                //textView.compoundDrawablePadding = 32
                 itemView.textViewsLayout.addView(textView)
             }
 
