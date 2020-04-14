@@ -1,6 +1,7 @@
 package com.light.finder.extensions
 
 import android.animation.Animator
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.view.View
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.R
 import com.light.finder.common.SafeClickListener
+import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 import java.io.File
 import java.util.*
 
@@ -34,7 +36,7 @@ fun View.gone() {
 fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
     val view = this
     this.animate().translationY(distance).setDuration(500)
-        .setListener(object: Animator.AnimatorListener{
+        .setListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
 
             }
@@ -105,22 +107,86 @@ fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
     setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
 }
 
-fun TextView.getColorString(color: String): Int = when (color) {
-    context.getString(R.string.warm) -> {
+fun Context.getColorName(colorCode: Int): String = when (colorCode) {
+    1 -> {
+        getString(R.string.warm)
+    }
+    2 -> {
+        getString(R.string.white_warm)
+    }
+    3 -> {
+        getString(R.string.cool_white)
+    }
+    4 -> {
+        getString(R.string.daylight)
+    }
+
+    else -> colorCode.toString()
+}
+
+
+fun Context.getFinishName(finishCode: Int): String = when (finishCode) {
+    1 -> getString(R.string.clear)
+    2 -> getString(R.string.frosted)
+    else -> finishCode.toString()
+}
+
+
+fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
+    1 -> {
         R.drawable.ic_warm
     }
-    context.getString(R.string.white_warm) -> {
+    2 -> {
         R.drawable.ic_warm_white
     }
-    context.getString(R.string.cool_white) -> {
+    3 -> {
         R.drawable.ic_cool_white
     }
-    context.getString(R.string.daylight) -> {
+    4 -> {
         R.drawable.ic_daylight
     }
 
-    else -> R.drawable.ic_warm
+    else -> 0
 }
+
+fun View.setColorVariation(colorCode: Int) {
+    when (colorCode) {
+        1 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.warm)
+        }
+
+        2 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.warm_white)
+        }
+
+        3 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.cool_white)
+        }
+
+        4 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.daylight)
+        }
+        else -> {
+            invisible()
+        }
+    }
+}
+
+
+fun View.setFinishVariation(finishCode: Int) {
+    when (finishCode) {
+        1 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.clear)
+        }
+        2 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.frosted)
+        }
+        else -> {
+            invisible()
+        }
+    }
+}
+
 
 
 

@@ -31,15 +31,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     } ?: "",
                     maxEnergySaving = categoryDto.categoryEnergySave?.maxEnergySaving ?: 0.0f,
                     minEnergySaving = categoryDto.categoryEnergySave?.minEnergySaving ?: 0.0f,
-                    colors = categoryDto.categoryCctCode?.map { code ->
-                        when (code) {
-                            1 -> "Warm"
-                            2 -> "Warm white"
-                            3 -> "Cool white"
-                            4 -> "Daylight"
-                            else -> ""
-                        }
-                    } ?: emptyList()
+                    colors = categoryDto.categoryCctCode?.map { it } ?: emptyList()
 
                 )
             )

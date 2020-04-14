@@ -16,7 +16,7 @@ data class Category(
     val maxWattage: String,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,
-    val colors: List<String>
+    val colors: List<Int>
 )
 
 data class Product(

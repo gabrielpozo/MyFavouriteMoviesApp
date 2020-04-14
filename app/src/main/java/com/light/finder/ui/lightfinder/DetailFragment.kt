@@ -25,8 +25,6 @@ import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.getColorString
-import com.light.finder.ui.adapters.getFinishString
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
@@ -326,8 +324,10 @@ class DetailFragment : BaseFragment() {
         val changeVariation = String.format(
             getString(R.string.change_variation),
             product.wattageReplaced,
-            product.colorCctCode.getColorString(requireContext()),
-            product.productFinishCode.getFinishString(requireContext())
+            requireContext().getColorName(product.colorCctCode),
+            requireContext().getFinishName(product.productFinishCode)
+   /*         product.colorCctCode.getColorString(requireContext()),
+            product.productFinishCode.getFinishString(requireContext())*/
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")

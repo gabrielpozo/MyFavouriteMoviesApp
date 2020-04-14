@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
-import com.light.finder.extensions.basicDiffUtil
-import com.light.finder.extensions.inflate
+import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_button_filter_unselected.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
@@ -101,24 +100,9 @@ class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterVariationCF) {
-            itemView.variation_name.text = filter.codeFilter.getColorString(itemView.context)
+            itemView.variation_name.text = itemView.context.getColorName(filter.codeFilter)
             itemView.setDrawableOnBackground(filter)
-            when (filter.codeFilter) {
-                1 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.warm)
-                }
-                2 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.warm_white)
-                }
-
-                3 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.cool_white)
-                }
-
-                4 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.daylight)
-                }
-            }
+            itemView.setColorVariation(filter.codeFilter)
         }
     }
 }
@@ -160,16 +144,9 @@ class FilterFinishAdapter(private val listener: (FilterVariationCF) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: FilterVariationCF) {
-            itemView.variation_name.text = filter.codeFilter.getFinishString(itemView.context)
+            itemView.variation_name.text = itemView.context.getFinishName(filter.codeFilter)
             itemView.setDrawableOnBackground(filter)
-            when (filter.codeFilter) {
-                1 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.clear)
-                }
-                2 -> {
-                    itemView.imageFilterCover.setBackgroundResource(R.drawable.frosted)
-                }
-            }
+            itemView.setFinishVariation(filter.codeFilter)
         }
     }
 }
