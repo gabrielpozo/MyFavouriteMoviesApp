@@ -1,7 +1,6 @@
 package com.light.finder.extensions
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,7 +72,6 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
         })
 
         if (count == 1 && !shouldRefreshData) {
-            Log.d("GabrielOBs", "Before returning")
             return@observable
         }
 

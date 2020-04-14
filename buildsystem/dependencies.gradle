@@ -191,6 +191,6 @@ ext {
     googleServicesDependencies = [
             analytics: "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
             crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase",
-            //performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance"
+            performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance"
     ]
 }

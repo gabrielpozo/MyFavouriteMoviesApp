@@ -1,7 +1,6 @@
 package com.light.finder.common
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.light.finder.CameraActivity
 import com.light.finder.R
@@ -43,7 +42,6 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    Log.d("GabrielBottom", "switch Tabs")
                     activity.bottom_navigation_view.currentItem = index
                 }
             })

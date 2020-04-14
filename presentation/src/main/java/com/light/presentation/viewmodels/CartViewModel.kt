@@ -42,7 +42,11 @@ class CartViewModel(
     data class ContentUrl(val url: String)
 
     fun onRequestGetItemCount() {
-        requestItemsCount()
+        launch {
+            getItemCount.execute(
+                ::handleItemCountSuccessResponse
+            )
+        }
     }
 
     fun onCheckReloadCartWebView(shouldReload: Boolean) {
@@ -55,14 +59,6 @@ class CartViewModel(
         _modelUrl.value = ContentUrl(url)
         if (_modelUrl.value?.url?.equals(URL_SUCCESS) == true) {
             _modelItemCountRequest.value = CountItemsModel.ClearedBadgeItemCount
-        }
-    }
-
-    private fun requestItemsCount() {
-        launch {
-            getItemCount.execute(
-                ::handleItemCountSuccessResponse
-            )
         }
     }
 

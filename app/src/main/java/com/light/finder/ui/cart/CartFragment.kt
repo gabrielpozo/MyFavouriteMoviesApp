@@ -127,6 +127,7 @@ class CartFragment : BaseFragment() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 viewModel.onSetWebUrl(url.getSplitUrl())
+                viewModel.onRequestGetItemCount()
                 progressBar.gone()
                 super.onPageFinished(view, url)
             }
