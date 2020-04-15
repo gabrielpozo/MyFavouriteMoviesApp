@@ -136,7 +136,7 @@ class ProductVariationsActivity : AppCompatActivity() {
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
         textViewColor.text = getColorName(productSelectedModel.productSelected.colorCctCode)
-        textViewFinish.text = productSelectedModel.productSelected.finish
+        textViewFinish.text = getFinishName(productSelectedModel.productSelected.productFinishCode)
     }
 
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {

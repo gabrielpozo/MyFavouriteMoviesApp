@@ -65,7 +65,7 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
         }
         else -> {
-            invisible()
+            imageFilterCover.invisible()
         }
     }
 }
@@ -80,7 +80,7 @@ fun View.setFinishVariation(finishCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.frosted)
         }
         else -> {
-            invisible()
+            imageFilterCover.invisible()
         }
     }
 }

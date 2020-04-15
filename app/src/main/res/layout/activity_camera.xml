@@ -90,23 +90,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
- <!--   <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottom_navigation_view2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_bar_height"
-        android:layout_gravity="bottom"
-        android:background="@color/backgroundDark"
-        app:bb_activeTabAlpha="1"
-        app:bb_activeTabColor="@color/primaryAppColor"
-        app:bb_badgesHideWhenActive="true"
-        app:bb_inActiveTabAlpha="0.6"
-        app:bb_inActiveTabColor="@color/backgroundLight"
-        app:bb_tabXmlResource="@xml/menu_bottom_bar"
-        app:bb_titleTextAppearance="@style/NavBarText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
