@@ -1,7 +1,6 @@
 package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -49,10 +48,11 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             }
 
 
-            category.colors.forEachIndexed { index, color ->
+            category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
-                textView.text = color
-                textView.endDrawableIcon(textView.getColorString(color))
+                textView.text = itemView.context.getColorName(colorCode)
+                val drawable= itemView.context.getColorDrawable(colorCode)
+                if(drawable != 0){ textView.endDrawableIcon(drawable)}
                 textView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT

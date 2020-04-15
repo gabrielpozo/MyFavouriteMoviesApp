@@ -15,7 +15,6 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
-import com.light.finder.ui.adapters.getColorString
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
@@ -136,9 +135,8 @@ class ProductVariationsActivity : AppCompatActivity() {
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text = productSelectedModel.productSelected.colorCctCode.getColorString(this)
+        textViewColor.text = getColorName(productSelectedModel.productSelected.colorCctCode)
         textViewFinish.text = productSelectedModel.productSelected.finish
-
     }
 
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
@@ -151,7 +149,6 @@ class ProductVariationsActivity : AppCompatActivity() {
             }
             finish()
             setAnimation()
-
         }
     }
 
