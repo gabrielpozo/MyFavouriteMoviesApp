@@ -62,6 +62,18 @@ class CartViewModel(
         }
     }
 
+    private val _connectionModel = MutableLiveData<InternetConnection>()
+    val connectionModel: LiveData<InternetConnection>
+        get() {
+            return _connectionModel
+        }
+
+    object InternetConnection
+
+    fun onInternetConnectionLost() {
+        _connectionModel.value = InternetConnection
+    }
+
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
         if (cartItemCount.itemQuantity > 0) {
             _modelItemCountRequest.value =

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
+import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CartComponent
@@ -31,6 +33,8 @@ class CartFragment : BaseFragment() {
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
+    private lateinit var connectivityRequester: ConnectivityRequester
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,16 +59,18 @@ class CartFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = app.applicationComponent.plus(CartModule())
+            connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
-        setupWebView()
         setObserver()
     }
 
+
     private fun setObserver() {
+        setupWebView()
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        viewModel.connectionModel.observe(viewLifecycleOwner, Observer { observeNetworkConnection() })
     }
-
 
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         if (modelReload.shouldReload) {
@@ -89,6 +95,15 @@ class CartFragment : BaseFragment() {
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
+        connectivityRequester.checkConnection { isConnected ->
+            if (!isConnected) {
+                webView.invisible()
+                viewModel.onInternetConnectionLost()
+            } else {
+                webView.reload()
+                webView.visible()
+            }
+        }
         viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
@@ -125,6 +140,14 @@ class CartFragment : BaseFragment() {
         loadWebView(URL)
     }
 
+    private fun observeNetworkConnection() {
+        val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
+        no_internet_banner_cart?.slideVertically(0F)
+        Handler().postDelayed({
+            no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
+        }, 5000)
+    }
+
     private fun loadWebView(url: String) {
         try {
             webView.settings.setSupportZoom(true)
@@ -136,8 +159,5 @@ class CartFragment : BaseFragment() {
         } catch (e: Exception) {
             Timber.w("can't load website")
         }
-
     }
-
-
 }
