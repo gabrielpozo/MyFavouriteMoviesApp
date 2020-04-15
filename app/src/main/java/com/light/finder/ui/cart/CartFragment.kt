@@ -95,7 +95,7 @@ class CartFragment : BaseFragment() {
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
-        connectivityRequester.checkConnection { isConnected ->
+/*        connectivityRequester.checkConnection { isConnected ->
             if (!isConnected) {
                 webView.invisible()
                 viewModel.onInternetConnectionLost()
@@ -103,7 +103,7 @@ class CartFragment : BaseFragment() {
                 webView.reload()
                 webView.visible()
             }
-        }
+        }*/
         viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
