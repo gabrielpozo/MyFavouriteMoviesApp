@@ -1,5 +1,6 @@
 package com.light.finder.extensions
 
+import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.view.View
@@ -30,9 +31,27 @@ fun View.gone() {
     visibility = View.GONE
 }
 
-fun View.slideVertically(distance: Float, duration: Long = 1000) {
+fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
+    val view = this
     this.animate().translationY(distance).setDuration(500)
+        .setListener(object: Animator.AnimatorListener{
+            override fun onAnimationRepeat(p0: Animator?) {
 
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                if (hide) {
+                    view.gone()
+                }
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+                view.visible()
+            }
+        })
 }
 
 fun ImageView.loadFile(file: File) {

@@ -146,6 +146,17 @@ class DetailFragment : BaseFragment() {
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
+
+                context?.let { it1 ->
+                    ContextCompat.getColor(
+                        it1,
+                        R.color.primaryOnDark
+                    )
+                }?.let { it2 ->
+                    buttonAddTocart.setBackgroundColor(
+                        it2
+                    )
+                }
             }
 
             override fun onAnimationRepeat(animation: Animator) {
