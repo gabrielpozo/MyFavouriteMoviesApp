@@ -17,7 +17,6 @@ class CartViewModel(
         const val URL_SUCCESS = "/checkout/onepage/success/"
     }
 
-
     private val _modelItemCountRequest = MutableLiveData<CountItemsModel>()
     val modelItemCountRequest: LiveData<CountItemsModel>
         get() = _modelItemCountRequest
@@ -41,6 +40,16 @@ class CartViewModel(
 
     data class ContentUrl(val url: String)
 
+    private val _modelNetworkConnection = MutableLiveData<NetworkModel>()
+    val modelNetworkConnection: LiveData<NetworkModel>
+        get() = _modelNetworkConnection
+
+
+    sealed class NetworkModel {
+        object NetworkOffline : NetworkModel()
+        object NetworkOnline : NetworkModel()
+    }
+
     fun onRequestGetItemCount() {
         launch {
             getItemCount.execute(
@@ -62,18 +71,6 @@ class CartViewModel(
         }
     }
 
-    private val _connectionModel = MutableLiveData<InternetConnection>()
-    val connectionModel: LiveData<InternetConnection>
-        get() {
-            return _connectionModel
-        }
-
-    object InternetConnection
-
-    fun onInternetConnectionLost() {
-        _connectionModel.value = InternetConnection
-    }
-
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
         if (cartItemCount.itemQuantity > 0) {
             _modelItemCountRequest.value =
@@ -83,5 +80,15 @@ class CartViewModel(
 
         }
     }
+
+
+    fun onCheckNetworkConnection(status: Boolean?) {
+        if (status == false) {
+            _modelNetworkConnection.value = NetworkModel.NetworkOffline
+        } else {
+            _modelNetworkConnection.value = NetworkModel.NetworkOnline
+        }
+    }
+
 
 }
