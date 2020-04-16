@@ -236,7 +236,7 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
-                 Crashlytics.logException(CrashlyticsException(TIME_OUT_LOG_REPORT))
+                    CrashlyticsException(TIME_OUT_LOG_REPORT).logException()
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.timeout_sub),

@@ -12,12 +12,7 @@ import okhttp3.Response
 class HttpErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
-        var code = response.code
-
-        when (response.code != 200) {
-           true -> Crashlytics.logException(CrashlyticsException(code))
-        }
-
+        if (response.code != 200) CrashlyticsException(response.code).logException()
         return response
     }
 }
