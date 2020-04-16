@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.InternetUtil
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.di.modules.CartComponent
@@ -27,6 +29,7 @@ import timber.log.Timber
 class CartFragment : BaseFragment() {
     companion object {
         const val URL = "https://www.store.lightguide.signify.com/us/checkout/cart/"
+        const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
     private lateinit var component: CartComponent
@@ -34,7 +37,6 @@ class CartFragment : BaseFragment() {
     private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,9 +69,10 @@ class CartFragment : BaseFragment() {
 
     private fun setObserver() {
         setupWebView()
+        InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
-        viewModel.connectionModel.observe(viewLifecycleOwner, Observer { observeNetworkConnection() })
+        viewModel.modelNetworkConnection.observe(viewLifecycleOwner, Observer(::observeNetworkConnection))
     }
 
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
@@ -78,7 +81,6 @@ class CartFragment : BaseFragment() {
             reloadingCallback.setCurrentlyReloaded(false)
         }
     }
-
 
     private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
         when (countModel) {
@@ -91,19 +93,9 @@ class CartFragment : BaseFragment() {
         }
     }
 
-
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
-/*        connectivityRequester.checkConnection { isConnected ->
-            if (!isConnected) {
-                webView.invisible()
-                viewModel.onInternetConnectionLost()
-            } else {
-                webView.reload()
-                webView.visible()
-            }
-        }*/
         viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
@@ -140,12 +132,26 @@ class CartFragment : BaseFragment() {
         loadWebView(URL)
     }
 
-    private fun observeNetworkConnection() {
+    private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
+        when (model) {
+            is CartViewModel.NetworkModel.NetworkOnline -> {
+                webView.reload()
+                webView.visible()
+            }
+            is CartViewModel.NetworkModel.NetworkOffline -> {
+                webView.invisible()
+                displayNoInternetBanner()
+            }
+        }
+    }
+
+    private fun displayNoInternetBanner() {
+        if (no_internet_banner_cart.isVisible) { return}
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
             no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
-        }, 5000)
+        }, NO_INTERNET_BANNER_DELAY)
     }
 
     private fun loadWebView(url: String) {
@@ -159,5 +165,9 @@ class CartFragment : BaseFragment() {
         } catch (e: Exception) {
             Timber.w("can't load website")
         }
+    }
+
+    fun checkIfOffline() {
+        if (!InternetUtil.isInternetOn()) displayNoInternetBanner()
     }
 }
