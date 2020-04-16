@@ -5,6 +5,7 @@ import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import com.light.finder.common.InternetUtil
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
 import io.fabric.sdk.android.Fabric
@@ -23,6 +24,8 @@ class SignifyApp : Application(), CameraXConfig.Provider {
             Timber.plant(Timber.DebugTree())
             enableDebugMode()
         }
+
+        InternetUtil.init(this)
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
