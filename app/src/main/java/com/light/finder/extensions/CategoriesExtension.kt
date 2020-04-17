@@ -115,7 +115,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         maxWattage,
         maxEnergySaving,
         minEnergySaving,
-        colors
+        colors,
+        finishCodes
     )
 
 
@@ -131,7 +132,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         maxWattage,
         maxEnergySaving,
         minEnergySaving,
-        colors
+        colors,
+        finishCodes
     )
 
 

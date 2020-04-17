@@ -13,6 +13,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.light.domain.model.Category
 import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
@@ -82,11 +83,13 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
 
+
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
                     val category = categoryParcelable.deparcelizeCategory()
                     viewModel.onRetrieveProduct(category)
+                    checkCodesValidity(category)
                     layoutChangeVariation.setOnClickListener {
                         viewModel.onChangeVariationClick()
                     }
@@ -286,7 +289,6 @@ class DetailFragment : BaseFragment() {
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product, contentProduct.isSingleProduct)
         productSapId = contentProduct.product.sapID12NC.toString()
-
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
@@ -303,7 +305,7 @@ class DetailFragment : BaseFragment() {
     private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
         val packs = String.format(
             getString(R.string.form_factor_pack),
-            product.formfactorType,
+            requireContext().getformFactortType(product.formfactorType),
             product.qtyLampSku
         )
         val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
@@ -335,8 +337,8 @@ class DetailFragment : BaseFragment() {
         val changeVariation = String.format(
             getString(R.string.change_variation),
             product.wattageReplaced,
-            requireContext().getColorName(product.colorCctCode),
-            requireContext().getFinishName(product.productFinishCode)
+            requireContext().getColorName(product.colorCctCode, true),
+            requireContext().getFinishName(product.productFinishCode, true)
    /*         product.colorCctCode.getColorString(requireContext()),
             product.productFinishCode.getFinishString(requireContext())*/
         )
@@ -394,6 +396,11 @@ class DetailFragment : BaseFragment() {
                 // no use but have to implement
             }
         })
+    }
+
+    private fun checkCodesValidity(category: Category) {
+        checkCategoryColorCodesAreValid(category.colors)
+        checkCategoryFinishCodesAreValid(category.finishCodes)
     }
 }
 

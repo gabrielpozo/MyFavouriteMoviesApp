@@ -16,7 +16,8 @@ data class Category(
     val maxWattage: String,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,
-    val colors: List<Int>
+    val colors: List<Int>,
+    val finishCodes: List<Int>
 )
 
 data class Product(
@@ -50,7 +51,7 @@ data class Product(
     var qtySkuCase: Int,
     var factorTypeCode: Int,
     var colorCctCode: Int,
-    var formfactorType: String,
+    var formfactorType: Int,
     var productFinishCode: Int,
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
