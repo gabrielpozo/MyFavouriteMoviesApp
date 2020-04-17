@@ -86,8 +86,8 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): 
 
 fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url)
+        .override(460, 460)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .fitCenter()
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 

@@ -1,6 +1,5 @@
 package com.light.finder.ui.adapters
 
-import android.content.Context
 import android.view.View
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
@@ -50,18 +49,4 @@ fun View.setDrawableOnBackground(filter: FilterVariationCF) {
         availableOptions.visibility = View.GONE
     }
 
-}
-
-fun Int.getColorString(context: Context): String = when (this) {
-    1 -> "Warm"
-    2 -> "Warm white"
-    3 -> "Cool white"
-    4 -> "Daylight"
-    else -> ""
-}
-
-fun Int.getFinishString(context: Context): String = when (this) {
-    1 -> "Clear"
-    2 -> "Frosted"
-    else -> ""
 }

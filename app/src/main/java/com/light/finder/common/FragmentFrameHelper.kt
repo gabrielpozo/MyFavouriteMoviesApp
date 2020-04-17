@@ -86,8 +86,8 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
         if (current is CartFragment) {
             current.onReloadWebView()
             current.requestItemCount()
+            current.checkIfOffline()
         }
-
     }
 
 }

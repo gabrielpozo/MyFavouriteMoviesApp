@@ -22,6 +22,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.crashlytics.android.Crashlytics
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.finder.CameraActivity
@@ -31,6 +32,7 @@ import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.local.ImageRepository
+import com.light.finder.data.source.remote.reports.CrashlyticsException
 import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
@@ -91,6 +93,7 @@ class CameraFragment : BaseFragment() {
         private const val PHOTO_EXTENSION = ".jpg"
         private const val ANIMATION_FAST_MILLIS = 50L
         private const val ANIMATION_SLOW_MILLIS = 100L
+        private const val TIME_OUT_LOG_REPORT = 408
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -233,6 +236,7 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
+                    CrashlyticsException(TIME_OUT_LOG_REPORT).logException()
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.timeout_sub),
