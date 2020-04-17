@@ -71,7 +71,7 @@
 
     </style>
 
-    <style name="BlueButton" parent="Theme.AppCompat">
+    <style name="BlueButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">50dp</item>
         <item name="android:height">50dp</item>
         <item name="android:fontFamily">@font/bold</item>
