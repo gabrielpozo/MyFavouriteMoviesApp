@@ -84,5 +84,8 @@
     <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
     <string name="badge_plus_100">99+</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
+    <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
 
 </resources>

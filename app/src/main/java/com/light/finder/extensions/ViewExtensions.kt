@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.R
@@ -18,6 +19,9 @@ import java.util.*
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
 
+fun TextView.setHtmlText(source: String) {
+    this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
 
 fun View.visible() {
     visibility = View.VISIBLE
