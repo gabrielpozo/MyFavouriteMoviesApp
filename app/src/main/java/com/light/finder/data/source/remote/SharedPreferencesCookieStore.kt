@@ -48,7 +48,12 @@ open class SharedPreferencesCookieStore(
             val index = getEffectiveURI(uri)
             val cookies = uriIndex[index]
             //TODO Check if crash Fatal Exception: java.util.ConcurrentModificationException solved
-            preferences.edit().putString(index.toString(), gson.toJson(cookies)).commit()
+            try {
+                preferences.edit().putString(index.toString(), gson.toJson(cookies)).commit()
+            } catch (e:Exception) {
+                Log.e("ERROR", "ConcurrentModificationException")
+            }
+
         }
     }
 
