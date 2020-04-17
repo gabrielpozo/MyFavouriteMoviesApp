@@ -48,7 +48,7 @@ class TipsAndTricksActivity : AppCompatActivity() {
         viewPager.setPadding(60, 20, 60, 20)
         viewPager.pageMargin = 24
         dots_indicator?.visibility = View.VISIBLE
-        dots_indicator?.setViewPager(viewPager)
+        dots_indicator?.attachViewPager(viewPager)
 
     }
 

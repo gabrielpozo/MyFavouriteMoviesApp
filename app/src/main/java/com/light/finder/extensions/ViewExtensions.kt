@@ -4,10 +4,13 @@ import android.animation.Animator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.R
@@ -20,6 +23,11 @@ import java.util.*
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
 
+internal fun Drawable.tint(@ColorInt color: Int): Drawable {
+    val wrapped = DrawableCompat.wrap(this)
+    DrawableCompat.setTint(wrapped, color)
+    return wrapped
+}
 
 fun View.visible() {
     visibility = View.VISIBLE

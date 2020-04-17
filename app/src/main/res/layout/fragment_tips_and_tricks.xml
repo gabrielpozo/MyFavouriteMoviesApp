@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -20,7 +19,7 @@
     </com.light.finder.common.WrappingViewPager>
 
 
-    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+    <com.light.finder.ui.common.DotsIndicator
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,11 +29,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:dotsColor="@color/gallerySelected"
-        app:dotsSize="10dp"
-        app:dotsSpacing="3dp"
-        app:dotsStrokeColor="@color/galleryUnselected"
-        app:dotsStrokeWidth="5dp"
+        app:dot_drawable="@drawable/dot_selected"
+        app:dot_drawable_unselected="@drawable/dot"
+        app:dot_height="10dp"
+        app:dot_margin="3dp"
+        app:dot_width="10dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonGotIt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
