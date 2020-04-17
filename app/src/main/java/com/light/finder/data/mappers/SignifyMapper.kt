@@ -31,8 +31,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     } ?: "",
                     maxEnergySaving = categoryDto.categoryEnergySave?.maxEnergySaving ?: 0.0f,
                     minEnergySaving = categoryDto.categoryEnergySave?.minEnergySaving ?: 0.0f,
-                    colors = categoryDto.categoryCctCode?.map { it } ?: emptyList()
-
+                    colors = categoryDto.categoryCctCode?.map { it } ?: emptyList(),
+                    finishCodes = categoryDto.categoryFilterFinishCode?.map { it } ?: emptyList()
                 )
             )
         }
@@ -75,14 +75,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         qtySkuCase = productDto.qtySkuCase ?: 0,
         factorTypeCode = productDto.factorTypeCode ?: 0,
         colorCctCode = productDto.productCctCode ?: 0,
-        formfactorType = when (productDto.factorTypeCode) {
-            1 -> "Bulb"
-            2 -> "Reflector"
-            3 -> "Coil"
-            4 -> "Tube"
-            else -> ""
-
-        },
+        formfactorType = productDto.factorTypeCode ?: 0,
         productFinishCode = productDto.productFinishCode ?: 0
 
     )
