@@ -378,7 +378,7 @@ class DetailFragment : BaseFragment() {
         }
 
         dots_indicator?.visibility = View.VISIBLE
-        dots_indicator?.setViewPager(viewPagerDetail)
+        dots_indicator?.attachViewPager(viewPagerDetail)
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(p0: View, newState: Int) {

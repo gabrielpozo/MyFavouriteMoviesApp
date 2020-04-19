@@ -1,12 +1,8 @@
 package com.light.finder.ui.common
 
 
-import android.animation.Animator
-import android.animation.AnimatorInflater.loadAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.util.TypedValue.COMPLEX_UNIT_DIP
 import android.view.Gravity.CENTER
 import android.view.View
 import android.view.animation.Interpolator
@@ -19,7 +15,6 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.viewpager.widget.ViewPager
 import com.light.finder.R
 import com.light.finder.extensions.tint
-import java.lang.Math.abs
 
 
 class DotsIndicator(
@@ -36,15 +31,8 @@ class DotsIndicator(
     private var indicatorBackgroundResId: Int = 0
     private var indicatorUnselectedBackgroundResId: Int = 0
 
-    private var animatorOut: Animator
-    private var animatorIn: Animator
-    private var immediateAnimatorOut: Animator
-    private var immediateAnimatorIn: Animator
-
     private var lastPosition = -1
 
-    private var animatorResId: Int = 0
-    private var animatorReverseResId: Int = 0
     private var backgroundResId: Int = 0
     private var unselectedBackgroundId: Int = 0
     private var dotTint: Int = 0
@@ -64,12 +52,6 @@ class DotsIndicator(
             intrinsicOrientation = ta.getInt(R.styleable.DotsIndicator_dots_orientation, -1)
             intrinsicGravity = ta.getInt(R.styleable.DotsIndicator_dots_gravity, -1)
 
-            this.animatorResId = ta.getResourceId(
-                R.styleable.DotsIndicator_dots_animator,
-                R.animator.scale_with_alpha
-            )
-            this.animatorReverseResId =
-                ta.getResourceId(R.styleable.DotsIndicator_dots_animator_reverse, 0)
             this.backgroundResId = ta.getResourceId(
                 R.styleable.DotsIndicator_dot_drawable,
                 R.drawable.dot
@@ -83,22 +65,9 @@ class DotsIndicator(
             ta.recycle()
         }
 
-        val miniSize = (TypedValue.applyDimension(
-            COMPLEX_UNIT_DIP,
-            DEFAULT_INDICATOR_WIDTH.toFloat(),
-            resources.displayMetrics
-        ) + 0.5f).toInt()
         indicatorWidth =  intrinsicWidth
         indicatorHeight =  intrinsicHeight
         indicatorMargin =  intrinsicMargin
-
-        animatorOut = createAnimatorOut()
-        immediateAnimatorOut = createAnimatorOut()
-        immediateAnimatorOut.duration = 0
-
-        animatorIn = createAnimatorIn()
-        immediateAnimatorIn = createAnimatorIn()
-        immediateAnimatorIn.duration = 0
 
         indicatorBackgroundResId =
             if (this.backgroundResId == 0) R.drawable.dot else this.backgroundResId
@@ -157,36 +126,21 @@ class DotsIndicator(
         for (i in 0 until count) {
             val bgDrawable =
                 if (currentItem() == i) indicatorBackgroundResId else indicatorUnselectedBackgroundResId
-            val animator =
-                if (currentItem() == i) immediateAnimatorOut else immediateAnimatorIn
             addIndicator(
                 orientation = orientation,
-                drawableRes = bgDrawable,
-                animator = animator
+                drawableRes = bgDrawable
             )
         }
     }
 
     private fun internalPageSelected(position: Int) {
-        if (animatorIn.isRunning) {
-            animatorIn.end()
-            animatorIn.cancel()
-        }
-        if (animatorOut.isRunning) {
-            animatorOut.end()
-            animatorOut.cancel()
-        }
         val currentIndicator = if (lastPosition >= 0) getChildAt(lastPosition) else null
         if (currentIndicator != null) {
             currentIndicator.setBackgroundResource(indicatorUnselectedBackgroundResId)
-            animatorIn.setTarget(currentIndicator)
-            animatorIn.start()
         }
         val selectedIndicator = getChildAt(position)
         if (selectedIndicator != null) {
             selectedIndicator.setBackgroundResource(indicatorBackgroundResId)
-            animatorOut.setTarget(selectedIndicator)
-            animatorOut.start()
         }
     }
 
@@ -200,13 +154,9 @@ class DotsIndicator(
 
     private fun addIndicator(
         orientation: Int,
-        @DrawableRes drawableRes: Int,
-        animator: Animator
+        @DrawableRes drawableRes: Int
     ) {
-        if (animator.isRunning) {
-            animator.end()
-            animator.cancel()
-        }
+
         val indicator = View(context)
 
         var bgDrawable = getDrawable(context, drawableRes)
@@ -227,22 +177,8 @@ class DotsIndicator(
         }
 
         indicator.layoutParams = lp
-        animator.setTarget(indicator)
-        animator.start()
     }
 
-    private fun createAnimatorOut() = loadAnimator(context, this.animatorResId)
-
-    private fun createAnimatorIn(): Animator {
-        val animatorIn: Animator
-        if (this.animatorReverseResId == 0) {
-            animatorIn = loadAnimator(context, this.animatorResId)
-            animatorIn.interpolator = ReverseInterpolator()
-        } else {
-            animatorIn = loadAnimator(context, this.animatorReverseResId)
-        }
-        return animatorIn
-    }
 
     private fun currentItem() = viewPager?.currentItem ?: -1
 
