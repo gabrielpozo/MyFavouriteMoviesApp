@@ -24,7 +24,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
 import timber.log.Timber
-
+import android.animation.ObjectAnimator
 
 class CartFragment : BaseFragment() {
     companion object {
@@ -68,7 +68,6 @@ class CartFragment : BaseFragment() {
 
 
     private fun setObserver() {
-        setupWebView()
         InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
@@ -103,6 +102,8 @@ class CartFragment : BaseFragment() {
     @SuppressLint("SetJavaScriptEnabled")
     fun setupWebView() {
 
+        val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 1000, 0)
+
         val webViewClient: WebViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(
@@ -114,15 +115,22 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                progressBar.visible()
                 super.onPageStarted(view, url, favicon)
+                progressBar.visible()
+                ObjectAnimator.ofInt(progressBar, "progress", 79).start()
+
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                view?.scrollTo(0,0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
                 viewModel.onRequestGetItemCount()
-                progressBar.gone()
                 super.onPageFinished(view, url)
+            }
+
+            override fun onPageCommitVisible(view: WebView?, url: String?) {
+                super.onPageCommitVisible(view, url)
+                progressBar.gone()
             }
         }
         webView.webViewClient = webViewClient
@@ -131,6 +139,8 @@ class CartFragment : BaseFragment() {
 
         loadWebView(URL)
     }
+
+
 
     private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
         when (model) {

@@ -7,7 +7,11 @@ import com.light.util.SERVER_ERROR_RECOGNITION
 import com.light.util.TIMEOUT_ERROR_RECOGNITION
 import timber.log.Timber
 
-class CrashlyticsException(private val code: Int) {
+class CrashlyticsException(
+    private val code: Int,
+    private val field: String?,
+    private val value: Int?
+) {
 
     private var msg: String? = "Crashlytics Exception"
 
@@ -24,11 +28,20 @@ class CrashlyticsException(private val code: Int) {
         val e = Exception(code.toString())
         e.stackTrace = arrayOfNulls(0)
 
+        if (field != null)  {
+            Crashlytics.setString("Field", field)
+        }
+
+        if (value != null)  {
+            Crashlytics.setInt("Value", value)
+        }
+
         Crashlytics.setInt("Response Code", code)
         Crashlytics.setString("Reason", msg)
         Crashlytics.log(msg)
         Crashlytics.logException(e)
         Timber.d(e)
     }
+
 
 }
