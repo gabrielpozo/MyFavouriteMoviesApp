@@ -130,7 +130,7 @@ class CartFragment : BaseFragment() {
 
             override fun onPageCommitVisible(view: WebView?, url: String?) {
                 super.onPageCommitVisible(view, url)
-                progressBar.gone()
+                progressBar.invisible()
             }
         }
         webView.webViewClient = webViewClient
