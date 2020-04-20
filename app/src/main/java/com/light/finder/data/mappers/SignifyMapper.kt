@@ -39,7 +39,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
     }
 
     Message(
-        categories = categoriesList
+        categories = categoriesList.sortedBy { it.categoryIndex }
     )
 }
 
