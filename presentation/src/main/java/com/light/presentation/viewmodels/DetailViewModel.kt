@@ -12,6 +12,7 @@ import com.light.usecases.GetAddToCartUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class DetailViewModel(
@@ -101,7 +102,7 @@ class DetailViewModel(
         _modelRequest.value = RequestModelContent(Event(cartItem))
     }
 
-    private fun handleErrorResponse(hasBeenCancelled: Boolean) {
+    private fun handleErrorResponse(hasBeenCancelled: Boolean, exception: Exception?, message: String) {
         _modelDialog.value = Event(DialogModel.ServerError)
     }
 
