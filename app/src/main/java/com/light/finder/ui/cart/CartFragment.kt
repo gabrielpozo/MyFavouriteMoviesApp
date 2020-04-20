@@ -136,7 +136,6 @@ class CartFragment : BaseFragment() {
                 viewModel.onRequestGetItemCount()
                 super.onPageFinished(view, url)
             }
-
         }
         webView.webViewClient = webViewClient
         webView.webChromeClient = webChromeClient

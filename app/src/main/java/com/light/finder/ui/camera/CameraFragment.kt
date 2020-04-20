@@ -141,6 +141,7 @@ class CameraFragment : BaseFragment() {
             Timber.e("$TAG Photo capture failed: $message cause")
         }
 
+        @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
@@ -245,11 +246,10 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.NotBulbIdentified -> {
-                    showErrorDialog(
+                    showNoBulbErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
-                        getString(R.string.try_again),
-                        false
+                        getString(R.string.try_again)
                     )
                 }
 
@@ -423,6 +423,41 @@ class CameraFragment : BaseFragment() {
         } else {
             dialogView.buttonNeutral.gone()
         }
+        alertDialog.show()
+
+    }
+
+
+    private fun showNoBulbErrorDialog(
+        titleDialog: String,
+        subtitleDialog: String,
+        buttonPositiveText: String
+    ) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        timer.cancel()
+        lottieAnimationView.pauseAnimation()
+        dialogView.buttonPositive.text = buttonPositiveText
+        dialogView.textViewTitleDialog.text = titleDialog
+        dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.setOnClickListener {
+            viewModel.onPositiveAlertDialogButtonClicked("retry")
+        }
+
+        dialogView.buttonNegative.gone()
+
+        dialogView.buttonNeutral.text = getString(R.string.help_me_scan)
+        dialogView.buttonNeutral.setOnClickListener {
+            alertDialog.dismiss()
+            revertCameraView()
+            navigationCallBack.navigateToTipsAndTricksActivity()
+        }
+
         alertDialog.show()
 
     }
