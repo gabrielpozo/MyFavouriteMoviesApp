@@ -39,6 +39,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
     }
 
     Message(
+        //TODO move sortedBy to repository
         categories = categoriesList.sortedBy { it.categoryIndex }
     )
 }
