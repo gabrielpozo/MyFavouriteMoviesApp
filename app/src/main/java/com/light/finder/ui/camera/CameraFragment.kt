@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +23,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.crashlytics.android.Crashlytics
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
+import com.light.domain.model.ParsingError
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
@@ -51,6 +52,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executor
@@ -94,6 +96,8 @@ class CameraFragment : BaseFragment() {
         private const val ANIMATION_FAST_MILLIS = 50L
         private const val ANIMATION_SLOW_MILLIS = 100L
         private const val TIME_OUT_LOG_REPORT = 408
+        private const val PARSE_ERROR_LOG_REPORT = 422
+
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -142,6 +146,7 @@ class CameraFragment : BaseFragment() {
             Timber.e("$TAG Photo capture failed: $message cause")
         }
 
+        @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
@@ -236,7 +241,7 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
-                    CrashlyticsException(TIME_OUT_LOG_REPORT).logException()
+                    CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.timeout_sub),
@@ -246,15 +251,21 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.NotBulbIdentified -> {
-                    showErrorDialog(
+                    showNoBulbErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
-                        getString(R.string.try_again),
-                        false
+                        getString(R.string.try_again)
                     )
                 }
 
                 is DialogModel.ServerError -> {
+                    if (errorModel.exception is ParsingError) {
+                        CrashlyticsException(
+                            PARSE_ERROR_LOG_REPORT,
+                            errorModel.errorMessage,
+                            null
+                        ).logException()
+                    }
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.error_sub),
@@ -424,6 +435,41 @@ class CameraFragment : BaseFragment() {
         } else {
             dialogView.buttonNeutral.gone()
         }
+        alertDialog.show()
+
+    }
+
+
+    private fun showNoBulbErrorDialog(
+        titleDialog: String,
+        subtitleDialog: String,
+        buttonPositiveText: String
+    ) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        timer.cancel()
+        lottieAnimationView.pauseAnimation()
+        dialogView.buttonPositive.text = buttonPositiveText
+        dialogView.textViewTitleDialog.text = titleDialog
+        dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.setOnClickListener {
+            viewModel.onPositiveAlertDialogButtonClicked("retry")
+        }
+
+        dialogView.buttonNegative.gone()
+
+        dialogView.buttonNeutral.text = getString(R.string.help_me_scan)
+        dialogView.buttonNeutral.setOnClickListener {
+            alertDialog.dismiss()
+            revertCameraView()
+            navigationCallBack.navigateToTipsAndTricksActivity()
+        }
+
         alertDialog.show()
 
     }

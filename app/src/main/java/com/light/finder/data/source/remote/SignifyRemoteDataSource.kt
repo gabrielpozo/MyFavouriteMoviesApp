@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.light.data.Result
 import com.light.domain.model.Message
 import com.light.finder.data.mappers.mapServerMessagesToDomain
-import com.light.source.remote.BaseDataSource
+import com.light.finder.data.source.BaseDataSource
 import com.light.source.remote.RemoteDataSource
 import com.light.util.BASE64_PREFIX
 

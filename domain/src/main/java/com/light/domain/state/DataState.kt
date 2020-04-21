@@ -13,3 +13,4 @@ sealed class DataState<out T> {
         DataState<Nothing>()
 
 }
+

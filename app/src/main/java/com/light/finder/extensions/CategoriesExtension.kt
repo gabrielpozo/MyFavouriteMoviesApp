@@ -93,6 +93,7 @@ fun ImageView.loadUrl(url: String) {
 
 fun ImageView.loadUrlCenterCrop(url: String) {
     Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
+        .placeholder(R.drawable.fallback_image)
         .into(this)
 }
 
@@ -114,7 +115,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         maxWattage,
         maxEnergySaving,
         minEnergySaving,
-        colors
+        colors,
+        finishCodes
     )
 
 
@@ -130,7 +132,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         maxWattage,
         maxEnergySaving,
         minEnergySaving,
-        colors
+        colors,
+        finishCodes
     )
 
 

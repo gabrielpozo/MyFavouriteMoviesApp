@@ -37,7 +37,9 @@ open class SharedPreferencesCookieStore(
     override fun removeAll(): Boolean {
         super.removeAll()
 
-        preferences.edit().clear().apply()
+        synchronized(this) {
+            preferences.edit().clear().apply()
+        }
         return true
     }
 
@@ -47,8 +49,14 @@ open class SharedPreferencesCookieStore(
         uri?.let {
             val index = getEffectiveURI(uri)
             val cookies = uriIndex[index]
-            //TODO Check if crash Fatal Exception: java.util.ConcurrentModificationException solved
-            preferences.edit().putString(index.toString(), gson.toJson(cookies)).commit()
+            try {
+                synchronized(this) {
+                    preferences.edit().putString(index.toString(), gson.toJson(cookies)).apply()
+                }
+            } catch (e:Exception) {
+                Log.e("ERROR", "ConcurrentModificationException")
+            }
+
         }
     }
 
@@ -59,13 +67,15 @@ open class SharedPreferencesCookieStore(
             val index = getEffectiveURI(uri)
             val cookies = uriIndex[index]
 
-            preferences.edit().apply {
-                if (cookies == null) {
-                    remove(index.toString())
-                } else {
-                    putString(index.toString(), gson.toJson(cookies))
-                }
-            }.apply()
+            synchronized(this) {
+                preferences.edit().apply {
+                    if (cookies == null) {
+                        remove(index.toString())
+                    } else {
+                        putString(index.toString(), gson.toJson(cookies))
+                    }
+                }.apply()
+            }
         }
 
         return result

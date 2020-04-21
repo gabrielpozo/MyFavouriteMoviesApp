@@ -68,6 +68,7 @@
     <string name="oops">Oops!</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="not_now">Not now</string>
+    <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
     <string name="enable_camera_button">Go to Settings</string>

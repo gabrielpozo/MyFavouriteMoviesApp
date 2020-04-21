@@ -7,84 +7,77 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
     val categoriesList: ArrayList<Category> = ArrayList()
     messageDto.categories?.map { categoryDto ->
-        if (categoryDto.categoryProducts?.isNotEmpty() == true) {
+        if (categoryDto.categoryProducts.isNotEmpty()) {
             categoriesList.add(
                 Category(
-                    categoryProductBase = categoryDto.categoryProductBase ?: "",
-                    categoryProducts = categoryDto.categoryProducts?.map(mapServerProductToDomain),
-                    categoryName = categoryDto.categoryName ?: "",
-                    categoryIndex = categoryDto.categoryIndex ?: 0,
-                    categoryImage = categoryDto.categoryImage ?: "",
+                    categoryProductBase = categoryDto.categoryProductBase,
+                    categoryProducts = categoryDto.categoryProducts.map(mapServerProductToDomain),
+                    categoryName = categoryDto.categoryName ,
+                    categoryIndex = categoryDto.categoryIndex,
+                    categoryImage = categoryDto.categoryImage,
                     priceRange = getMinMaxPriceTag(
                         categoryDto.categoryPrice?.minPrice,
                         categoryDto.categoryPrice?.maxPrice
                     ),
-                    minWattage = categoryDto.categoryWattReplace?.let { list ->
+                    minWattage = categoryDto.categoryWattReplace.let { list ->
                         if (list.isNotEmpty()) {
                             list[0].toString()
                         } else ""
-                    } ?: "",
-                    maxWattage = categoryDto.categoryWattReplace?.let { list ->
+                    },
+                    maxWattage = categoryDto.categoryWattReplace.let { list ->
                         if (list.isNotEmpty() && list.size > 1) {
                             list[1].toString()
                         } else ""
-                    } ?: "",
-                    maxEnergySaving = categoryDto.categoryEnergySave?.maxEnergySaving ?: 0.0f,
-                    minEnergySaving = categoryDto.categoryEnergySave?.minEnergySaving ?: 0.0f,
-                    colors = categoryDto.categoryCctCode?.map { it } ?: emptyList()
-
+                    },
+                    maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
+                    minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
+                    colors = categoryDto.categoryCctCode.map { it },
+                    finishCodes = categoryDto.categoryFilterFinishCode.map { it }
                 )
             )
         }
     }
 
     Message(
-        categories = categoriesList
+        //TODO move sortedBy to repository
+        categories = categoriesList.sortedBy { it.categoryIndex }
     )
 }
 
 private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
     Product(
-        name = productDto.name ?: "",
-        index = productDto.index ?: 0,
-        spec1 = productDto.spec1 ?: 0.0f,
-        spec3 = productDto.spec3 ?: emptyList(),
-        spec2 = productDto.spec2 ?: "",
-        imageUrls = productDto.imageUrls ?: emptyList(),
-        description = productDto.description ?: "",
-        scene = productDto.scene ?: "",
-        categoryName = productDto.categoryName ?: "",
-        sapID12NC = productDto.sapID12NC ?: 0,
-        qtyLampscase = productDto.qtyLampscase ?: 0,
-        wattageReplaced = productDto.wattageReplaced ?: 0,
-        country = productDto.country ?: "",
-        priority = productDto.priority ?: 0,
-        wattageClaim = productDto.wattageClaim ?: 0.0f,
-        factorBase = productDto.factorBase ?: "",
-        discountProc = productDto.discountProc ?: 0,
-        sapID10NC = productDto.sapID10NC ?: 0,
-        dimmingCode = productDto.dimmingCode ?: 0,
-        finish = productDto.finish ?: "",
-        promoted = productDto.promoted ?: 0,
-        priceSku = productDto.priceSku ?: 0.0f,
-        priceLamp = productDto.priceLamp ?: 0.0f,
-        pricePack = productDto.pricePack ?: 0.0f,
-        factorShape = productDto.factorShape ?: "",
-        qtyLampSku = productDto.qtyLampSku ?: 0,
-        discountValue = productDto.discountValue ?: 0,
-        qtySkuCase = productDto.qtySkuCase ?: 0,
-        factorTypeCode = productDto.factorTypeCode ?: 0,
-        colorCctCode = productDto.productCctCode ?: 0,
-        formfactorType = when (productDto.factorTypeCode) {
-            1 -> "Bulb"
-            2 -> "Reflector"
-            3 -> "Coil"
-            4 -> "Tube"
-            else -> ""
-
-        },
-        productFinishCode = productDto.productFinishCode ?: 0
-
+        name = productDto.name ,
+        index = productDto.index ,
+        spec1 = productDto.spec1 ,
+        spec3 = productDto.spec3 ,
+        spec2 = productDto.spec2,
+        imageUrls = productDto.imageUrls ,
+        description = productDto.description ,
+        scene = productDto.scene,
+        categoryName = productDto.categoryName,
+        sapID12NC = productDto.sapID12NC,
+        qtyLampscase = productDto.qtyLampscase,
+        wattageReplaced = productDto.wattageReplaced,
+        country = productDto.country,
+        priority = productDto.priority,
+        wattageClaim = productDto.wattageClaim,
+        factorBase = productDto.factorBase,
+        discountProc = productDto.discountProc,
+        sapID10NC = productDto.sapID10NC,
+        dimmingCode = productDto.dimmingCode,
+        finish = productDto.finish,
+        promoted = productDto.promoted,
+        priceSku = productDto.priceSku,
+        priceLamp = productDto.priceLamp,
+        pricePack = productDto.pricePack,
+        factorShape = productDto.factorShape,
+        qtyLampSku = productDto.qtyLampSku,
+        discountValue = productDto.discountValue,
+        qtySkuCase = productDto.qtySkuCase,
+        factorTypeCode = productDto.factorTypeCode,
+        colorCctCode = productDto.productCctCode,
+        formfactorType = productDto.factorTypeCode,
+        productFinishCode = productDto.productFinishCode
     )
 }
 

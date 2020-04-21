@@ -1,19 +1,21 @@
 package com.light.finder.extensions
 
+import android.R.attr.animationDuration
 import android.animation.Animator
-import android.content.Context
+import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.text.HtmlCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.light.finder.R
 import com.light.finder.common.SafeClickListener
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 import java.io.File
 import java.util.*
 
@@ -23,6 +25,11 @@ private const val bitmapHeight = 2200
 
 fun TextView.setHtmlText(source: String) {
     this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+internal fun Drawable.tint(@ColorInt color: Int): Drawable {
+    val wrapped = DrawableCompat.wrap(this)
+    DrawableCompat.setTint(wrapped, color)
+    return wrapped
 }
 
 fun View.visible() {
@@ -35,6 +42,30 @@ fun View.invisible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.hideWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(0f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.GONE
+            }
+        })
+}
+
+fun View.showWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(1f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.VISIBLE
+            }
+        })
 }
 
 fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {

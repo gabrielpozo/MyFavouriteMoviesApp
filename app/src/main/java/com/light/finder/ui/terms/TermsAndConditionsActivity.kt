@@ -7,15 +7,21 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.di.modules.TermsComponent
+import com.light.finder.di.modules.TermsModule
+import com.light.finder.extensions.app
+import com.light.finder.extensions.getViewModel
+import com.light.presentation.viewmodels.TermsViewModel
+import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
 
-    //private lateinit var component: SplashComponent
-    //private val splashViewModel: SplashViewModel by lazy { getViewModel { component.splashViewModel } }
+    private lateinit var component: TermsComponent
+    private val termsViewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //component = app.applicationComponent.plus(SplashModule())
+        component = app.applicationComponent.plus(TermsModule())
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -23,6 +29,21 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
+
+        if (checkBox.isChecked) {
+            //todo button not disabled background
+            buttonTerms.isClickable = true
+            buttonTerms.isFocusable = true
+        } else {
+            //todo button disabled background
+            buttonTerms.isClickable = false
+            buttonTerms.isFocusable = false
+        }
+
+        buttonTerms.setOnClickListener {
+            termsViewModel.onSharedPrefSaved(true)
+            goToCameraActivity()
+        }
 
     }
 
