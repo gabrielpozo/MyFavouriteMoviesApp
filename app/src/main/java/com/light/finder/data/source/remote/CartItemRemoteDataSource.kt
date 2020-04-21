@@ -4,7 +4,7 @@ import android.content.Context
 import com.light.data.Result
 import com.light.domain.model.Cart
 import com.light.finder.data.mappers.mapCartToDomain
-import com.light.source.remote.BaseDataSource
+import com.light.finder.data.source.BaseDataSource
 import com.light.source.remote.CartRemoteDataSource
 
 class CartItemRemoteDataSource(val context: Context) : BaseDataSource(),
