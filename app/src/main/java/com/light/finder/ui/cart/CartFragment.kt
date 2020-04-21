@@ -12,6 +12,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.common.ConnectivityRequester
@@ -108,7 +109,7 @@ class CartFragment : BaseFragment() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
 
-                if (newProgress < 100 && progressBar.isGone) {
+                if (newProgress < 100 && progressBar.isInvisible) {
                     progressBar.showWithAnimation()
                 }
 
