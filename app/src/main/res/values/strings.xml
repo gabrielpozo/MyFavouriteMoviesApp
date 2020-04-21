@@ -92,4 +92,8 @@
     <string name="unable_to_add">Unable to add to cart</string>
     <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
     <string name="continue_terms">Continue</string>
+    <string name="see_details">See details</string>
+    <string name="privacy_notice">Privacy Notice</string>
+    <string name="i_agree_with_the">I agree with the</string>
+    <string name="terms_of_use_text">Terms of Use</string>
 </resources>

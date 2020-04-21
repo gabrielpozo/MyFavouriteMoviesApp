@@ -18,7 +18,7 @@ class PrefManager(_context: Context) {
 
     var isTermsAccepted: Boolean
         //todo change def value to false
-        get() = pref.getBoolean(IS_TERMS_ACCEPTED, true)
+        get() = pref.getBoolean(IS_TERMS_ACCEPTED, false)
         set(isAccepted) {
             editor.putBoolean(IS_TERMS_ACCEPTED, isAccepted)
             editor.commit()

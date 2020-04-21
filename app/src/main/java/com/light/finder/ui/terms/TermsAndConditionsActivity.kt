@@ -7,21 +7,16 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.CameraActivity
 import com.light.finder.R
-import com.light.finder.di.modules.TermsComponent
-import com.light.finder.di.modules.TermsModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.getViewModel
-import com.light.presentation.viewmodels.TermsViewModel
 import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
 
-    private lateinit var component: TermsComponent
-    private val termsViewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
+    //private lateinit var component: TermsComponent
+    //private val termsViewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        component = app.applicationComponent.plus(TermsModule())
+        //component = app.applicationComponent.plus(TermsModule())
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -33,22 +28,38 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                view.background = resources.getDrawable(R.drawable.button_curvy_corners,theme)
+                //view.background = resources.getDrawable(R.drawable.button_curvy_corners,theme)
                 buttonTerms.isClickable = true
                 buttonTerms.isFocusable = true
             } else {
-                view.background = resources.getDrawable(R.drawable.button_curvy_corners_border_disabled,theme)
+                //view.background = resources.getDrawable(R.drawable.button_curvy_corners_border_disabled,theme)
                 buttonTerms.isClickable = false
                 buttonTerms.isFocusable = false
             }
         }
 
+        textViewStatement.setOnClickListener {
+            goToPrivacyStatementActivity()
+        }
+
+        textViewTerms.setOnClickListener {
+            goToTermsActivity()
+        }
+
 
         buttonTerms.setOnClickListener {
-            termsViewModel.onSharedPrefSaved(true)
+           // termsViewModel.onSharedPrefSaved(true)
             goToCameraActivity()
         }
 
+    }
+
+    private fun goToTermsActivity() {
+        startActivity(Intent(this, TermsActivity::class.java))
+    }
+
+    private fun goToPrivacyStatementActivity() {
+        startActivity(Intent(this, PrivacyStatementActivity::class.java))
     }
 
     private fun goToCameraActivity() {

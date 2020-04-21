@@ -1,6 +1,6 @@
 package com.light.finder.di.modules
 
-import com.light.presentation.viewmodels.TermsViewModel
+/*
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -15,4 +15,4 @@ class TermsModule {
 @Subcomponent(modules = [(TermsModule::class)])
 interface TermsComponent {
     val termsViewModel: TermsViewModel
-}
+}*/
