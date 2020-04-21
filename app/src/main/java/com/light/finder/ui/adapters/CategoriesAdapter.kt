@@ -51,8 +51,10 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
                 textView.text = itemView.context.getColorName(colorCode)
-                val drawable= itemView.context.getColorDrawable(colorCode)
-                if(drawable != 0){ textView.endDrawableIcon(drawable)}
+                val drawable = itemView.context.getColorDrawable(colorCode)
+                if (drawable != 0) {
+                    textView.endDrawableIcon(drawable)
+                }
                 textView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -60,7 +62,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
                     textView.setPadding(0, 0, 0, 32)
-                } else if( category.colors.size == 1){
+                } else if (category.colors.size == 1) {
                     textView.setPadding(0, 0, 0, 8)
                 }
                 textView.compoundDrawablePadding = 32

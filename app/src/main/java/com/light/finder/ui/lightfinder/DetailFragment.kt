@@ -219,9 +219,9 @@ class DetailFragment : BaseFragment() {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
             showErrorDialog(
-                "Unable to add to cart",
-                "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
-                "OK",
+                getString(R.string.unable_to_add),
+                getString(R.string.connection_issue),
+                getString(R.string.ok),
                 false
             )
         }
@@ -247,9 +247,9 @@ class DetailFragment : BaseFragment() {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
         showErrorDialog(
-            "Unable to add to cart",
-            "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
-            "OK",
+            getString(R.string.unable_to_add),
+            getString(R.string.connection_issue),
+            getString(R.string.ok),
             false
         )
     }
@@ -339,8 +339,8 @@ class DetailFragment : BaseFragment() {
             product.wattageReplaced,
             requireContext().getColorName(product.colorCctCode, true),
             requireContext().getFinishName(product.productFinishCode, true)
-   /*         product.colorCctCode.getColorString(requireContext()),
-            product.productFinishCode.getFinishString(requireContext())*/
+            /*         product.colorCctCode.getColorString(requireContext()),
+                     product.productFinishCode.getFinishString(requireContext())*/
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
@@ -372,7 +372,6 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setImageGalleryDots(productImageList: MutableList<String>) {
-        // no need to set dots if photos less than 2
         if (productImageList.size < 2) {
             return
         }
@@ -393,7 +392,7 @@ class DetailFragment : BaseFragment() {
             }
 
             override fun onSlide(p0: View, p1: Float) {
-                // no use but have to implement
+
             }
         })
     }

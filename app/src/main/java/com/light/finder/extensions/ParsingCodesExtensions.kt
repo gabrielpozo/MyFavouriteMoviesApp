@@ -32,8 +32,8 @@ fun Context.getformFactortType(factorTypeCode: Int): String = when (factorTypeCo
     2 -> "Reflector"
     3 -> "Coil"
     4 -> "Tube"
-    else ->{
-       CrashlyticsException(422, "product_formfactor_type_code", factorTypeCode).logException()
+    else -> {
+        CrashlyticsException(422, "product_formfactor_type_code", factorTypeCode).logException()
         ""
     }
 }

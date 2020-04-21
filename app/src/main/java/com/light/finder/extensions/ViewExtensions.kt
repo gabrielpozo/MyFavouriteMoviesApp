@@ -1,7 +1,6 @@
 package com.light.finder.extensions
 
 import android.animation.Animator
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
@@ -13,9 +12,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.light.finder.R
 import com.light.finder.common.SafeClickListener
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 import java.io.File
 import java.util.*
 

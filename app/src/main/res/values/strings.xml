@@ -85,5 +85,6 @@
     <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
     <string name="badge_plus_100">99+</string>
     <string name="no_internet_connection">No internet connection</string>
-
+    <string name="unable_to_add">Unable to add to cart</string>
+    <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
 </resources>

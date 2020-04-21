@@ -1,7 +1,7 @@
 package com.light.finder.common
 
 
-interface VisibilityCallBack{
+interface VisibilityCallBack {
     fun onVisibilityChanged(invisible: Boolean)
     fun onBadgeCountChanged(badgeCount: Int)
     fun onCartCleared()
