@@ -3,15 +3,16 @@ package com.light.finder.ui.cart
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.common.ConnectivityRequester
@@ -104,8 +105,21 @@ class CartFragment : BaseFragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     fun setupWebView() {
+        val webChromeClient: WebChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
 
-        val progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 1000, 0)
+                if (newProgress < 100 && progressBar.isGone) {
+                    progressBar.showWithAnimation()
+                }
+
+                if (newProgress == 100) {
+                    progressBar.hideWithAnimation()
+                }
+
+                progressBar.progress = newProgress
+            }
+        }
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 
@@ -117,26 +131,15 @@ class CartFragment : BaseFragment() {
                 return super.shouldOverrideUrlLoading(view, request)
             }
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                progressBar.visible()
-                ObjectAnimator.ofInt(progressBar, "progress", 79).start()
-
-            }
-
             override fun onPageFinished(view: WebView?, url: String?) {
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
                 viewModel.onRequestGetItemCount()
                 super.onPageFinished(view, url)
             }
-
-            override fun onPageCommitVisible(view: WebView?, url: String?) {
-                super.onPageCommitVisible(view, url)
-                progressBar.gone()
-            }
         }
         webView.webViewClient = webViewClient
+        webView.webChromeClient = webChromeClient
         webView.settings.javaScriptEnabled = true
         webView.settings.defaultTextEncodingName = "utf-8"
 

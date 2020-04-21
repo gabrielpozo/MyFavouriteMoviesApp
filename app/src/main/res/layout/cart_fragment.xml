@@ -41,15 +41,15 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="gone"
+        android:visibility="invisible"
         style="?android:attr/progressBarStyleHorizontal"
         android:maxHeight="4dp"
         android:minHeight="4dp"
-        android:progressDrawable="@drawable/horizontal_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:progress="0"
+        android:indeterminate="false"
         android:max="100"/>
     <WebView
         android:layout_width="match_parent"

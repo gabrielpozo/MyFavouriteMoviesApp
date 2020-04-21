@@ -1,6 +1,8 @@
 package com.light.finder.extensions
 
+import android.R.attr.animationDuration
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
@@ -36,6 +38,30 @@ fun View.invisible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.hideWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(0f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.GONE
+            }
+        })
+}
+
+fun View.showWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(1f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.VISIBLE
+            }
+        })
 }
 
 fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
