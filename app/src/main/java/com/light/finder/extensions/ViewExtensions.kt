@@ -1,6 +1,5 @@
 package com.light.finder.extensions
 
-import android.R.attr.animationDuration
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
