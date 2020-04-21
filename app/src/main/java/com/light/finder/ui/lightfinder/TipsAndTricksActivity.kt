@@ -1,14 +1,15 @@
 package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.common.WrappingViewPager
 import com.light.finder.ui.adapters.TipsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
-import kotlin.math.abs
 
 
 class TipsAndTricksActivity : AppCompatActivity() {
@@ -62,7 +63,7 @@ class TipsAndTricksActivity : AppCompatActivity() {
         super.onBackPressed()
         setAnimation()
     }
-    
+
     private fun setAnimation() {
         overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }

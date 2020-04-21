@@ -53,7 +53,7 @@ open class SharedPreferencesCookieStore(
                 synchronized(this) {
                     preferences.edit().putString(index.toString(), gson.toJson(cookies)).apply()
                 }
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 Log.e("ERROR", "ConcurrentModificationException")
             }
 

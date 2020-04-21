@@ -15,12 +15,15 @@ class TipsViewPagerAdapter(private val context: Context) : PagerAdapter() {
         collection.addView(layout)
         return layout
     }
+
     override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
         collection.removeView(view as View)
     }
+
     override fun getCount(): Int {
         return Tips.values().size
     }
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object`
     }

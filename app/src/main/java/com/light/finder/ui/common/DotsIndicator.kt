@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity.CENTER
 import android.view.View
-import android.view.animation.Interpolator
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -65,9 +64,9 @@ class DotsIndicator(
             ta.recycle()
         }
 
-        indicatorWidth =  intrinsicWidth
-        indicatorHeight =  intrinsicHeight
-        indicatorMargin =  intrinsicMargin
+        indicatorWidth = intrinsicWidth
+        indicatorHeight = intrinsicHeight
+        indicatorMargin = intrinsicMargin
 
         indicatorBackgroundResId =
             if (this.backgroundResId == 0) R.drawable.dot else this.backgroundResId
@@ -198,11 +197,4 @@ class DotsIndicator(
         override fun onPageScrollStateChanged(state: Int) = Unit
     }
 
-    private inner class ReverseInterpolator : Interpolator {
-        override fun getInterpolation(value: Float) = kotlin.math.abs(1.0f - value)
-    }
-
-    companion object {
-        private const val DEFAULT_INDICATOR_WIDTH = 5
-    }
 }
