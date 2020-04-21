@@ -89,4 +89,6 @@
     <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
     <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
 
+    <string name="unable_to_add">Unable to add to cart</string>
+    <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
 </resources>

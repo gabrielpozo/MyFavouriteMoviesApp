@@ -29,7 +29,7 @@ inline fun <reified T : Activity> AppCompatActivity.startActivityForResult(body:
 }
 
 
-inline fun AppCompatActivity.setIntentForResult(body: Intent.() -> Unit){
+inline fun AppCompatActivity.setIntentForResult(body: Intent.() -> Unit) {
     intent.apply(body)
     setResult(Activity.RESULT_OK, intent)
 }

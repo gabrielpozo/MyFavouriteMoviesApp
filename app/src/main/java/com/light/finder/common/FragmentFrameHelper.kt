@@ -81,7 +81,7 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
     fun popFragmentNot(): Boolean = fragNavController.popFragment().not()
 
-   private  fun reloadCartFragment() {
+    private fun reloadCartFragment() {
         val current = fragNavController.currentFrag
         if (current is CartFragment) {
             current.setupWebView()

@@ -28,11 +28,11 @@ class CrashlyticsException(
         val e = Exception(code.toString())
         e.stackTrace = arrayOfNulls(0)
 
-        if (field != null)  {
+        if (field != null) {
             Crashlytics.setString("Field", field)
         }
 
-        if (value != null)  {
+        if (value != null) {
             Crashlytics.setInt("Value", value)
         }
 

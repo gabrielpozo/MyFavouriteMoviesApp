@@ -1,16 +1,13 @@
 package com.light.finder.extensions
 
 import android.content.Context
-
 import android.os.Build
 import com.light.finder.data.source.remote.InMemoryCookieStore
 import com.light.finder.data.source.remote.SharedPreferencesCookieStore
 import java.net.CookieStore
 import java.net.HttpCookie
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 fun HttpCookie.toSetCookieString(): String {
     val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.UK).apply {
@@ -40,20 +37,16 @@ fun CookieStore.syncToWebKitCookieManager() {
         webKitCookieManager.setCookie(hostUrl, it.toSetCookieString())
     }
 
-    if (Build.VERSION.SDK_INT >= 21) {
-        webKitCookieManager.flush()
-    }
+
+    webKitCookieManager.flush()
+
 }
 
 @Synchronized
 @Suppress("DEPRECATION")
 fun android.webkit.CookieManager.removeAll() {
-    if (Build.VERSION.SDK_INT >= 21) {
-        removeAllCookies(null)
-        flush()
-    } else {
-        removeAllCookie()
-    }
+    removeAllCookies(null)
+    flush()
 }
 
 fun Context.createCookieStore(name: String, persistent: Boolean) = if (persistent) {

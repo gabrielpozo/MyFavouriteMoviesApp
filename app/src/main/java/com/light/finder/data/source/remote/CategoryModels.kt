@@ -1,7 +1,6 @@
 package com.light.finder.data.source.remote
 
 import android.os.Parcelable
-import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

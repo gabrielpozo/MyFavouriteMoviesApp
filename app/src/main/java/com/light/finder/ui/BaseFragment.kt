@@ -1,8 +1,6 @@
 package com.light.finder.ui
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.view.View
 import androidx.fragment.app.Fragment
 
@@ -17,7 +15,7 @@ abstract class BaseFragment : Fragment() {
             mFragmentNavigation = context
         }
     }
-    
+
 
     interface FragmentNavigation {
         fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>? = null)
