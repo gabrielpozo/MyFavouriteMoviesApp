@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
-import com.light.finder.ui.lightfinder.DetailFragment
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 fun Context.getColorName(colorCode: Int, logError: Boolean = false): String = when (colorCode) {
@@ -47,7 +46,7 @@ fun Context.getFinishName(finishCode: Int, logError: Boolean = false): String = 
     }
 }
 
-fun DetailFragment.checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
+fun checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
     categoryCodes.forEach { code ->
         if (code > 4 || code < 1) {
             CrashlyticsException(422, "category_filter_cct_code", code).logException()
@@ -55,7 +54,7 @@ fun DetailFragment.checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
     }
 }
 
-fun DetailFragment.checkCategoryFinishCodesAreValid(finishCodes: List<Int>) {
+fun checkCategoryFinishCodesAreValid(finishCodes: List<Int>) {
     finishCodes.forEach { code ->
         if (code > 4 || code < 1) {
             CrashlyticsException(422, "category_filter_finish_code", code).logException()

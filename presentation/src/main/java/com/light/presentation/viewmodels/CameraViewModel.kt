@@ -10,6 +10,8 @@ import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import java.lang.Error
+import java.lang.Exception
 
 
 class CameraViewModel(
@@ -37,7 +39,7 @@ class CameraViewModel(
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
     }
-    
+
     private val _modelPreview = MutableLiveData<Event<PreviewModel>>()
     val modelPreview: LiveData<Event<PreviewModel>>
         get() = _modelPreview
@@ -71,9 +73,10 @@ class CameraViewModel(
     sealed class DialogModel {
         object TimeOutError : DialogModel()
         object NotBulbIdentified : DialogModel()
-        object ServerError : DialogModel()
-        class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        data class ServerError(val exception: Exception? = null, val errorMessage: String) :
+            DialogModel()
 
+        data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
     }
 
     private val _modelResponseDialog = MutableLiveData<Event<ResponseDialogModel>>()
@@ -174,7 +177,7 @@ class CameraViewModel(
     }
 
     fun onPermissionDenied(isPermanentlyDenied: Boolean) {
-        if(isPermanentlyDenied){
+        if (isPermanentlyDenied) {
             _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
         }
     }
@@ -183,9 +186,18 @@ class CameraViewModel(
         _modelRequest.value = Content.RequestModelContent(Event(messages))
     }
 
-    private fun handleErrorResponse(hasBeenCanceled: Boolean) {
+    private fun handleErrorResponse(
+        hasBeenCanceled: Boolean,
+        errorException: Exception?,
+        messageError: String
+    ) {
         if (!hasBeenCanceled) {
-            _modelDialog.value = Event(DialogModel.ServerError)
+            _modelDialog.value = Event(
+                DialogModel.ServerError(
+                    exception = errorException,
+                    errorMessage = messageError
+                )
+            )
 
         } else {
             _modelRequestCancel.value = Event(CancelModel())

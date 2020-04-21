@@ -11,7 +11,8 @@ data class Result<out T>(
         SUCCESS,
         ERROR,
         EMPTY,
-        TIME_OUT
+        TIME_OUT,
+        PARSE_ERROR
     }
 
     companion object {
@@ -32,13 +33,20 @@ data class Result<out T>(
             message: String,
             data: T? = null,
             isTimeout: Boolean = false,
-            isCanceled: Boolean = false
+            isCanceled: Boolean = false,
+            isParseError: Boolean = false
         ): Result<T> {
             return Result(
-                if (!isTimeout) {
-                    Status.ERROR
-                } else {
-                    Status.TIME_OUT
+                when {
+                    isTimeout -> {
+                        Status.PARSE_ERROR
+                    }
+                    isParseError -> {
+                        Status.PARSE_ERROR
+                    }
+                    else -> {
+                        Status.ERROR
+                    }
                 },
                 data,
                 message,
