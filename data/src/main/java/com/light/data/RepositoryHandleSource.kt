@@ -1,5 +1,6 @@
 package com.light.data
 
+import com.light.domain.model.ParsingError
 import com.light.domain.state.DataState
 import com.light.util.CANCEL_ERROR
 import com.light.util.EMPTY_RESPONSE
@@ -23,13 +24,25 @@ suspend fun <T> repositoryHandleSource(
                 DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
             }
 
-            Result.Status.ERROR -> {
-                DataState.Error(resultRequest.message ?: GENERAL_ERROR, isCanceled =  resultRequest.isCancelRequest)
-            }
-
             Result.Status.TIME_OUT -> {
                 DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
             }
+
+            Result.Status.PARSE_ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    cause = ParsingError,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+            Result.Status.ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
         }
 
     }
