@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.airbnb.paris.extensions.style
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.PrefManager
 import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
@@ -28,11 +31,14 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                //view.background = resources.getDrawable(R.drawable.button_curvy_corners,theme)
+
+                buttonTerms.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryOnDark))
+                buttonTerms.style(R.style.TermsButtonSelected)
                 buttonTerms.isClickable = true
                 buttonTerms.isFocusable = true
             } else {
-                //view.background = resources.getDrawable(R.drawable.button_curvy_corners_border_disabled,theme)
+                buttonTerms.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryDisabled))
+                buttonTerms.style(R.style.TermsButtonUnSelected)
                 buttonTerms.isClickable = false
                 buttonTerms.isFocusable = false
             }
@@ -42,13 +48,16 @@ class TermsAndConditionsActivity : AppCompatActivity() {
             goToPrivacyStatementActivity()
         }
 
-        textViewTerms.setOnClickListener {
+        textViewTermsOfUse.setOnClickListener {
             goToTermsActivity()
         }
 
 
         buttonTerms.setOnClickListener {
            // termsViewModel.onSharedPrefSaved(true)
+            //todo move to local repo
+            val prefManager = PrefManager(_context = this)
+            prefManager.isTermsAccepted = true
             goToCameraActivity()
         }
 
@@ -56,14 +65,17 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
     private fun goToTermsActivity() {
         startActivity(Intent(this, TermsActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
     private fun goToPrivacyStatementActivity() {
         startActivity(Intent(this, PrivacyStatementActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
     private fun goToCameraActivity() {
         startActivity(Intent(this, CameraActivity::class.java))
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
         finish()
     }
 }
