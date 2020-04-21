@@ -30,15 +30,19 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
 
-        if (checkBox.isChecked) {
-            //todo button not disabled background
-            buttonTerms.isClickable = true
-            buttonTerms.isFocusable = true
-        } else {
-            //todo button disabled background
-            buttonTerms.isClickable = false
-            buttonTerms.isFocusable = false
+
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                view.background = resources.getDrawable(R.drawable.button_curvy_corners,theme)
+                buttonTerms.isClickable = true
+                buttonTerms.isFocusable = true
+            } else {
+                view.background = resources.getDrawable(R.drawable.button_curvy_corners_border_disabled,theme)
+                buttonTerms.isClickable = false
+                buttonTerms.isFocusable = false
+            }
         }
+
 
         buttonTerms.setOnClickListener {
             termsViewModel.onSharedPrefSaved(true)

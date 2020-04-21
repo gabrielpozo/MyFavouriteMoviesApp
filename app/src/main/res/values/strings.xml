@@ -91,4 +91,5 @@
 
     <string name="unable_to_add">Unable to add to cart</string>
     <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
+    <string name="continue_terms">Continue</string>
 </resources>

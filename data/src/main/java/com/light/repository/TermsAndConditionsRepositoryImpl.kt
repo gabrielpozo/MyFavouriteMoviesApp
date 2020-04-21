@@ -6,8 +6,6 @@ import com.light.source.local.LocalSharedPrefDataSource
 
 class TermsAndConditionsRepositoryImpl(private val localSharedPrefDataSource: LocalSharedPrefDataSource) : TermsAndConditionsRepository {
     override suspend fun addToSharedPref(isAccepted: Boolean): DataState<Boolean> {
-        return DataState.Success(localSharedPrefDataSource.addToSharedPRef(isAccepted))
+        return DataState.Success(localSharedPrefDataSource.addToSharedPref(isAccepted))
     }
-
-
 }
