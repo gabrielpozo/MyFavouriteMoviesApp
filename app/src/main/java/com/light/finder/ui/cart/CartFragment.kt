@@ -98,7 +98,7 @@ class CartFragment : BaseFragment() {
     fun requestItemCount() = viewModel.onRequestGetItemCount()
 
     fun onReloadWebView() {
-        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
+       // viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
 
@@ -133,7 +133,6 @@ class CartFragment : BaseFragment() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
-                viewModel.onRequestGetItemCount()
                 super.onPageFinished(view, url)
             }
         }
