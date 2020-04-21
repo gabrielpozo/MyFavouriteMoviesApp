@@ -6,7 +6,6 @@ import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.NO_CONTENT_CODE
 import kotlinx.coroutines.*
 import retrofit2.Response
-import java.lang.Exception
 import java.text.ParseException
 
 abstract class BaseDataSource {
@@ -37,7 +36,7 @@ abstract class BaseDataSource {
         Result.error(io.message ?: io.toString(), isCanceled = true)
     } catch (pe: ParseException) {
         Result.error(pe.message.toString())
-    } catch (pe: JsonParseException){
+    } catch (pe: JsonParseException) {
         Result.error(pe.message ?: pe.toString(), isParseError = true)
     } catch (e: Exception) {
         Result.error(e.message.toString())

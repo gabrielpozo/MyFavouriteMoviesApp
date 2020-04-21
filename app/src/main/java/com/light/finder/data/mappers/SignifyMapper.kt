@@ -12,7 +12,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                 Category(
                     categoryProductBase = categoryDto.categoryProductBase,
                     categoryProducts = categoryDto.categoryProducts.map(mapServerProductToDomain),
-                    categoryName = categoryDto.categoryName ,
+                    categoryName = categoryDto.categoryName,
                     categoryIndex = categoryDto.categoryIndex,
                     categoryImage = categoryDto.categoryImage,
                     priceRange = getMinMaxPriceTag(
@@ -46,13 +46,13 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
 private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
     Product(
-        name = productDto.name ,
-        index = productDto.index ,
-        spec1 = productDto.spec1 ,
-        spec3 = productDto.spec3 ,
+        name = productDto.name,
+        index = productDto.index,
+        spec1 = productDto.spec1,
+        spec3 = productDto.spec3,
         spec2 = productDto.spec2,
-        imageUrls = productDto.imageUrls ,
-        description = productDto.description ,
+        imageUrls = productDto.imageUrls,
+        description = productDto.description,
         scene = productDto.scene,
         categoryName = productDto.categoryName,
         sapID12NC = productDto.sapID12NC,

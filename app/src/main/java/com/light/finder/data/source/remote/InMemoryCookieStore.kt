@@ -9,13 +9,8 @@ import java.net.URISyntaxException
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.collections.ArrayList
-import kotlin.collections.List
-import kotlin.collections.arrayListOf
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.emptyList
-import kotlin.collections.isNotEmpty
-import kotlin.collections.iterator
 import kotlin.collections.set
 
 // Kotlin-ized starting from https://chromium.googlesource.com/android_tools/+/master/sdk/sources/android-25/java/net/InMemoryCookieStore.java
