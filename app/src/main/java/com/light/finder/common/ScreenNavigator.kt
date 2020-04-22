@@ -1,7 +1,6 @@
 package com.light.finder.common
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.Category
 import com.light.domain.model.Message
@@ -92,10 +91,9 @@ class ScreenNavigator(private val activity: CameraActivity) {
     private fun reloadCartFragment() {
         val current = fragNavController.currentFrag
         if (current is CartFragment) {
-            current.setupWebView()
-            current.onReloadWebView()
-            current.requestItemCount()
-            current.checkIfOffline()
+            current.onLoadWebView()
+            current.onRequestItemCount()
+            current.onCheckIfOffline()
         }
     }
 
