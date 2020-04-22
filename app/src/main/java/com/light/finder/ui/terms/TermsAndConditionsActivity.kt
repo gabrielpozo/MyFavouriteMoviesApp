@@ -7,6 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.airbnb.paris.extensions.style
+import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
 import com.light.finder.extensions.startActivity
@@ -68,7 +69,7 @@ class TermsAndConditionsActivity : AppCompatActivity() {
     }
 
     private fun goToCameraActivity() {
-        startActivity<PrivacyStatementActivity>{}
+        startActivity<CameraActivity>{}
         overrideAnimation()
         finish()
     }
