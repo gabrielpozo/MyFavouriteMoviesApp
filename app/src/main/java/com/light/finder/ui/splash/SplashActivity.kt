@@ -13,6 +13,7 @@ import com.light.finder.di.modules.SplashComponent
 import com.light.finder.di.modules.SplashModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.startActivity
 import com.light.finder.ui.terms.TermsAndConditionsActivity
 import com.light.presentation.viewmodels.SplashState
 import com.light.presentation.viewmodels.SplashViewModel
@@ -52,12 +53,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goToTermsAndConditionsActivity() {
-        startActivity(Intent(this, TermsAndConditionsActivity::class.java))
+        startActivity<TermsAndConditionsActivity> {  }
         finish()
     }
 
     private fun goToCameraActivity() {
-        startActivity(Intent(this, CameraActivity::class.java))
+        startActivity<CameraActivity> {  }
         finish()
     }
 }
