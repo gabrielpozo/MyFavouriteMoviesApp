@@ -12,7 +12,6 @@
         android:layout_height="@dimen/margin_medium">
 
         <TextView
-            android:id="@+id/textViewBulbType"
             style="@style/ActiveTextWhite"
             android:paddingTop="@dimen/stroke_medium"
             android:paddingBottom="@dimen/stroke_medium"

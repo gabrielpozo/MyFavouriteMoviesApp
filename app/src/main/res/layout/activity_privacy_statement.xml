@@ -12,11 +12,9 @@
         android:layout_height="@dimen/margin_medium">
 
         <TextView
-            android:id="@+id/textViewBulbType"
-            style="@style/ActiveTextWhite"
             android:paddingTop="@dimen/stroke_medium"
             android:paddingBottom="@dimen/stroke_medium"
-            android:text="@string/terms_of_use_header"
+            android:text="@string/privacy_notice"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center" />
