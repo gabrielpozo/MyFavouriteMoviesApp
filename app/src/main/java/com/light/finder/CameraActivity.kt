@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -19,19 +18,18 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.light.domain.model.Product
 import com.light.finder.common.*
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.di.modules.LightFinderComponent
+import com.light.finder.di.modules.LightFinderModule
 import com.light.finder.extensions.*
-import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.expert.ExpertFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
-import com.light.finder.ui.lightfinder.ProductVariationsActivity.Companion.PRODUCTS_OPTIONS_ID_KEY
-import com.light.finder.ui.lightfinder.TipsAndTricksActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -41,10 +39,12 @@ import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation, VisibilityCallBack, NavigationCallBack, ReloadingCallback {
+    VisibilityCallBack, ReloadingCallback {
 
     private lateinit var container: FrameLayout
-    private val fragmentHelper = FragmentFrameHelper(this)
+    private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
+    lateinit var lightFinderComponent: LightFinderComponent
+
     override val numberOfRootFragments: Int = 3
     private var carToReload = false
 
@@ -69,8 +69,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN)
         super.onCreate(savedInstanceState)
+
+        lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+
         setContentView(R.layout.activity_camera)
-        fragmentHelper.setupNavController(savedInstanceState)
+        screenNavigator.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
 
         setBottomBar()
@@ -115,19 +118,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
-    override fun navigateToVariationActivity(productList: List<Product>) {
-        startActivityForResult<ProductVariationsActivity> {
-            putParcelableArrayListExtra(PRODUCTS_OPTIONS_ID_KEY, productList.parcelizeProductList())
-        }
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
-
-    override fun navigateToTipsAndTricksActivity() {
-        startActivity<TipsAndTricksActivity> {}
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -135,7 +125,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 val productList: List<Product> =
                     data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
                         ?.deparcelizeProductList() ?: emptyList()
-                val currentFragment = fragmentHelper.getCurrentFragment()
+                val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
                     currentFragment.retrieveLisFromProductVariation(productList)
                 }
@@ -199,11 +189,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragmentHelper.onSaveInstanceState(outState)
+        screenNavigator.onSaveInstanceState(outState)
     }
 
     override fun onBackPressed() {
-        if (fragmentHelper.popFragmentNot()) {
+        if (screenNavigator.popFragmentNot()) {
             super.onBackPressed()
         }
     }
@@ -228,14 +218,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
             INDEX_EXPERT -> return ExpertFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
-    }
-
-    override fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>?) {
-        fragmentHelper.pushFragment(fragment)
-    }
-
-    override fun popFragment() {
-        fragmentHelper.popFragmentNot()
     }
 
 }
