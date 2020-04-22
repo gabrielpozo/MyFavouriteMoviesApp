@@ -15,6 +15,8 @@ class CartViewModel(
 
     companion object {
         const val URL_SUCCESS = "/checkout/onepage/success/"
+        const val URL_CHECKOUT_PROCESS = "/checkout/cart/"
+        const val URL_CHECKOUT_ONE_PAGE = "/checkout/onepage/"
     }
 
     private val _modelItemCountRequest = MutableLiveData<CountItemsModel>()
@@ -33,7 +35,10 @@ class CartViewModel(
             return _modelReload
         }
 
-    data class ContentReload(val shouldReload: Boolean = false)
+    sealed class ContentReload {
+        object ContentOnCheckProcess : ContentReload()
+        object ContentToBeLoaded : ContentReload()
+    }
 
 
     private val _modelUrl = MutableLiveData<ContentUrl>()
@@ -58,9 +63,13 @@ class CartViewModel(
         }
     }
 
-    fun onCheckReloadCartWebView(shouldReload: Boolean) {
-        if (shouldReload || _modelUrl.value?.url?.equals(URL_SUCCESS) == true) {
-            _modelReload.value = ContentReload(true)
+    fun onCheckReloadCartWebView(itemAdded: Boolean) {
+        if (_modelUrl.value?.url?.equals(URL_CHECKOUT_PROCESS) == true && !itemAdded) {
+            _modelReload.value = ContentReload.ContentOnCheckProcess
+        } else if (_modelUrl.value?.url?.equals(URL_CHECKOUT_ONE_PAGE) == true && !itemAdded)
+            _modelReload.value = ContentReload.ContentOnCheckProcess
+        else {
+            _modelReload.value = ContentReload.ContentToBeLoaded
         }
     }
 

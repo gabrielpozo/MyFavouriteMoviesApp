@@ -18,7 +18,6 @@ import com.light.finder.CameraActivity
 import com.light.finder.common.*
 import com.light.finder.di.modules.CartComponent
 import com.light.finder.di.modules.CartModule
-import com.light.finder.di.modules.CategoriesModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
@@ -63,6 +62,7 @@ class CartFragment : BaseFragment() {
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setObserver()
+        setupWebView()
     }
 
 
@@ -77,9 +77,13 @@ class CartFragment : BaseFragment() {
     }
 
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
-        if (modelReload.shouldReload) {
-            webView.reload()
-            reloadingCallback.setCurrentlyReloaded(false)
+        when (modelReload) {
+            CartViewModel.ContentReload.ContentToBeLoaded -> {
+                webView.loadUrl(URL)
+                reloadingCallback.setCurrentlyReloaded(false)
+            }
+            CartViewModel.ContentReload.ContentOnCheckProcess -> {
+            }
         }
     }
 
@@ -94,15 +98,11 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    fun requestItemCount() = viewModel.onRequestGetItemCount()
-
-    fun onReloadWebView() {
-       // viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
-    }
+    fun onRequestItemCount() = viewModel.onRequestGetItemCount()
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun setupWebView() {
+    private fun setupWebView() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
@@ -140,14 +140,25 @@ class CartFragment : BaseFragment() {
         webView.settings.javaScriptEnabled = true
         webView.settings.defaultTextEncodingName = "utf-8"
 
-        loadWebView(URL)
+
+        try {
+            webView.settings.setSupportZoom(true)
+            webView.settings.allowContentAccess = true
+            webView.settings.builtInZoomControls = true
+            webView.settings.displayZoomControls = false
+
+        } catch (e: Exception) {
+            Timber.w("can't load website")
+        }
+
+
     }
 
 
     private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
-                webView.reload()
+                //   webView.reload()
                 webView.visible()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
@@ -168,20 +179,12 @@ class CartFragment : BaseFragment() {
         }, NO_INTERNET_BANNER_DELAY)
     }
 
-    private fun loadWebView(url: String) {
-        try {
-            webView.settings.setSupportZoom(true)
-            webView.settings.allowContentAccess = true
-            webView.settings.builtInZoomControls = true
-            webView.settings.displayZoomControls = false
-
-            webView.loadUrl(url)
-        } catch (e: Exception) {
-            Timber.w("can't load website")
-        }
+    fun onLoadWebView() {
+        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
-    fun checkIfOffline() {
+
+    fun onCheckIfOffline() {
         if (!InternetUtil.isInternetOn()) displayNoInternetBanner()
     }
 }
