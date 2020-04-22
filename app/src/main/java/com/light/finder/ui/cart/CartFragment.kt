@@ -158,7 +158,7 @@ class CartFragment : BaseFragment() {
     private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
-                //   webView.reload()
+                webView.reload()
                 webView.visible()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
