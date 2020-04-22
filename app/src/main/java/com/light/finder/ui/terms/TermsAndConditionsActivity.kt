@@ -14,12 +14,8 @@ import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
 
-    //private lateinit var component: TermsComponent
-    //private val termsViewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //component = app.applicationComponent.plus(TermsModule())
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -54,8 +50,6 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
 
         buttonTerms.setOnClickListener {
-           // termsViewModel.onSharedPrefSaved(true)
-            //todo move to local repo
             val prefManager = PrefManager(_context = this)
             prefManager.isTermsAccepted = true
             goToCameraActivity()
@@ -65,17 +59,19 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
     private fun goToTermsActivity() {
         startActivity(Intent(this, TermsActivity::class.java))
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        overrideAnimation()
     }
 
     private fun goToPrivacyStatementActivity() {
         startActivity(Intent(this, PrivacyStatementActivity::class.java))
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        overrideAnimation()
     }
 
     private fun goToCameraActivity() {
         startActivity(Intent(this, CameraActivity::class.java))
-        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        overrideAnimation()
         finish()
     }
+
+    private fun overrideAnimation() = overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
 }
