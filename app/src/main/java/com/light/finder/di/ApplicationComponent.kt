@@ -17,6 +17,7 @@ interface ApplicationComponent {
     fun plus(module: ProductsOptionsModule): ProductsOptionsComponent
     fun plus(module: DetailModule): DetailComponent
     fun plus(module: CartModule): CartComponent
+    //fun plus(module: TermsModule): TermsComponent
 
     @Component.Factory
     interface Factory {

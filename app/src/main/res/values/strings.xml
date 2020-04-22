@@ -85,6 +85,16 @@
     <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
     <string name="badge_plus_100">99+</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
+    <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
+
     <string name="unable_to_add">Unable to add to cart</string>
     <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
+    <string name="continue_terms">Continue</string>
+    <string name="see_details">See details</string>
+    <string name="privacy_notice">Privacy Notice</string>
+    <string name="i_agree_with_the">I agree with the</string>
+    <string name="terms_of_use_text">Terms of Use</string>
+    <string name="terms_of_use_header">Terms of Use</string>
 </resources>

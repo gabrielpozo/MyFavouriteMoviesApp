@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.core.text.HtmlCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -21,6 +22,9 @@ import java.util.*
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
 
+fun TextView.setHtmlText(source: String) {
+    this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
 internal fun Drawable.tint(@ColorInt color: Int): Drawable {
     val wrapped = DrawableCompat.wrap(this)
     DrawableCompat.setTint(wrapped, color)

@@ -34,6 +34,7 @@
     <color name="dividerOnLight">#f4f5f5</color>
     <color name="galleryUnselected">#49494d</color>
     <color name="divider">#696969</color>
+    <style name="darkSeaGreen">#0e8b59</style>
 
 
     <!-- TODO change old colors -->
