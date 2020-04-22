@@ -16,8 +16,8 @@ abstract class BaseFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is CameraActivity) {
-            screenNavigator = context.lightFinderComponent.screenNavigator
             lightFinderComponent = context.lightFinderComponent
+            screenNavigator = lightFinderComponent.screenNavigator
         }
     }
 
