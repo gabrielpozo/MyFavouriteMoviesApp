@@ -2,6 +2,7 @@ package com.light.finder.ui.terms
 
 import android.os.Bundle
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -1367,5 +1368,7 @@ and can be found in the website of the Signify    <a href="https://www.signify.c
 
             """.trimIndent(), Html.FROM_HTML_MODE_LEGACY
             )
+
+        textViewPrivacyHtml.movementMethod = LinkMovementMethod.getInstance()
     }
 }

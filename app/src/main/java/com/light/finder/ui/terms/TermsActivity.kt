@@ -2,10 +2,12 @@ package com.light.finder.ui.terms
 
 import android.os.Bundle
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.R
+import kotlinx.android.synthetic.main.activity_privacy_statement.*
 import kotlinx.android.synthetic.main.activity_terms.*
 
 class TermsActivity : AppCompatActivity() {
@@ -273,7 +275,7 @@ class TermsActivity : AppCompatActivity() {
             """.trimIndent(), Html.FROM_HTML_MODE_LEGACY
             )
 
-
+        textViewTermsHtml.movementMethod = LinkMovementMethod.getInstance()
     }
 
 }
