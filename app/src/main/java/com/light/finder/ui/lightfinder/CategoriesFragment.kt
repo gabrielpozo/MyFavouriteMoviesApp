@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
+import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.MessageParcelable
@@ -51,7 +52,7 @@ class CategoriesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.run {
-            component = app.applicationComponent.plus(CategoriesModule())
+            component = lightFinderComponent.plus(CategoriesModule())
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->
@@ -88,7 +89,7 @@ class CategoriesFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            mFragmentNavigation.pushFragment(DetailFragment.newInstance(navModel.category))
+            screenNavigator.navigateToDetailScreen(navModel.category)
         }
     }
 

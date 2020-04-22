@@ -28,7 +28,6 @@ import com.light.domain.model.ParsingError
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.local.ImageRepository
@@ -37,7 +36,6 @@ import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -66,7 +64,6 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var connectivityRequester: ConnectivityRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
-    private lateinit var navigationCallBack: NavigationCallBack
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
@@ -125,7 +122,6 @@ class CameraFragment : BaseFragment() {
         super.onAttach(context)
         try {
             visibilityCallBack = context as VisibilityCallBack
-            navigationCallBack = context as NavigationCallBack
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -156,7 +152,7 @@ class CameraFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.run {
-            component = app.applicationComponent.plus(CameraModule())
+            component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
@@ -391,7 +387,7 @@ class CameraFragment : BaseFragment() {
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
             timer.cancel()
-            mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
+            screenNavigator.navigateToCategoriesScreen(messages[0])
         }
     }
 
@@ -465,7 +461,7 @@ class CameraFragment : BaseFragment() {
         dialogView.buttonNeutral.setOnClickListener {
             alertDialog.dismiss()
             revertCameraView()
-            navigationCallBack.navigateToTipsAndTricksActivity()
+            screenNavigator.navigateToTipsAndTricksScreen()
         }
 
         alertDialog.show()
@@ -586,7 +582,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            navigationCallBack.navigateToTipsAndTricksActivity()
+            screenNavigator.navigateToTipsAndTricksScreen()
         }
 
         /**

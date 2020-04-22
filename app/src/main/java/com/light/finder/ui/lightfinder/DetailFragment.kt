@@ -15,9 +15,9 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
+import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.NavigationCallBack
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -47,7 +47,6 @@ class DetailFragment : BaseFragment() {
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
     private lateinit var visibilityCallBack: VisibilityCallBack
-    private lateinit var navigationCallBack: NavigationCallBack
     private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
 
@@ -58,7 +57,6 @@ class DetailFragment : BaseFragment() {
         super.onAttach(context)
         try {
             visibilityCallBack = context as VisibilityCallBack
-            navigationCallBack = context as NavigationCallBack
             reloadingCallback = context as ReloadingCallback
         } catch (e: ClassCastException) {
             throw ClassCastException()
@@ -75,7 +73,7 @@ class DetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = app.applicationComponent.plus(DetailModule())
+            component = lightFinderComponent.plus(DetailModule())
             connectivityRequester = ConnectivityRequester(this)
 
         } ?: throw Exception("Invalid Activity")
@@ -200,7 +198,6 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-
     private fun setDetailObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
@@ -293,7 +290,7 @@ class DetailFragment : BaseFragment() {
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            navigationCallBack.navigateToVariationActivity(navModel.productList)
+            screenNavigator.navigateToVariationScreen(navModel.productList)
         }
     }
 

@@ -7,9 +7,9 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.airbnb.paris.extensions.style
-import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
+import com.light.finder.extensions.startActivity
 import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
@@ -58,17 +58,18 @@ class TermsAndConditionsActivity : AppCompatActivity() {
     }
 
     private fun goToTermsActivity() {
-        startActivity(Intent(this, TermsActivity::class.java))
+        startActivity<TermsAndConditionsActivity> {}
         overrideAnimation()
     }
 
     private fun goToPrivacyStatementActivity() {
+        startActivity<PrivacyStatementActivity>{}
         startActivity(Intent(this, PrivacyStatementActivity::class.java))
         overrideAnimation()
     }
 
     private fun goToCameraActivity() {
-        startActivity(Intent(this, CameraActivity::class.java))
+        startActivity<PrivacyStatementActivity>{}
         overrideAnimation()
         finish()
     }

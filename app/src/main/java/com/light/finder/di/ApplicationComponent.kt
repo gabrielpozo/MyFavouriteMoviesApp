@@ -11,13 +11,9 @@ import javax.inject.Singleton
 @Component(modules = [ApplicationModule::class, DataModule::class])
 interface ApplicationComponent {
 
-    fun plus(module: CategoriesModule): CategoriesComponent
     fun plus(module: SplashModule): SplashComponent
-    fun plus(module: CameraModule): CameraComponent
+    fun plus(module: LightFinderModule): LightFinderComponent
     fun plus(module: ProductsOptionsModule): ProductsOptionsComponent
-    fun plus(module: DetailModule): DetailComponent
-    fun plus(module: CartModule): CartComponent
-    //fun plus(module: TermsModule): TermsComponent
 
     @Component.Factory
     interface Factory {
