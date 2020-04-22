@@ -64,6 +64,7 @@ ext {
     googleAnalyticsFirebase="17.2.2"
     googleCrashAnalyticsFirebase="2.10.1"
     googleAnalyticsPerformance="19.0.5"
+    parisVersion = "1.4.0"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -106,7 +107,8 @@ ext {
     ]
 
     lottieDependencies = [
-            lottie: "com.airbnb.android:lottie:$lottieVersion"
+            lottie: "com.airbnb.android:lottie:$lottieVersion",
+            paris: "com.airbnb.android:paris:$parisVersion"
     ]
 
     cameraxDependencies = [

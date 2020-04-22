@@ -55,8 +55,30 @@
 
         </activity>
 
+        <activity
+            android:name=".ui.terms.TermsAndConditionsActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+
+        </activity>
+
+        <activity
+            android:name=".ui.terms.PrivacyStatementActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+
+        </activity>
 
 
+        <activity
+            android:name=".ui.terms.TermsActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+
+        </activity>
 
         <activity
             android:resizeableActivity="false"

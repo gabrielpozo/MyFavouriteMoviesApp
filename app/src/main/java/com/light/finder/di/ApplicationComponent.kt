@@ -15,7 +15,6 @@ interface ApplicationComponent {
     fun plus(module: LightFinderModule): LightFinderComponent
     fun plus(module: ProductsOptionsModule): ProductsOptionsComponent
 
-
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance app: Application): ApplicationComponent
