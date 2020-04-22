@@ -64,7 +64,6 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
     private fun goToPrivacyStatementActivity() {
         startActivity<PrivacyStatementActivity>{}
-        startActivity(Intent(this, PrivacyStatementActivity::class.java))
         overrideAnimation()
     }
 
