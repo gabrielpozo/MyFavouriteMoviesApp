@@ -49,6 +49,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
+    private var isSingleProduct: Boolean = false
 
     private var productSapId: String = ""
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
@@ -114,8 +115,10 @@ class DetailFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
-                layoutChangeVariation.isClickable = true
-                layoutChangeVariation.isFocusable = true
+                if (!isSingleProduct) {
+                    layoutChangeVariation.isClickable = true
+                    layoutChangeVariation.isFocusable = true
+                }
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
@@ -283,8 +286,9 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
+        isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
-        populateProductData(contentProduct.product, contentProduct.isSingleProduct)
+        populateProductData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
     }
 
@@ -299,7 +303,7 @@ class DetailFragment : BaseFragment() {
         viewModel.onRetrieveListFromProductVariation(productList)
     }
 
-    private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
+    private fun populateProductData(product: Product) {
         val packs = String.format(
             getString(R.string.form_factor_pack),
             requireContext().getformFactortType(product.formfactorType),
