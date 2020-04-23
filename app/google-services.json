@@ -6,7 +6,6 @@
     "storage_bucket": "lightfinder-tester.appspot.com"
   },
   "client": [
-
     {
       "client_info": {
         "mobilesdk_app_id": "1:821018404244:android:a841ecfcf24ab7a81e5b81",
@@ -14,6 +13,36 @@
           "package_name": "com.light.finder"
         }
       },
+      "oauth_client": [
+        {
+          "client_id": "821018404244-kolho8nd1enmskn49fomir24448rj6f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBER9V2IlqI4mwuamkGGV793Pgb15iVwjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821018404244-kolho8nd1enmskn49fomir24448rj6f2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "821018404244-raqqr4lenb3majdfnt223f3ubesofvcu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.light.finder.qa"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "client_info": {
         "mobilesdk_app_id": "1:821018404244:android:91a2e9ab4a8baad11e5b81",
         "android_client_info": {
@@ -39,10 +68,10 @@
               "client_type": 3
             },
             {
-              "client_id": "821018404244-of2uj7fcst8df0tk35ii09kl36tqgmuf.apps.googleusercontent.com",
+              "client_id": "821018404244-raqqr4lenb3majdfnt223f3ubesofvcu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "test"
+                "bundle_id": "com.light.finder.qa"
               }
             }
           ]
