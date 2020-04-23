@@ -20,8 +20,7 @@ class PrivacyStatementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_privacy_statement)
 
-        textViewPrivacyHtml.text =
-            Html.fromHtml(
+        val textHtml =
                 """
 <p>
     INTRODUCTION
@@ -1366,9 +1365,8 @@ and can be found in the website of the Signify    <a href="https://www.signify.c
     - Signify -
 </p>
 
-            """.trimIndent(), Html.FROM_HTML_MODE_LEGACY
-            )
+            """
 
-        textViewPrivacyHtml.movementMethod = LinkMovementMethod.getInstance()
+        webViewPrivacyHtml.loadData(textHtml, "text/html", "UTF-8")
     }
 }
