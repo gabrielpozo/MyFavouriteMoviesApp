@@ -6,11 +6,18 @@
     "storage_bucket": "lightfinder-tester.appspot.com"
   },
   "client": [
+
     {
       "client_info": {
         "mobilesdk_app_id": "1:821018404244:android:a841ecfcf24ab7a81e5b81",
         "android_client_info": {
           "package_name": "com.light.finder"
+        }
+      },
+      "client_info": {
+        "mobilesdk_app_id": "1:821018404244:android:91a2e9ab4a8baad11e5b81",
+        "android_client_info": {
+          "package_name": "com.light.finder.qa"
         }
       },
       "oauth_client": [

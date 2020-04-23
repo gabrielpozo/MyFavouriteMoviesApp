@@ -20,9 +20,11 @@ android {
     dataBinding {
         enabled = true
     }
+
     androidExtensions {
         experimental = true
     }
+
     defaultConfig {
         applicationId "com.light.finder"
         minSdkVersion 24
@@ -40,9 +42,22 @@ android {
         }
         release {
             debuggable false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
         }
 
+    }
+
+    flavorDimensions "version"
+
+    productFlavors {
+        qa {
+            applicationIdSuffix ".qa"
+        }
+        production {
+            applicationId "com.light.finder"
+        }
     }
 
 
