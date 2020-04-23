@@ -59,7 +59,7 @@ class TermsAndConditionsActivity : AppCompatActivity() {
     }
 
     private fun goToTermsActivity() {
-        startActivity<TermsAndConditionsActivity> {}
+        startActivity<TermsActivity> {}
         overrideAnimation()
     }
 
