@@ -10,12 +10,13 @@ import android.net.NetworkInfo
 import androidx.lifecycle.LiveData
 
 object InternetUtil : LiveData<Boolean>() {
-
     private var broadcastReceiver: BroadcastReceiver? = null
     private lateinit var application: Application
+    private var lastIsInternetOn: Boolean? = null
 
     fun init(application: Application) {
         this.application = application
+        this.lastIsInternetOn = isInternetOn()
     }
 
     fun isInternetOn(): Boolean {
@@ -39,9 +40,14 @@ object InternetUtil : LiveData<Boolean>() {
 
             broadcastReceiver = object : BroadcastReceiver() {
                 override fun onReceive(_context: Context, intent: Intent) {
-                    val extras = intent.extras
-                    val info = extras?.getParcelable<NetworkInfo>("networkInfo")
-                    value = info?.state == NetworkInfo.State.CONNECTED
+
+                    if (lastIsInternetOn != isInternetOn()) {
+                        val extras = intent.extras
+                        val info = extras?.getParcelable<NetworkInfo>("networkInfo")
+                        value = info?.state == NetworkInfo.State.CONNECTED
+                    }
+
+                    lastIsInternetOn = isInternetOn()
                 }
             }
 
