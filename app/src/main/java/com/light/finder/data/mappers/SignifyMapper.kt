@@ -32,7 +32,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
                     colors = categoryDto.categoryCctCode.map { it },
-                    finishCodes = categoryDto.categoryFilterFinishCode.map { it }
+                    finishCodes = categoryDto.categoryFilterFinishCode.map { it },
+                    categoryShape = categoryDto.categoryProductShape
                 )
             )
         }

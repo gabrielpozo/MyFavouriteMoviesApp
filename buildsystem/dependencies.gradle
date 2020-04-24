@@ -65,6 +65,7 @@ ext {
     googleCrashAnalyticsFirebase="2.10.1"
     googleAnalyticsPerformance="19.0.5"
     parisVersion = "1.4.0"
+    tagManagerVersion ="11.0.4"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -187,6 +188,7 @@ ext {
     googleServicesDependencies = [
             analytics: "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
             crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase",
-            performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance"
+            performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance",
+         //   tagmanager: "com.google.android.gms:play-services-tagmanager:$tagManagerVersion"
     ]
 }
