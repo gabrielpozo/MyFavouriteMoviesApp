@@ -33,6 +33,7 @@ class TermsAndConditionsActivity : AppCompatActivity() {
                 buttonTerms.style(R.style.TermsButtonSelected)
                 buttonTerms.isClickable = true
                 buttonTerms.isFocusable = true
+                setContinueClickListener()
             } else {
                 buttonTerms.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryDisabled))
                 buttonTerms.style(R.style.TermsButtonUnSelected)
@@ -50,12 +51,17 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         }
 
 
+
+
+    }
+
+
+    private fun setContinueClickListener(){
         buttonTerms.setOnClickListener {
             val prefManager = PrefManager(_context = this)
             prefManager.isTermsAccepted = true
             goToCameraActivity()
         }
-
     }
 
     private fun goToTermsActivity() {
