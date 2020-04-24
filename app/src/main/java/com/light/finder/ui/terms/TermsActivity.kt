@@ -20,6 +20,8 @@ class TermsActivity : AppCompatActivity() {
 
         val htmlText =
             """
+<br> 
+<br> 
                 <p>
     Version November 2018
 </p>
@@ -267,6 +269,10 @@ class TermsActivity : AppCompatActivity() {
     continued validity, legality, enforceability, and effectiveness of the
     remaining provisions of these Terms of Use.
 </p>
+<br> 
+<br> 
+<br> 
+<br> 
 
             """
 

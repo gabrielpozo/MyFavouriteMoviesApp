@@ -22,6 +22,8 @@ class PrivacyStatementActivity : AppCompatActivity() {
 
         val textHtml =
                 """
+<br> 
+<br> 
 <p>
     INTRODUCTION
 </p>
@@ -1364,6 +1366,10 @@ and can be found in the website of the Signify    <a href="https://www.signify.c
 <p>
     - Signify -
 </p>
+<br> 
+<br> 
+<br> 
+<br> 
 
             """
 
