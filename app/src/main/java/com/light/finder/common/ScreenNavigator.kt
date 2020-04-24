@@ -109,7 +109,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToTipsAndTricksScreen() {
         activity.startActivity<TipsAndTricksActivity> {}
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
     }
 
     fun navigateToDetailScreen(category: Category) {

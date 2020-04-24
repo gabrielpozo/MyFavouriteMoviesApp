@@ -97,4 +97,5 @@
     <string name="i_agree_with_the">I agree with the</string>
     <string name="terms_of_use_text">Terms of Use</string>
     <string name="terms_of_use_header">Terms of Use</string>
+    <string name="share_my_usage_data_to_help_improve_the_app">Share my usage data to help improve the app</string>
 </resources>
