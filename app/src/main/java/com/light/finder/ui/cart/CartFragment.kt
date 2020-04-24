@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -107,7 +108,7 @@ class CartFragment : BaseFragment() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
 
-                if (newProgress < 100 && progressBar.isInvisible) {
+                if (newProgress < 100 && progressBar.isGone) {
                     progressBar.showWithAnimation()
                 }
 
@@ -158,7 +159,7 @@ class CartFragment : BaseFragment() {
     private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
-                //   webView.reload()
+                webView.reload()
                 webView.visible()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
