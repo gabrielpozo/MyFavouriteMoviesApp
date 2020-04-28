@@ -9,7 +9,7 @@ import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
-import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
@@ -38,7 +38,7 @@ fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
 
 fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()
 
-fun ExpertFragment.Companion.newInstance(): ExpertFragment = ExpertFragment()
+fun AboutFragment.Companion.newInstance(): AboutFragment = AboutFragment()
 
 fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragment {
     val args = android.os.Bundle()

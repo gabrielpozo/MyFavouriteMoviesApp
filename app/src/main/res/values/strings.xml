@@ -42,7 +42,7 @@
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient option</string>
-    <string name="product_title">%s %s %sW %s \n %s</string>
+    <string name="product_title">%s %sW %s \n %s</string>
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
     <string name="change_variation">%sW, %s color, %s finish</string>
@@ -98,4 +98,8 @@
     <string name="terms_of_use_text">Terms of Use</string>
     <string name="terms_of_use_header">Terms of Use</string>
     <string name="share_my_usage_data_to_help_improve_the_app">Share my usage data to help improve the app</string>
+    <string name="_2020_signify_holding_all_rights_reserved">© 2020 Signify Holding. All rights reserved.</string>
+    <string name="version">Version</string>
+    <string name="lightfinder">LightFinder</string>
+    <string name="about">About</string>
 </resources>

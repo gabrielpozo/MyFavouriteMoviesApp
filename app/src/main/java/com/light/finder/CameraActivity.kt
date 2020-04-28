@@ -27,7 +27,7 @@ import com.light.finder.di.modules.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
-import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.util.KEY_EVENT_ACTION
@@ -215,7 +215,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
-            INDEX_EXPERT -> return ExpertFragment.newInstance()
+            INDEX_EXPERT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
     }
