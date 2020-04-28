@@ -210,6 +210,12 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="ActiveTextDark" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="InActiveTextWhite" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/backgroundLight</item>
         <item name="android:textSize">18sp</item>
