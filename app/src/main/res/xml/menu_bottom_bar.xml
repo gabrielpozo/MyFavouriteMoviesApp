@@ -13,6 +13,6 @@
     <tab
         icon="@drawable/ic_company"
         id="@+id/expertFragment"
-        title="@string/expert"
+        title="About"
         />
 </tabs>
