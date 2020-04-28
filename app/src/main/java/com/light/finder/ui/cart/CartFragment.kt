@@ -2,6 +2,7 @@ package com.light.finder.ui.cart
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.CameraActivity
@@ -64,8 +64,30 @@ class CartFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
         setObserver()
         setupWebView()
+        observeLayout()
     }
 
+    private fun observeLayout() {
+        cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            cart_fragment_root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = cart_fragment_root.rootView.height
+
+            val keypadHeight = screenHeight - rec.bottom
+            val param: ViewGroup.MarginLayoutParams
+            
+            // add margin bottom when keyboard is visible
+            if (keypadHeight > screenHeight * 0.15) {
+                param = webView.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,0, keypadHeight / 2 )
+            } else {
+                param = webView.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,0,0)
+            }
+
+            webView.layoutParams = param
+        }
+    }
 
     private fun setObserver() {
         InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
