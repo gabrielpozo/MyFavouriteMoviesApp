@@ -1,18 +1,28 @@
 package com.light.finder.ui.about
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.light.finder.BuildConfig
 import com.light.finder.R
 import com.light.finder.ui.BaseFragment
 import kotlinx.android.synthetic.main.about_fragment.*
 
+
 class AboutFragment : BaseFragment() {
-    companion object;
+
+    companion object {
+        const val TERMS_URL =
+            "https://www.signify.com/global/terms-of-use/mobile-apps/signify-lightfinder-en"
+        const val PRIVACY_URL =
+            "https://www.signify.com/global/privacy/legal-information/privacy-notice"
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,21 +40,24 @@ class AboutFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setView() {
-        textViewVersion.text = getString(R.string.version) + " " + BuildConfig.VERSION_NAME
+        textViewVersion.text = getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.VERSION_CODE.toString()
     }
 
     private fun setClickListeners() {
         layoutTerms.setOnClickListener {
-            goToTermsActivity()
+            //todo popup
+            openBrowser(TERMS_URL)
         }
 
         layoutPrivacy.setOnClickListener {
-            goToPrivacyStatementActivity()
+            //todo popup
+            openBrowser(PRIVACY_URL)
         }
-
-
     }
 
-    private fun goToTermsActivity() = screenNavigator.navigateToTermsScreen()
-    private fun goToPrivacyStatementActivity() = screenNavigator.navigateToPrivacyScreen()
+
+    private fun openBrowser(URL: String) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(URL))
+        startActivity(browserIntent)
+    }
 }
