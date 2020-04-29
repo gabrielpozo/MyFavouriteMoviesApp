@@ -7,6 +7,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.airbnb.paris.extensions.style
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
@@ -14,6 +15,8 @@ import com.light.finder.extensions.startActivity
 import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 
 class TermsAndConditionsActivity : AppCompatActivity() {
+
+    private var prefManager: PrefManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,8 +28,11 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
 
+        prefManager = PrefManager(this)
+        switchConsent.isChecked = prefManager?.isConsentAccepted!!
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(switchConsent.isChecked)
 
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
 
                 buttonTerms.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryOnDark))
@@ -48,6 +54,12 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
         textViewTermsOfUse.setOnClickListener {
             goToTermsActivity()
+        }
+
+
+        switchConsent.setOnCheckedChangeListener { _, isChecked ->
+            val prefManager = PrefManager(_context = this)
+            prefManager.isConsentAccepted = isChecked
         }
 
 

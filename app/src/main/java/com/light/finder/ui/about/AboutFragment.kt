@@ -8,12 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BuildConfig
 import com.light.finder.R
+import com.light.finder.common.PrefManager
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.BaseFragment
 import kotlinx.android.synthetic.main.about_fragment.*
+import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
+import kotlinx.android.synthetic.main.about_fragment.switchConsent
+import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 
 
@@ -27,6 +32,7 @@ class AboutFragment : BaseFragment() {
     }
 
     private lateinit var alertDialog: AlertDialog
+    private var prefManager: PrefManager? = null
 
 
     override fun onCreateView(
@@ -42,11 +48,20 @@ class AboutFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setClickListeners()
         setView()
+
+        prefManager = PrefManager(requireContext())
+        switchConsent.isChecked = prefManager?.isConsentAccepted!!
+        FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(switchConsent.isChecked)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setView() {
         textViewVersion.text = getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.VERSION_CODE.toString()
+
+        switchConsent.setOnCheckedChangeListener { _, isChecked ->
+            val prefManager = PrefManager(_context = requireContext())
+            prefManager.isConsentAccepted = isChecked
+        }
     }
 
     private fun setClickListeners() {
