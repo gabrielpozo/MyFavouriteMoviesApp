@@ -91,16 +91,16 @@ class AboutFragment : BaseFragment() {
         dialogView.textViewTitleDialog.text = getString(R.string.about_to_leave)
         dialogView.textViewSubTitleDialog.text = getString(R.string.will_be_opened)
         dialogView.buttonPositive.text = getString(R.string.ok)
-        dialogView.buttonNegative.text = getString(R.string.text_cancel)
+        dialogView.buttonNeutral.text = getString(R.string.text_cancel)
         dialogView.buttonPositive.setOnClickListener {
             alertDialog.dismiss()
             openBrowser(URL)
         }
-        dialogView.buttonNegative.visible()
-        dialogView.buttonNegative.setOnClickListener {
+        dialogView.buttonNeutral.visible()
+        dialogView.buttonNeutral.setOnClickListener {
             alertDialog.dismiss()
         }
-        dialogView.buttonNeutral.gone()
+        dialogView.buttonNegative.gone()
         alertDialog.show()
 
     }
