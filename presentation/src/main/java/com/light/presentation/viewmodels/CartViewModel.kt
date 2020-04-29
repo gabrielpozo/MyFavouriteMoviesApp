@@ -14,7 +14,7 @@ class CartViewModel(
 ) : BaseViewModel(uiDispatcher) {
 
     companion object {
-        const val URL_SUCCESS = "/checkout/onepage/success/"
+        const val URL_SUCCESS = "/onepage/success/"
         const val URL_CHECKOUT_PROCESS = "/checkout/cart/"
         const val URL_CHECKOUT_ONE_PAGE = "/checkout/onepage/"
     }
