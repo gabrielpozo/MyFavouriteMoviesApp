@@ -321,7 +321,10 @@ class DetailFragment : BaseFragment() {
         val space = " "
         val splitedStr = title.split(space)
         title = splitedStr.joinToString(space) {
-            it.capitalize()
+            if (it != "packs" || it != "pack") {
+                it.capitalize()
+            }
+            it
         }
 
         val pricePack = String.format(
