@@ -44,7 +44,7 @@
         style="@style/TitleTextTerms"
         android:textAlignment="center"
         android:lineSpacingExtra="10sp"
-        android:text="We respect your privacy. By using the app your personal data will be processed in accordance with our Privacy Notice  "
+        android:text="@string/the_easiest_way_to_the_best_lighting"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
