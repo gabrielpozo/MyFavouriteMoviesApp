@@ -20,7 +20,9 @@ data class CategoriesDto(
     @SerializedName("category_filter_watt_replaced") val categoryWattReplace: List<Int>,
     @SerializedName("category_filter_cct_code") val categoryCctCode: List<Int>,
     @SerializedName("category_energysave") val categoryEnergySave: EnergySaving,
-    @SerializedName("category_filter_finish_code") val categoryFilterFinishCode: List<Int>
+    @SerializedName("category_filter_finish_code") val categoryFilterFinishCode: List<Int>,
+    @SerializedName("category_filter_product_shape") val categoryProductShape: String
+
 )
 
 data class ProductDto(

@@ -52,6 +52,9 @@ class DetailFragment : BaseFragment() {
     private var isSingleProduct: Boolean = false
 
     private var productSapId: String = ""
+    private var pricePerPack: Float = 0.0F
+
+
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
 
     override fun onAttach(context: Context) {
@@ -210,9 +213,14 @@ class DetailFragment : BaseFragment() {
 
 
     private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
-
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
-            Timber.d("egeee ${contentCart.cartItem.peekContent().product.name}")
+            val product = contentCart.cartItem.peekContent().product
+            Timber.d("egeee ${product.name}")
+            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+                putString("CURRENCY", "USD")
+                putString("ITEMS", productSapId)
+                putFloat("VALUE",pricePerPack)
+            }
             viewModel.onRequestGetItemCount()
 
         } else {
@@ -290,6 +298,7 @@ class DetailFragment : BaseFragment() {
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
+        pricePerPack = contentProduct.product.pricePack
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
