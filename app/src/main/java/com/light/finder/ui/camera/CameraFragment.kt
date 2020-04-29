@@ -18,11 +18,13 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
 import com.light.finder.CameraActivity
@@ -144,6 +146,9 @@ class CameraFragment : BaseFragment() {
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
+            firebaseAnalytics.logEventOnGoogleTagManager("send_photo"){
+                putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
+            }
         }
     }
 
@@ -208,6 +213,7 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
+                firebaseAnalytics.logEventOnGoogleTagManager("CameraPermission"){}
                 setPermissionView()
             }
 
@@ -215,13 +221,16 @@ class CameraFragment : BaseFragment() {
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }, (::observeDenyPermission))
 
-            is UiModel.CameraViewDisplay -> setCameraSpecs()
+            is UiModel.CameraViewDisplay ->{
+                firebaseAnalytics.logEventOnGoogleTagManager("CameraFeed"){}
+                setCameraSpecs()}
         }
     }
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
             //timer.onTick(INIT_INTERVAL)
+            firebaseAnalytics.logEventOnGoogleTagManager("cancel_identify"){}
             timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
@@ -235,6 +244,9 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","timeout")
+                    }
                     CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
                     showErrorDialog(
                         getString(R.string.oops),
@@ -245,6 +257,9 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.NotBulbIdentified -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","no_lightbulb_identified")
+                    }
                     showNoBulbErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
@@ -253,6 +268,9 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.ServerError -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","api_server_error")
+                    }
                     if (errorModel.exception is ParsingError) {
                         CrashlyticsException(
                             PARSE_ERROR_LOG_REPORT,
@@ -324,6 +342,7 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
+            firebaseAnalytics.logEventOnGoogleTagManager("CameraLoading"){}
 
             visibilityCallBack.onVisibilityChanged(true)
 
@@ -530,6 +549,9 @@ class CameraFragment : BaseFragment() {
                     onCameraCaptureClick()
                 } else {
                     visibilityCallBack.onInternetConnectionLost()
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","no_internet_connection")
+                    }
                 }
             }
         }

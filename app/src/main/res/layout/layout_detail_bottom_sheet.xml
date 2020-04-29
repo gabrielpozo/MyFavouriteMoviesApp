@@ -18,7 +18,11 @@
         <TextView
             android:id="@+id/textViewDetailTitle"
             style="@style/TitleTextLight"
-            android:layout_margin="24dp"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Title" />
@@ -49,10 +53,6 @@
 
         </LinearLayout>
 
-        <View
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutChangeVariation"
@@ -67,52 +67,70 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="6dp"
                 android:layout_marginEnd="16dp"
-                app:layout_goneMarginTop="50dp"
                 android:text="@string/change_variation_title"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
+                app:layout_constraintBottom_toTopOf="@+id/linearVariationContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/textViewDetailVariation"/>
+                app:layout_goneMarginTop="50dp" />
 
-            <TextView
-                android:id="@+id/textViewDetailVariation"
-                style="@style/SubtitleTextSmallLight"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearVariationContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginStart="24dp"
-                app:layout_goneMarginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="Details etc" />
+                android:background="@drawable/outlined"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange">
 
-            <ImageView
-                android:id="@+id/imageViewArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/arrow_gray" />
+                <ImageView
+                    android:id="@+id/imageViewColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="visible"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow_gray" />
 
+                <TextView
+                    android:id="@+id/textViewDetailVariation"
+                    style="@style/SubtitleTextSmallLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/imageViewColor"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_goneMarginTop="16dp"
+                    tools:text="Details etc" />
+
+                <ImageView
+                    android:id="@+id/imageViewArrow"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow_gray" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
         <LinearLayout
             android:id="@+id/layoutOrder"
@@ -122,9 +140,9 @@
             android:orientation="vertical">
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/buttonStock"
                 style="@style/WhiteButton"
+                android:visibility="gone"
                 android:clickable="false"
                 android:focusable="false"
                 android:layout_marginTop="16dp"
@@ -135,16 +153,9 @@
                 android:layout_height="wrap_content"
                 tools:text="Currently out of stock" />
 
-            <include
-                layout="@layout/custom_button_cart"
-               />
+            <include layout="@layout/custom_button_cart" />
 
         </LinearLayout>
-
-        <View
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,8 +195,8 @@
                 tools:text="ajkhfbadjbfahjdbjkasbfjabfkjasbnkjfhaiuhbkjbisudfgskfjsdbakfdas" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/imageView3"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -199,11 +210,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:visibility="gone"
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="gone"
@@ -211,6 +217,7 @@
             android:focusable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <TextView
                 android:id="@+id/textViewDetailSpecifications"
@@ -242,12 +249,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:visibility="gone"
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="gone"
@@ -283,12 +284,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:visibility="gone"
-            android:background="@color/dividerOndark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
 
 
     </LinearLayout>

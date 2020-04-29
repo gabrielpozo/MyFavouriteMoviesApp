@@ -1,0 +1,478 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2020-04-24 15:12:45",
+    "containerVersion": {
+        "path": "accounts/6000897032/containers/31037653/versions/3",
+        "accountId": "6000897032",
+        "containerId": "31037653",
+        "containerVersionId": "3",
+        "name": "Live Version 3",
+        "container": {
+            "path": "accounts/6000897032/containers/31037653",
+            "accountId": "6000897032",
+            "containerId": "31037653",
+            "name": "LightFinder_Android",
+            "publicId": "GTM-TFJRBPP",
+            "usageContext": [
+                "ANDROID_SDK_5"
+            ],
+            "fingerprint": "1586198525357",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000897032/containers/31037653/workspaces?apiLink=container"
+        },
+        "tag": [
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "tagId": "11",
+                "name": "Cancel_Identify_Tag",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "mergeEventParameters",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "measure"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "cancel_identify"
+                    }
+                ],
+                "fingerprint": "1587740967177",
+                "firingTriggerId": [
+                    "7"
+                ],
+                "parentFolderId": "3",
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "tagId": "12",
+                "name": "Lightbulb_Identified_Tag",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "mergeEventParameters",
+                        "value": "false"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "editParamTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamKey",
+                                        "value": "base"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamValue",
+                                        "value": "{{base}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamKey",
+                                        "value": "shape"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamValue",
+                                        "value": "{{shape}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "measure"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "lightbulb_identified"
+                    }
+                ],
+                "fingerprint": "1587740967179",
+                "firingTriggerId": [
+                    "9"
+                ],
+                "parentFolderId": "3",
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "tagId": "13",
+                "name": "No_Lightbulb_Identified_Tag",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "mergeEventParameters",
+                        "value": "false"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "editParamTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamKey",
+                                        "value": "error_reason"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamValue",
+                                        "value": "{{error_reason}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "measure"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "no_lightbulb_identified"
+                    }
+                ],
+                "fingerprint": "1587740967179",
+                "firingTriggerId": [
+                    "10"
+                ],
+                "parentFolderId": "3",
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "tagId": "14",
+                "name": "Send_Photo_Tag",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "mergeEventParameters",
+                        "value": "false"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "editParamTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamKey",
+                                        "value": "flash_enabled"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "editParamValue",
+                                        "value": "{{flash_enabled}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "measure"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "send_photo"
+                    }
+                ],
+                "fingerprint": "1587740967180",
+                "firingTriggerId": [
+                    "8"
+                ],
+                "parentFolderId": "3",
+                "tagFiringOption": "ONCE_PER_EVENT"
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "triggerId": "7",
+                "name": "cancel_identify",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event Name}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "cancel_identify"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1587740967181",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "triggerId": "8",
+                "name": "send_photo",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event Name}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "send_photo"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1587740967181",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "triggerId": "9",
+                "name": "lightbulb_identified",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event Name}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "lightbulb_identified"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1587740967182",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "triggerId": "10",
+                "name": "no_lightbulb_identified",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event Name}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "no_lightbulb_identified"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1587740967183",
+                "parentFolderId": "3"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "variableId": "15",
+                "name": "base",
+                "type": "md",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventType",
+                        "value": "CUSTOM"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "key",
+                        "value": "base"
+                    }
+                ],
+                "fingerprint": "1587740967183",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "variableId": "16",
+                "name": "shape",
+                "type": "md",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventType",
+                        "value": "CUSTOM"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "key",
+                        "value": "shape"
+                    }
+                ],
+                "fingerprint": "1587740967184",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "variableId": "17",
+                "name": "flash_enabled",
+                "type": "md",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventType",
+                        "value": "CUSTOM"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "key",
+                        "value": "flash_enabled"
+                    }
+                ],
+                "fingerprint": "1587740967185",
+                "parentFolderId": "3"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "variableId": "18",
+                "name": "error_reason",
+                "type": "md",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventType",
+                        "value": "CUSTOM"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "key",
+                        "value": "error_reason"
+                    }
+                ],
+                "fingerprint": "1587740967185",
+                "parentFolderId": "3"
+            }
+        ],
+        "folder": [
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "folderId": "3",
+                "name": "LightFinder",
+                "fingerprint": "1586424643493"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "type": "APP_ID",
+                "name": "App ID"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "type": "APP_NAME",
+                "name": "App Name"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "type": "APP_VERSION_CODE",
+                "name": "App Version Code"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "type": "APP_VERSION_NAME",
+                "name": "App Version Name"
+            },
+            {
+                "accountId": "6000897032",
+                "containerId": "31037653",
+                "type": "EVENT_NAME",
+                "name": "Event Name"
+            }
+        ],
+        "fingerprint": "1587741034053",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6000897032/containers/31037653/versions/3?apiLink=version"
+    }
+}
