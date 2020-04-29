@@ -7,10 +7,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.light.finder.BuildConfig
 import com.light.finder.R
+import com.light.finder.extensions.gone
+import com.light.finder.extensions.visible
 import com.light.finder.ui.BaseFragment
 import kotlinx.android.synthetic.main.about_fragment.*
+import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 
 
 class AboutFragment : BaseFragment() {
@@ -21,6 +25,8 @@ class AboutFragment : BaseFragment() {
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
     }
+
+    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreateView(
@@ -45,13 +51,11 @@ class AboutFragment : BaseFragment() {
 
     private fun setClickListeners() {
         layoutTerms.setOnClickListener {
-            //todo popup
-            openBrowser(TERMS_URL)
+            showErrorDialog(TERMS_URL)
         }
 
         layoutPrivacy.setOnClickListener {
-            //todo popup
-            openBrowser(PRIVACY_URL)
+           showErrorDialog(PRIVACY_URL)
         }
     }
 
@@ -59,5 +63,30 @@ class AboutFragment : BaseFragment() {
     private fun openBrowser(URL: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(URL))
         startActivity(browserIntent)
+    }
+
+    private fun showErrorDialog(URL: String) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        dialogView.textViewTitleDialog.text = getString(R.string.about_to_leave)
+        dialogView.textViewSubTitleDialog.text = getString(R.string.will_be_opened)
+        dialogView.buttonPositive.text = getString(R.string.ok)
+        dialogView.buttonNegative.text = getString(R.string.text_cancel)
+        dialogView.buttonPositive.setOnClickListener {
+            alertDialog.dismiss()
+            openBrowser(URL)
+        }
+        dialogView.buttonNegative.visible()
+        dialogView.buttonNegative.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        dialogView.buttonNeutral.gone()
+        alertDialog.show()
+
     }
 }
