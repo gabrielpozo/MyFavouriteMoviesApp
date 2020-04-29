@@ -89,7 +89,7 @@ class DetailFragment : BaseFragment() {
                     val category = categoryParcelable.deparcelizeCategory()
                     viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
-                    layoutChangeVariation.setOnClickListener {
+                    linearVariationContainer.setOnClickListener {
                         viewModel.onChangeVariationClick()
                     }
                 }
@@ -108,16 +108,16 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = false)
-                layoutChangeVariation.isClickable = false
-                layoutChangeVariation.isFocusable = false
+                linearVariationContainer.isClickable = false
+                linearVariationContainer.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
                 if (!isSingleProduct) {
-                    layoutChangeVariation.isClickable = true
-                    layoutChangeVariation.isFocusable = true
+                    linearVariationContainer.isClickable = true
+                    linearVariationContainer.isFocusable = true
                 }
 
                 cartButtonText.text = getString(R.string.added_to_cart)
@@ -336,8 +336,8 @@ class DetailFragment : BaseFragment() {
 
         val changeVariation = String.format(
             getString(R.string.change_variation),
-            product.wattageReplaced,
             requireContext().getColorName(product.colorCctCode, true),
+            product.wattageReplaced,
             requireContext().getFinishName(product.productFinishCode, true)
             /*         product.colorCctCode.getColorString(requireContext()),
                      product.productFinishCode.getFinishString(requireContext())*/
@@ -347,10 +347,16 @@ class DetailFragment : BaseFragment() {
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
+        val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
+        if (drawableStart == 0) {
+            imageViewColor.visibility = View.GONE
+        } else {
+            imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
+        }
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
-            layoutChangeVariation.isClickable = false
+            linearVariationContainer.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
         }
