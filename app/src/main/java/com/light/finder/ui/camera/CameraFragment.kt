@@ -244,7 +244,7 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identified"){
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
                         putString("error_reason","timeout")
                     }
                     CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
@@ -257,7 +257,7 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.NotBulbIdentified -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identified"){
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
                         putString("error_reason","no_lightbulb_identified")
                     }
                     showNoBulbErrorDialog(
@@ -268,7 +268,7 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.ServerError -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identified"){
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
                         putString("error_reason","api_server_error")
                     }
                     if (errorModel.exception is ParsingError) {
@@ -549,7 +549,7 @@ class CameraFragment : BaseFragment() {
                     onCameraCaptureClick()
                 } else {
                     visibilityCallBack.onInternetConnectionLost()
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identified"){
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
                         putString("error_reason","no_internet_connection")
                     }
                 }
