@@ -20,19 +20,19 @@
 
     </RelativeLayout>
 
-    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+    <com.light.finder.ui.common.DotsIndicator
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_alignBottom="@id/viewPagerDetail"
-        app:dotsSize="10dp"
-        app:dotsSpacing="3dp"
-        app:dotsStrokeWidth="5dp"
+        app:dot_drawable="@drawable/dot_selected"
+        app:dot_drawable_unselected="@drawable/dot"
+        app:dot_height="10dp"
+        app:dot_margin="3dp"
+        app:dot_width="10dp"
         app:layout_anchor="@id/space"
-        app:layout_anchorGravity="right"
-        app:dotsStrokeColor="@color/galleryUnselected"
-        app:dotsColor="@color/gallerySelected" />
+        app:layout_anchorGravity="right" />
 
     <View
         android:id="@+id/space"

@@ -7,11 +7,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object MessageRemoteUtil {
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpErrorInterceptor())
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 

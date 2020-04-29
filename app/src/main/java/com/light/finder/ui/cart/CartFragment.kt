@@ -2,28 +2,50 @@ package com.light.finder.ui.cart
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
+import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.visible
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import com.light.finder.CameraActivity
+import com.light.finder.common.*
+import com.light.finder.di.modules.CartComponent
+import com.light.finder.di.modules.CartModule
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
 import timber.log.Timber
-
 
 class CartFragment : BaseFragment() {
     companion object {
         const val URL = "https://www.store.lightguide.signify.com/us/checkout/cart/"
+        const val NO_INTERNET_BANNER_DELAY = 5000L
     }
+
+    private lateinit var component: CartComponent
+    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var reloadingCallback: ReloadingCallback
+    private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
+    private lateinit var connectivityRequester: ConnectivityRequester
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+            reloadingCallback = context as ReloadingCallback
+
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
     }
 
     override fun onCreateView(
@@ -36,15 +58,89 @@ class CartFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.run {
+            component = (activity as CameraActivity).lightFinderComponent.plus(CartModule())
+            connectivityRequester = ConnectivityRequester(this)
+        } ?: throw Exception("Invalid Activity")
+        setObserver()
         setupWebView()
+        observeLayout()
     }
 
+    private fun observeLayout() {
+        cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            cart_fragment_root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = cart_fragment_root.rootView.height
 
-    fun reloadWebView() = webView.reload()
+            val keypadHeight = screenHeight - rec.bottom
+            val param: ViewGroup.MarginLayoutParams
+            
+            // add margin bottom when keyboard is visible
+            if (keypadHeight > screenHeight * 0.15) {
+                param = webView.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,0, keypadHeight / 2 )
+            } else {
+                param = webView.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,0,0)
+            }
+
+            webView.layoutParams = param
+        }
+    }
+
+    private fun setObserver() {
+        InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+        viewModel.modelReload.observe(viewLifecycleOwner, Observer(::observeProductContent))
+        viewModel.modelNetworkConnection.observe(
+            viewLifecycleOwner,
+            Observer(::observeNetworkConnection)
+        )
+    }
+
+    private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
+        when (modelReload) {
+            CartViewModel.ContentReload.ContentToBeLoaded -> {
+                webView.loadUrl(URL)
+                reloadingCallback.setCurrentlyReloaded(false)
+            }
+            CartViewModel.ContentReload.ContentOnCheckProcess -> {
+            }
+        }
+    }
+
+    private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
+        when (countModel) {
+            is CartViewModel.CountItemsModel.RequestModelItemCount -> {
+                visibilityCallBack.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
+            }
+            is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                visibilityCallBack.onCartCleared()
+            }
+        }
+    }
+
+    fun onRequestItemCount() = viewModel.onRequestGetItemCount()
 
 
     @SuppressLint("SetJavaScriptEnabled")
-     fun setupWebView() {
+    private fun setupWebView() {
+        val webChromeClient: WebChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
+
+                if (newProgress < 100 && progressBar.isGone) {
+                    progressBar.showWithAnimation()
+                }
+
+                if (newProgress == 100) {
+                    progressBar.hideWithAnimation()
+                }
+
+                progressBar.progress = newProgress
+            }
+        }
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 
@@ -56,37 +152,62 @@ class CartFragment : BaseFragment() {
                 return super.shouldOverrideUrlLoading(view, request)
             }
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                progressBar.visible()
-                super.onPageStarted(view, url, favicon)
-            }
-
             override fun onPageFinished(view: WebView?, url: String?) {
-                progressBar.gone()
+                view?.scrollTo(0, 0)
+                viewModel.onSetWebUrl(url.getSplitUrl())
                 super.onPageFinished(view, url)
             }
         }
         webView.webViewClient = webViewClient
+        webView.webChromeClient = webChromeClient
         webView.settings.javaScriptEnabled = true
         webView.settings.defaultTextEncodingName = "utf-8"
 
-        loadWebView(URL)
 
-    }
-
-    private fun loadWebView(url: String) {
         try {
             webView.settings.setSupportZoom(true)
             webView.settings.allowContentAccess = true
             webView.settings.builtInZoomControls = true
             webView.settings.displayZoomControls = false
 
-            webView.loadUrl(url)
         } catch (e: Exception) {
             Timber.w("can't load website")
         }
 
+
     }
 
 
+    private fun observeNetworkConnection(model: CartViewModel.NetworkModel) {
+        when (model) {
+            is CartViewModel.NetworkModel.NetworkOnline -> {
+                webView.reload()
+                webView.visible()
+            }
+            is CartViewModel.NetworkModel.NetworkOffline -> {
+                webView.invisible()
+                displayNoInternetBanner()
+            }
+        }
+    }
+
+    private fun displayNoInternetBanner() {
+        if (no_internet_banner_cart.isVisible) {
+            return
+        }
+        val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
+        no_internet_banner_cart?.slideVertically(0F)
+        Handler().postDelayed({
+            no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
+        }, NO_INTERNET_BANNER_DELAY)
+    }
+
+    fun onLoadWebView() {
+        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
+    }
+
+
+    fun onCheckIfOffline() {
+        if (!InternetUtil.isInternetOn()) displayNoInternetBanner()
+    }
 }

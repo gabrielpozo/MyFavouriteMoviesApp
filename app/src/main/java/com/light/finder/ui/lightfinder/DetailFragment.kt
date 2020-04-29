@@ -1,9 +1,7 @@
 package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -15,19 +13,19 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.light.domain.model.Category
 import com.light.domain.model.Product
+import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.DetailComponent
 import com.light.finder.di.modules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.getColorString
-import com.light.finder.ui.adapters.getFinishString
-import com.light.finder.ui.lightfinder.ProductOptionsFragment.Companion.PRODUCT_LIST_EXTRA
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.custom_button_cart.*
@@ -49,8 +47,27 @@ class DetailFragment : BaseFragment() {
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
     private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var reloadingCallback: ReloadingCallback
+    private lateinit var connectivityRequester: ConnectivityRequester
+    private var isSingleProduct: Boolean = false
+
     private var productSapId: String = ""
+    private var pricePerPack: Float = 0.0F
+
+
     private val viewModel: DetailViewModel by lazy { getViewModel { component.detailViewModel } }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            visibilityCallBack = context as VisibilityCallBack
+            reloadingCallback = context as ReloadingCallback
+        } catch (e: ClassCastException) {
+            throw ClassCastException()
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,56 +77,51 @@ class DetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = app.applicationComponent.plus(DetailModule())
+            component = lightFinderComponent.plus(DetailModule())
+            connectivityRequester = ConnectivityRequester(this)
+
         } ?: throw Exception("Invalid Activity")
 
         setNavigationObserver()
         setDetailObservers()
+
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
                     val category = categoryParcelable.deparcelizeCategory()
                     viewModel.onRetrieveProduct(category)
-                    layoutChangeVariation.setOnClickListener {
+                    checkCodesValidity(category)
+                    linearVariationContainer.setOnClickListener {
                         viewModel.onChangeVariationClick()
                     }
                 }
         }
 
         buttonAddTocart.setOnClickListener {
-            viewModel.onRequestAddToCart(productSapId = productSapId)
-            cartAnimation.visible()
-            cartAnimation.playAnimation()
-            buttonAddTocart.isClickable = false
-            buttonAddTocart.isFocusable = false
-            buttonAddTocart.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.primaryPressed
-                )
-            )
-
-            val handler = Handler()
-            handler.postDelayed({
-                buttonAddTocart.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.primaryOnDark
-                    )
-                )
-            }, 3000)
-
+            connectivityRequester.checkConnection { isConnected ->
+                if (isConnected) {
+                    addToCart()
+                } else {
+                    visibilityCallBack.onInternetConnectionLost()
+                }
+            }
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = false)
+                linearVariationContainer.isClickable = false
+                linearVariationContainer.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                if (!isSingleProduct) {
+                    linearVariationContainer.isClickable = true
+                    linearVariationContainer.isFocusable = true
+                }
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
@@ -120,20 +132,36 @@ class DetailFragment : BaseFragment() {
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
 
-
-
+                    context?.let { it1 ->
+                        ContextCompat.getColor(
+                            it1,
+                            R.color.primaryOnDark
+                        )
+                    }?.let { it2 ->
+                        buttonAddTocart.setBackgroundColor(
+                            it2
+                        )
+                    }
                 }
             }
 
             override fun onAnimationCancel(animation: Animator) {
-
-
+                visibilityCallBack.onBottomBarBlocked(isClickable = true)
                 cartButtonText?.text = getString(R.string.add_to_cart)
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
 
-
+                context?.let { it1 ->
+                    ContextCompat.getColor(
+                        it1,
+                        R.color.primaryOnDark
+                    )
+                }?.let { it2 ->
+                    buttonAddTocart.setBackgroundColor(
+                        it2
+                    )
+                }
             }
 
             override fun onAnimationRepeat(animation: Animator) {
@@ -154,6 +182,27 @@ class DetailFragment : BaseFragment() {
         }
     }
 
+    private fun addToCart() {
+        viewModel.onRequestAddToCart(productSapId = productSapId)
+        cartAnimation.visible()
+        cartAnimation.playAnimation()
+        buttonAddTocart.isClickable = false
+        buttonAddTocart.isFocusable = false
+        if (isAdded) {
+            reloadingCallback.setCurrentlyReloaded(true)
+            context?.let { it1 ->
+                ContextCompat.getColor(
+                    it1,
+                    R.color.primaryPressed
+                )
+            }?.let { it2 ->
+                buttonAddTocart.setBackgroundColor(
+                    it2
+                )
+            }
+
+        }
+    }
 
     private fun setDetailObservers() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
@@ -162,29 +211,25 @@ class DetailFragment : BaseFragment() {
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            visibilityCallBack = context as VisibilityCallBack
-        } catch (e: ClassCastException) {
-            throw ClassCastException()
-        }
-    }
-
 
     private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
-
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
-            Timber.d("egeee ${contentCart.cartItem.peekContent().product.name}")
+            val product = contentCart.cartItem.peekContent().product
+            Timber.d("egeee ${product.name}")
+            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+                putString("CURRENCY", "USD")
+                putString("ITEMS", productSapId)
+                putFloat("VALUE",pricePerPack)
+            }
             viewModel.onRequestGetItemCount()
 
         } else {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
             showErrorDialog(
-                "Unable to add to cart",
-                "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
-                "OK",
+                getString(R.string.unable_to_add),
+                getString(R.string.connection_issue),
+                getString(R.string.ok),
                 false
             )
         }
@@ -210,9 +255,9 @@ class DetailFragment : BaseFragment() {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
         showErrorDialog(
-            "Unable to add to cart",
-            "Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.",
-            "OK",
+            getString(R.string.unable_to_add),
+            getString(R.string.connection_issue),
+            getString(R.string.ok),
             false
         )
     }
@@ -249,46 +294,34 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
+        isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
-        populateProductData(contentProduct.product, contentProduct.isSingleProduct)
+        populateProductData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
-
+        pricePerPack = contentProduct.product.pricePack
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            mFragmentNavigation.pushFragment(
-                ProductOptionsFragment.newInstance(
-                    navModel.productList,
-                    this
-                )
-            )
+            screenNavigator.navigateToVariationScreen(navModel.productList)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ProductOptionsFragment.REQUEST_CODE_PRODUCT) {
-                val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(PRODUCT_LIST_EXTRA)
-                        ?.deparcelizeProductList() ?: emptyList()
-                viewModel.onRetrieveListFromProductVariation(productList)
-            }
-        }
+
+    fun retrieveLisFromProductVariation(productList: List<Product>) {
+        viewModel.onRetrieveListFromProductVariation(productList)
     }
 
-    private fun populateProductData(product: Product, isSingleProduct: Boolean = false) {
+    private fun populateProductData(product: Product) {
         val packs = String.format(
             getString(R.string.form_factor_pack),
-            product.formfactorType,
+            requireContext().getformFactortType(product.formfactorType),
             product.qtyLampSku
         )
-        val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
+        //val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
         var title = String.format(
             getString(R.string.product_title),
             product.categoryName,
-            isDimmable,
             product.wattageReplaced,
             product.factorBase,
             packs
@@ -297,7 +330,10 @@ class DetailFragment : BaseFragment() {
         val space = " "
         val splitedStr = title.split(space)
         title = splitedStr.joinToString(space) {
-            it.capitalize()
+            if (it != "packs" || it != "pack") {
+                it.capitalize()
+            }
+            it
         }
 
         val pricePack = String.format(
@@ -312,19 +348,27 @@ class DetailFragment : BaseFragment() {
 
         val changeVariation = String.format(
             getString(R.string.change_variation),
+            requireContext().getColorName(product.colorCctCode, true),
             product.wattageReplaced,
-            product.colorCctCode.getColorString(requireContext()),
-            product.productFinishCode.getFinishString(requireContext())
+            requireContext().getFinishName(product.productFinishCode, true)
+            /*         product.colorCctCode.getColorString(requireContext()),
+                     product.productFinishCode.getFinishString(requireContext())*/
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation
+        val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
+        if (drawableStart == 0) {
+            imageViewColor.visibility = View.GONE
+        } else {
+            imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
+        }
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
-            layoutChangeVariation.isClickable = false
+            linearVariationContainer.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
         }
@@ -346,14 +390,14 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setImageGalleryDots(productImageList: MutableList<String>) {
-        // no need to set dots if photos less than 2
         if (productImageList.size < 2) {
             return
         }
 
         dots_indicator?.visibility = View.VISIBLE
-        dots_indicator?.setViewPager(viewPagerDetail)
-        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        dots_indicator?.attachViewPager(viewPagerDetail)
+        bottomSheetBehavior.setBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(p0: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -364,10 +408,16 @@ class DetailFragment : BaseFragment() {
                     }
                 }
             }
+
             override fun onSlide(p0: View, p1: Float) {
-                // no use but have to implement
+
             }
         })
+    }
+
+    private fun checkCodesValidity(category: Category) {
+        checkCategoryColorCodesAreValid(category.colors)
+        checkCategoryFinishCodesAreValid(category.finishCodes)
     }
 }
 

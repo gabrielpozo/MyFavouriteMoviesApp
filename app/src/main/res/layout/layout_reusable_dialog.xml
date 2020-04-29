@@ -84,7 +84,7 @@
 
     <Button
         android:id="@+id/buttonNeutral"
-        style="@style/ActiveText"
+        style="@style/ActiveTextPrimary"
         android:text="Button"
         android:textAllCaps="false"
         android:background="@android:color/transparent"

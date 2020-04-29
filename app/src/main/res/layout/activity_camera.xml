@@ -10,6 +10,7 @@
     android:keepScreenOn="true"
     tools:context=".CameraActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -20,7 +21,6 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,7 +69,17 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" >
+
+
+    </FrameLayout>
+
+    <include
+        android:id="@+id/no_internet_banner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        layout="@layout/layout_no_internet"/>
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation_view"
@@ -79,23 +89,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
-
- <!--   <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottom_navigation_view2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_bar_height"
-        android:layout_gravity="bottom"
-        android:background="@color/backgroundDark"
-        app:bb_activeTabAlpha="1"
-        app:bb_activeTabColor="@color/primaryAppColor"
-        app:bb_badgesHideWhenActive="true"
-        app:bb_inActiveTabAlpha="0.6"
-        app:bb_inActiveTabColor="@color/backgroundLight"
-        app:bb_tabXmlResource="@xml/menu_bottom_bar"
-        app:bb_titleTextAppearance="@style/NavBarText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

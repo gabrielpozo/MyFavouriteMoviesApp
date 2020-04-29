@@ -1,29 +1,27 @@
 package com.light.finder.ui.lightfinder
 
-import android.app.Activity.RESULT_OK
-import android.content.Context
+
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
-import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.ProductsOptionsComponent
 import com.light.finder.di.modules.ProductsOptionsModule
 import com.light.finder.extensions.*
-import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.adapters.*
+import com.light.finder.ui.adapters.FilterColorAdapter
+import com.light.finder.ui.adapters.FilterFinishAdapter
+import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
-import java.lang.ClassCastException
 
 
-class ProductOptionsFragment : BaseFragment() {
+class ProductVariationsActivity : AppCompatActivity() {
 
     companion object {
         const val PRODUCTS_OPTIONS_ID_KEY = "ProductsOptionsFragment::id"
@@ -33,78 +31,62 @@ class ProductOptionsFragment : BaseFragment() {
 
     private lateinit var component: ProductsOptionsComponent
     private val viewModel: ProductsOptionsViewModel by lazy { getViewModel { component.productsOptionsViewModel } }
-    private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var filterWattageAdapter: FilterWattageAdapter
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.layout_filter_dialog, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setContentView(R.layout.layout_filter_dialog)
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            visibilityCallBack = context as VisibilityCallBack
-        } catch (e: ClassCastException) {
-            throw ClassCastException()
-        }
-    }
+        component = app.applicationComponent.plus(ProductsOptionsModule())
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        activity?.run {
-            component = app.applicationComponent.plus(ProductsOptionsModule())
-        } ?: throw Exception("Invalid Activity")
+        intent.getParcelableArrayListExtra<ProductParcelable>(PRODUCTS_OPTIONS_ID_KEY)
+            ?.let { productList ->
+                viewModel.onRetrieveProductsVariation(
+                    productList.deparcelizeProductList()
+                )
+            }
 
         initAdapters()
+        setVariationsObservers()
+        navigationObserver()
+        setDoneClickListener()
 
-        arguments?.let { bundle ->
-
-            bundle.getParcelableArrayList<ProductParcelable>(PRODUCTS_OPTIONS_ID_KEY)
-                ?.let { productList ->
-                    viewModel.onRetrieveProductsVariation(
-                        productList.deparcelizeProductList()
-                    )
-                }
-
-            setVariationsObservers()
-            navigationObserver()
-            setDoneClickListener()
-        }
     }
+
 
     private fun setVariationsObservers() {
         viewModel.dataFilterWattageButtons.observe(
-            viewLifecycleOwner,
+            this,
             Observer(::observeFilteringWattage)
         )
 
         viewModel.dataFilterColorButtons.observe(
-            viewLifecycleOwner,
+            this,
             Observer(::observeFilteringColor)
         )
 
         viewModel.dataFilterFinishButtons.observe(
-            viewLifecycleOwner,
+            this,
             Observer(::observeFinishWattage)
         )
 
         viewModel.productSelected.observe(
-            viewLifecycleOwner,
+            this,
             Observer(::observeProductSelectedResult)
         )
     }
 
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(
-            viewLifecycleOwner,
+            this,
             Observer(::navigateBackToDetail)
         )
     }
@@ -149,26 +131,24 @@ class ProductOptionsFragment : BaseFragment() {
     }
 
     private fun observeProductSelectedResult(productSelectedModel: ProductSelectedModel) {
-        //String.format(getString(R.string.wattage_variation),productSelectedModel.productSelected.wattageReplaced.toString() )
         textViewWattage.text = String.format(
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text =productSelectedModel.productSelected.colorCctCode.getColorString(requireContext())
-        textViewFinish.text = productSelectedModel.productSelected.finish
-
+        textViewColor.text = getColorName(productSelectedModel.productSelected.colorCctCode)
+        textViewFinish.text = getFinishName(productSelectedModel.productSelected.productFinishCode)
     }
 
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
-            initializeIntent<ProductOptionsFragment> {
+            setIntentForResult {
                 putParcelableArrayListExtra(
                     PRODUCT_LIST_EXTRA,
                     navModel.categoryProducts.parcelizeProductList()
                 )
-                targetFragment?.onActivityResult(targetRequestCode, RESULT_OK, this)
-                mFragmentNavigation.popFragment()
             }
+            finish()
+            setAnimation()
         }
     }
 
@@ -183,4 +163,14 @@ class ProductOptionsFragment : BaseFragment() {
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setAnimation()
+    }
+
+    private fun setAnimation() {
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
 }

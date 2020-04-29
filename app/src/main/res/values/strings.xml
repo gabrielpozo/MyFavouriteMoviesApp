@@ -42,10 +42,11 @@
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient option</string>
-    <string name="product_title">%s %s %sW %s \n %s</string>
+    <string name="product_title">%s %sW %s \n %s</string>
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
-    <string name="change_variation">%sW, %s color, %s finish</string>
+    <string name="change_variation2">%sW, %s color, %s finish</string>
+    <string name="change_variation">%s - %sW - %s</string>
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="form_factor_pack">%s %s pack</string>
@@ -62,11 +63,13 @@
     <string name="help_me">Help me scan</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="time_out_error">Time out error</string>
+    <string name="timeout_sub">That took longer than expected</string>
     <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops!</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="not_now">Not now</string>
+    <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
     <string name="enable_camera_button">Go to Settings</string>
@@ -74,6 +77,33 @@
     <string name="adding_to_cart">Adding to cart</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="my_cart">My Cart</string>
+    <string name="got_it">Got it!</string>
+    <string name="how_to_position">How to position</string>
+    <string name="ensure_whole">Ensure whole light bulb can be seen within your phone screen.</string>
+    <string name="how_to_hold">How to hold</string>
+    <string name="hold_light">Hold light bulb from the top so the base fitting is completely visible.</string>
+    <string name="how_to_focus">How to focus</string>
+    <string name="if_the_light_bulb">If the light bulb looks blurry, tap the screen to focus.</string>
     <string name="badge_plus_100">99+</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
+    <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
 
+    <string name="unable_to_add">Unable to add to cart</string>
+    <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
+    <string name="continue_terms">Continue</string>
+    <string name="see_details">See details</string>
+    <string name="privacy_notice">Privacy Notice</string>
+    <string name="i_agree_with_the">I agree with the</string>
+    <string name="terms_of_use_text">Terms of Use</string>
+    <string name="terms_of_use_header">Terms of Use</string>
+    <string name="share_my_usage_data_to_help_improve_the_app">Share my usage data to help improve the app</string>
+    <string name="_2020_signify_holding_all_rights_reserved">© 2020 Signify Holding. All rights reserved.</string>
+    <string name="version">Version</string>
+    <string name="lightfinder">LightFinder</string>
+    <string name="about">About</string>
+    <string name="about_to_leave">You\'re about to leave the app</string>
+    <string name="will_be_opened">The link will be opened in the browser</string>
+    <string name="the_easiest_way_to_the_best_lighting">The easiest way to the best lighting</string>
 </resources>

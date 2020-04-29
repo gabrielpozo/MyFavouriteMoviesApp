@@ -18,22 +18,26 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Message
+import com.light.domain.model.ParsingError
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.local.ImageRepository
+import com.light.finder.data.source.remote.reports.CrashlyticsException
 import com.light.finder.di.modules.CameraComponent
 import com.light.finder.di.modules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -60,6 +64,7 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
+    private lateinit var connectivityRequester: ConnectivityRequester
     private lateinit var visibilityCallBack: VisibilityCallBack
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
@@ -87,6 +92,9 @@ class CameraFragment : BaseFragment() {
         private const val PHOTO_EXTENSION = ".jpg"
         private const val ANIMATION_FAST_MILLIS = 50L
         private const val ANIMATION_SLOW_MILLIS = 100L
+        private const val TIME_OUT_LOG_REPORT = 408
+        private const val PARSE_ERROR_LOG_REPORT = 422
+
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -134,9 +142,13 @@ class CameraFragment : BaseFragment() {
             Timber.e("$TAG Photo capture failed: $message cause")
         }
 
+        @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
+            firebaseAnalytics.logEventOnGoogleTagManager("send_photo"){
+                putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
+            }
         }
     }
 
@@ -145,8 +157,9 @@ class CameraFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.run {
-            component = app.applicationComponent.plus(CameraModule())
+            component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+            connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
         container = view as ConstraintLayout
@@ -156,16 +169,33 @@ class CameraFragment : BaseFragment() {
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
         viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+        viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelResponseDialog.observe(
             viewLifecycleOwner,
             Observer(::observeDialogButtonAction)
+
         )
 
 
+        requestItemCount()
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
 
+
     }
+
+    private fun requestItemCount() = viewModel.onRequestGetItemCount()
+
+    private fun observeItemCount(itemCount: CameraViewModel.RequestModelItemCount) {
+        val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
+        when {
+            itemQuantity > 0 ->
+                visibilityCallBack.onBadgeCountChanged(itemQuantity)
+            else -> Timber.d("egee Cart is empty")
+        }
+
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -183,6 +213,7 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
+                firebaseAnalytics.logEventOnGoogleTagManager("CameraPermission"){}
                 setPermissionView()
             }
 
@@ -190,13 +221,16 @@ class CameraFragment : BaseFragment() {
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }, (::observeDenyPermission))
 
-            is UiModel.CameraViewDisplay -> setCameraSpecs()
+            is UiModel.CameraViewDisplay ->{
+                firebaseAnalytics.logEventOnGoogleTagManager("CameraFeed"){}
+                setCameraSpecs()}
         }
     }
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
             //timer.onTick(INIT_INTERVAL)
+            firebaseAnalytics.logEventOnGoogleTagManager("cancel_identify"){}
             timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
@@ -210,24 +244,40 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","timeout")
+                    }
+                    CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
                     showErrorDialog(
-                        getString(R.string.unidentified),
-                        getString(R.string.unidentified_sub),
-                        getString(R.string.try_again),
+                        getString(R.string.oops),
+                        getString(R.string.timeout_sub),
+                        getString(R.string.ok),
                         false
                     )
                 }
 
                 is DialogModel.NotBulbIdentified -> {
-                    showErrorDialog(
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","no_lightbulb_identified")
+                    }
+                    showNoBulbErrorDialog(
                         getString(R.string.unidentified),
                         getString(R.string.unidentified_sub),
-                        getString(R.string.try_again),
-                        false
+                        getString(R.string.try_again)
                     )
                 }
 
                 is DialogModel.ServerError -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","api_server_error")
+                    }
+                    if (errorModel.exception is ParsingError) {
+                        CrashlyticsException(
+                            PARSE_ERROR_LOG_REPORT,
+                            errorModel.errorMessage,
+                            null
+                        ).logException()
+                    }
                     showErrorDialog(
                         getString(R.string.oops),
                         getString(R.string.error_sub),
@@ -292,6 +342,7 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
+            firebaseAnalytics.logEventOnGoogleTagManager("CameraLoading"){}
 
             visibilityCallBack.onVisibilityChanged(true)
 
@@ -355,7 +406,7 @@ class CameraFragment : BaseFragment() {
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
             timer.cancel()
-            mFragmentNavigation.pushFragment(CategoriesFragment.newInstance(messages[0]))
+            screenNavigator.navigateToCategoriesScreen(messages[0])
         }
     }
 
@@ -402,9 +453,45 @@ class CameraFragment : BaseFragment() {
     }
 
 
+    private fun showNoBulbErrorDialog(
+        titleDialog: String,
+        subtitleDialog: String,
+        buttonPositiveText: String
+    ) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
+        dialogBuilder.setView(dialogView)
+        alertDialog = dialogBuilder.create()
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.setCancelable(false)
+        alertDialog.window?.setDimAmount(0.6f)
+        timer.cancel()
+        lottieAnimationView.pauseAnimation()
+        dialogView.buttonPositive.text = buttonPositiveText
+        dialogView.textViewTitleDialog.text = titleDialog
+        dialogView.textViewSubTitleDialog.text = subtitleDialog
+        dialogView.buttonPositive.setOnClickListener {
+            viewModel.onPositiveAlertDialogButtonClicked("retry")
+        }
+
+        dialogView.buttonNegative.gone()
+
+        dialogView.buttonNeutral.text = getString(R.string.help_me_scan)
+        dialogView.buttonNeutral.setOnClickListener {
+            alertDialog.dismiss()
+            revertCameraView()
+            screenNavigator.navigateToTipsAndTricksScreen()
+        }
+
+        alertDialog.show()
+
+    }
+
+
     private fun setCameraSpecs() {
         layoutCamera.visible()
         layoutPermission.gone()
+
 
         outputDirectory = CameraActivity.getOutputDirectory(requireContext())
 
@@ -428,6 +515,25 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    fun onCameraCaptureClick() {
+        imageCapture?.let { imageCapture ->
+            val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
+            val metadata = ImageCapture.Metadata().apply {
+
+                isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            }
+
+            imageCapture.takePicture(mainExecutor, imageCaptureListener)
+
+            container.postDelayed({
+                container.foreground = ColorDrawable(Color.WHITE)
+                container.postDelayed(
+                    { container.foreground = null }, ANIMATION_FAST_MILLIS
+                )
+            }, ANIMATION_SLOW_MILLIS)
+
+        }
+    }
 
     private fun initCameraUi() {
 
@@ -438,22 +544,15 @@ class CameraFragment : BaseFragment() {
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
         controls.cameraCaptureButton.setSafeOnClickListener {
-            imageCapture?.let { imageCapture ->
-                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
-                val metadata = ImageCapture.Metadata().apply {
-
-                    isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
+            connectivityRequester.checkConnection { isConnected ->
+                if (isConnected) {
+                    onCameraCaptureClick()
+                } else {
+                    visibilityCallBack.onInternetConnectionLost()
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_bulb_identify"){
+                        putString("error_reason","no_internet_connection")
+                    }
                 }
-
-                imageCapture.takePicture(mainExecutor, imageCaptureListener)
-
-                container.postDelayed({
-                    container.foreground = ColorDrawable(Color.WHITE)
-                    container.postDelayed(
-                        { container.foreground = null }, ANIMATION_FAST_MILLIS
-                    )
-                }, ANIMATION_SLOW_MILLIS)
-
             }
         }
 
@@ -503,6 +602,10 @@ class CameraFragment : BaseFragment() {
         camera = cameraProvider.bindToLifecycle(
             this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
         )
+
+        helpButton.setOnClickListener {
+            screenNavigator.navigateToTipsAndTricksScreen()
+        }
 
         /**
          * once camera container is initialize we start observing camera events from camera viewmodels

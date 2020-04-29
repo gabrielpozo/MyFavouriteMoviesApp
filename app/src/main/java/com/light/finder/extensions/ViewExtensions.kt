@@ -1,15 +1,19 @@
 package com.light.finder.extensions
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.light.finder.R
 import com.light.finder.common.SafeClickListener
 import java.io.File
 import java.util.*
@@ -18,6 +22,14 @@ import java.util.*
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
 
+fun TextView.setHtmlText(source: String) {
+    this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+internal fun Drawable.tint(@ColorInt color: Int): Drawable {
+    val wrapped = DrawableCompat.wrap(this)
+    DrawableCompat.setTint(wrapped, color)
+    return wrapped
+}
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -29,6 +41,53 @@ fun View.invisible() {
 
 fun View.gone() {
     visibility = View.GONE
+}
+
+fun View.hideWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(0f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.GONE
+            }
+        })
+}
+
+fun View.showWithAnimation() {
+    val view = this
+    view.animate()
+        .alpha(1f)
+        .setDuration(500L)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                view.visibility = View.VISIBLE
+            }
+        })
+}
+
+fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
+    val view = this
+    this.animate().translationY(distance).setDuration(500)
+        .setListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                if (hide) {
+                    view.gone()
+                }
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+                view.visible()
+            }
+        })
 }
 
 fun ImageView.loadFile(file: File) {
@@ -67,31 +126,23 @@ fun String.getIntFormatter(number: Number): String =
 
 fun String.getStringFormatter(chain: String): String = String.format(this, chain)
 
-fun TextView.endDrawable(@DrawableRes id: Int = 0) {
-    val drawable = ContextCompat.getDrawable(context, id)
-    this.setCompoundDrawables(null, null, drawable, null)
+fun String?.getSplitUrl(): String {
+    var chain = "/"
+    val splitedList = this?.split("/") ?: return ""
+    for (index in (splitedList.size - 3) until splitedList.size - 1) {
+        chain += splitedList[index] + "/"
+    }
+
+    return chain
 }
+
 
 fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
     setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
 }
 
-fun TextView.getColorString(color: String): Int = when (color) {
-    context.getString(R.string.warm) -> {
-        R.drawable.ic_warm
-    }
-    context.getString(R.string.white_warm) -> {
-        R.drawable.ic_warm_white
-    }
-    context.getString(R.string.cool_white) -> {
-        R.drawable.ic_cool_white
-    }
-    context.getString(R.string.daylight) -> {
-        R.drawable.ic_daylight
-    }
 
-    else -> R.drawable.ic_warm
-}
+
 
 
 

@@ -61,10 +61,11 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.4"
-    tsnackBarVersion = "1.1.1"
-    dotsIndicator = "4.1.2"
-    googleAnalyticsFirebase="17.2.2"
-    googleCrashAnalyticsFirebase="2.10.1"
+    googleAnalyticsFirebase = "17.2.2"
+    googleCrashAnalyticsFirebase = "2.10.1"
+    googleAnalyticsPerformance = "19.0.5"
+    parisVersion = "1.4.0"
+    tagManagerVersion = "11.0.4"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -107,11 +108,8 @@ ext {
     ]
 
     lottieDependencies = [
-            lottie: "com.airbnb.android:lottie:$lottieVersion"
-    ]
-
-    dotsDependencies = [
-            dots: "com.tbuonomo.andrui:viewpagerdotsindicator:$dotsIndicator"
+            lottie: "com.airbnb.android:lottie:$lottieVersion",
+            paris : "com.airbnb.android:paris:$parisVersion"
     ]
 
     cameraxDependencies = [
@@ -158,7 +156,7 @@ ext {
             gsonConverter: "com.squareup.retrofit2:converter-gson:$retrofit",
             okhttp       : "com.squareup.okhttp3:okhttp:$okhttp",
             okhttpLogging: "com.squareup.okhttp3:logging-interceptor:$okhttp",
-            okhttpCookie: "com.squareup.okhttp3:okhttp-urlconnection:$okhttpCookie"
+            okhttpCookie : "com.squareup.okhttp3:okhttp-urlconnection:$okhttpCookie"
     ]
 
     testDependencies = [
@@ -188,9 +186,11 @@ ext {
     ]
 
     googleServicesDependencies = [
-            analytics: "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
-            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase"
-
-
+            analytics  : "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase",
+            performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance",
+            tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion",
+            //   authf      : 'com.google.firebase:firebase-auth:16.2.0'
+            //  sevicesanalytics: "com.google.android.gms:play-services-analytics-impl:$tagManagerVersion"
     ]
 }

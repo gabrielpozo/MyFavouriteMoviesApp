@@ -1,12 +1,23 @@
 package com.light.finder.common
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+import com.light.domain.model.Category
+import com.light.domain.model.Message
+import com.light.domain.model.Product
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.parcelizeProductList
+import com.light.finder.extensions.startActivity
+import com.light.finder.extensions.startActivityForResult
 import com.light.finder.ui.cart.CartFragment
+import com.light.finder.ui.lightfinder.CategoriesFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductVariationsActivity
+import com.light.finder.ui.lightfinder.TipsAndTricksActivity
+import com.light.finder.ui.terms.PrivacyStatementActivity
+import com.light.finder.ui.terms.TermsActivity
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -14,7 +25,7 @@ import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
 import kotlinx.android.synthetic.main.activity_camera.*
 
-class FragmentFrameHelper(private val activity: CameraActivity) {
+class ScreenNavigator(private val activity: CameraActivity) {
     companion object {
         const val INDEX_LIGHT_FINDER = FragNavController.TAB1
         const val INDEX_CART = FragNavController.TAB2
@@ -44,7 +55,6 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    Log.d("GabrielBottom","switch Tabs")
                     activity.bottom_navigation_view.currentItem = index
                 }
             })
@@ -59,23 +69,70 @@ class FragmentFrameHelper(private val activity: CameraActivity) {
 
         activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
 
-            when(position){
+            when (position) {
                 INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
-                INDEX_CART -> fragNavController.switchTab(INDEX_CART)
+                INDEX_CART -> {
+                    fragNavController.switchTab(INDEX_CART)
+                    reloadCartFragment()
+                }
                 INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
             }
             true
         }
     }
 
-    fun pushFragment(fragment: Fragment) {
-        fragNavController.pushFragment(fragment)
-    }
+    fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
+
 
     fun onSaveInstanceState(outState: Bundle) {
         fragNavController.onSaveInstanceState(outState)
     }
 
     fun popFragmentNot(): Boolean = fragNavController.popFragment().not()
+
+    private fun reloadCartFragment() {
+        val current = fragNavController.currentFrag
+        if (current is CartFragment) {
+            current.onLoadWebView()
+            current.onRequestItemCount()
+            current.onCheckIfOffline()
+        }
+    }
+
+    fun navigateToVariationScreen(productList: List<Product>) {
+        activity.startActivityForResult<ProductVariationsActivity> {
+            putParcelableArrayListExtra(
+                ProductVariationsActivity.PRODUCTS_OPTIONS_ID_KEY,
+                productList.parcelizeProductList()
+            )
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToTipsAndTricksScreen() {
+        activity.startActivity<TipsAndTricksActivity> {}
+        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
+    }
+
+    fun navigateToPrivacyScreen() {
+        activity.startActivity<PrivacyStatementActivity> {}
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToTermsScreen() {
+        activity.startActivity<TermsActivity> {}
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+
+    fun navigateToDetailScreen(category: Category) {
+        fragNavController.pushFragment(DetailFragment.newInstance(category))
+    }
+
+    fun navigateToCategoriesScreen(message: Message) {
+        fragNavController.pushFragment(CategoriesFragment.newInstance(message))
+    }
+
+
 
 }

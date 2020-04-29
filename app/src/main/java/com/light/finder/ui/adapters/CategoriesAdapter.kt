@@ -29,34 +29,41 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
-        holder.bind(category, position)
+
+        val maxEnergySaving = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
+
+        holder.bind(category, maxEnergySaving ?: -0.0f)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
-        fun bind(category: Category, position: Int) {
-            var colorText = ""
+        fun bind(category: Category, maxSaving: Float) {
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
-            //TODO it will change once we have the field on the api(most efficient option)
-            /*if (position == 0) {
+            category.maxEnergySaving
+            if (maxSaving == category.maxEnergySaving) {
                 itemView.energyButton.visibility = View.VISIBLE
-            }*/
-            //
+            }
 
-            category.colors.forEachIndexed { index, color ->
+
+            category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
-                textView.text = color
-                textView.endDrawableIcon(textView.getColorString(color))
+                textView.text = itemView.context.getColorName(colorCode)
+                val drawable = itemView.context.getColorDrawable(colorCode)
+                if (drawable != 0) {
+                    textView.endDrawableIcon(drawable)
+                }
                 textView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                 textView.setTextAppearance(R.style.SubTitleField)
-                if(index < category.colors.size -1) {
-                    textView.setPadding(0, 0, 0, 36)
+                if (index < category.colors.size - 1) {
+                    textView.setPadding(0, 0, 0, 32)
+                } else if (category.colors.size == 1) {
+                    textView.setPadding(0, 0, 0, 8)
                 }
                 textView.compoundDrawablePadding = 32
                 itemView.textViewsLayout.addView(textView)

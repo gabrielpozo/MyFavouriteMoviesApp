@@ -1,11 +1,12 @@
-package com.light.source.remote
+package com.light.finder.data.source
 
+import com.google.gson.JsonParseException
 import com.light.data.Result
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.NO_CONTENT_CODE
 import kotlinx.coroutines.*
 import retrofit2.Response
-import java.lang.Exception
+import java.text.ParseException
 
 abstract class BaseDataSource {
 
@@ -33,6 +34,10 @@ abstract class BaseDataSource {
         Result.error(time.message ?: time.toString(), isTimeout = true)
     } catch (io: CancellationException) {
         Result.error(io.message ?: io.toString(), isCanceled = true)
+    } catch (pe: ParseException) {
+        Result.error(pe.message.toString())
+    } catch (pe: JsonParseException) {
+        Result.error(pe.message ?: pe.toString(), isParseError = true)
     } catch (e: Exception) {
         Result.error(e.message.toString())
     }

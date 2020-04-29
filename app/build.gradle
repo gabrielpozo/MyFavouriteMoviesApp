@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     signingConfigs {
@@ -19,15 +20,17 @@ android {
     dataBinding {
         enabled = true
     }
+    googleServices.disableVersionCheck = true
     androidExtensions {
         experimental = true
     }
+
     defaultConfig {
         applicationId "com.light.finder"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
-        versionName "1"
+        versionName "0.9"
         vectorDrawables.useSupportLibrary true
         buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
         buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
@@ -39,9 +42,23 @@ android {
         }
         release {
             debuggable false
+            minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
+    }
+
+    flavorDimensions "version"
+
+    productFlavors {
+        qa {
+            applicationIdSuffix ".qa"
+        }
+        production {
+            applicationId "com.light.finder"
+        }
     }
 
 
@@ -86,9 +103,7 @@ dependencies {
     androidTestImplementation androidTestDependencies.values()
     implementation navigationDependencies.values()
     implementation lottieDependencies.values()
-    implementation dotsDependencies.values()
     implementation googleServicesDependencies.values()
-    
 }
 
 task fullCoverageReport(type: JacocoReport) {

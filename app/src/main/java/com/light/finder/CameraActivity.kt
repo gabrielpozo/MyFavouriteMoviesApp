@@ -1,36 +1,35 @@
 package com.light.finder
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.view.KeyEvent
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
-import com.light.finder.common.ConnectionLiveData
-import com.light.finder.common.ConnectionModel
-import com.light.finder.common.FragmentFrameHelper
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_CART
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_EXPERT
-import com.light.finder.common.FragmentFrameHelper.Companion.INDEX_LIGHT_FINDER
-import com.light.finder.common.VisibilityCallBack
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.visible
-import com.light.finder.ui.BaseFragment
+import com.light.domain.model.Product
+import com.light.finder.common.*
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.di.modules.LightFinderComponent
+import com.light.finder.di.modules.LightFinderModule
+import com.light.finder.extensions.*
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
-import com.light.finder.ui.expert.ExpertFragment
+import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -40,11 +39,14 @@ import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    BaseFragment.FragmentNavigation, VisibilityCallBack {
+    VisibilityCallBack, ReloadingCallback {
 
     private lateinit var container: FrameLayout
-    private val fragmentHelper = FragmentFrameHelper(this)
+    private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
+    lateinit var lightFinderComponent: LightFinderComponent
+
     override val numberOfRootFragments: Int = 3
+    private var carToReload = false
 
     companion object {
         const val LIMITED_NUMBER_BADGE = 100
@@ -67,8 +69,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         window.requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY)
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN)
         super.onCreate(savedInstanceState)
+
+        lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+
         setContentView(R.layout.activity_camera)
-        fragmentHelper.setupNavController(savedInstanceState)
+        screenNavigator.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
 
         setBottomBar()
@@ -77,8 +82,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     }
 
-    override fun onVisibilityChanged(visible: Boolean) {
-        if (visible) {
+    override fun onVisibilityChanged(invisible: Boolean) {
+        if (invisible) {
             bottom_navigation_view.gone()
         } else {
             bottom_navigation_view.visible()
@@ -114,9 +119,35 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ProductVariationsActivity.REQUEST_CODE_PRODUCT) {
+                val productList: List<Product> =
+                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
+                        ?.deparcelizeProductList() ?: emptyList()
+                val currentFragment = screenNavigator.getCurrentFragment()
+                if (currentFragment is DetailFragment) {
+                    currentFragment.retrieveLisFromProductVariation(productList)
+                }
+            }
+        }
+    }
+
+    override fun onInternetConnectionLost() {
+        no_internet_banner?.slideVertically(0F)
+        Handler().postDelayed({
+            no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
+        }, 5000)
+    }
+
+    override fun setCurrentlyReloaded(reloadCart: Boolean) {
+        carToReload = reloadCart
+    }
+
+    override fun hasBeenReload(): Boolean = carToReload
 
     private fun setBottomBar() {
-
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu)
         navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
         // Set background color
@@ -125,7 +156,10 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         bottom_navigation_view.inactiveColor = getColor(R.color.colorOnSecondary)
 
         val face = ResourcesCompat.getFont(this, R.font.bold)
-        bottom_navigation_view.setTitleTextSize(resources.getDimension(R.dimen.active_tab), resources.getDimension(R.dimen.inactive_tab))
+        bottom_navigation_view.setTitleTextSize(
+            resources.getDimension(R.dimen.active_tab),
+            resources.getDimension(R.dimen.inactive_tab)
+        )
         bottom_navigation_view.setPadding(0, 20, 0, 0)
 
         bottom_navigation_view.setTitleTypeface(face)
@@ -156,11 +190,11 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragmentHelper.onSaveInstanceState(outState)
+        screenNavigator.onSaveInstanceState(outState)
     }
 
     override fun onBackPressed() {
-        if (fragmentHelper.popFragmentNot()) {
+        if (screenNavigator.popFragmentNot()) {
             super.onBackPressed()
         }
     }
@@ -182,17 +216,9 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
-            INDEX_EXPERT -> return ExpertFragment.newInstance()
+            INDEX_EXPERT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
-    }
-
-    override fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>?) {
-        fragmentHelper.pushFragment(fragment)
-    }
-
-    override fun popFragment() {
-        fragmentHelper.popFragmentNot()
     }
 
 }

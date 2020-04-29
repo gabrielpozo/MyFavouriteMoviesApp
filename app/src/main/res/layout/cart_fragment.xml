@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cart_fragment_root"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cart_toolbar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@color/backgroundDark"
@@ -13,6 +15,7 @@
 
 
         <TextView
+            android:id="@+id/cart_toolbar_text"
             style="@style/SubtitleTextSmallBoldLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,15 +35,23 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include
+        android:visibility="gone"
+        android:id="@+id/no_internet_banner_cart"
+        layout="@layout/layout_no_internet"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:visibility="gone"
         style="?android:attr/progressBarStyleHorizontal"
+        android:maxHeight="4dp"
+        android:minHeight="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:max="100"
-        android:progress="45" />
+        android:progress="0"
+        android:indeterminate="false"
+        android:max="100"/>
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
