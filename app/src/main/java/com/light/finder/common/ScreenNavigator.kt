@@ -2,6 +2,7 @@ package com.light.finder.common
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
@@ -12,6 +13,8 @@ import com.light.finder.extensions.parcelizeProductList
 import com.light.finder.extensions.startActivity
 import com.light.finder.extensions.startActivityForResult
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.extensions.*
+import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
@@ -35,6 +38,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     private val fragNavController: FragNavController =
         FragNavController(activity.supportFragmentManager, R.id.fragment_container)
+    private val firebaseAnalytics = FirebaseAnalytics.getInstance(activity)
 
 
     fun setupNavController(savedInstanceState: Bundle?) {
@@ -69,15 +73,19 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
 
         activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
-
             when (position) {
-                INDEX_LIGHT_FINDER -> fragNavController.switchTab(INDEX_LIGHT_FINDER)
+                INDEX_LIGHT_FINDER -> {
+                    fragNavController.switchTab(INDEX_LIGHT_FINDER)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+                }
                 INDEX_CART -> {
                     fragNavController.switchTab(INDEX_CART)
                     reloadCartFragment()
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_EXPERT -> {
                     fragNavController.switchTab(INDEX_EXPERT)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                     val current = fragNavController.currentFrag
                     if (current is AboutFragment) {
                         current.setLightStatusBar()
@@ -95,7 +103,11 @@ class ScreenNavigator(private val activity: CameraActivity) {
         fragNavController.onSaveInstanceState(outState)
     }
 
-    fun popFragmentNot(): Boolean = fragNavController.popFragment().not()
+    fun popFragmentNot(): Boolean {
+        fragNavController.popFragment().not()
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+        return false
+    }
 
     private fun reloadCartFragment() {
         val current = fragNavController.currentFrag
@@ -105,6 +117,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
             current.onCheckIfOffline()
         }
     }
+
 
     fun navigateToVariationScreen(productList: List<Product>) {
         activity.startActivityForResult<ProductVariationsActivity> {
@@ -134,13 +147,13 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToDetailScreen(category: Category) {
         fragNavController.pushFragment(DetailFragment.newInstance(category))
-
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
 
     fun navigateToCategoriesScreen(message: Message) {
         fragNavController.pushFragment(CategoriesFragment.newInstance(message))
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
-
 
 
 }

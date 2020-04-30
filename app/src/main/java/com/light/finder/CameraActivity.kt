@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
@@ -45,6 +46,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
     lateinit var lightFinderComponent: LightFinderComponent
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override val numberOfRootFragments: Int = 3
     private var carToReload = false
@@ -67,6 +69,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
         lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)
         screenNavigator.setupNavController(savedInstanceState)
@@ -124,6 +127,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
                     currentFragment.retrieveLisFromProductVariation(productList)
+                    firebaseAnalytics.trackScreen(currentFragment, this)
                 }
             }
         }

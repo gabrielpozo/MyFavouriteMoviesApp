@@ -11,7 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.google.android.gms.analytics.GoogleAnalytics
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
