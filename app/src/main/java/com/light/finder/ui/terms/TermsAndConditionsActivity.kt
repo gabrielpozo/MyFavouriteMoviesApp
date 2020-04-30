@@ -1,9 +1,6 @@
 package com.light.finder.ui.terms
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.airbnb.paris.extensions.style
@@ -20,11 +17,6 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
 

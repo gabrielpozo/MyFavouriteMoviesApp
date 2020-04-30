@@ -11,6 +11,7 @@ import com.light.finder.extensions.newInstance
 import com.light.finder.extensions.parcelizeProductList
 import com.light.finder.extensions.startActivity
 import com.light.finder.extensions.startActivityForResult
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
@@ -75,7 +76,13 @@ class ScreenNavigator(private val activity: CameraActivity) {
                     fragNavController.switchTab(INDEX_CART)
                     reloadCartFragment()
                 }
-                INDEX_EXPERT -> fragNavController.switchTab(INDEX_EXPERT)
+                INDEX_EXPERT -> {
+                    fragNavController.switchTab(INDEX_EXPERT)
+                    val current = fragNavController.currentFrag
+                    if (current is AboutFragment) {
+                        current.setLightStatusBar()
+                    }
+                }
             }
             true
         }
@@ -127,6 +134,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToDetailScreen(category: Category) {
         fragNavController.pushFragment(DetailFragment.newInstance(category))
+
     }
 
     fun navigateToCategoriesScreen(message: Message) {
