@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -350,8 +351,6 @@ class DetailFragment : BaseFragment() {
             requireContext().getColorName(product.colorCctCode, true),
             product.wattageReplaced,
             requireContext().getFinishName(product.productFinishCode, true)
-            /*         product.colorCctCode.getColorString(requireContext()),
-                     product.productFinishCode.getFinishString(requireContext())*/
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
@@ -367,6 +366,7 @@ class DetailFragment : BaseFragment() {
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
+            linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
             linearVariationContainer.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
