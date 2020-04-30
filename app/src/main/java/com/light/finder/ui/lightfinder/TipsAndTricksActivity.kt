@@ -65,7 +65,7 @@ class TipsAndTricksActivity : AppCompatActivity() {
     }
 
     private fun setAnimation() {
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down)
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_down)
     }
 
 }

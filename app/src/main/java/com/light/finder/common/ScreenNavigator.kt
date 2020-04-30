@@ -111,7 +111,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToTipsAndTricksScreen() {
         activity.startActivity<TipsAndTricksActivity> {}
-        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
+        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
     }
 
     fun navigateToPrivacyScreen() {
