@@ -106,4 +106,14 @@
     <string name="about_to_leave">You\'re about to leave the app</string>
     <string name="will_be_opened">The link will be opened in the browser</string>
     <string name="the_easiest_way_to_the_best_lighting">The easiest way to the best lighting</string>
+
+    //Firebase
+    <string name="camera_permission">CameraPermission</string>
+    <string name="camera_feed">CameraFeed</string>
+    <string name="camera_loading">CameraLoading</string>
+    <string name="product_results">ProductResults</string>
+    <string name="product_details">ScannedProductDetails</string>
+    <string name="product_variations">ProductVariations</string>
+    <string name="my_cart_fire">MyCart</string>
+
 </resources>

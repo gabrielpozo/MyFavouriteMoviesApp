@@ -6,6 +6,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
 import com.light.finder.data.source.remote.ProductParcelable
@@ -34,6 +35,7 @@ class ProductVariationsActivity : AppCompatActivity() {
     private lateinit var filterWattageAdapter: FilterWattageAdapter
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,8 @@ class ProductVariationsActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setContentView(R.layout.layout_filter_dialog)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_variations), null)
 
         component = app.applicationComponent.plus(ProductsOptionsModule())
 
@@ -166,6 +170,7 @@ class ProductVariationsActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_details), null)
         setAnimation()
     }
 

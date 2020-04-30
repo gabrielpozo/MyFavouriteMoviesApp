@@ -69,9 +69,10 @@ class CameraFragment : BaseFragment() {
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private var modelUiState: ModelStatus = ModelStatus.FEED
 
 
-    private val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
+    val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
             val timeText = millisUntilFinished / 1000
             if (timeText > 0) {
@@ -146,7 +147,7 @@ class CameraFragment : BaseFragment() {
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
-            firebaseAnalytics.logEventOnGoogleTagManager("send_photo"){
+            firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
                 putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
             }
         }
@@ -186,7 +187,7 @@ class CameraFragment : BaseFragment() {
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
 
-    private fun observeItemCount(itemCount: CameraViewModel.RequestModelItemCount) {
+    private fun observeItemCount(itemCount: RequestModelItemCount) {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
         when {
             itemQuantity > 0 ->
@@ -213,7 +214,8 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
-                firebaseAnalytics.logEventOnGoogleTagManager("CameraPermission"){}
+                firebaseAnalytics.trackScreen(this,"CameraPermission")
+                modelUiState = ModelStatus.PERMISSION
                 setPermissionView()
             }
 
@@ -221,16 +223,18 @@ class CameraFragment : BaseFragment() {
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
             }, (::observeDenyPermission))
 
-            is UiModel.CameraViewDisplay ->{
-                firebaseAnalytics.logEventOnGoogleTagManager("CameraFeed"){}
-                setCameraSpecs()}
+            is UiModel.CameraViewDisplay -> {
+               firebaseAnalytics.trackScreen(this,"CameraFeed")
+                modelUiState = ModelStatus.FEED
+                setCameraSpecs()
+            }
         }
     }
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
             //timer.onTick(INIT_INTERVAL)
-            firebaseAnalytics.logEventOnGoogleTagManager("cancel_identified"){}
+            firebaseAnalytics.logEventOnGoogleTagManager("cancel_identified") {}
             timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
@@ -244,8 +248,8 @@ class CameraFragment : BaseFragment() {
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
-                        putString("error_reason","timeout")
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified") {
+                        putString("error_reason", "timeout")
                     }
                     CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
                     showErrorDialog(
@@ -257,8 +261,8 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.NotBulbIdentified -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
-                        putString("error_reason","no_lightbulb_identified")
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified") {
+                        putString("error_reason", "no_lightbulb_identified")
                     }
                     showNoBulbErrorDialog(
                         getString(R.string.unidentified),
@@ -268,8 +272,8 @@ class CameraFragment : BaseFragment() {
                 }
 
                 is DialogModel.ServerError -> {
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
-                        putString("error_reason","api_server_error")
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified") {
+                        putString("error_reason", "api_server_error")
                     }
                     if (errorModel.exception is ParsingError) {
                         CrashlyticsException(
@@ -342,8 +346,8 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
-            firebaseAnalytics.logEventOnGoogleTagManager("CameraLoading"){}
-
+            firebaseAnalytics.trackScreen(this, "CameraLoading")
+            modelUiState = ModelStatus.LOADING
             visibilityCallBack.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
@@ -352,6 +356,8 @@ class CameraFragment : BaseFragment() {
 
         }
     }
+
+    fun getStatusView(): ModelStatus = modelUiState
 
     private fun observeFlashButtonAction(flashModel: FlashModel) {
         flashMode = when (flashModel) {
@@ -549,8 +555,8 @@ class CameraFragment : BaseFragment() {
                     onCameraCaptureClick()
                 } else {
                     visibilityCallBack.onInternetConnectionLost()
-                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified"){
-                        putString("error_reason","no_internet_connection")
+                    firebaseAnalytics.logEventOnGoogleTagManager("no_lightbulb_identified") {
+                        putString("error_reason", "no_internet_connection")
                     }
                 }
             }
@@ -627,3 +633,5 @@ class CameraFragment : BaseFragment() {
     }
 
 }
+
+enum class ModelStatus { FEED, LOADING, PERMISSION }
