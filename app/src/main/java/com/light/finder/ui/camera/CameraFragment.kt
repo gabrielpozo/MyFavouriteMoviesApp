@@ -212,7 +212,7 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
-                firebaseAnalytics.trackScreen(this,requireActivity(),getString(R.string.camera_permission))
+                screenNavigator.toCameraPermissionScreen(this)
                 modelUiState = ModelStatus.PERMISSION
                 setPermissionView()
             }
@@ -222,7 +222,7 @@ class CameraFragment : BaseFragment() {
             }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> {
-               firebaseAnalytics.trackScreen(this,requireActivity(),getString(R.string.camera_feed))
+                screenNavigator.toCameraFeedScreen(this)
                 modelUiState = ModelStatus.FEED
                 setCameraSpecs()
             }
@@ -344,7 +344,7 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
-            firebaseAnalytics.trackScreen(this,requireActivity(), "CameraLoading")
+            screenNavigator.toCameraLoading(this)
             modelUiState = ModelStatus.LOADING
             visibilityCallBack.onVisibilityChanged(true)
 

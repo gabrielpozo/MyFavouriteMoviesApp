@@ -111,6 +111,11 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
 
     fun navigateToVariationScreen(productList: List<Product>) {
+        firebaseAnalytics.setCurrentScreen(
+            activity,
+            activity.getString(R.string.product_variations),
+            null
+        )
         activity.startActivityForResult<ProductVariationsActivity> {
             putParcelableArrayListExtra(
                 ProductVariationsActivity.PRODUCTS_OPTIONS_ID_KEY,
@@ -144,6 +149,31 @@ class ScreenNavigator(private val activity: CameraActivity) {
     fun navigateToCategoriesScreen(message: Message) {
         fragNavController.pushFragment(CategoriesFragment.newInstance(message))
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+    }
+
+    fun toCameraPermissionScreen(cameraFragment: CameraFragment) {
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_permission)
+        )
+    }
+
+    fun toCameraFeedScreen(cameraFragment: CameraFragment) {
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_feed)
+        )
+
+    }
+
+    fun toCameraLoading(cameraFragment: CameraFragment) {
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_loading)
+        )
     }
 
 

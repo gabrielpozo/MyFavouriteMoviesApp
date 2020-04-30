@@ -167,11 +167,6 @@ class ProductVariationsActivity : AppCompatActivity() {
         viewModel.onFilterFinishTap(filter)
     }
 
-    override fun onResume() {
-        super.onResume()
-        firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_variations), null)
-
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
