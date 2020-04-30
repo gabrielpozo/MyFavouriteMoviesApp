@@ -117,7 +117,7 @@ x
     <string name="my_cart_fire">MyCart</string>
 
     //FireBase Events
-    <string name="cancel_identified_event">cancel_identified</string>
+    <string name="cancel_identified_event">cancel_identify</string>
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
     <string name="error_reason_event">error_reason</string>
