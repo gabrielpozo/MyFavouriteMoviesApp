@@ -260,7 +260,7 @@ class CameraFragment : BaseFragment() {
 
                 is DialogModel.NotBulbIdentified -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
-                        putString("error_reason", getString(R.string.no_lightbulb_identified_event))
+                        putString(getString(R.string.error_reason_event), getString(R.string.no_lightbulb_identified_event))
                     }
                     showNoBulbErrorDialog(
                         getString(R.string.unidentified),
