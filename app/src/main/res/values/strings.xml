@@ -89,7 +89,7 @@
     <string name="terms_of_use">Terms of use</string>
     <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
     <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
-
+x
     <string name="unable_to_add">Unable to add to cart</string>
     <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
     <string name="continue_terms">Continue</string>
@@ -107,7 +107,7 @@
     <string name="will_be_opened">The link will be opened in the browser</string>
     <string name="the_easiest_way_to_the_best_lighting">The easiest way to the best lighting</string>
 
-    //Firebase
+    //Firebase Screens
     <string name="camera_permission">CameraPermission</string>
     <string name="camera_feed">CameraFeed</string>
     <string name="camera_loading">CameraLoading</string>
@@ -115,5 +115,16 @@
     <string name="product_details">ScannedProductDetails</string>
     <string name="product_variations">ProductVariations</string>
     <string name="my_cart_fire">MyCart</string>
+
+    //FireBase Events
+    <string name="cancel_identified_event">cancel_identified</string>
+    <string name="lightbulb_identified_event">lightbulb_identified</string>
+    <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
+    <string name="error_reason_event">error_reason</string>
+    <string name="time_out_event">timeout</string>
+    <string name="api_server_error_event">api_server_error</string>
+    <string name="no_internet_connection_event">no_internet_connection</string>
+    <string name="base">base</string>
+    <string name="shape">shape</string>
 
 </resources>

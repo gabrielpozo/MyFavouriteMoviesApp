@@ -47,7 +47,6 @@ class ProductVariationsActivity : AppCompatActivity() {
         )
         setContentView(R.layout.layout_filter_dialog)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_variations), null)
 
         component = app.applicationComponent.plus(ProductsOptionsModule())
 
@@ -166,6 +165,12 @@ class ProductVariationsActivity : AppCompatActivity() {
 
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_variations), null)
+
     }
 
     override fun onBackPressed() {
