@@ -131,7 +131,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
                     currentFragment.retrieveLisFromProductVariation(productList)
-                    firebaseAnalytics.trackScreen(currentFragment)
+                    firebaseAnalytics.trackScreen(currentFragment, this)
                 }
             }
         }

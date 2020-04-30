@@ -1,7 +1,6 @@
 package com.light.finder.common
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
@@ -72,16 +71,16 @@ class ScreenNavigator(private val activity: CameraActivity) {
             when (position) {
                 INDEX_LIGHT_FINDER -> {
                     fragNavController.switchTab(INDEX_LIGHT_FINDER)
-                    firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_CART -> {
                     fragNavController.switchTab(INDEX_CART)
                     reloadCartFragment()
-                    firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_EXPERT -> {
                     fragNavController.switchTab(INDEX_EXPERT)
-                    firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
             }
             true
@@ -97,7 +96,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun popFragmentNot(): Boolean {
         fragNavController.popFragment().not()
-        firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
         return false
     }
 
@@ -139,12 +138,12 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToDetailScreen(category: Category) {
         fragNavController.pushFragment(DetailFragment.newInstance(category))
-        firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
 
     fun navigateToCategoriesScreen(message: Message) {
         fragNavController.pushFragment(CategoriesFragment.newInstance(message))
-        firebaseAnalytics.trackScreen(fragNavController.currentFrag)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
 
 
