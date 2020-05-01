@@ -49,7 +49,7 @@
         <activity
             android:resizeableActivity="false"
             android:name=".ui.lightfinder.TipsAndTricksActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
 
@@ -57,7 +57,7 @@
 
         <activity
             android:name=".ui.terms.TermsAndConditionsActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
 

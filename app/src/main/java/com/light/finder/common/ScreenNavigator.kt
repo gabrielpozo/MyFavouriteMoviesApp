@@ -8,6 +8,11 @@ import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.extensions.newInstance
+import com.light.finder.extensions.parcelizeProductList
+import com.light.finder.extensions.startActivity
+import com.light.finder.extensions.startActivityForResult
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.extensions.*
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
@@ -81,6 +86,10 @@ class ScreenNavigator(private val activity: CameraActivity) {
                 INDEX_EXPERT -> {
                     fragNavController.switchTab(INDEX_EXPERT)
                     firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+                    val current = fragNavController.currentFrag
+                    if (current is AboutFragment) {
+                        current.setLightStatusBar()
+                    }
                 }
             }
             true

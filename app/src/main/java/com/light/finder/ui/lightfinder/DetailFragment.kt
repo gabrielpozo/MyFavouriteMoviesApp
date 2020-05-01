@@ -85,6 +85,8 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
 
+        setLightStatusBar()
+
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -417,6 +419,14 @@ class DetailFragment : BaseFragment() {
     private fun checkCodesValidity(category: Category) {
         checkCategoryColorCodesAreValid(category.colors)
         checkCategoryFinishCodesAreValid(category.finishCodes)
+    }
+
+    private fun setLightStatusBar() {
+        var flags = view?.systemUiVisibility
+        if (flags != null) {
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            view?.systemUiVisibility = flags
+        }
     }
 }
 
