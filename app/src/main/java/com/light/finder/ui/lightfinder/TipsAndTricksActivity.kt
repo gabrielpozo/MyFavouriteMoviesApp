@@ -22,11 +22,7 @@ class TipsAndTricksActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+
         setContentView(R.layout.fragment_tips_and_tricks)
 
         initAdapters()
@@ -65,7 +61,7 @@ class TipsAndTricksActivity : AppCompatActivity() {
     }
 
     private fun setAnimation() {
-        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down)
+        overridePendingTransition(R.anim.stay, R.anim.slide_out_down)
     }
 
 }

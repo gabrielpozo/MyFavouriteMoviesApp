@@ -32,6 +32,5 @@ class TipsViewPagerAdapter(private val context: Context) : PagerAdapter() {
 
 enum class Tips(val layoutResId: Int) {
     FIRST(R.layout.item_tips_view_pager_first),
-    SECOND(R.layout.item_tips_view_pager_second),
-    THIRD(R.layout.item_tips_view_pager_third)
+    SECOND(R.layout.item_tips_view_pager_second)
 }

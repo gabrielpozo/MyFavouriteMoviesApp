@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
-import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
@@ -84,6 +84,8 @@ class DetailFragment : BaseFragment() {
 
         setNavigationObserver()
         setDetailObservers()
+
+        setLightStatusBar()
 
 
         arguments?.let { bundle ->
@@ -350,9 +352,7 @@ class DetailFragment : BaseFragment() {
             getString(R.string.change_variation),
             requireContext().getColorName(product.colorCctCode, true),
             product.wattageReplaced,
-            requireContext().getFinishName(product.productFinishCode, true)
-            /*         product.colorCctCode.getColorString(requireContext()),
-                     product.productFinishCode.getFinishString(requireContext())*/
+            requireContext().getFinishName(product.productFinishCode, true) + " " +getString(R.string.finish)
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
@@ -368,6 +368,7 @@ class DetailFragment : BaseFragment() {
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
+            linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
             linearVariationContainer.isClickable = false
             textViewDetailChange.visibility = View.GONE
             imageViewArrow.visibility = View.INVISIBLE
@@ -418,6 +419,14 @@ class DetailFragment : BaseFragment() {
     private fun checkCodesValidity(category: Category) {
         checkCategoryColorCodesAreValid(category.colors)
         checkCategoryFinishCodesAreValid(category.finishCodes)
+    }
+
+    private fun setLightStatusBar() {
+        var flags = view?.systemUiVisibility
+        if (flags != null) {
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            view?.systemUiVisibility = flags
+        }
     }
 }
 
