@@ -152,6 +152,7 @@ class DetailFragment : BaseFragment() {
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
+                linearVariationContainer.isClickable = true
 
                 context?.let { it1 ->
                     ContextCompat.getColor(
