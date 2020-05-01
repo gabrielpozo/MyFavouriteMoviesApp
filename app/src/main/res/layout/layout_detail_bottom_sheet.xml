@@ -81,11 +81,12 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
-                app:layout_goneMarginTop="0dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/outlined"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange"
+                app:layout_goneMarginTop="0dp">
 
                 <ImageView
                     android:id="@+id/imageViewColor"
@@ -108,9 +109,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@id/imageViewColor"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
                     app:layout_goneMarginTop="16dp"
                     tools:text="Details etc" />
