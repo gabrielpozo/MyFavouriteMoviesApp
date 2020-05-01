@@ -10,4 +10,5 @@
     <dimen name="dots_margin_bottom">20dp</dimen>
     <dimen name="active_tab">12dp</dimen>
     <dimen name="inactive_tab">12dp</dimen>
+
 </resources>
