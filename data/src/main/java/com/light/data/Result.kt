@@ -39,7 +39,7 @@ data class Result<out T>(
             return Result(
                 when {
                     isTimeout -> {
-                        Status.PARSE_ERROR
+                        Status.TIME_OUT
                     }
                     isParseError -> {
                         Status.PARSE_ERROR

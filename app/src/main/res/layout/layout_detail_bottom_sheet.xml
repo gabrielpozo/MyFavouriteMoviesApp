@@ -22,10 +22,10 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
-            android:layout_marginBottom="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Title" />
+
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:id="@+id/textViewDetailPricePerPack"
                 style="@style/TitleTextDarkGreen"
                 android:layout_marginStart="24dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="0.00$" />
@@ -46,13 +46,11 @@
                 style="@style/TitleTextDarkGreenSmall"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="/ 0.00$ each" />
 
         </LinearLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutChangeVariation"
@@ -67,13 +65,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="visible"
                 android:text="@string/change_variation_title"
                 app:layout_constraintBottom_toTopOf="@+id/linearVariationContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginTop="50dp" />
+                app:layout_goneMarginTop="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearVariationContainer"
@@ -82,6 +81,7 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
+                app:layout_goneMarginTop="0dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:background="@drawable/outlined"
@@ -93,9 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
                     android:visibility="visible"
-                    android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -157,6 +156,10 @@
 
         </LinearLayout>
 
+        <View
+            android:background="@color/dividerOndark"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:clickable="true"

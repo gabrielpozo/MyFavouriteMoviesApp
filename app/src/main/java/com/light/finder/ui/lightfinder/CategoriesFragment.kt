@@ -101,10 +101,7 @@ class CategoriesFragment : BaseFragment() {
         }
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)
-        firebaseAnalytics.logEventOnGoogleTagManager("lightbulb_identified"){
-            putString("base",categories[0].categoryProductBase)
-            putString("shape",categories[0].categoryShape)
-        }
+
         adapter.categories = categories
     }
 

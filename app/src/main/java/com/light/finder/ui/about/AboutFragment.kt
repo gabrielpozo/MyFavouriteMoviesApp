@@ -29,6 +29,8 @@ import com.light.finder.ui.cart.CartFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
 import kotlinx.android.synthetic.main.cart_fragment.*
+import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
+import kotlinx.android.synthetic.main.about_fragment.switchConsent
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 
 
@@ -165,5 +167,13 @@ class AboutFragment : BaseFragment() {
         dialogView.buttonNegative.gone()
         alertDialog.show()
 
+    }
+
+    fun setLightStatusBar() {
+        var flags = view?.systemUiVisibility
+        if (flags != null) {
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            view?.systemUiVisibility = flags
+        }
     }
 }
