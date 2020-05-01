@@ -119,10 +119,7 @@ class DetailFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
-                if (!isSingleProduct) {
-                    linearVariationContainer.isClickable = true
-                    linearVariationContainer.isFocusable = true
-                }
+
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
@@ -132,6 +129,10 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
+                    if (!isSingleProduct) {
+                        linearVariationContainer.isClickable = true
+                        linearVariationContainer.isFocusable = true
+                    }
 
                     context?.let { it1 ->
                         ContextCompat.getColor(
