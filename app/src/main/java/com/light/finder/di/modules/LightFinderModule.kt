@@ -25,4 +25,5 @@ interface LightFinderComponent {
     fun plus(module: CameraModule): CameraComponent
     fun plus(module: DetailModule): DetailComponent
     fun plus(module: CartModule): CartComponent
+    fun plus(module: AboutModule) : AboutComponent
 }
