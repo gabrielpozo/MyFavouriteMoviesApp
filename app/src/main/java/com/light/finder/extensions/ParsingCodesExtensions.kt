@@ -6,7 +6,11 @@ import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
-fun Context.getColorName(colorCode: Int, logError: Boolean = false): String = when (colorCode) {
+fun Context.getColorName(
+    colorCode: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false
+): String = when (colorCode) {
     1 -> {
         getString(R.string.warm)
     }
@@ -21,7 +25,11 @@ fun Context.getColorName(colorCode: Int, logError: Boolean = false): String = wh
     }
     else -> {
         if (logError) CrashlyticsException(422, "product_cct_code", colorCode).logException()
-        colorCode.toString()
+        if (!isForDetailScreen) {
+            colorCode.toString()
+        } else {
+            ""
+        }
     }
 }
 
@@ -37,13 +45,49 @@ fun Context.getformFactortType(factorTypeCode: Int): String = when (factorTypeCo
     }
 }
 
-fun Context.getFinishName(finishCode: Int, logError: Boolean = false): String = when (finishCode) {
-    1 -> getString(R.string.clear)
-    2 -> getString(R.string.frosted)
+fun Context.getFinishName(
+    finishCode: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false
+): String = when (finishCode) {
+    1 -> if (!isForDetailScreen) {
+        getString(R.string.clear)
+    } else {
+        getString(R.string.clear) + " " + getString(R.string.finish)
+    }
+    2 -> if (!isForDetailScreen) {
+        getString(R.string.frosted)
+    } else {
+        getString(R.string.frosted) + " " + getString(R.string.finish)
+    }
     else -> {
         if (logError) CrashlyticsException(422, "product_finish_code", finishCode).logException()
-        finishCode.toString()
+        if (!isForDetailScreen) {
+            finishCode.toString()
+        } else {
+            ""
+        }
     }
+}
+
+
+fun String.dropFirstAndLastCharacter(): String {
+    val removeFirst = removePrefix(" -")
+    return when {
+        removeFirst.isEmpty() -> {
+            removeFirst
+        }
+        removeFirst.takeLast(2) == "- " -> {
+            removeFirst.substring(0, removeFirst.length - 2)
+        }
+        else -> {
+            removeFirst
+        }
+    }
+}
+
+fun String.dropLastCharacter(): String {
+    return substring(0, length - 1)
 }
 
 fun checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
