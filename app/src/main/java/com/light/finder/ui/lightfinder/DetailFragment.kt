@@ -352,7 +352,7 @@ class DetailFragment : BaseFragment() {
             getString(R.string.change_variation),
             requireContext().getColorName(product.colorCctCode, true),
             product.wattageReplaced,
-            requireContext().getFinishName(product.productFinishCode, true)
+            requireContext().getFinishName(product.productFinishCode, true) + " " +getString(R.string.finish)
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
