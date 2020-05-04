@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -120,10 +119,7 @@ class DetailFragment : BaseFragment() {
 
             override fun onAnimationEnd(animation: Animator) {
                 visibilityCallBack.onBottomBarBlocked(isClickable = true)
-                if (!isSingleProduct) {
-                    linearVariationContainer.isClickable = true
-                    linearVariationContainer.isFocusable = true
-                }
+
 
                 cartButtonText.text = getString(R.string.added_to_cart)
 
@@ -133,6 +129,10 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
+                    if (!isSingleProduct) {
+                        linearVariationContainer.isClickable = true
+                        linearVariationContainer.isFocusable = true
+                    }
 
                     context?.let { it1 ->
                         ContextCompat.getColor(
@@ -153,6 +153,10 @@ class DetailFragment : BaseFragment() {
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
+                if (!isSingleProduct) {
+                    linearVariationContainer.isClickable = true
+                    linearVariationContainer.isFocusable = true
+                }
 
                 context?.let { it1 ->
                     ContextCompat.getColor(
@@ -221,7 +225,7 @@ class DetailFragment : BaseFragment() {
             firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
-                putFloat("VALUE",pricePerPack)
+                putFloat("VALUE", pricePerPack)
             }
             viewModel.onRequestGetItemCount()
 
@@ -348,17 +352,22 @@ class DetailFragment : BaseFragment() {
             product.priceLamp
         )
 
+
         val changeVariation = String.format(
             getString(R.string.change_variation),
-            requireContext().getColorName(product.colorCctCode, true),
+            requireContext().getColorName(product.colorCctCode, logError = true, isForDetailScreen = true),
             product.wattageReplaced,
-            requireContext().getFinishName(product.productFinishCode, true) + " " +getString(R.string.finish)
+            requireContext().getFinishName(
+                product.productFinishCode, true,
+                isForDetailScreen = true
+            )
         )
 
         textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
-        textViewDetailVariation.text = changeVariation
+        textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()
+
         val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
         if (drawableStart == 0) {
             imageViewColor.visibility = View.GONE
