@@ -143,11 +143,11 @@ class CameraFragment : BaseFragment() {
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
-            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
-            image.close()
             firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
                 putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
             }
+            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
+            image.close()
         }
     }
 
@@ -212,8 +212,8 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
-                screenNavigator.toCameraPermissionScreen(this)
                 modelUiState = ModelStatus.PERMISSION
+                screenNavigator.toCameraPermissionScreen(this)
                 setPermissionView()
             }
 
@@ -222,8 +222,8 @@ class CameraFragment : BaseFragment() {
             }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> {
-                screenNavigator.toCameraFeedScreen(this)
                 modelUiState = ModelStatus.FEED
+                screenNavigator.toCameraFeedScreen(this)
                 setCameraSpecs()
             }
         }
@@ -344,8 +344,8 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
-            screenNavigator.toCameraLoading(this)
             modelUiState = ModelStatus.LOADING
+            screenNavigator.toCameraLoading(this)
             visibilityCallBack.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
@@ -381,10 +381,8 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun revertCameraView() {
-        //timer.onTick(INIT_INTERVAL)
         layoutPreview.gone()
         layoutCamera.visible()
-        //browseButton.visible()
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 
