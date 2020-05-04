@@ -8,20 +8,14 @@ import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.CameraActivity
 import com.light.finder.R
-import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.parcelizeProductList
-import com.light.finder.extensions.startActivity
-import com.light.finder.extensions.startActivityForResult
-import com.light.finder.ui.about.AboutFragment
 import com.light.finder.extensions.*
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.finder.ui.lightfinder.TipsAndTricksActivity
-import com.light.finder.ui.terms.PrivacyStatementActivity
-import com.light.finder.ui.terms.TermsActivity
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -138,17 +132,6 @@ class ScreenNavigator(private val activity: CameraActivity) {
         activity.startActivity<TipsAndTricksActivity> {}
         activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
     }
-
-    fun navigateToPrivacyScreen() {
-        activity.startActivity<PrivacyStatementActivity> {}
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
-
-    fun navigateToTermsScreen() {
-        activity.startActivity<TermsActivity> {}
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
-
 
     fun navigateToDetailScreen(category: Category) {
         fragNavController.pushFragment(DetailFragment.newInstance(category))
