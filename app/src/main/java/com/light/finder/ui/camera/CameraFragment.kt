@@ -409,7 +409,7 @@ class CameraFragment : BaseFragment() {
         layoutCamera.gone()
         //browseButton.visible()
         layoutPermission.visible()
-        textViewEnableAccess.setOnClickListener {
+        enableContainer.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
         }
     }
