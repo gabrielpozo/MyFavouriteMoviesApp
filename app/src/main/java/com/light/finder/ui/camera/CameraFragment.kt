@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -192,9 +193,7 @@ class CameraFragment : BaseFragment() {
                 visibilityCallBack.onBadgeCountChanged(itemQuantity)
             else -> Timber.d("egee Cart is empty")
         }
-
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -212,8 +211,8 @@ class CameraFragment : BaseFragment() {
             }
 
             is UiModel.PermissionsViewRequested -> {
-                screenNavigator.toCameraPermissionScreen(this)
                 modelUiState = ModelStatus.PERMISSION
+                screenNavigator.toCameraPermissionScreen(this)
                 setPermissionView()
             }
 
@@ -222,8 +221,8 @@ class CameraFragment : BaseFragment() {
             }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> {
-                screenNavigator.toCameraFeedScreen(this)
                 modelUiState = ModelStatus.FEED
+                screenNavigator.toCameraFeedScreen(this)
                 setCameraSpecs()
             }
         }
@@ -247,7 +246,10 @@ class CameraFragment : BaseFragment() {
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
-                        putString(getString(R.string.error_reason_event), getString(R.string.time_out_event))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.time_out_event)
+                        )
                     }
                     CrashlyticsException(TIME_OUT_LOG_REPORT, null, null).logException()
                     showErrorDialog(
@@ -260,7 +262,10 @@ class CameraFragment : BaseFragment() {
 
                 is DialogModel.NotBulbIdentified -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
-                        putString(getString(R.string.error_reason_event), getString(R.string.no_lightbulb_identified_event))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.no_lightbulb_identified_event)
+                        )
                     }
                     showNoBulbErrorDialog(
                         getString(R.string.unidentified),
@@ -271,7 +276,10 @@ class CameraFragment : BaseFragment() {
 
                 is DialogModel.ServerError -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
-                        putString(getString(R.string.error_reason_event), getString(R.string.api_server_error_event))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.api_server_error_event)
+                        )
                     }
                     if (errorModel.exception is ParsingError) {
                         CrashlyticsException(
@@ -329,7 +337,9 @@ class CameraFragment : BaseFragment() {
             is Content.RequestCategoriesMessages -> {
                 viewModel.onRequestCategoriesMessages(modelContent.encodedImage)
             }
-            is Content.RequestModelContent ->{ navigateToCategories(modelContent.messages)}
+            is Content.RequestModelContent -> {
+                navigateToCategories(modelContent.messages)
+            }
         }
     }
 
@@ -344,14 +354,13 @@ class CameraFragment : BaseFragment() {
             imageViewPreview.loadImage(it.bitmap)
             //start countdown
             timer.start()
-            screenNavigator.toCameraLoading(this)
             modelUiState = ModelStatus.LOADING
+            screenNavigator.toCameraLoading(this)
             visibilityCallBack.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
                 viewModel.onCancelRequest()
             }
-
         }
     }
 
@@ -381,10 +390,8 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun revertCameraView() {
-        //timer.onTick(INIT_INTERVAL)
         layoutPreview.gone()
         layoutCamera.visible()
-        //browseButton.visible()
         cameraUiContainer.visible()
         visibilityCallBack.onVisibilityChanged(false)
 
@@ -410,9 +417,9 @@ class CameraFragment : BaseFragment() {
     private fun navigateToCategories(content: Event<List<Message>>) {
         content.getContentIfNotHandled()?.let { messages ->
             timer.cancel()
-            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.lightbulb_identified_event)){
-                putString(getString(R.string.base),messages[0].categories[0].categoryProductBase)
-                putString(getString(R.string.shape),messages[0].categories[0].categoryShape)
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.lightbulb_identified_event)) {
+                putString(getString(R.string.base), messages[0].categories[0].categoryProductBase)
+                putString(getString(R.string.shape), messages[0].categories[0].categoryShape)
             }
             screenNavigator.navigateToCategoriesScreen(messages[0])
         }
@@ -530,7 +537,6 @@ class CameraFragment : BaseFragment() {
 
                 isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
             }
-
             imageCapture.takePicture(mainExecutor, imageCaptureListener)
 
             container.postDelayed({
@@ -558,7 +564,10 @@ class CameraFragment : BaseFragment() {
                 } else {
                     visibilityCallBack.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
-                        putString(getString(R.string.error_reason_event), getString(R.string.no_internet_connection_event))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.no_internet_connection_event)
+                        )
                     }
                 }
             }

@@ -25,10 +25,8 @@ import com.light.finder.extensions.gone
 import com.light.finder.extensions.slideVertically
 import com.light.finder.extensions.visible
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.cart.CartFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
-import kotlinx.android.synthetic.main.cart_fragment.*
 import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
 import kotlinx.android.synthetic.main.about_fragment.switchConsent
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
@@ -92,6 +90,8 @@ class AboutFragment : BaseFragment() {
 
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             val prefManager = PrefManager(_context = requireContext())
+            FirebaseAnalytics.getInstance(requireContext())
+                .setAnalyticsCollectionEnabled(isChecked)
             prefManager.isConsentAccepted = isChecked
         }
     }
