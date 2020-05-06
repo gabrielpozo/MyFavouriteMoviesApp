@@ -5,6 +5,7 @@
 
     <dist:module dist:instant="true" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
 
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -22,10 +23,15 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity
+            android:name=".BaseActivity"
+            android:theme="@style/LightStatusBar"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
 
         <activity
-            android:resizeableActivity="false"
             android:name="com.light.finder.ui.splash.SplashActivity"
+            android:resizeableActivity="false"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -38,8 +44,8 @@
         </activity>
 
         <activity
-            android:resizeableActivity="false"
             android:name=".ui.lightfinder.ProductVariationsActivity"
+            android:resizeableActivity="false"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -47,8 +53,8 @@
         </activity>
 
         <activity
-            android:resizeableActivity="false"
             android:name=".ui.lightfinder.TipsAndTricksActivity"
+            android:resizeableActivity="false"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -64,8 +70,8 @@
         </activity>
 
         <activity
-            android:resizeableActivity="false"
             android:name="com.light.finder.CameraActivity"
+            android:resizeableActivity="false"
             android:configChanges="orientation|keyboardHidden"
             android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme"
