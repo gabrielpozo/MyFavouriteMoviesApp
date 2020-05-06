@@ -2,8 +2,6 @@ package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack

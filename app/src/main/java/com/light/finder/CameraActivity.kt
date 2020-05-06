@@ -3,6 +3,7 @@ package com.light.finder
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
@@ -41,8 +42,9 @@ import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback {
+    VisibilityCallBack, ReloadingCallback, ShakeDetector.Listener {
 
+    private lateinit var shakeDetector: ShakeDetector
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
     lateinit var lightFinderComponent: LightFinderComponent
@@ -75,10 +77,30 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         screenNavigator.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
 
+        setShakeDetector()
+
         setBottomBar()
 
         observeConnection()
 
+    }
+
+    private fun setShakeDetector() {
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val shakeDetector = ShakeDetector(this)
+        shakeDetector.start(sensorManager)
+    }
+
+    override fun hearShake() {
+        Timber.e("ege oh yeah shake me")
+    }
+
+
+    override fun onDestroy() {
+        if(this::shakeDetector.isInitialized) {
+            shakeDetector.stop()
+        }
+        super.onDestroy()
     }
 
     override fun onVisibilityChanged(invisible: Boolean) {
