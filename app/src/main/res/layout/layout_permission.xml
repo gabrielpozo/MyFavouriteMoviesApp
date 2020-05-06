@@ -32,28 +32,49 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewEnableAccess"
+        app:layout_constraintBottom_toTopOf="@id/enableContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPermissionTitle" />
 
-    <TextView
-        android:id="@+id/textViewEnableAccess"
-        style="@style/ActiveText"
-        android:drawableEnd="@drawable/ic_arrow_right"
-        android:drawablePadding="8dp"
+    <LinearLayout
+        android:id="@+id/enableContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_enable_access"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubtitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubtitle">
+
+        <TextView
+            android:id="@+id/textViewEnableAccess"
+            style="@style/ActiveText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_enable_access"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewEnableAccess"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_arrow_right" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -68,7 +89,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/lightbulb_illustration" />
+        app:srcCompat="@mipmap/lightbulb_illustration" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
