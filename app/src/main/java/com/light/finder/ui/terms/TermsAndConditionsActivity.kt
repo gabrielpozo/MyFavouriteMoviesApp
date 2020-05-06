@@ -52,6 +52,10 @@ class TermsAndConditionsActivity : AppCompatActivity() {
         prefManager = PrefManager(this)
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
 
+        if (!InternetUtil.isInternetOn()) {
+            displayNoInternetBanner()
+        }
+
         setObserver()
         setView()
 
