@@ -2,10 +2,7 @@ package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.light.finder.BaseActivity
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.common.WrappingViewPager
@@ -13,7 +10,7 @@ import com.light.finder.ui.adapters.TipsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
 
 
-class TipsAndTricksActivity : BaseActivity() {
+class TipsAndTricksActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_CODE_TIPS = 1

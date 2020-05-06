@@ -2,11 +2,8 @@ package com.light.finder.ui.splash
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.light.finder.BaseActivity
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
@@ -20,7 +17,7 @@ import com.light.presentation.viewmodels.SplashState
 import com.light.presentation.viewmodels.SplashViewModel
 
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : AppCompatActivity() {
 
     private var prefManager: PrefManager? = null
     private lateinit var component: SplashComponent

@@ -3,13 +3,10 @@ package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FilterVariationCF
-import com.light.finder.BaseActivity
 import com.light.finder.R
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.ProductsOptionsComponent
@@ -24,7 +21,7 @@ import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
 
 
-class ProductVariationsActivity : BaseActivity() {
+class ProductVariationsActivity : AppCompatActivity() {
 
     companion object {
         const val PRODUCTS_OPTIONS_ID_KEY = "ProductsOptionsFragment::id"
