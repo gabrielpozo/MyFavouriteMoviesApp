@@ -35,13 +35,16 @@ import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import com.usabilla.sdk.ubform.Usabilla
+import com.usabilla.sdk.ubform.UsabillaFormCallback
+import com.usabilla.sdk.ubform.sdk.form.FormClient
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback {
+    VisibilityCallBack, ReloadingCallback, UsabillaFormCallback {
 
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
@@ -78,6 +81,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         setBottomBar()
 
         observeConnection()
+
 
     }
 
@@ -219,6 +223,20 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
             INDEX_EXPERT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
+    }
+
+    override fun formLoadSuccess(form: FormClient?) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, form!!.fragment, "FRAGMENT_TAG")
+            .commit();
+    }
+
+    override fun mainButtonTextUpdated(p0: String?) {
+    }
+
+    override fun formLoadFail() {
+
     }
 
 }
