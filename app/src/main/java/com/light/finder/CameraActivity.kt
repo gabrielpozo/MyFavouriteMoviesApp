@@ -40,7 +40,7 @@ import timber.log.Timber
 import java.io.File
 
 
-class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
+class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
     VisibilityCallBack, ReloadingCallback {
 
     private lateinit var container: FrameLayout
