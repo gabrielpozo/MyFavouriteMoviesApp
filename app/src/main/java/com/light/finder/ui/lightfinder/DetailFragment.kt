@@ -377,6 +377,9 @@ class DetailFragment : BaseFragment() {
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
+            val param = imageViewColor.layoutParams as ViewGroup.MarginLayoutParams
+            param.marginStart = 4
+            imageViewColor.layoutParams = param
             linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
             linearVariationContainer.isClickable = false
             textViewDetailChange.visibility = View.GONE
