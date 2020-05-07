@@ -8,6 +8,7 @@ import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.CameraActivity
 import com.light.finder.R
+import com.light.finder.UsabillaActivity
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -168,5 +169,8 @@ class ScreenNavigator(private val activity: CameraActivity) {
         )
     }
 
-
+    fun navigateToUsabillaForm() {
+        activity.startActivity<UsabillaActivity> {}
+        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
+    }
 }

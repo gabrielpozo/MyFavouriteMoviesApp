@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -28,24 +26,21 @@ import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.LightFinderComponent
 import com.light.finder.di.modules.LightFinderModule
 import com.light.finder.extensions.*
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
-import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
-import com.usabilla.sdk.ubform.Usabilla
-import com.usabilla.sdk.ubform.UsabillaFormCallback
-import com.usabilla.sdk.ubform.sdk.form.FormClient
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
 
 
 class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback, UsabillaFormCallback, ShakeDetector.Listener {
+    VisibilityCallBack, ReloadingCallback, ShakeDetector.Listener {
 
     private lateinit var shakeDetector: ShakeDetector
     private lateinit var container: FrameLayout
@@ -71,7 +66,8 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
         lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -97,11 +93,12 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
 
     override fun hearShake() {
         Timber.e("ege oh yeah shake me")
+        screenNavigator.navigateToUsabillaForm()
     }
 
 
     override fun onDestroy() {
-        if(this::shakeDetector.isInitialized) {
+        if (this::shakeDetector.isInitialized) {
             shakeDetector.stop()
         }
         super.onDestroy()
@@ -245,20 +242,6 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
             INDEX_EXPERT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
-    }
-
-    override fun formLoadSuccess(form: FormClient?) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, form!!.fragment, "FRAGMENT_TAG")
-            .commit();
-    }
-
-    override fun mainButtonTextUpdated(p0: String?) {
-    }
-
-    override fun formLoadFail() {
-
     }
 
 }
