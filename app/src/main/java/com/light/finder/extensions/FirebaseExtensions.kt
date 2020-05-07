@@ -24,8 +24,13 @@ inline fun FirebaseAnalytics.logEventOnGoogleTagManager(
     logEvent(typeEvent, bundleFor(body))
 
 }
+
 //TODO extract this method in a standalone class
-fun FirebaseAnalytics.trackScreen(currentFragment: Fragment?, activity: FragmentActivity, tagCameraScreen: String? = null) {
+fun FirebaseAnalytics.trackScreen(
+    currentFragment: Fragment?,
+    activity: FragmentActivity,
+    tagCameraScreen: String? = null
+) {
     if (tagCameraScreen == null) {
         when (currentFragment) {
             is DetailFragment -> {
@@ -45,7 +50,11 @@ fun FirebaseAnalytics.trackScreen(currentFragment: Fragment?, activity: Fragment
                         setCurrentScreen(activity, activity.getString(R.string.camera_feed), null)
                     }
                     currentFragment.getStatusView() == ModelStatus.LOADING -> {
-                        setCurrentScreen(activity, activity.getString(R.string.camera_loading), null)
+                        setCurrentScreen(
+                            activity,
+                            activity.getString(R.string.camera_loading),
+                            null
+                        )
                     }
                     currentFragment.getStatusView() == ModelStatus.PERMISSION -> {
                         setCurrentScreen(

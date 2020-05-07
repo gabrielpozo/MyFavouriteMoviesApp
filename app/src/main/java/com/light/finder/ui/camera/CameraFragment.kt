@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -146,9 +145,6 @@ class CameraFragment : BaseFragment() {
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
             image.close()
-            firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
-                putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
-            }
         }
     }
 
@@ -242,6 +238,8 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
+        modelUiState = ModelStatus.FEED
+        screenNavigator.toCameraFeedScreen(this)
         modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
             when (errorModel) {
                 is DialogModel.TimeOutError -> {
@@ -421,6 +419,8 @@ class CameraFragment : BaseFragment() {
                 putString(getString(R.string.base), messages[0].categories[0].categoryProductBase)
                 putString(getString(R.string.shape), messages[0].categories[0].categoryShape)
             }
+            // we set status of type FEED so next time we access this page it will have the FEED value assigned by default
+            modelUiState = ModelStatus.FEED
             screenNavigator.navigateToCategoriesScreen(messages[0])
         }
     }
@@ -560,6 +560,9 @@ class CameraFragment : BaseFragment() {
         controls.cameraCaptureButton.setSafeOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
+                    firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
+                        putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
+                    }
                     onCameraCaptureClick()
                 } else {
                     visibilityCallBack.onInternetConnectionLost()
