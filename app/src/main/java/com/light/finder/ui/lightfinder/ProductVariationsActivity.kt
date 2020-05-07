@@ -163,8 +163,7 @@ class ProductVariationsActivity : AppCompatActivity() {
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
     }
-
-
+    
     override fun onBackPressed() {
         super.onBackPressed()
         firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_details), null)
