@@ -20,6 +20,7 @@ class SignifyApp : Application(), CameraXConfig.Provider {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
+            //debug
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
             enableDebugMode()
