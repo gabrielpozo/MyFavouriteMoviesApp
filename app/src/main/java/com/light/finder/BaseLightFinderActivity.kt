@@ -1,6 +1,7 @@
 package com.light.finder
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +35,9 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
 
     override fun hearShake() {
         stopListening()
-        startActivity<UsabillaActivity> {  }
+        startActivity<UsabillaActivity> {
+            this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
     }
 
     fun stopListening() {
@@ -43,8 +46,8 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
         stopListening()
     }
