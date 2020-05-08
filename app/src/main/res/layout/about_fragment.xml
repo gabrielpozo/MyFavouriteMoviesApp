@@ -61,9 +61,61 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="40dp"
-                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintBottom_toTopOf="@+id/view0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+
+            <View
+                android:id="@+id/view0"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/dividerOnLight"
+                android:layout_marginBottom="21dp"
+                app:layout_constraintBottom_toTopOf="@+id/layoutFeedback"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutFeedback"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/textViewFeedback"
+                    style="@style/ActiveTextDark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:text="@string/give_us_feedback"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginTop="50dp" />
+
+
+                <ImageView
+                    android:id="@+id/imageViewFeedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_social_events" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
             <View
                 android:id="@+id/view"

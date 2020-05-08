@@ -112,6 +112,10 @@ class AboutFragment : BaseFragment() {
                 displayNoInternetBanner()
             }
         }
+
+        layoutFeedback.setOnClickListener {
+            //todo akis
+        }
     }
 
     private fun observeNetworkConnection(model: AboutViewModel.NetworkModel) {
