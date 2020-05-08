@@ -3,13 +3,11 @@ package com.light.finder
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,10 +37,10 @@ import timber.log.Timber
 import java.io.File
 
 
-class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback, ShakeDetector.Listener {
+class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
+    VisibilityCallBack, ReloadingCallback {
 
-    private lateinit var shakeDetector: ShakeDetector
+
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
     lateinit var lightFinderComponent: LightFinderComponent
@@ -76,33 +74,14 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         screenNavigator.setupNavController(savedInstanceState)
         container = findViewById(R.id.fragment_container)
 
-        setShakeDetector()
-
         setBottomBar()
 
         observeConnection()
 
 
     }
+    
 
-    private fun setShakeDetector() {
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val shakeDetector = ShakeDetector(this)
-        shakeDetector.start(sensorManager)
-    }
-
-    override fun hearShake() {
-        Timber.e("ege oh yeah shake me")
-        screenNavigator.navigateToUsabillaForm()
-    }
-
-
-    override fun onDestroy() {
-        if (this::shakeDetector.isInitialized) {
-            shakeDetector.stop()
-        }
-        super.onDestroy()
-    }
 
     override fun onVisibilityChanged(invisible: Boolean) {
         if (invisible) {

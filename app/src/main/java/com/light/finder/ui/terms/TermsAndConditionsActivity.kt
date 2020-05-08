@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.airbnb.paris.extensions.style
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.light.finder.BaseActivity
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 
-class TermsAndConditionsActivity : AppCompatActivity() {
+class TermsAndConditionsActivity : BaseActivity() {
 
     companion object {
         const val TERMS_URL =
@@ -51,6 +52,10 @@ class TermsAndConditionsActivity : AppCompatActivity() {
 
         prefManager = PrefManager(this)
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
+
+        if (!InternetUtil.isInternetOn()) {
+            displayNoInternetBanner()
+        }
 
         setObserver()
         setView()
