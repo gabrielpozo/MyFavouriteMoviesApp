@@ -40,15 +40,14 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
         }
     }
 
-    fun stopListening() {
+    private fun stopListening() {
         if(::shakeDetector.isInitialized) {
             shakeDetector.stop()
         }
     }
 
     override fun onPause() {
-        super.onPause()
-
         stopListening()
+        super.onPause()
     }
 }
