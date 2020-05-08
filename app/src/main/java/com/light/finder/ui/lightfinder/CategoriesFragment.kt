@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
 import com.light.finder.R
-import com.light.finder.common.VisibilityCallBack
+import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
@@ -28,7 +28,7 @@ class CategoriesFragment : BaseFragment() {
     private lateinit var component: CategoriesComponent
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +41,7 @@ class CategoriesFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            visibilityCallBack = context as VisibilityCallBack
+            activityCallback = context as ActivityCallback
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -70,7 +70,7 @@ class CategoriesFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        visibilityCallBack.onVisibilityChanged(false)
+        activityCallback.onVisibilityChanged(false)
     }
 
     private fun navigationObserver() {

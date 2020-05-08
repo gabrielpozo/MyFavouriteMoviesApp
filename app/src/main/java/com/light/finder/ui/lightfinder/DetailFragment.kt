@@ -18,7 +18,7 @@ import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
-import com.light.finder.common.VisibilityCallBack
+import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
@@ -45,7 +45,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var component: DetailComponent
     private lateinit var alertDialog: AlertDialog
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
     private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
     private var isSingleProduct: Boolean = false
@@ -59,7 +59,7 @@ class DetailFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            visibilityCallBack = context as VisibilityCallBack
+            activityCallback = context as ActivityCallback
             reloadingCallback = context as ReloadingCallback
         } catch (e: ClassCastException) {
             throw ClassCastException()
@@ -104,21 +104,21 @@ class DetailFragment : BaseFragment() {
                 if (isConnected) {
                     addToCart()
                 } else {
-                    visibilityCallBack.onInternetConnectionLost()
+                    activityCallback.onInternetConnectionLost()
                 }
             }
         }
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
-                visibilityCallBack.onBottomBarBlocked(isClickable = false)
+                activityCallback.onBottomBarBlocked(isClickable = false)
                 linearVariationContainer.isClickable = false
                 linearVariationContainer.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                activityCallback.onBottomBarBlocked(isClickable = true)
 
 
                 cartButtonText.text = getString(R.string.added_to_cart)
@@ -148,7 +148,7 @@ class DetailFragment : BaseFragment() {
             }
 
             override fun onAnimationCancel(animation: Animator) {
-                visibilityCallBack.onBottomBarBlocked(isClickable = true)
+                activityCallback.onBottomBarBlocked(isClickable = true)
                 cartButtonText?.text = getString(R.string.add_to_cart)
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
@@ -248,7 +248,7 @@ class DetailFragment : BaseFragment() {
             itemQuantity > 0 -> {
                 val handler = Handler()
                 handler.postDelayed({
-                    visibilityCallBack.onBadgeCountChanged(itemQuantity)
+                    activityCallback.onBadgeCountChanged(itemQuantity)
                 }, 3000)
 
             }

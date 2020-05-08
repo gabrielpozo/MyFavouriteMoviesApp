@@ -38,7 +38,7 @@ import java.io.File
 
 
 class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback {
+    ActivityCallback, ReloadingCallback {
 
 
     private lateinit var container: FrameLayout

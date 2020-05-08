@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
-import com.light.finder.common.VisibilityCallBack
+import com.light.finder.common.ActivityCallback
 import com.light.finder.common.WrappingViewPager
 import com.light.finder.ui.adapters.TipsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
@@ -16,7 +16,7 @@ class TipsAndTricksLightFinderActivity : BaseLightFinderActivity() {
         const val REQUEST_CODE_TIPS = 1
     }
 
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

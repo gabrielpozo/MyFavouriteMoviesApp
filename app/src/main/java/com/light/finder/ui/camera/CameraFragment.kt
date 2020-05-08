@@ -29,7 +29,7 @@ import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.PermissionRequester
-import com.light.finder.common.VisibilityCallBack
+import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import com.light.finder.di.modules.submodules.CameraComponent
@@ -63,7 +63,7 @@ class CameraFragment : BaseFragment() {
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
     private lateinit var connectivityRequester: ConnectivityRequester
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
@@ -122,7 +122,7 @@ class CameraFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            visibilityCallBack = context as VisibilityCallBack
+            activityCallback = context as ActivityCallback
         } catch (e: ClassCastException) {
             throw ClassCastException()
         }
@@ -186,7 +186,7 @@ class CameraFragment : BaseFragment() {
         val itemQuantity = itemCount.itemCount.peekContent().itemQuantity
         when {
             itemQuantity > 0 ->
-                visibilityCallBack.onBadgeCountChanged(itemQuantity)
+                activityCallback.onBadgeCountChanged(itemQuantity)
             else -> Timber.d("egee Cart is empty")
         }
     }
@@ -232,7 +232,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-            visibilityCallBack.onVisibilityChanged(false)
+            activityCallback.onVisibilityChanged(false)
             initializeLottieAnimation()
         }
     }
@@ -354,7 +354,7 @@ class CameraFragment : BaseFragment() {
             timer.start()
             modelUiState = ModelStatus.LOADING
             screenNavigator.toCameraLoading(this)
-            visibilityCallBack.onVisibilityChanged(true)
+            activityCallback.onVisibilityChanged(true)
 
             cancelButton.setOnClickListener {
                 viewModel.onCancelRequest()
@@ -391,7 +391,7 @@ class CameraFragment : BaseFragment() {
         layoutPreview.gone()
         layoutCamera.visible()
         cameraUiContainer.visible()
-        visibilityCallBack.onVisibilityChanged(false)
+        activityCallback.onVisibilityChanged(false)
 
         lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
@@ -565,7 +565,7 @@ class CameraFragment : BaseFragment() {
                     }
                     onCameraCaptureClick()
                 } else {
-                    visibilityCallBack.onInternetConnectionLost()
+                    activityCallback.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
                             getString(R.string.error_reason_event),

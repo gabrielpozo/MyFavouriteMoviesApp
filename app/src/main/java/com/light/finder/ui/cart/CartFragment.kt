@@ -32,7 +32,7 @@ class CartFragment : BaseFragment() {
     }
 
     private lateinit var component: CartComponent
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
     private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
@@ -40,7 +40,7 @@ class CartFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            visibilityCallBack = context as VisibilityCallBack
+            activityCallback = context as ActivityCallback
             reloadingCallback = context as ReloadingCallback
 
         } catch (e: ClassCastException) {
@@ -113,10 +113,10 @@ class CartFragment : BaseFragment() {
     private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
         when (countModel) {
             is CartViewModel.CountItemsModel.RequestModelItemCount -> {
-                visibilityCallBack.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
+                activityCallback.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
             }
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
-                visibilityCallBack.onCartCleared()
+                activityCallback.onCartCleared()
             }
         }
     }
