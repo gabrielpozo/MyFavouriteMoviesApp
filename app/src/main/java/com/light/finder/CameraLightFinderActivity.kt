@@ -28,7 +28,7 @@ import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsActivity
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -37,7 +37,7 @@ import timber.log.Timber
 import java.io.File
 
 
-class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
+class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.RootFragmentListener,
     VisibilityCallBack, ReloadingCallback {
 
 
@@ -127,9 +127,9 @@ class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ProductVariationsActivity.REQUEST_CODE_PRODUCT) {
+            if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
                 val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
+                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA)
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {

@@ -13,7 +13,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BuildConfig
-import com.light.finder.CameraActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
@@ -61,7 +61,7 @@ class AboutFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = (activity as CameraActivity).lightFinderComponent.plus(AboutModule())
+            component = (activity as CameraLightFinderActivity).lightFinderComponent.plus(AboutModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setClickListeners()

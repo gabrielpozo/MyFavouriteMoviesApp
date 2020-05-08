@@ -6,10 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.common.ShakeDetector
 import com.light.finder.di.modules.global.HardwareModule
+import com.light.finder.extensions.startActivity
 import timber.log.Timber
 
 
-abstract class BaseActivity : AppCompatActivity(), ShakeDetector.Listener {
+abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.Listener {
 
     private lateinit var shakeDetector: ShakeDetector
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,10 @@ abstract class BaseActivity : AppCompatActivity(), ShakeDetector.Listener {
         )
         shakeDetector = hardwareComponents.shakeDetector
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         setShakeDetector()
     }
 
@@ -28,13 +33,19 @@ abstract class BaseActivity : AppCompatActivity(), ShakeDetector.Listener {
     }
 
     override fun hearShake() {
-        Timber.e("ege oh yeah shake me")
+        stopListening()
+        startActivity<UsabillaActivity> {  }
     }
 
-    override fun onDestroy() {
-        if(this::shakeDetector.isInitialized) {
+    fun stopListening() {
+        if(::shakeDetector.isInitialized) {
             shakeDetector.stop()
         }
-        super.onDestroy()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        stopListening()
     }
 }

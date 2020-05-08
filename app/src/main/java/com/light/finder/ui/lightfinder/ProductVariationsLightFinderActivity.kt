@@ -6,7 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FilterVariationCF
-import com.light.finder.BaseActivity
+import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.submodules.ProductsOptionsComponent
@@ -21,7 +21,7 @@ import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
 
 
-class ProductVariationsActivity : BaseActivity() {
+class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
 
     companion object {
         const val PRODUCTS_OPTIONS_ID_KEY = "ProductsOptionsFragment::id"

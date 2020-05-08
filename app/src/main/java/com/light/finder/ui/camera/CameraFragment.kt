@@ -25,7 +25,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
-import com.light.finder.CameraActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.PermissionRequester
@@ -508,7 +508,7 @@ class CameraFragment : BaseFragment() {
         layoutPermission.gone()
 
 
-        outputDirectory = CameraActivity.getOutputDirectory(requireContext())
+        outputDirectory = CameraLightFinderActivity.getOutputDirectory(requireContext())
 
         viewFinder.post {
 

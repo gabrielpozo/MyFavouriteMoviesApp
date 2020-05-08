@@ -15,7 +15,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.CameraActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.common.*
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
@@ -59,7 +59,7 @@ class CartFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = (activity as CameraActivity).lightFinderComponent.plus(CartModule())
+            component = (activity as CameraLightFinderActivity).lightFinderComponent.plus(CartModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setObserver()

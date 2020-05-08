@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.airbnb.paris.extensions.style
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.light.finder.BaseActivity
-import com.light.finder.CameraActivity
+import com.light.finder.BaseLightFinderActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 
-class TermsAndConditionsActivity : BaseActivity() {
+class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
 
     companion object {
         const val TERMS_URL =
@@ -186,7 +186,7 @@ class TermsAndConditionsActivity : BaseActivity() {
     }
 
     private fun goToCameraActivity() {
-        startActivity<CameraActivity> {}
+        startActivity<CameraLightFinderActivity> {}
         overrideAnimation()
         finish()
     }

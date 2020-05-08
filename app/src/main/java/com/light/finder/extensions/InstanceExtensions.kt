@@ -12,9 +12,9 @@ import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsActivity
-import com.light.finder.ui.lightfinder.ProductVariationsActivity.Companion.REQUEST_CODE_PRODUCT
-import com.light.finder.ui.lightfinder.TipsAndTricksActivity
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity.Companion.REQUEST_CODE_PRODUCT
+import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 
 
 inline fun <reified T : Activity> Context.intentFor(body: Intent.() -> Unit): Intent =
@@ -57,10 +57,10 @@ fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {
 }
 
 
-fun TipsAndTricksActivity.Companion.newInstance(): TipsAndTricksActivity = TipsAndTricksActivity()
+fun TipsAndTricksLightFinderActivity.Companion.newInstance(): TipsAndTricksLightFinderActivity = TipsAndTricksLightFinderActivity()
 
 
 //inline fun <reified T : Fragment> BaseFragment.initializeIntent(body: Intent.() -> Unit): Intent =
-inline fun <reified T : Fragment> ProductVariationsActivity.initializeIntent(body: Intent.() -> Unit): Intent =
+inline fun <reified T : Fragment> ProductVariationsLightFinderActivity.initializeIntent(body: Intent.() -> Unit): Intent =
     Intent(this, T::class.java).apply(body)
 
