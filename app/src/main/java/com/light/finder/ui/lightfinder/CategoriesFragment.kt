@@ -7,12 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
-import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.MessageParcelable
-import com.light.finder.di.modules.CategoriesComponent
-import com.light.finder.di.modules.CategoriesModule
+import com.light.finder.di.modules.submodules.CategoriesComponent
+import com.light.finder.di.modules.submodules.CategoriesModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter

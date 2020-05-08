@@ -127,5 +127,6 @@ x
     <string name="base">base</string>
     <string name="shape">shape</string>
     <string name="finish">finish</string>
+    <string name="give_us_feedback">Give us feedback</string>
 
 </resources>

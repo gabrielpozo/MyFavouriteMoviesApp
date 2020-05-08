@@ -1,4 +1,4 @@
-package com.light.finder.di.modules
+package com.light.finder.di.modules.singleton
 
 import com.light.domain.CartItemCountRepository
 import com.light.domain.CartRepository

@@ -18,8 +18,8 @@ import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
 import com.light.finder.common.PrefManager
-import com.light.finder.di.modules.AboutComponent
-import com.light.finder.di.modules.AboutModule
+import com.light.finder.di.modules.submodules.AboutComponent
+import com.light.finder.di.modules.submodules.AboutModule
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.slideVertically
@@ -111,6 +111,10 @@ class AboutFragment : BaseFragment() {
             } else {
                 displayNoInternetBanner()
             }
+        }
+
+        layoutFeedback.setOnClickListener {
+            //todo akis
         }
     }
 

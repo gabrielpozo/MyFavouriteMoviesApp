@@ -21,8 +21,8 @@ import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
-import com.light.finder.di.modules.LightFinderComponent
-import com.light.finder.di.modules.LightFinderModule
+import com.light.finder.di.modules.camera.LightFinderComponent
+import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -67,7 +67,11 @@ class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
-        lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+        lightFinderComponent = app.applicationComponent.plus(
+            LightFinderModule(
+                this
+            )
+        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)

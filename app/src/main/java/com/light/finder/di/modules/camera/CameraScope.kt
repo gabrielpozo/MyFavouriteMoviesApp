@@ -1,4 +1,4 @@
-package com.light.finder.di
+package com.light.finder.di.modules.camera
 
 import javax.inject.Scope
 
