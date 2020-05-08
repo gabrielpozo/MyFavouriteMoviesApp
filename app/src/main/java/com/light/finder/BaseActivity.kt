@@ -5,21 +5,24 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.common.ShakeDetector
+import com.light.finder.di.ApplicationComponent
 import timber.log.Timber
 
 
 abstract class BaseActivity : AppCompatActivity(), ShakeDetector.Listener {
 
     private lateinit var shakeDetector: ShakeDetector
+    private lateinit var  applicationComponent: ApplicationComponent
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applicationComponent = (application as SignifyApp).applicationComponent
+        shakeDetector = applicationComponent.shakeDetector
 
         setShakeDetector()
     }
 
     private fun setShakeDetector() {
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val shakeDetector = ShakeDetector(this)
         shakeDetector.start(sensorManager)
     }
 
