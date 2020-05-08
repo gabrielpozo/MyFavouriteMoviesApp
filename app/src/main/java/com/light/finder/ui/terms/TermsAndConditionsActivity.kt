@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -17,10 +16,9 @@ import com.light.finder.R
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
 import com.light.finder.common.PrefManager
-import com.light.finder.di.modules.TermsComponent
-import com.light.finder.di.modules.TermsModule
+import com.light.finder.di.modules.submodules.TermsComponent
+import com.light.finder.di.modules.submodules.TermsModule
 import com.light.finder.extensions.*
-import com.light.finder.ui.about.AboutFragment
 import com.light.presentation.viewmodels.TermsViewModel
 import kotlinx.android.synthetic.main.activity_terms_and_conditions.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*

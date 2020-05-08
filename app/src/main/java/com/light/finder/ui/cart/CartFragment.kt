@@ -17,8 +17,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.CameraActivity
 import com.light.finder.common.*
-import com.light.finder.di.modules.CartComponent
-import com.light.finder.di.modules.CartModule
+import com.light.finder.di.modules.submodules.CartComponent
+import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel

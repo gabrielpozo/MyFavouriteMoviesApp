@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.CameraActivity
 import com.light.finder.common.ScreenNavigator
-import com.light.finder.di.modules.LightFinderComponent
+import com.light.finder.di.modules.camera.LightFinderComponent
 
 
 abstract class BaseFragment : Fragment() {

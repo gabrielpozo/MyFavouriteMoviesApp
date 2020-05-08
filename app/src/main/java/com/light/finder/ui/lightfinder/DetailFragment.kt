@@ -20,8 +20,8 @@ import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.di.modules.DetailComponent
-import com.light.finder.di.modules.DetailModule
+import com.light.finder.di.modules.submodules.DetailComponent
+import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter

@@ -1,4 +1,4 @@
-package com.light.finder.di.modules
+package com.light.finder.di.modules.submodules
 
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.usecases.*

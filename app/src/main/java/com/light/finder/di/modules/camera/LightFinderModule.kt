@@ -1,8 +1,8 @@
-package com.light.finder.di.modules
+package com.light.finder.di.modules.camera
 
 import com.light.finder.CameraActivity
 import com.light.finder.common.ScreenNavigator
-import com.light.finder.di.CameraScope
+import com.light.finder.di.modules.submodules.*
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
