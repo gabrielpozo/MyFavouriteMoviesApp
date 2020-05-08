@@ -43,8 +43,8 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
         stopListening()
     }
