@@ -4,7 +4,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import java.util.ArrayList
 
 class ShakeDetector(private val listener: Listener) : SensorEventListener {
 
@@ -65,11 +64,6 @@ class ShakeDetector(private val listener: Listener) : SensorEventListener {
         val az = event.values[2]
         val magnitudeSquared = (ax * ax + ay * ay + az * az).toDouble()
         return magnitudeSquared > accelerationThreshold * accelerationThreshold
-    }
-
-
-    fun setSensitivity(accelerationThreshold: Int) {
-        this.accelerationThreshold = accelerationThreshold
     }
 
 
@@ -139,16 +133,6 @@ class ShakeDetector(private val listener: Listener) : SensorEventListener {
             }
         }
 
-        fun asList(): List<Sample> {
-            val list = ArrayList<Sample>()
-            var s = oldest
-            while (s != null) {
-                list.add(s)
-                s = s.next
-            }
-            return list
-        }
-
         companion object {
 
             private val MAX_WINDOW_SIZE: Long = 500000000 // 0.5s
@@ -186,11 +170,7 @@ class ShakeDetector(private val listener: Listener) : SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
     companion object {
-
-        val SENSITIVITY_LIGHT = 11
-        const val SENSITIVITY_MEDIUM = 13
-        val SENSITIVITY_HARD = 15
-
+        private const val SENSITIVITY_MEDIUM = 13
         private const val DEFAULT_ACCELERATION_THRESHOLD = SENSITIVITY_MEDIUM
     }
 }
