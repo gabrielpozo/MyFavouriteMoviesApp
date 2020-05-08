@@ -24,13 +24,13 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".BaseActivity"
+            android:name=".UsabillaActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />
 
         <activity
-            android:name="com.light.finder.ui.splash.SplashActivity"
+            android:name="com.light.finder.ui.splash.SplashLightFinderActivity"
             android:resizeableActivity="false"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
@@ -44,7 +44,7 @@
         </activity>
 
         <activity
-            android:name=".ui.lightfinder.ProductVariationsActivity"
+            android:name=".ui.lightfinder.ProductVariationsLightFinderActivity"
             android:resizeableActivity="false"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
@@ -53,7 +53,7 @@
         </activity>
 
         <activity
-            android:name=".ui.lightfinder.TipsAndTricksActivity"
+            android:name=".ui.lightfinder.TipsAndTricksLightFinderActivity"
             android:resizeableActivity="false"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
@@ -62,7 +62,7 @@
         </activity>
 
         <activity
-            android:name=".ui.terms.TermsAndConditionsActivity"
+            android:name=".ui.terms.TermsAndConditionsLightFinderActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -70,7 +70,7 @@
         </activity>
 
         <activity
-            android:name="com.light.finder.CameraActivity"
+            android:name="com.light.finder.CameraLightFinderActivity"
             android:resizeableActivity="false"
             android:configChanges="orientation|keyboardHidden"
             android:clearTaskOnLaunch="true"

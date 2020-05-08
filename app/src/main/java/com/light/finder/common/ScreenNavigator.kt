@@ -6,16 +6,17 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
-import com.light.finder.CameraActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
+import com.light.finder.UsabillaActivity
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsActivity
-import com.light.finder.ui.lightfinder.TipsAndTricksActivity
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
+import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -23,7 +24,7 @@ import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
 import kotlinx.android.synthetic.main.activity_camera.*
 
-class ScreenNavigator(private val activity: CameraActivity) {
+class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     companion object {
         const val INDEX_LIGHT_FINDER = FragNavController.TAB1
         const val INDEX_CART = FragNavController.TAB2
@@ -119,9 +120,9 @@ class ScreenNavigator(private val activity: CameraActivity) {
             activity.getString(R.string.product_variations),
             null
         )
-        activity.startActivityForResult<ProductVariationsActivity> {
+        activity.startActivityForResult<ProductVariationsLightFinderActivity> {
             putParcelableArrayListExtra(
-                ProductVariationsActivity.PRODUCTS_OPTIONS_ID_KEY,
+                ProductVariationsLightFinderActivity.PRODUCTS_OPTIONS_ID_KEY,
                 productList.parcelizeProductList()
             )
         }
@@ -129,7 +130,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
     }
 
     fun navigateToTipsAndTricksScreen() {
-        activity.startActivity<TipsAndTricksActivity> {}
+        activity.startActivity<TipsAndTricksLightFinderActivity> {}
         activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
     }
 
@@ -168,5 +169,7 @@ class ScreenNavigator(private val activity: CameraActivity) {
         )
     }
 
-
+    fun navigateToUsabillaForm() {
+        activity.startActivity<UsabillaActivity> {}
+    }
 }
