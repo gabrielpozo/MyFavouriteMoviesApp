@@ -32,8 +32,8 @@ import com.light.finder.common.PermissionRequester
 import com.light.finder.common.VisibilityCallBack
 import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.data.source.remote.reports.CrashlyticsException
-import com.light.finder.di.modules.CameraComponent
-import com.light.finder.di.modules.CameraModule
+import com.light.finder.di.modules.submodules.CameraComponent
+import com.light.finder.di.modules.submodules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.common.Event

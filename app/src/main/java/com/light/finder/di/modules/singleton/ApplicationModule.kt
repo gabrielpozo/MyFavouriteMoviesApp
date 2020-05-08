@@ -1,6 +1,7 @@
-package com.light.finder.di.modules
+package com.light.finder.di.modules.singleton
 
 import android.app.Application
+import com.light.finder.common.ShakeDetector
 import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.remote.CartItemCountRemoteDataSource
 import com.light.finder.data.source.remote.CartItemRemoteDataSource
@@ -28,4 +29,5 @@ class ApplicationModule {
 
     @Provides
     fun getLocalMediaDataSource(): LocalMediaDataSource = LocalMediaDataSourceImpl()
+
 }

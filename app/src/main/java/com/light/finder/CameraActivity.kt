@@ -3,15 +3,11 @@ package com.light.finder
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,8 +21,8 @@ import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
-import com.light.finder.di.modules.LightFinderComponent
-import com.light.finder.di.modules.LightFinderModule
+import com.light.finder.di.modules.camera.LightFinderComponent
+import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
@@ -70,7 +66,11 @@ class CameraActivity : BaseActivity(), FragNavController.RootFragmentListener,
 
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
-        lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+        lightFinderComponent = app.applicationComponent.plus(
+            LightFinderModule(
+                this
+            )
+        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)

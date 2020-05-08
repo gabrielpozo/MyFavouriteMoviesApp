@@ -2,14 +2,13 @@ package com.light.finder.ui.splash
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.light.finder.BaseActivity
 import com.light.finder.CameraActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
-import com.light.finder.di.modules.SplashComponent
-import com.light.finder.di.modules.SplashModule
+import com.light.finder.di.modules.submodules.SplashComponent
+import com.light.finder.di.modules.submodules.SplashModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.startActivity
