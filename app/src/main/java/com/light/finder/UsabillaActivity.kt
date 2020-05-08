@@ -1,19 +1,18 @@
 package com.light.finder
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.usabilla.sdk.ubform.Usabilla
 import com.usabilla.sdk.ubform.UsabillaFormCallback
 import com.usabilla.sdk.ubform.sdk.form.FormClient
 
 class UsabillaActivity : AppCompatActivity(), UsabillaFormCallback {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usabilla)
-        Usabilla.loadFeedbackForm("5eaa82dcd274636ddf6bc8ce", null, null, this)
-
+        Usabilla.loadFeedbackForm(FORM_ID, null, null, this)
     }
+
 
     override fun formLoadSuccess(form: FormClient?) {
         if (form?.fragment == null) {
@@ -26,8 +25,16 @@ class UsabillaActivity : AppCompatActivity(), UsabillaFormCallback {
     }
 
     override fun mainButtonTextUpdated(text: String?) {
+        if (text == "Cancel") {
+            Usabilla.dismiss(applicationContext)
+            finish()
+        }
     }
 
     override fun formLoadFail() {
+    }
+
+    companion object {
+        const val FORM_ID = "5eaa82dcd274636ddf6bc8ce"
     }
 }
