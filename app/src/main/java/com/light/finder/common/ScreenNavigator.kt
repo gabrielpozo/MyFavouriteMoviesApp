@@ -171,6 +171,5 @@ class ScreenNavigator(private val activity: CameraActivity) {
 
     fun navigateToUsabillaForm() {
         activity.startActivity<UsabillaActivity> {}
-        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
     }
 }
