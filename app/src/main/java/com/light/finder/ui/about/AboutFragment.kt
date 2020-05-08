@@ -114,7 +114,8 @@ class AboutFragment : BaseFragment() {
         }
 
         layoutFeedback.setOnClickListener {
-            //todo akis
+           screenNavigator.navigateToUsabillaForm()
+
         }
     }
 
