@@ -139,8 +139,10 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onInternetConnectionLost() {
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
-        }
+        //todo uncomment for 1.0
+        //
+       /* firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+        }*/
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
             no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())

@@ -97,9 +97,11 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+       //todo uncomment for 1.0
+        //
+       /* firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
-        }
+        }*/
 
         buttonAddTocart.setOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
