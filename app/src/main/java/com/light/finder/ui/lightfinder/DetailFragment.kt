@@ -97,6 +97,10 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
+
         buttonAddTocart.setOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
@@ -106,7 +110,6 @@ class DetailFragment : BaseFragment() {
                 }
             }
         }
-
 
         setCartListeners()
         setBottomSheetBehaviour()
@@ -452,13 +455,6 @@ class DetailFragment : BaseFragment() {
         if (flags != null) {
             flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             view?.systemUiVisibility = flags
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
-            putString(getString(R.string.parameter_sku), productSapId)
         }
     }
 }
