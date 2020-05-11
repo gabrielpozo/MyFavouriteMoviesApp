@@ -624,7 +624,9 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
+
         }
 
         /**

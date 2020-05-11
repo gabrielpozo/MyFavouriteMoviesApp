@@ -18,7 +18,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
@@ -81,8 +81,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         setBottomBar()
 
         observeConnection()
-
-
     }
     
 
@@ -117,10 +115,10 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (!isClickable) {
             bottom_navigation_view.setItemDisableColor(getColor(R.color.colorOnSecondary))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
-            bottom_navigation_view.disableItemAtPosition(INDEX_EXPERT)
+            bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
             bottom_navigation_view.enableItemAtPosition(INDEX_CART)
-            bottom_navigation_view.enableItemAtPosition(INDEX_EXPERT)
+            bottom_navigation_view.enableItemAtPosition(INDEX_ABOUT)
         }
     }
 
@@ -141,6 +139,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onInternetConnectionLost() {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+        }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
             no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
@@ -222,7 +222,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
                 return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
-            INDEX_EXPERT -> return AboutFragment.newInstance()
+            INDEX_ABOUT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
     }

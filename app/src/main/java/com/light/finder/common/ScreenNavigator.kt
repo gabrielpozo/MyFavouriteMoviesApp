@@ -29,7 +29,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     companion object {
         const val INDEX_LIGHT_FINDER = FragNavController.TAB1
         const val INDEX_CART = FragNavController.TAB2
-        const val INDEX_EXPERT = FragNavController.TAB3
+        const val INDEX_ABOUT = FragNavController.TAB3
     }
 
     private val fragNavController: FragNavController =
@@ -79,11 +79,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     reloadCartFragment()
                     firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
-                INDEX_EXPERT -> {
-                    fragNavController.switchTab(INDEX_EXPERT)
-                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+                INDEX_ABOUT -> {
+                    fragNavController.switchTab(INDEX_ABOUT)
                     val current = fragNavController.currentFrag
                     if (current is AboutFragment) {
+                        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         current.setLightStatusBar()
                     }
                 }

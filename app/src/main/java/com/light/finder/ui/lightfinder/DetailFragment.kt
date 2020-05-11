@@ -83,9 +83,7 @@ class DetailFragment : BaseFragment() {
 
         setNavigationObserver()
         setDetailObservers()
-
         setLightStatusBar()
-
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -108,6 +106,49 @@ class DetailFragment : BaseFragment() {
                 }
             }
         }
+
+
+        setCartListeners()
+        setBottomSheetBehaviour()
+    }
+
+    private fun setBottomSheetBehaviour() {
+        val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+        context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val dpHeight = displayMetrics.heightPixels
+            viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
+                height = (dpHeight / 2)
+            }
+            bottomSheetBehavior.peekHeight = (dpHeight / 2)
+        }    }
+
+    private fun addToCart() {
+        viewModel.onRequestAddToCart(productSapId = productSapId)
+        cartAnimation.visible()
+        cartAnimation.playAnimation()
+        buttonAddTocart.isClickable = false
+        buttonAddTocart.isFocusable = false
+        if (isAdded) {
+            reloadingCallback.setCurrentlyReloaded(true)
+            context?.let { it1 ->
+                ContextCompat.getColor(
+                    it1,
+                    R.color.primaryPressed
+                )
+            }?.let { it2 ->
+                buttonAddTocart.setBackgroundColor(
+                    it2
+                )
+            }
+
+        }
+    }
+
+
+    private fun setCartListeners() {
 
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
@@ -175,39 +216,6 @@ class DetailFragment : BaseFragment() {
         })
 
 
-        val bottomSheetLayout = view.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-
-        context?.let {
-            val displayMetrics = it.resources.displayMetrics
-            val dpHeight = displayMetrics.heightPixels
-            viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
-                height = (dpHeight / 2)
-            }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2)
-        }
-    }
-
-    private fun addToCart() {
-        viewModel.onRequestAddToCart(productSapId = productSapId)
-        cartAnimation.visible()
-        cartAnimation.playAnimation()
-        buttonAddTocart.isClickable = false
-        buttonAddTocart.isFocusable = false
-        if (isAdded) {
-            reloadingCallback.setCurrentlyReloaded(true)
-            context?.let { it1 ->
-                ContextCompat.getColor(
-                    it1,
-                    R.color.primaryPressed
-                )
-            }?.let { it2 ->
-                buttonAddTocart.setBackgroundColor(
-                    it2
-                )
-            }
-
-        }
     }
 
     private fun setDetailObservers() {
@@ -299,6 +307,8 @@ class DetailFragment : BaseFragment() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
 
+
+
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
@@ -355,7 +365,11 @@ class DetailFragment : BaseFragment() {
 
         val changeVariation = String.format(
             getString(R.string.change_variation),
-            requireContext().getColorName(product.colorCctCode, logError = true, isForDetailScreen = true),
+            requireContext().getColorName(
+                product.colorCctCode,
+                logError = true,
+                isForDetailScreen = true
+            ),
             product.wattageReplaced,
             requireContext().getFinishName(
                 product.productFinishCode, true,
@@ -438,6 +452,13 @@ class DetailFragment : BaseFragment() {
         if (flags != null) {
             flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             view?.systemUiVisibility = flags
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
         }
     }
 }
