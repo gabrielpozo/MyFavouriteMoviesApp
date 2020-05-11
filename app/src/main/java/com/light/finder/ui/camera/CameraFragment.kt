@@ -624,7 +624,8 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
+            //todo uncomment for 1.0
+            //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
 
         }
