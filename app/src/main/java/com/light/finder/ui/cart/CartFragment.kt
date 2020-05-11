@@ -15,7 +15,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.CameraLightFinderActivity
+import com.light.finder.R
 import com.light.finder.common.*
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
@@ -59,13 +59,15 @@ class CartFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = (activity as CameraLightFinderActivity).lightFinderComponent.plus(CartModule())
+            component = lightFinderComponent.plus(CartModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setObserver()
         setupWebView()
         observeLayout()
     }
+
+
 
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -116,6 +118,10 @@ class CartFragment : BaseFragment() {
                 activityCallback.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
             }
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                activityCallback.onCartCleared()
+            }
+            is CartViewModel.CountItemsModel.PaymentSuccessful -> {
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 activityCallback.onCartCleared()
             }
         }

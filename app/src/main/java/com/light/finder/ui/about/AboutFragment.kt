@@ -20,10 +20,7 @@ import com.light.finder.common.InternetUtil
 import com.light.finder.common.PrefManager
 import com.light.finder.di.modules.submodules.AboutComponent
 import com.light.finder.di.modules.submodules.AboutModule
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.slideVertically
-import com.light.finder.extensions.visible
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
@@ -61,7 +58,8 @@ class AboutFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = (activity as CameraLightFinderActivity).lightFinderComponent.plus(AboutModule())
+            component =
+                (activity as CameraLightFinderActivity).lightFinderComponent.plus(AboutModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setClickListeners()
@@ -98,23 +96,23 @@ class AboutFragment : BaseFragment() {
 
     private fun setClickListeners() {
         layoutTerms.setOnClickListener {
-            if(InternetUtil.isInternetOn()){
-                showErrorDialog(TERMS_URL)
+            if (InternetUtil.isInternetOn()) {
+                showAboutDialog(AboutDialogFlags.TERMS)
             } else {
                 displayNoInternetBanner()
             }
         }
 
         layoutPrivacy.setOnClickListener {
-            if(InternetUtil.isInternetOn()){
-                showErrorDialog(PRIVACY_URL)
+            if (InternetUtil.isInternetOn()) {
+                showAboutDialog(AboutDialogFlags.PRIVACY)
             } else {
                 displayNoInternetBanner()
             }
         }
 
         layoutFeedback.setOnClickListener {
-           screenNavigator.navigateToUsabillaForm()
+            screenNavigator.navigateToUsabillaForm()
 
         }
     }
@@ -149,7 +147,7 @@ class AboutFragment : BaseFragment() {
         startActivity(browserIntent)
     }
 
-    private fun showErrorDialog(URL: String) {
+    private fun showAboutDialog(aboutFlag: AboutDialogFlags) {
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)
@@ -162,8 +160,16 @@ class AboutFragment : BaseFragment() {
         dialogView.buttonPositive.text = getString(R.string.ok)
         dialogView.buttonNeutral.text = getString(R.string.text_cancel)
         dialogView.buttonPositive.setOnClickListener {
+            when (aboutFlag) {
+                AboutDialogFlags.PRIVACY -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.open_privacy_notice)) {}
+                }
+                AboutDialogFlags.TERMS -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.open_terms_of_use)) {}
+                }
+            }
             alertDialog.dismiss()
-            openBrowser(URL)
+            openBrowser(aboutFlag.url)
         }
         dialogView.buttonNeutral.visible()
         dialogView.buttonNeutral.setOnClickListener {
@@ -181,4 +187,6 @@ class AboutFragment : BaseFragment() {
             view?.systemUiVisibility = flags
         }
     }
+
+    enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL) }
 }
