@@ -66,6 +66,7 @@ ext {
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
+    usabillaVersion = "7.0.0"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -122,7 +123,6 @@ ext {
 
     coroutinesDependencies = [
             coroutines       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
-            coreCoroutines   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
             coroutinesAdapter: "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${coroutinesAdapterVersion}"
     ]
 
@@ -192,5 +192,9 @@ ext {
             tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion",
             //   authf      : 'com.google.firebase:firebase-auth:16.2.0'
             //  sevicesanalytics: "com.google.android.gms:play-services-analytics-impl:$tagManagerVersion"
+    ]
+
+    usabillaDependencies = [
+            core : "com.usabilla.sdk:ubform:$usabillaVersion"
     ]
 }

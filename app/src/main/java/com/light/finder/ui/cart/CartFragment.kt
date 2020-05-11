@@ -15,10 +15,10 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.CameraActivity
+import com.light.finder.R
 import com.light.finder.common.*
-import com.light.finder.di.modules.CartComponent
-import com.light.finder.di.modules.CartModule
+import com.light.finder.di.modules.submodules.CartComponent
+import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
@@ -32,7 +32,7 @@ class CartFragment : BaseFragment() {
     }
 
     private lateinit var component: CartComponent
-    private lateinit var visibilityCallBack: VisibilityCallBack
+    private lateinit var activityCallback: ActivityCallback
     private lateinit var reloadingCallback: ReloadingCallback
     private val viewModel: CartViewModel by lazy { getViewModel { component.cartViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
@@ -40,7 +40,7 @@ class CartFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            visibilityCallBack = context as VisibilityCallBack
+            activityCallback = context as ActivityCallback
             reloadingCallback = context as ReloadingCallback
 
         } catch (e: ClassCastException) {
@@ -59,13 +59,15 @@ class CartFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = (activity as CameraActivity).lightFinderComponent.plus(CartModule())
+            component = lightFinderComponent.plus(CartModule())
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
         setObserver()
         setupWebView()
         observeLayout()
     }
+
+
 
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -113,10 +115,15 @@ class CartFragment : BaseFragment() {
     private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
         when (countModel) {
             is CartViewModel.CountItemsModel.RequestModelItemCount -> {
-                visibilityCallBack.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
+                activityCallback.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
             }
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
-                visibilityCallBack.onCartCleared()
+                activityCallback.onCartCleared()
+            }
+            is CartViewModel.CountItemsModel.PaymentSuccessful -> {
+                //todo uncomment for 1.0
+                //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
+                activityCallback.onCartCleared()
             }
         }
     }

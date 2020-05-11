@@ -8,6 +8,7 @@ import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
+import com.usabilla.sdk.ubform.Usabilla
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
@@ -23,10 +24,12 @@ class SignifyApp : Application(), CameraXConfig.Provider {
             //debug
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
-            enableDebugMode()
+            enableCrashlyticsDebugMode()
+            Usabilla.debugEnabled = true
         }
 
         InternetUtil.init(this)
+        Usabilla.initialize(this)
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
@@ -36,7 +39,7 @@ class SignifyApp : Application(), CameraXConfig.Provider {
         return Camera2Config.defaultConfig()
     }
 
-    private fun enableDebugMode() {
+    private fun enableCrashlyticsDebugMode() {
         val fabric = Fabric.Builder(this)
             .kits(Crashlytics())
             .debuggable(true)

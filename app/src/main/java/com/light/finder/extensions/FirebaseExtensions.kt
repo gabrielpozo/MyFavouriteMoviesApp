@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.R
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.camera.ModelStatus
 import com.light.finder.ui.cart.CartFragment
@@ -64,6 +65,10 @@ fun FirebaseAnalytics.trackScreen(
                         )
                     }
                 }
+            }
+
+            is AboutFragment -> {
+                setCurrentScreen(activity, activity.getString(R.string.about_page), null)
             }
         }
     } else {

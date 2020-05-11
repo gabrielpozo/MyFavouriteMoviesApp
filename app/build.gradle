@@ -104,6 +104,7 @@ dependencies {
     implementation navigationDependencies.values()
     implementation lottieDependencies.values()
     implementation googleServicesDependencies.values()
+    implementation usabillaDependencies.values()
 }
 
 task fullCoverageReport(type: JacocoReport) {

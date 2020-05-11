@@ -27,6 +27,8 @@ class CartViewModel(
     sealed class CountItemsModel {
         data class RequestModelItemCount(val itemCount: Event<CartItemCount>) : CountItemsModel()
         object ClearedBadgeItemCount : CountItemsModel()
+        object PaymentSuccessful : CountItemsModel()
+
     }
 
     private val _modelReload = MutableLiveData<ContentReload>()
@@ -76,7 +78,7 @@ class CartViewModel(
     fun onSetWebUrl(url: String) {
         _modelUrl.value = ContentUrl(url)
         if (_modelUrl.value?.url?.equals(URL_SUCCESS) == true) {
-            _modelItemCountRequest.value = CountItemsModel.ClearedBadgeItemCount
+            _modelItemCountRequest.value = CountItemsModel.PaymentSuccessful
         }
     }
 

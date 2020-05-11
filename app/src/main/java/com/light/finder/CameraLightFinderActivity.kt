@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,17 +18,17 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_EXPERT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
-import com.light.finder.di.modules.LightFinderComponent
-import com.light.finder.di.modules.LightFinderModule
+import com.light.finder.di.modules.camera.LightFinderComponent
+import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
+import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
-import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsActivity
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -40,8 +37,9 @@ import timber.log.Timber
 import java.io.File
 
 
-class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListener,
-    VisibilityCallBack, ReloadingCallback {
+class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.RootFragmentListener,
+    ActivityCallback, ReloadingCallback {
+
 
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
@@ -66,9 +64,14 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
-        lightFinderComponent = app.applicationComponent.plus(LightFinderModule(this))
+        lightFinderComponent = app.applicationComponent.plus(
+            LightFinderModule(
+                this
+            )
+        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)
@@ -78,8 +81,9 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         setBottomBar()
 
         observeConnection()
-
     }
+    
+
 
     override fun onVisibilityChanged(invisible: Boolean) {
         if (invisible) {
@@ -111,19 +115,19 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
         if (!isClickable) {
             bottom_navigation_view.setItemDisableColor(getColor(R.color.colorOnSecondary))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
-            bottom_navigation_view.disableItemAtPosition(INDEX_EXPERT)
+            bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
             bottom_navigation_view.enableItemAtPosition(INDEX_CART)
-            bottom_navigation_view.enableItemAtPosition(INDEX_EXPERT)
+            bottom_navigation_view.enableItemAtPosition(INDEX_ABOUT)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ProductVariationsActivity.REQUEST_CODE_PRODUCT) {
+            if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
                 val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsActivity.PRODUCT_LIST_EXTRA)
+                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA)
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
@@ -135,6 +139,10 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
     }
 
     override fun onInternetConnectionLost() {
+        //todo uncomment for 1.0
+        //
+       /* firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+        }*/
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
             no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
@@ -216,7 +224,7 @@ class CameraActivity : AppCompatActivity(), FragNavController.RootFragmentListen
                 return CameraFragment.newInstance()
             }
             INDEX_CART -> return CartFragment.newInstance()
-            INDEX_EXPERT -> return AboutFragment.newInstance()
+            INDEX_ABOUT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
     }

@@ -2,24 +2,22 @@ package com.light.finder.ui.splash
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.light.finder.CameraActivity
+import com.light.finder.BaseLightFinderActivity
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.PrefManager
-import com.light.finder.di.modules.SplashComponent
-import com.light.finder.di.modules.SplashModule
+import com.light.finder.di.modules.submodules.SplashComponent
+import com.light.finder.di.modules.submodules.SplashModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.startActivity
-import com.light.finder.ui.terms.TermsAndConditionsActivity
+import com.light.finder.ui.terms.TermsAndConditionsLightFinderActivity
 import com.light.presentation.viewmodels.SplashState
 import com.light.presentation.viewmodels.SplashViewModel
 
 
-class SplashActivity : AppCompatActivity() {
+class SplashLightFinderActivity : BaseLightFinderActivity() {
 
     private var prefManager: PrefManager? = null
     private lateinit var component: SplashComponent
@@ -51,12 +49,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goToTermsAndConditionsActivity() {
-        startActivity<TermsAndConditionsActivity> {  }
+        startActivity<TermsAndConditionsLightFinderActivity> {  }
         finish()
     }
 
     private fun goToCameraActivity() {
-        startActivity<CameraActivity> {  }
+        startActivity<CameraLightFinderActivity> {  }
         finish()
     }
 }

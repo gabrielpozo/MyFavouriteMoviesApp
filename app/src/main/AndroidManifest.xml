@@ -5,6 +5,7 @@
 
     <dist:module dist:instant="true" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
 
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -22,10 +23,15 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity
+            android:name=".UsabillaActivity"
+            android:theme="@style/LightStatusBar"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden" />
 
         <activity
+            android:name="com.light.finder.ui.splash.SplashLightFinderActivity"
             android:resizeableActivity="false"
-            android:name="com.light.finder.ui.splash.SplashActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -38,8 +44,8 @@
         </activity>
 
         <activity
+            android:name=".ui.lightfinder.ProductVariationsLightFinderActivity"
             android:resizeableActivity="false"
-            android:name=".ui.lightfinder.ProductVariationsActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -47,8 +53,8 @@
         </activity>
 
         <activity
+            android:name=".ui.lightfinder.TipsAndTricksLightFinderActivity"
             android:resizeableActivity="false"
-            android:name=".ui.lightfinder.TipsAndTricksActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -56,7 +62,7 @@
         </activity>
 
         <activity
-            android:name=".ui.terms.TermsAndConditionsActivity"
+            android:name=".ui.terms.TermsAndConditionsLightFinderActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -64,8 +70,8 @@
         </activity>
 
         <activity
+            android:name="com.light.finder.CameraLightFinderActivity"
             android:resizeableActivity="false"
-            android:name="com.light.finder.CameraActivity"
             android:configChanges="orientation|keyboardHidden"
             android:clearTaskOnLaunch="true"
             android:theme="@style/AppTheme"
