@@ -17,8 +17,8 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
@@ -82,7 +82,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         observeConnection()
     }
-    
 
 
     override fun onVisibilityChanged(invisible: Boolean) {
@@ -127,7 +126,9 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
                 val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA)
+                    data?.getParcelableArrayListExtra<ProductParcelable>(
+                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
+                    )
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
@@ -139,10 +140,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onInternetConnectionLost() {
-        //todo uncomment for 1.0
-        //
-       /* firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
-        }*/
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+        }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
             no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
