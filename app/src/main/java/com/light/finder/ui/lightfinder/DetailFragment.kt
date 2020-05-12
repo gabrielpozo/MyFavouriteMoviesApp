@@ -16,9 +16,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
-import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
@@ -97,11 +97,9 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-       //todo uncomment for 1.0
-        //
-       /* firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
-        }*/
+        }
 
         buttonAddTocart.setOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
@@ -128,7 +126,8 @@ class DetailFragment : BaseFragment() {
                 height = (dpHeight / 2)
             }
             bottomSheetBehavior.peekHeight = (dpHeight / 2)
-        }    }
+        }
+    }
 
     private fun addToCart() {
         viewModel.onRequestAddToCart(productSapId = productSapId)
@@ -311,7 +310,6 @@ class DetailFragment : BaseFragment() {
     private fun setNavigationObserver() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
-
 
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
