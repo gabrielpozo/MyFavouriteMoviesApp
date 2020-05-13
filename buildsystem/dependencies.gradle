@@ -66,7 +66,7 @@ ext {
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
-    usabillaVersion = "7.0.0"
+    usabillaVersion = "7.0.1"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
