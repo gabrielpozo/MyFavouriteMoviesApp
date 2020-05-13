@@ -15,7 +15,6 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.R
 import com.light.finder.common.*
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
@@ -127,8 +126,6 @@ class CartFragment : BaseFragment() {
         }
     }
 
-    fun onRequestItemCount() = viewModel.onRequestGetItemCount()
-
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
@@ -159,6 +156,7 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                viewModel.onRequestGetItemCount()
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
                 super.onPageFinished(view, url)

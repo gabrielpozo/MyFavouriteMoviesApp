@@ -109,7 +109,6 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         val current = fragNavController.currentFrag
         if (current is CartFragment) {
             current.onLoadWebView()
-            current.onRequestItemCount()
             current.onCheckIfOffline()
         }
     }
