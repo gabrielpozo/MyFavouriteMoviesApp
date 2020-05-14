@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/textViewTermsTitle"
-            app:srcCompat="@drawable/ic_signify" />
+            app:srcCompat="@drawable/ic_logo_color" />
 
         <TextView
             android:id="@+id/textViewTermsTitle"
