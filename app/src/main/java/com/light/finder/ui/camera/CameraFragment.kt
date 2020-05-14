@@ -74,7 +74,7 @@ class CameraFragment : BaseFragment() {
         override fun onTick(millisUntilFinished: Long) {
             val timeText = millisUntilFinished / 1000
             if (timeText > 0) {
-                countDownText.text = timeText.toString()
+                countDownText?.text = timeText.toString()
             }
         }
 
