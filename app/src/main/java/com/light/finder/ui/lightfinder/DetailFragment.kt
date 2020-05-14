@@ -158,8 +158,8 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 activityCallback.onBottomBarBlocked(isClickable = false)
-                linearVariationContainer.isClickable = false
-                linearVariationContainer.isFocusable = false
+                linearVariationContainer?.isClickable = false
+                linearVariationContainer?.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
@@ -176,8 +176,8 @@ class DetailFragment : BaseFragment() {
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
                     if (!isSingleProduct) {
-                        linearVariationContainer.isClickable = true
-                        linearVariationContainer.isFocusable = true
+                        linearVariationContainer?.isClickable = true
+                        linearVariationContainer?.isFocusable = true
                     }
 
                     context?.let { it1 ->
@@ -200,8 +200,8 @@ class DetailFragment : BaseFragment() {
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
                 if (!isSingleProduct) {
-                    linearVariationContainer.isClickable = true
-                    linearVariationContainer.isFocusable = true
+                    linearVariationContainer?.isClickable = true
+                    linearVariationContainer?.isFocusable = true
                 }
 
                 context?.let { it1 ->
@@ -246,8 +246,8 @@ class DetailFragment : BaseFragment() {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
             showErrorDialog(
-                getString(R.string.unable_to_add),
-                getString(R.string.connection_issue),
+                getString(R.string.sorry),
+                getString(R.string.cannot_added),
                 getString(R.string.ok),
                 false
             )
@@ -274,8 +274,8 @@ class DetailFragment : BaseFragment() {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
         showErrorDialog(
-            getString(R.string.unable_to_add),
-            getString(R.string.connection_issue),
+            getString(R.string.sorry),
+            getString(R.string.cannot_added),
             getString(R.string.ok),
             false
         )
