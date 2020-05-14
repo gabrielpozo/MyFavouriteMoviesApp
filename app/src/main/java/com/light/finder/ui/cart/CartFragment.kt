@@ -135,14 +135,14 @@ class CartFragment : BaseFragment() {
                 super.onProgressChanged(view, newProgress)
 
                 if (newProgress < 100 && progressBar.isGone) {
-                    progressBar.showWithAnimation()
+                    progressBar?.showWithAnimation()
                 }
 
                 if (newProgress == 100) {
-                    progressBar.hideWithAnimation()
+                    progressBar?.hideWithAnimation()
                 }
 
-                progressBar.progress = newProgress
+                progressBar?.progress = newProgress
             }
         }
 

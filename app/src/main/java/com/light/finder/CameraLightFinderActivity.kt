@@ -43,7 +43,12 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
-    lateinit var lightFinderComponent: LightFinderComponent
+    val lightFinderComponent: LightFinderComponent by lazy {
+        app.applicationComponent.plus(
+            LightFinderModule(
+                this
+            ))
+    }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override val numberOfRootFragments: Int = 3
@@ -66,12 +71,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
-        lightFinderComponent = app.applicationComponent.plus(
-            LightFinderModule(
-                this
-            )
-        )
+        
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)
