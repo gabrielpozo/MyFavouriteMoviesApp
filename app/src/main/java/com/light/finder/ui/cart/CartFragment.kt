@@ -157,6 +157,12 @@ class CartFragment : BaseFragment() {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                if (!InternetUtil.isInternetOn()) {
+                    view?.invisible()
+                    displayNoInternetBanner()
+                } else {
+                    view?.visible()
+                }
                 viewModel.onRequestGetItemCount()
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
@@ -187,11 +193,10 @@ class CartFragment : BaseFragment() {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
                 webView.reload()
-                webView.visible()
+
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
-                webView.invisible()
-                displayNoInternetBanner()
+                // Currently there is no need to react on offline
             }
         }
     }
@@ -213,6 +218,9 @@ class CartFragment : BaseFragment() {
 
 
     fun onCheckIfOffline() {
-        if (!InternetUtil.isInternetOn()) displayNoInternetBanner()
+        if (!InternetUtil.isInternetOn()) {
+            webView.invisible()
+            displayNoInternetBanner()
+        }
     }
 }
