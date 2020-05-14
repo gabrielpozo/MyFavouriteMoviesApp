@@ -337,7 +337,7 @@ class DetailFragment : BaseFragment() {
         val packs = String.format(
             getString(R.string.form_factor_pack),
             requireContext().getformFactortType(product.formfactorType),
-            product.qtyLampSku
+            product.qtyLampSku * product.qtyLampscase
         )
         //val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
         var title = String.format(
