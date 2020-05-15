@@ -6,8 +6,10 @@ import android.media.Image
 import android.util.Base64
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
+import com.light.finder.extensions.toBitmap
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
 import kotlin.coroutines.CoroutineContext
 
 
@@ -20,7 +22,7 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         get() = uiDispatcher + job
 
     fun getBitmap(image: Image): Bitmap {
-        return decodeBitmap(image)
+        return image.toBitmap()
     }
 
     fun convertImageToBase64(bitmap: Bitmap, base64: (String) -> Unit) {
@@ -35,14 +37,6 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         val b = stream.toByteArray()
         val base64 = resizeBase64Image(encodeToString(b, DEFAULT))
         base64
-    }
-
-
-    private fun decodeBitmap(image: Image): Bitmap {
-        val buffer = image.planes[0].buffer
-        val bytes = ByteArray(buffer.capacity()).also { buffer.get(it) }
-
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
 
     //todo change this to efficient way
