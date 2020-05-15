@@ -2,16 +2,25 @@ package com.light.finder.extensions
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
+import android.media.Image
 import android.util.Base64
 import androidx.core.content.ContextCompat
 import com.light.finder.ui.camera.CameraFragment
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.nio.ByteBuffer
 
 
 val EXTENSION_WHITELIST = arrayOf("JPG")
+
+fun Image.toBitmap(): Bitmap {
+    val buffer = planes[0].buffer
+    buffer.rewind()
+    val bytes = ByteArray(buffer.capacity())
+    buffer.get(bytes)
+    return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+}
 
 fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermission(
     requireContext(),

@@ -137,8 +137,9 @@ class CameraFragment : BaseFragment() {
 
 
     private val imageCaptureListener = object : ImageCapture.OnImageCapturedCallback() {
-        override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
-            Timber.e("$TAG Photo capture failed: $message cause")
+        override fun onError(exception: ImageCaptureException) {
+            super.onError(exception)
+            Timber.e("$TAG Photo capture failed: $exception cause")
         }
 
         @SuppressLint("UnsafeExperimentalUsageError")
@@ -615,7 +616,7 @@ class CameraFragment : BaseFragment() {
          *END USE-CASES
          */
 
-        preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
+        preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
 
         cameraProvider.unbindAll()
 
