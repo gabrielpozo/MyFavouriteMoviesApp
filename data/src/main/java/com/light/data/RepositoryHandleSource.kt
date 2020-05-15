@@ -2,10 +2,8 @@ package com.light.data
 
 import com.light.domain.model.ParsingError
 import com.light.domain.state.DataState
-import com.light.util.CANCEL_ERROR
-import com.light.util.EMPTY_RESPONSE
-import com.light.util.GENERAL_ERROR
-import com.light.util.NULLABLE_ERROR
+import com.light.domain.state.DataState.ProductsNotAvailable
+import com.light.util.*
 
 
 suspend fun <T> repositoryHandleSource(
@@ -14,17 +12,33 @@ suspend fun <T> repositoryHandleSource(
     remoteSourceRequest.invoke().also { resultRequest ->
         return when (resultRequest.status) {
             Result.Status.SUCCESS -> {
-                resultRequest.let { result ->
-                    result.data?.run { DataState.Success(data = this) }
-                        ?: DataState.Error(NULLABLE_ERROR)
+                when (resultRequest.code) {
+                    SUCCESSFUL_CODE -> {
+                        resultRequest.let { result ->
+                            result.data?.run {
+                                DataState.Success(data = this)
+                            } ?: DataState.Error(NULLABLE_ERROR)
+                        }
+                    }
+                    NO_CONTENT_CODE -> {
+                        DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
+
+                    }
+                    NO_PRODUCTS_CODE -> {
+                        resultRequest.data?.run {
+                            ProductsNotAvailable(data = this)
+                        } ?: DataState.Error(NULLABLE_ERROR)
+
+                    }
+
+                    else -> {
+                        DataState.Error(NULLABLE_ERROR)
+                    }
                 }
             }
 
-            Result.Status.EMPTY -> {
-                DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
-            }
 
-            Result.Status.TIME_OUT -> {
+            Result.Status.TIME_OUT_ERROR -> {
                 DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
             }
 
@@ -44,7 +58,6 @@ suspend fun <T> repositoryHandleSource(
             }
 
         }
-
     }
 }
 

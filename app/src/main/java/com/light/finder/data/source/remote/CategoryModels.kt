@@ -60,6 +60,10 @@ data class ProductParcelable(
 
 @Parcelize
 data class MessageParcelable(
-    val categoriesList: List<CategoryParcelable>
+    val categoriesList: List<CategoryParcelable>,
+    val version: String,
+    val baseIdentified: String,
+    val formfactorType: String,
+    val shapeIdentified: String
 ) : Parcelable
 

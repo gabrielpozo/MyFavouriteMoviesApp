@@ -80,13 +80,12 @@ class DetailViewModel(
                     ::handleErrorResponse,
                     ::handleTimeOutResponse,
                     ::handleEmptyResponse,
-                    productSapId
+                    params = *arrayOf(  productSapId)
                 )
             }
         } else {
             Log.e("ege", "Sap id is empty")
         }
-
     }
 
     fun onRequestGetItemCount() {

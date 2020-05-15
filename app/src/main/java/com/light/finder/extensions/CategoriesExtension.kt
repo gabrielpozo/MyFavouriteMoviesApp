@@ -156,11 +156,22 @@ fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
 }
 
 fun Message.parcelizeMessage(): MessageParcelable =
-    MessageParcelable(categories.map { it.parcelizeCategory() })
+    MessageParcelable(categories.map { it.parcelizeCategory() },
+        version = version,
+        baseIdentified = baseIdentified,
+        formfactorType = formfactorType,
+        shapeIdentified = shapeIdentified
+    )
 
 
 fun MessageParcelable.deparcelizeMessage(): Message =
-    Message(this.categoriesList.map { it.deparcelizeCategory() })
+    Message(
+        this.categoriesList.map { it.deparcelizeCategory() },
+        version = version,
+        baseIdentified = baseIdentified,
+        formfactorType = formfactorType,
+        shapeIdentified = shapeIdentified
+    )
 
 
 val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
