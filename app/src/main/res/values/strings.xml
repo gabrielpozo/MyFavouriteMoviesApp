@@ -67,7 +67,7 @@
     <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops!</string>
-    <string name="bulb_not_available">%s Bulb not available</string>
+    <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="error_sub_not_available">Sorry! We recognised your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
     <string name="not_now">Not now</string>
