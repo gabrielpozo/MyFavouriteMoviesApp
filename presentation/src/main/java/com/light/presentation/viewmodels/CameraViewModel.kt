@@ -10,7 +10,6 @@ import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.lang.Error
 import java.lang.Exception
 
 
@@ -73,6 +72,7 @@ class CameraViewModel(
     sealed class DialogModel {
         object TimeOutError : DialogModel()
         object NotBulbIdentified : DialogModel()
+        data class NoProductsAvailable(val messages: List<Message>) : DialogModel()
         data class ServerError(val exception: Exception? = null, val errorMessage: String) :
             DialogModel()
 
@@ -131,6 +131,7 @@ class CameraViewModel(
                 ::handleErrorResponse,
                 ::handleTimeOutResponse,
                 ::handleEmptyResponse,
+                ::handleNoProductsResponse,
                 base64
             )
         }
@@ -184,6 +185,10 @@ class CameraViewModel(
 
     private fun handleSuccessResponse(messages: List<Message>) {
         _modelRequest.value = Content.RequestModelContent(Event(messages))
+    }
+
+    private fun handleNoProductsResponse(messages: List<Message>) {
+        _modelDialog.value = Event(DialogModel.NoProductsAvailable(messages))
     }
 
     private fun handleErrorResponse(

@@ -7,7 +7,15 @@ data class CategoryResultDto(@SerializedName("message") val messageList: List<Me
 
 data class MessageDto(
     @SerializedName("categories")
-    val categories: List<CategoriesDto>?
+    val categories: List<CategoriesDto>?,
+    @SerializedName("version")
+    val version: String,
+    @SerializedName("base_identified")
+    val baseIdentified: String,
+    @SerializedName("formfactor")
+    val formfactorType: String,
+    @SerializedName("shape_identified")
+    val shape_identified: String
 )
 
 data class CategoriesDto(
@@ -22,7 +30,6 @@ data class CategoriesDto(
     @SerializedName("category_energysave") val categoryEnergySave: EnergySaving,
     @SerializedName("category_filter_finish_code") val categoryFilterFinishCode: List<Int>,
     @SerializedName("category_filter_product_shape") val categoryProductShape: String
-
 )
 
 data class ProductDto(
