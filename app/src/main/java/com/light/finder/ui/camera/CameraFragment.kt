@@ -310,7 +310,8 @@ class CameraFragment : BaseFragment() {
                     showErrorDialog(
                         String.format(
                             getString(R.string.bulb_not_available),
-                            dialogModel.messages[0].baseIdentified
+                            dialogModel.messages[0].baseIdentified,
+                            dialogModel.messages[0].shapeIdentified
                         ),
                         String.format(
                             getString(R.string.error_sub_not_available),
