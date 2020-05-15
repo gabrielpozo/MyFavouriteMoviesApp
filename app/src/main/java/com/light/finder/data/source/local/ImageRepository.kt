@@ -38,8 +38,7 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         val base64 = resizeBase64Image(encodeToString(b, DEFAULT))
         base64
     }
-
-    //todo change this to efficient way
+    
     private fun resizeBase64Image(base64image: String): String {
         val encodeByte = Base64.decode(base64image.toByteArray(), Base64.DEFAULT)
         val options = BitmapFactory.Options()
