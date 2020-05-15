@@ -15,6 +15,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.light.finder.R
 import com.light.finder.common.*
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
