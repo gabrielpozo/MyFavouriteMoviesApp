@@ -30,7 +30,9 @@ fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSel
 
 fun String.encodeImage(): String {
     val bytes = File(this).readBytes()
-    return resizeBase64Image(Base64.encodeToString(bytes, 0))
+    //return resizeBase64Image(Base64.encodeToString(bytes, 0))
+    return Base64.encodeToString(bytes, 0)
+
 }
 
 //todo change this to efficient way

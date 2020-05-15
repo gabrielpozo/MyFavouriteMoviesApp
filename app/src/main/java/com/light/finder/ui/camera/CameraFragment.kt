@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -597,6 +598,7 @@ class CameraFragment : BaseFragment() {
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             //.setTargetAspectRatio(screenAspectRatio)
+            .setTargetResolution(Size(800,600))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
