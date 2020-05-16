@@ -10,8 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.core.text.HtmlCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
@@ -96,6 +96,7 @@ fun ImageView.loadFile(file: File) {
 }
 
 fun ImageView.loadImage(bitmap: Bitmap) {
+    //todo https://stackoverflow.com/a/11081918/6683139 check exif data, if it's already rotated dont rotate
     val matrix = Matrix()
     matrix.postRotate(90f)
     val scaledBitmap =
@@ -109,7 +110,6 @@ fun ImageView.loadImage(bitmap: Bitmap) {
         matrix,
         true
     )
-
     this.setImageBitmap(rotatedBitmap)
 }
 
