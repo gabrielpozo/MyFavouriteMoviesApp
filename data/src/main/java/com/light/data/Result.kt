@@ -4,27 +4,25 @@ data class Result<out T>(
     val status: Status,
     val data: T? = null,
     val message: String?,
-    val isCancelRequest: Boolean = false
-) {
+    val isCancelRequest: Boolean = false,
+    val code: Int = 0
+
+    ) {
 
     enum class Status {
         SUCCESS,
         ERROR,
-        EMPTY,
-        TIME_OUT,
+        TIME_OUT_ERROR,
         PARSE_ERROR
     }
 
     companion object {
-        fun <T> success(data: T? = null, hasContent: Boolean = true): Result<T> {
+        fun <T> success(data: T? = null, code: Int = 200): Result<T> {
             return Result(
-                if (hasContent) {
-                    Status.SUCCESS
-                } else {
-                    Status.EMPTY
-                },
+                Status.SUCCESS,
                 data,
-                null
+                code = code,
+                message = null
             )
         }
 
@@ -39,7 +37,7 @@ data class Result<out T>(
             return Result(
                 when {
                     isTimeout -> {
-                        Status.TIME_OUT
+                        Status.TIME_OUT_ERROR
                     }
                     isParseError -> {
                         Status.PARSE_ERROR

@@ -4,6 +4,7 @@ import com.google.gson.JsonParseException
 import com.light.data.Result
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.NO_CONTENT_CODE
+import com.light.util.NO_PRODUCTS_CODE
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.text.ParseException
@@ -18,10 +19,16 @@ abstract class BaseDataSource {
             withTimeout(IMMERSIVE_FLAG_TIMEOUT) {
                 val response = call()
                 if (response.isSuccessful) {
-                    if (response.code() == NO_CONTENT_CODE) {
-                        Result.success(hasContent = false)
-                    } else {
-                        Result.success(mapper(response.body()!!))
+                    when {
+                        response.code() == NO_CONTENT_CODE -> {
+                            Result.success(code = NO_CONTENT_CODE)
+                        }
+                        response.code() == NO_PRODUCTS_CODE -> {
+                            Result.success(mapper(response.body()!!), code = NO_PRODUCTS_CODE)
+                        }
+                        else -> {
+                            Result.success(mapper(response.body()!!))
+                        }
                     }
 
                 } else {

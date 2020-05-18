@@ -244,8 +244,8 @@ class CameraFragment : BaseFragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
         modelUiState = ModelStatus.FEED
         screenNavigator.toCameraFeedScreen(this)
-        modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
-            when (errorModel) {
+        modelErrorEvent.getContentIfNotHandled()?.let { dialogModel ->
+            when (dialogModel) {
                 is DialogModel.TimeOutError -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -283,10 +283,10 @@ class CameraFragment : BaseFragment() {
                             getString(R.string.api_server_error_event)
                         )
                     }
-                    if (errorModel.exception is ParsingError) {
+                    if (dialogModel.exception is ParsingError) {
                         CrashlyticsException(
                             PARSE_ERROR_LOG_REPORT,
-                            errorModel.errorMessage,
+                            dialogModel.errorMessage,
                             null
                         ).logException()
                     }
@@ -299,6 +299,33 @@ class CameraFragment : BaseFragment() {
                     )
                 }
 
+                is DialogModel.NoProductsAvailable -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.lightbulb_identified_but_no_products)) {
+                        putString(
+                            getString(R.string.base),
+                            dialogModel.messages[0].baseIdentified
+                        )
+                        putString(
+                            getString(R.string.shape),
+                            dialogModel.messages[0].shapeIdentified
+                        )
+                    }
+                    showErrorDialog(
+                        String.format(
+                            getString(R.string.bulb_not_available),
+                            dialogModel.messages[0].baseIdentified,
+                            dialogModel.messages[0].shapeIdentified
+                        ),
+                        String.format(
+                            getString(R.string.error_sub_not_available),
+                            dialogModel.messages[0].baseIdentified,
+                            dialogModel.messages[0].shapeIdentified
+                        ),
+                        getString(R.string.ok),
+                        false
+
+                    )
+                }
                 is DialogModel.PermissionPermanentlyDenied -> {
                     showErrorDialog(
                         getString(R.string.enable_camera_access),

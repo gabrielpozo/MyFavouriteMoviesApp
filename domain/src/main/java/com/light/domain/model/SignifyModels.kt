@@ -1,7 +1,11 @@
 package com.light.domain.model
 
 data class Message(
-    val categories: List<Category>
+    val categories: List<Category>,
+    val version: String,
+    val baseIdentified: String,
+    val formfactorType: String,
+    val shapeIdentified: String
 )
 
 
