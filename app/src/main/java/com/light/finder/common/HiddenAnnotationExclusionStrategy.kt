@@ -12,11 +12,11 @@ class HiddenAnnotationExclusionStrategy : ExclusionStrategy {
     }
 
     override fun shouldSkipField(f: FieldAttributes?): Boolean {
-        if (f?.name == "categoryEnergySave" && f?.declaredType::class.simpleName != EnergySaving::class.java.simpleName) {
+        if (f?.name == "categoryEnergySave" && f?.declaredClass.isInstance(EnergySaving::class)) {
             Timber.d("WE ARE SKIPPING THIS FIELD")
             return true
         }
-        if (f?.name == "categoryPrice" && f?.declaredType::class.simpleName != Price::class.java.simpleName) {
+        if (f?.name == "categoryPrice" && f?.declaredClass.isInstance(Price::class)) {
             Timber.d("WE ARE SKIPPING THIS FIELD")
             return true
         }
