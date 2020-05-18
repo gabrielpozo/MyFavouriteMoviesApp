@@ -3,6 +3,7 @@ package com.light.finder.data.source.remote
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.light.finder.BuildConfig
+import com.light.finder.common.HiddenAnnotationExclusionStrategy
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +16,9 @@ object MessageRemoteUtil {
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
-    val gsonBuilder: GsonBuilder = GsonBuilder().setLenient()
+    val gsonBuilder: GsonBuilder = GsonBuilder().setLenient().setExclusionStrategies(
+        HiddenAnnotationExclusionStrategy()
+    )
 
 
     val service: SignifyApiService = Retrofit.Builder()

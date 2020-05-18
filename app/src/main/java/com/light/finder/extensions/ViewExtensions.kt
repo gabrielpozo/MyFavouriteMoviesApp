@@ -3,7 +3,6 @@ package com.light.finder.extensions
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
@@ -16,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
 import com.light.finder.ui.common.RotateTransformation
-import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -27,6 +25,7 @@ private const val bitmapHeight = 2200
 fun TextView.setHtmlText(source: String) {
     this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
+
 internal fun Drawable.tint(@ColorInt color: Int): Drawable {
     val wrapped = DrawableCompat.wrap(this)
     DrawableCompat.setTint(wrapped, color)
@@ -98,21 +97,11 @@ fun ImageView.loadFile(file: File) {
 }
 
 fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
-    Timber.d("RITIKA rotation degree: $rotationDegree  float:${rotationDegree.toFloat()}")
-    val matrix = Matrix()
-    matrix.postRotate(rotationDegree.toFloat())
-    val scaledBitmap =
-        Bitmap.createScaledBitmap(bitmap, bitmapHeight, bitmapWidth, true)
-    val rotatedBitmap = Bitmap.createBitmap(
-        scaledBitmap,
-        0,
-        0,
-        scaledBitmap.width,
-        scaledBitmap.height,
-        matrix,
-        true
-    )
-    this.setImageBitmap(rotatedBitmap)
+    Glide.with(this)
+        .load(bitmap)
+        .dontAnimate()
+        .transform(RotateTransformation(rotationDegree.toFloat()))
+        .into(this)
 }
 
 fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
