@@ -69,7 +69,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private var modelUiState: ModelStatus = ModelStatus.FEED
-    private var rotationDegree = 90
+    //private var rotationDegree = 200
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -146,8 +146,7 @@ class CameraFragment : BaseFragment() {
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
-            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
-            rotationDegree = image.imageInfo.rotationDegrees
+            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!), image.imageInfo.rotationDegrees)
             image.close()
         }
     }
@@ -380,7 +379,7 @@ class CameraFragment : BaseFragment() {
             //browseButton.gone()
             cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
-            imageViewPreview.loadImage(it.bitmap, rotationDegree)
+            imageViewPreview.loadImage(it.bitmap, it.rotationDegrees)
             //start countdown
             timer.start()
             modelUiState = ModelStatus.LOADING
