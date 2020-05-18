@@ -15,6 +15,7 @@ import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
+import com.light.finder.ui.common.RotateTransformation
 import java.io.File
 import java.util.*
 
@@ -97,7 +98,7 @@ fun ImageView.loadFile(file: File) {
 
 fun ImageView.loadImage(bitmap: Bitmap) {
     //todo https://stackoverflow.com/a/11081918/6683139 check exif data, if it's already rotated dont rotate
-    val matrix = Matrix()
+    /*val matrix = Matrix()
     matrix.postRotate(90f)
     val scaledBitmap =
         Bitmap.createScaledBitmap(bitmap, bitmapHeight, bitmapWidth, true)
@@ -110,7 +111,11 @@ fun ImageView.loadImage(bitmap: Bitmap) {
         matrix,
         true
     )
-    this.setImageBitmap(rotatedBitmap)
+    this.setImageBitmap(rotatedBitmap)*/
+    Glide.with(this).load(bitmap)
+        .transform(RotateTransformation(90f))
+        .into(this)
+
 }
 
 fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
