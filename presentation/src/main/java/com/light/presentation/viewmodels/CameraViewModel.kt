@@ -43,7 +43,7 @@ class CameraViewModel(
     val modelPreview: LiveData<Event<PreviewModel>>
         get() = _modelPreview
 
-    class PreviewModel(val bitmap: Bitmap)
+    class PreviewModel(val bitmap: Bitmap, val rotationDegrees: Int)
 
 
     private val _modelRequest = MutableLiveData<Content>()
@@ -118,8 +118,8 @@ class CameraViewModel(
         _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
     }
 
-    fun onCameraButtonClicked(bitmap: Bitmap) {
-        _modelPreview.value = Event(PreviewModel(bitmap))
+    fun onCameraButtonClicked(bitmap: Bitmap, rotationDegrees: Int) {
+        _modelPreview.value = Event(PreviewModel(bitmap, rotationDegrees))
         _modelRequest.value = Content.EncodeImage(bitmap)
     }
 
