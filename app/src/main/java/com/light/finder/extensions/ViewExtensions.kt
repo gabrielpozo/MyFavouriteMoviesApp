@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
 import com.light.finder.ui.common.RotateTransformation
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -97,6 +98,7 @@ fun ImageView.loadFile(file: File) {
 }
 
 fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
+    Timber.d("RITIKA rotation degree: $rotationDegree  float:${rotationDegree.toFloat()}")
     val matrix = Matrix()
     matrix.postRotate(rotationDegree.toFloat())
     val scaledBitmap =
