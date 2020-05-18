@@ -69,6 +69,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private var modelUiState: ModelStatus = ModelStatus.FEED
+    private var rotationDegree = 90
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -146,6 +147,7 @@ class CameraFragment : BaseFragment() {
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
             viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
+            rotationDegree = image.imageInfo.rotationDegrees
             image.close()
         }
     }
@@ -351,7 +353,7 @@ class CameraFragment : BaseFragment() {
             //browseButton.gone()
             cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
-            imageViewPreview.loadImage(it.bitmap)
+            imageViewPreview.loadImage(it.bitmap, rotationDegree)
             //start countdown
             timer.start()
             modelUiState = ModelStatus.LOADING
@@ -591,21 +593,16 @@ class CameraFragment : BaseFragment() {
 
 
         preview = Preview.Builder()
-            // .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
             .build()
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            //.setTargetAspectRatio(screenAspectRatio)
             .setTargetResolution(Size(800,600))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
 
         imageAnalyzer = ImageAnalysis.Builder()
-            //.setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
             .build()
             .also {
                 it.setAnalyzer(mainExecutor,

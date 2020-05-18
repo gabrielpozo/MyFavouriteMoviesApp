@@ -96,10 +96,9 @@ fun ImageView.loadFile(file: File) {
         .skipMemoryCache(true).into(this)
 }
 
-fun ImageView.loadImage(bitmap: Bitmap) {
-    //todo https://stackoverflow.com/a/11081918/6683139 check exif data, if it's already rotated dont rotate
-    /*val matrix = Matrix()
-    matrix.postRotate(90f)
+fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
+    val matrix = Matrix()
+    matrix.postRotate(rotationDegree.toFloat())
     val scaledBitmap =
         Bitmap.createScaledBitmap(bitmap, bitmapHeight, bitmapWidth, true)
     val rotatedBitmap = Bitmap.createBitmap(
@@ -111,11 +110,7 @@ fun ImageView.loadImage(bitmap: Bitmap) {
         matrix,
         true
     )
-    this.setImageBitmap(rotatedBitmap)*/
-    Glide.with(this).load(bitmap)
-        .transform(RotateTransformation(90f))
-        .into(this)
-
+    this.setImageBitmap(rotatedBitmap)
 }
 
 fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
