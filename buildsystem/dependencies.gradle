@@ -41,9 +41,9 @@ ext {
     lottieVersion = '3.4.0'
     timberVersion = '4.7.1'
     daggerVersion = '2.25'
-    cameraVersion = '1.0.0-alpha08'
-    cameraLifeCyleVersion = '1.0.0-alpha02'
-    cameraViewVersion = '1.0.0-alpha05'
+    cameraVersion = '1.0.0-beta03'
+    cameraLifeCyleVersion = '1.0.0-beta03'
+    cameraViewVersion = '1.0.0-alpha10'
     // Testing dependencies
     junitVersion = '4.12'
     espressoVersion = '3.1.1'
@@ -66,7 +66,7 @@ ext {
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
-    usabillaVersion = "7.0.0"
+    usabillaVersion = "7.0.1"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",

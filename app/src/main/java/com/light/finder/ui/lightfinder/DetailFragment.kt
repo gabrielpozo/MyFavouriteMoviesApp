@@ -16,9 +16,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
+import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
@@ -97,7 +97,7 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+       firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
 
@@ -126,8 +126,7 @@ class DetailFragment : BaseFragment() {
                 height = (dpHeight / 2)
             }
             bottomSheetBehavior.peekHeight = (dpHeight / 2)
-        }
-    }
+        }    }
 
     private fun addToCart() {
         viewModel.onRequestAddToCart(productSapId = productSapId)
@@ -157,8 +156,8 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 activityCallback.onBottomBarBlocked(isClickable = false)
-                linearVariationContainer.isClickable = false
-                linearVariationContainer.isFocusable = false
+                linearVariationContainer?.isClickable = false
+                linearVariationContainer?.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
@@ -175,8 +174,8 @@ class DetailFragment : BaseFragment() {
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
                     if (!isSingleProduct) {
-                        linearVariationContainer.isClickable = true
-                        linearVariationContainer.isFocusable = true
+                        linearVariationContainer?.isClickable = true
+                        linearVariationContainer?.isFocusable = true
                     }
 
                     context?.let { it1 ->
@@ -199,8 +198,8 @@ class DetailFragment : BaseFragment() {
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
                 if (!isSingleProduct) {
-                    linearVariationContainer.isClickable = true
-                    linearVariationContainer.isFocusable = true
+                    linearVariationContainer?.isClickable = true
+                    linearVariationContainer?.isFocusable = true
                 }
 
                 context?.let { it1 ->
@@ -245,8 +244,8 @@ class DetailFragment : BaseFragment() {
             Timber.e("egeee add to cart failed! probably item is out of stock")
             cartAnimation.cancelAnimation()
             showErrorDialog(
-                getString(R.string.unable_to_add),
-                getString(R.string.connection_issue),
+                getString(R.string.sorry),
+                getString(R.string.cannot_added),
                 getString(R.string.ok),
                 false
             )
@@ -273,8 +272,8 @@ class DetailFragment : BaseFragment() {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
         showErrorDialog(
-            getString(R.string.unable_to_add),
-            getString(R.string.connection_issue),
+            getString(R.string.sorry),
+            getString(R.string.cannot_added),
             getString(R.string.ok),
             false
         )
@@ -312,6 +311,7 @@ class DetailFragment : BaseFragment() {
     }
 
 
+
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
@@ -335,7 +335,7 @@ class DetailFragment : BaseFragment() {
         val packs = String.format(
             getString(R.string.form_factor_pack),
             requireContext().getformFactortType(product.formfactorType),
-            product.qtyLampSku
+            product.qtyLampSku * product.qtyLampscase
         )
         //val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
         var title = String.format(

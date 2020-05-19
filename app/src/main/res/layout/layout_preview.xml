@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/imageViewPreview"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:orientation="vertical"
         android:layout_width="match_parent"

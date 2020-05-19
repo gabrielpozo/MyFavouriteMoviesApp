@@ -67,7 +67,9 @@
     <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops!</string>
+    <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
+    <string name="error_sub_not_available">Sorry! We recognised your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
     <string name="not_now">Not now</string>
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
@@ -89,7 +91,7 @@
     <string name="terms_of_use">Terms of use</string>
     <string name="see_details_privacy_statement">See details <font color='#0e8b59'> Privacy statement </font></string>
     <string name="i_agree_with_the_terms_amp_conditions"><![CDATA[I agree with the Terms & Conditions*]]></string>
-x
+
     <string name="unable_to_add">Unable to add to cart</string>
     <string name="connection_issue">Sorry, we’re currently experiencing connection issues but are working hard to fix this. Please try again later.</string>
     <string name="continue_terms">Continue</string>
@@ -122,6 +124,7 @@ x
     <string name="cancel_identified_event">cancel_identify</string>
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
+    <string name="lightbulb_identified_but_no_products">lightbulb_identified</string>
     <string name="error_reason_event">error_reason</string>
     <string name="time_out_event">timeout</string>
     <string name="api_server_error_event">api_server_error</string>
@@ -137,6 +140,8 @@ x
     <string name="no_internet_banner">no_internet_banner</string>
     <string name="parameter_sku">sku</string>
     <string name="photo_help">photo_help_tips</string>
+    <string name="sorry">Sorry</string>
+    <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
     <string name="photo_tips">photoTips</string>
 
 

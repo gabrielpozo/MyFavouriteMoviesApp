@@ -1,7 +1,11 @@
 package com.light.domain.model
 
 data class Message(
-    val categories: List<Category>
+    val categories: List<Category>,
+    val version: String,
+    val baseIdentified: String,
+    val formfactorType: String,
+    val shapeIdentified: String
 )
 
 
@@ -57,4 +61,18 @@ data class Product(
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
     var filtered: Boolean = false
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as Product
+
+        return other.colorCctCode == this.colorCctCode
+                && this.productFinishCode == other.productFinishCode
+                && this.wattageReplaced == other.wattageReplaced
+    }
+
+    override fun hashCode(): Int {
+        return wattageReplaced * colorCctCode * productFinishCode
+    }
+}

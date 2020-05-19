@@ -17,8 +17,8 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
@@ -43,7 +43,12 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
-    lateinit var lightFinderComponent: LightFinderComponent
+    val lightFinderComponent: LightFinderComponent by lazy {
+        app.applicationComponent.plus(
+            LightFinderModule(
+                this
+            ))
+    }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override val numberOfRootFragments: Int = 3
@@ -66,12 +71,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
-        lightFinderComponent = app.applicationComponent.plus(
-            LightFinderModule(
-                this
-            )
-        )
+        
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)
@@ -82,6 +82,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         observeConnection()
     }
+    
 
 
     override fun onVisibilityChanged(invisible: Boolean) {
@@ -126,9 +127,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
                 val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(
-                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
-                    )
+                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA)
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
@@ -140,7 +139,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onInternetConnectionLost() {
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+       firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
         }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({

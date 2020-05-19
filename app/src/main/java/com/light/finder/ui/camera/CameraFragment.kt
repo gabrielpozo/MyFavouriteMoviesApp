@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,13 +69,14 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private var modelUiState: ModelStatus = ModelStatus.FEED
+    //private var rotationDegree = 200
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
         override fun onTick(millisUntilFinished: Long) {
             val timeText = millisUntilFinished / 1000
             if (timeText > 0) {
-                countDownText.text = timeText.toString()
+                countDownText?.text = timeText.toString()
             }
         }
 
@@ -137,13 +139,14 @@ class CameraFragment : BaseFragment() {
 
 
     private val imageCaptureListener = object : ImageCapture.OnImageCapturedCallback() {
-        override fun onError(imageCaptureError: Int, message: String, cause: Throwable?) {
-            Timber.e("$TAG Photo capture failed: $message cause")
+        override fun onError(exception: ImageCaptureException) {
+            super.onError(exception)
+            Timber.e("$TAG Photo capture failed: $exception cause")
         }
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
-            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!))
+            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!), image.imageInfo.rotationDegrees)
             image.close()
         }
     }
@@ -240,8 +243,8 @@ class CameraFragment : BaseFragment() {
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
         modelUiState = ModelStatus.FEED
         screenNavigator.toCameraFeedScreen(this)
-        modelErrorEvent.getContentIfNotHandled()?.let { errorModel ->
-            when (errorModel) {
+        modelErrorEvent.getContentIfNotHandled()?.let { dialogModel ->
+            when (dialogModel) {
                 is DialogModel.TimeOutError -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -279,10 +282,10 @@ class CameraFragment : BaseFragment() {
                             getString(R.string.api_server_error_event)
                         )
                     }
-                    if (errorModel.exception is ParsingError) {
+                    if (dialogModel.exception is ParsingError) {
                         CrashlyticsException(
                             PARSE_ERROR_LOG_REPORT,
-                            errorModel.errorMessage,
+                            dialogModel.errorMessage,
                             null
                         ).logException()
                     }
@@ -295,6 +298,33 @@ class CameraFragment : BaseFragment() {
                     )
                 }
 
+                is DialogModel.NoProductsAvailable -> {
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.lightbulb_identified_but_no_products)) {
+                        putString(
+                            getString(R.string.base),
+                            dialogModel.messages[0].baseIdentified
+                        )
+                        putString(
+                            getString(R.string.shape),
+                            dialogModel.messages[0].shapeIdentified
+                        )
+                    }
+                    showErrorDialog(
+                        String.format(
+                            getString(R.string.bulb_not_available),
+                            dialogModel.messages[0].baseIdentified,
+                            dialogModel.messages[0].shapeIdentified
+                        ),
+                        String.format(
+                            getString(R.string.error_sub_not_available),
+                            dialogModel.messages[0].baseIdentified,
+                            dialogModel.messages[0].shapeIdentified
+                        ),
+                        getString(R.string.ok),
+                        false
+
+                    )
+                }
                 is DialogModel.PermissionPermanentlyDenied -> {
                     showErrorDialog(
                         getString(R.string.enable_camera_access),
@@ -349,7 +379,7 @@ class CameraFragment : BaseFragment() {
             //browseButton.gone()
             cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
-            imageViewPreview.loadImage(it.bitmap)
+            imageViewPreview.loadImage(it.bitmap, it.rotationDegrees)
             //start countdown
             timer.start()
             modelUiState = ModelStatus.LOADING
@@ -589,20 +619,16 @@ class CameraFragment : BaseFragment() {
 
 
         preview = Preview.Builder()
-            // .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
             .build()
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            //.setTargetAspectRatio(screenAspectRatio)
+            .setTargetResolution(Size(800,600))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
 
         imageAnalyzer = ImageAnalysis.Builder()
-            //.setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
             .build()
             .also {
                 it.setAnalyzer(mainExecutor,
@@ -615,7 +641,7 @@ class CameraFragment : BaseFragment() {
          *END USE-CASES
          */
 
-        preview?.previewSurfaceProvider = viewFinder.previewSurfaceProvider
+        preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
 
         cameraProvider.unbindAll()
 
@@ -624,7 +650,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
+           firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
 
         }

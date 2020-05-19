@@ -66,7 +66,7 @@ class DetailViewModel(
             dataProducts = category.categoryProducts
             _model.value = Content(
                 category.categoryProducts[0].also { it.isSelected = true },
-                isSingleProduct = dataProducts.size <= 1
+                isSingleProduct = isSingleProduct()
             )
         }
     }
@@ -80,13 +80,12 @@ class DetailViewModel(
                     ::handleErrorResponse,
                     ::handleTimeOutResponse,
                     ::handleEmptyResponse,
-                    productSapId
+                    params = *arrayOf(  productSapId)
                 )
             }
         } else {
             Log.e("ege", "Sap id is empty")
         }
-
     }
 
     fun onRequestGetItemCount() {
@@ -102,7 +101,11 @@ class DetailViewModel(
         _modelRequest.value = RequestModelContent(Event(cartItem))
     }
 
-    private fun handleErrorResponse(hasBeenCancelled: Boolean, exception: Exception?, message: String) {
+    private fun handleErrorResponse(
+        hasBeenCancelled: Boolean,
+        exception: Exception?,
+        message: String
+    ) {
         _modelDialog.value = Event(DialogModel.ServerError)
     }
 
@@ -142,4 +145,6 @@ class DetailViewModel(
     fun onChangeVariationClick() {
         _modelNavigation.value = Event(NavigationModel(dataProducts))
     }
+
+    private fun isSingleProduct(): Boolean = dataProducts.toHashSet().size == 1
 }
