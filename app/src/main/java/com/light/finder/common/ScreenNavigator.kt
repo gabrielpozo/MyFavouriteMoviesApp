@@ -83,8 +83,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     fragNavController.switchTab(INDEX_ABOUT)
                     val current = fragNavController.currentFrag
                     if (current is AboutFragment) {
-                        //todo uncomment for 1.0
-                        //firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+                        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         current.setLightStatusBar()
                     }
                 }
