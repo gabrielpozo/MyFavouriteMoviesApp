@@ -56,6 +56,5 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         val b = baos.toByteArray()
         System.gc()
         return encodeToString(b, Base64.NO_WRAP)
-
     }
 }
