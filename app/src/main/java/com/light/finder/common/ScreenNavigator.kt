@@ -2,6 +2,7 @@ package com.light.finder.common
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
@@ -68,7 +69,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
 
-        activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
+        activity.bottom_navigation_view.setOnTabSelectedListener { position, _ ->
             when (position) {
                 INDEX_LIGHT_FINDER -> {
                     fragNavController.switchTab(INDEX_LIGHT_FINDER)
@@ -83,8 +84,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     fragNavController.switchTab(INDEX_ABOUT)
                     val current = fragNavController.currentFrag
                     if (current is AboutFragment) {
-                        //todo uncomment for 1.0
-                        //firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
+                        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         current.setLightStatusBar()
                     }
                 }
