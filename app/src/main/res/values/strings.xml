@@ -142,6 +142,7 @@
     <string name="photo_help">photo_help_tips</string>
     <string name="sorry">Sorry</string>
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
+    <string name="photo_tips">photoTips</string>
 
 
 </resources>
