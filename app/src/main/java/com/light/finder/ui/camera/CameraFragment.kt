@@ -68,6 +68,8 @@ class CameraFragment : BaseFragment() {
     private lateinit var alertDialog: AlertDialog
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var cameraProvider: ProcessCameraProvider
+    private lateinit var controls: View
     private var modelUiState: ModelStatus = ModelStatus.FEED
     //private var rotationDegree = 200
 
@@ -146,7 +148,10 @@ class CameraFragment : BaseFragment() {
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
-            viewModel.onCameraButtonClicked(imageRepository.getBitmap(image.image!!), image.imageInfo.rotationDegrees)
+            viewModel.onCameraButtonClicked(
+                imageRepository.getBitmap(image.image!!),
+                image.imageInfo.rotationDegrees
+            )
             image.close()
         }
     }
@@ -163,6 +168,7 @@ class CameraFragment : BaseFragment() {
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewFinder)
+        viewFinder.preferredImplementationMode = PreviewView.ImplementationMode.TEXTURE_VIEW
 
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeUpdateUI))
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
@@ -229,13 +235,12 @@ class CameraFragment : BaseFragment() {
 
     private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
-            //timer.onTick(INIT_INTERVAL)
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.cancel_identified_event)) {}
             timer.cancel()
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-            activityCallback.onVisibilityChanged(false)
+            activityCallback.setBottomBarInvisibility(false)
             initializeLottieAnimation()
         }
     }
@@ -384,8 +389,6 @@ class CameraFragment : BaseFragment() {
             timer.start()
             modelUiState = ModelStatus.LOADING
             screenNavigator.toCameraLoading(this)
-            activityCallback.onVisibilityChanged(true)
-
             cancelButton.setOnClickListener {
                 viewModel.onCancelRequest()
             }
@@ -421,7 +424,7 @@ class CameraFragment : BaseFragment() {
         layoutPreview.gone()
         layoutCamera.visible()
         cameraUiContainer.visible()
-        activityCallback.onVisibilityChanged(false)
+        activityCallback.setBottomBarInvisibility(false)
 
         lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
@@ -560,7 +563,7 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    fun onCameraCaptureClick() {
+    private fun onCameraCaptureClick() {
         imageCapture?.let { imageCapture ->
             val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
             val metadata = ImageCapture.Metadata().apply {
@@ -585,11 +588,12 @@ class CameraFragment : BaseFragment() {
             container.removeView(it)
         }
 
-        val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
+        controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
         controls.cameraCaptureButton.setSafeOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
+                    activityCallback.setBottomBarInvisibility(true)
                     firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
                         putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
                     }
@@ -608,7 +612,7 @@ class CameraFragment : BaseFragment() {
 
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+        cameraProvider = cameraProviderFuture.get()
 
         /**
          * CAMERA USE-CASES
@@ -623,7 +627,7 @@ class CameraFragment : BaseFragment() {
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetResolution(Size(600,800))
+            .setTargetResolution(Size(600, 800))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
@@ -643,6 +647,7 @@ class CameraFragment : BaseFragment() {
 
         preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
 
+
         cameraProvider.unbindAll()
 
         camera = cameraProvider.bindToLifecycle(
@@ -660,7 +665,6 @@ class CameraFragment : BaseFragment() {
          * once camera container is initialize we start observing camera events from camera viewmodels
          */
         viewModel.modelFlash.observe(viewLifecycleOwner, Observer(::observeFlashButtonAction))
-
     }
 
     //TODO set this method for extension when media user is implemented
@@ -675,6 +679,19 @@ class CameraFragment : BaseFragment() {
         lottieAnimationView.progress = 0.0f
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        cameraProvider.unbindAll()
+    }
+
+    fun disableCameraCaptureButton() {
+        controls.cameraCaptureButton.isEnabled = false
+
+    }
+
+    fun enableCameraCaptureButton() {
+        controls.cameraCaptureButton.isEnabled = true
+    }
 }
 
 enum class ModelStatus { FEED, LOADING, PERMISSION }

@@ -70,7 +70,7 @@ class CategoriesFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        activityCallback.onVisibilityChanged(false)
+        activityCallback.setBottomBarInvisibility(false)
     }
 
     private fun navigationObserver() {

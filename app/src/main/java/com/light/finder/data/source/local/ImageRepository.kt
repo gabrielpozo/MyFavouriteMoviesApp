@@ -1,15 +1,12 @@
 package com.light.finder.data.source.local
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.Image
-import android.util.Base64
 import android.util.Base64.DEFAULT
 import android.util.Base64.encodeToString
 import com.light.finder.extensions.toBitmap
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
 import kotlin.coroutines.CoroutineContext
 
 
@@ -17,6 +14,10 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
 
     private var job: Job = SupervisorJob()
 
+    companion object {
+        const val bitmapWidth = 800
+        const val bitmapHeight = 600
+    }
 
     override val coroutineContext: CoroutineContext
         get() = uiDispatcher + job
@@ -32,29 +33,19 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
     }
 
     private suspend fun toBase64(bitmap: Bitmap): String = withContext(Dispatchers.IO) {
+        if (bitmap.height <= bitmapHeight && bitmap.width <= bitmapWidth) {
+            encodeBitmapTo64(bitmap)
+        } else {
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, false)
+            System.gc()
+            encodeBitmapTo64(Bitmap.createScaledBitmap(scaledBitmap, bitmapWidth, bitmapHeight, false))
+        }
+    }
+
+    private fun encodeBitmapTo64(bitmap: Bitmap): String {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         val b = stream.toByteArray()
-        val base64 = resizeBase64Image(encodeToString(b, DEFAULT))
-        base64
-    }
-    
-    private fun resizeBase64Image(base64image: String): String {
-        val encodeByte = Base64.decode(base64image.toByteArray(), Base64.DEFAULT)
-        val options = BitmapFactory.Options()
-        var image = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size, options)
-
-
-        if (image.height <= 600 && image.width <= 800) {
-            return base64image
-        }
-        image = Bitmap.createScaledBitmap(image, 800, 600, false)
-
-        val baos = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-
-        val b = baos.toByteArray()
-        System.gc()
-        return encodeToString(b, Base64.NO_WRAP)
+       return encodeToString(b, DEFAULT)
     }
 }
