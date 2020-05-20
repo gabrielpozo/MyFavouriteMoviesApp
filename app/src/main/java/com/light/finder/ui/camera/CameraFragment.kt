@@ -623,19 +623,12 @@ class CameraFragment : BaseFragment() {
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetResolution(Size(800,600))
+            .setTargetResolution(Size(600,800))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
 
-        imageAnalyzer = ImageAnalysis.Builder()
-            .build()
-            .also {
-                it.setAnalyzer(mainExecutor,
-                    LuminosityAnalyzer { luma ->
-                        Timber.d("$TAG Average luminosity: $luma")
-                    })
-            }
+
 
         /**
          *END USE-CASES
@@ -646,7 +639,7 @@ class CameraFragment : BaseFragment() {
         cameraProvider.unbindAll()
 
         camera = cameraProvider.bindToLifecycle(
-            this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
+            this as LifecycleOwner, cameraSelector, preview, imageCapture
         )
 
         helpButton.setOnClickListener {
