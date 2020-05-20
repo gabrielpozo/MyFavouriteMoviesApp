@@ -15,7 +15,10 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.common.*
+import com.light.finder.common.ActivityCallback
+import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.InternetUtil
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
@@ -67,7 +70,6 @@ class CartFragment : BaseFragment() {
     }
 
 
-
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
             val rec = Rect()
@@ -76,14 +78,14 @@ class CartFragment : BaseFragment() {
 
             val keypadHeight = screenHeight - rec.bottom
             val param: ViewGroup.MarginLayoutParams
-            
+
             // add margin bottom when keyboard is visible
             if (keypadHeight > screenHeight * 0.15) {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,0,0, keypadHeight / 2 )
+                param.setMargins(0, 0, 0, keypadHeight / 2)
             } else {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,0,0,0)
+                param.setMargins(0, 0, 0, 0)
             }
 
             webView.layoutParams = param
@@ -133,16 +135,9 @@ class CartFragment : BaseFragment() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
-
-                if (newProgress < 100 && progressBar.isGone) {
-                    progressBar?.showWithAnimation()
+                progressBar?.let {
+                    setProgress(newProgress)
                 }
-
-                if (newProgress == 100) {
-                    progressBar?.hideWithAnimation()
-                }
-
-                progressBar?.progress = newProgress
             }
         }
 
@@ -210,6 +205,19 @@ class CartFragment : BaseFragment() {
         Handler().postDelayed({
             no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
         }, NO_INTERNET_BANNER_DELAY)
+    }
+
+
+    private fun setProgress(newProgress: Int) {
+        if (newProgress < 100 && progressBar.isGone) {
+            progressBar?.showWithAnimation()
+        }
+
+        if (newProgress == 100) {
+            progressBar?.hideWithAnimation()
+        }
+
+        progressBar?.progress = newProgress
     }
 
     fun onLoadWebView() {
