@@ -646,7 +646,7 @@ class CameraFragment : BaseFragment() {
         cameraProvider.unbindAll()
 
         camera = cameraProvider.bindToLifecycle(
-            this as LifecycleOwner, cameraSelector, preview, imageCapture
+            this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
         )
 
         helpButton.setOnClickListener {
