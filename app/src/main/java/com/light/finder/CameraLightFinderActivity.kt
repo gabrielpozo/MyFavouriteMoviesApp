@@ -85,10 +85,12 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     
 
 
-    override fun onVisibilityChanged(invisible: Boolean) {
+    override fun setBottomBarInvisibility(invisible: Boolean) {
         if (invisible) {
+            onBottomBarBlocked(false)
             bottom_navigation_view.gone()
         } else {
+            onBottomBarBlocked(true)
             bottom_navigation_view.visible()
         }
     }
