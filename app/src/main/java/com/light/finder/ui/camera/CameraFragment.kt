@@ -628,7 +628,14 @@ class CameraFragment : BaseFragment() {
             .setTargetRotation(rotation)
             .build()
 
-
+        imageAnalyzer = ImageAnalysis.Builder()
+            .build()
+            .also {
+                it.setAnalyzer(mainExecutor,
+                    LuminosityAnalyzer { luma ->
+                        Timber.d("$TAG Average luminosity: $luma")
+                    })
+            }
 
         /**
          *END USE-CASES
