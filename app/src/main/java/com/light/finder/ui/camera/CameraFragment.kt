@@ -623,7 +623,7 @@ class CameraFragment : BaseFragment() {
 
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetResolution(Size(800,600))
+            .setTargetResolution(Size(600,800))
             .setFlashMode(flashMode)
             .setTargetRotation(rotation)
             .build()
