@@ -23,6 +23,7 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
+import kotlinx.android.synthetic.main.cart_fragment_offline.*
 import timber.log.Timber
 
 class CartFragment : BaseFragment() {
@@ -65,9 +66,18 @@ class CartFragment : BaseFragment() {
         setObserver()
         setupWebView()
         observeLayout()
+        setListeners()
     }
 
-
+    private fun setListeners() {
+        retry_internet.setOnClickListener {
+            if (!InternetUtil.isInternetOn()) {
+                displayNoInternetBanner()
+            } else {
+                no_internet_overlay.gone()
+            }
+        }
+    }
 
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -160,6 +170,7 @@ class CartFragment : BaseFragment() {
                 if (!InternetUtil.isInternetOn()) {
                     view?.invisible()
                     displayNoInternetBanner()
+                    displayNoConnectionOverlay()
                 } else {
                     view?.visible()
                 }
@@ -193,7 +204,7 @@ class CartFragment : BaseFragment() {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
                 webView.reload()
-
+                no_internet_overlay.gone()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
                 // Currently there is no need to react on offline
@@ -216,11 +227,16 @@ class CartFragment : BaseFragment() {
         viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
     }
 
+    private fun displayNoConnectionOverlay() {
+        no_internet_overlay.visible()
+    }
+
 
     fun onCheckIfOffline() {
         if (!InternetUtil.isInternetOn()) {
             webView.invisible()
             displayNoInternetBanner()
+            displayNoConnectionOverlay()
         }
     }
 }

@@ -40,6 +40,11 @@
         android:id="@+id/no_internet_banner_cart"
         layout="@layout/layout_no_internet"/>
 
+    <include
+        android:visibility="gone"
+        android:id="@+id/no_internet_overlay"
+        layout="@layout/cart_fragment_offline"/>
+    
     <ProgressBar
         android:id="@+id/progressBar"
         android:visibility="gone"
