@@ -1,9 +1,6 @@
 package com.light.presentation
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -24,13 +21,7 @@ interface Scope : CoroutineScope {
         job = SupervisorJob()
     }
 
-    fun checkCoroutineIsCancelled() {
-        if(job.isCancelled){
-            initScope()
-        }
-    }
-
     fun cancelRequestScope() {
-        job.cancel()
+        coroutineContext.cancelChildren()
     }
 }
