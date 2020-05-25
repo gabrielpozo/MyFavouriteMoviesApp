@@ -106,7 +106,6 @@ class CameraViewModel(
 
 
     fun onRequestGetItemCount() {
-        checkCoroutineIsCancelled()
         launch {
             getItemCount.execute(
                 ::handleItemCountSuccessResponse
@@ -124,7 +123,6 @@ class CameraViewModel(
     }
 
     fun onRequestCategoriesMessages(base64: String) {
-        checkCoroutineIsCancelled()
         launch {
             getCategoryResultUseCase.execute(
                 ::handleSuccessResponse,
