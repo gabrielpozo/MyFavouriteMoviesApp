@@ -97,9 +97,6 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
-            putString(getString(R.string.parameter_sku), productSapId)
-        }
 
         buttonAddTocart.setOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
@@ -319,6 +316,9 @@ class DetailFragment : BaseFragment() {
         populateProductData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
         pricePerPack = contentProduct.product.pricePack
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
