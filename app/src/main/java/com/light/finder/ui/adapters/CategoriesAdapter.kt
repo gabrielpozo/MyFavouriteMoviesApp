@@ -78,7 +78,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             if (indexes.size == 1 && position == indexes[0]) {
                 itemView.energyButton.text = "Most energy efficient"
                 itemView.energyButton.visible()
-            } else if (indexes.size != 1 && indexes.size < categoriesSize) {
+            } else if (indexes.size in 2 until categoriesSize) {
                 for (i in indexes) {
                     if (i == position) {
                         itemView.energyButton.text = "More energy efficient"
