@@ -15,7 +15,6 @@ import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.light.finder.common.SafeClickListener
-import com.light.finder.ui.common.RotateTransformation
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -116,8 +115,12 @@ fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
     this.setImageBitmap(rotatedBitmap)
 }
 
-fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+fun View.setSafeOnClickListener(
+    onViewResponse: (Boolean) -> Unit,
+    onSafeClick: (View) -> Unit
+) {
     val safeClickListener = SafeClickListener {
+        onViewResponse.invoke(true)
         onSafeClick(it)
     }
     setOnClickListener(safeClickListener)
