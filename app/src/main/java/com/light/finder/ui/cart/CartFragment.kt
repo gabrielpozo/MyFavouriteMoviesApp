@@ -207,7 +207,7 @@ class CartFragment : BaseFragment() {
                 no_internet_overlay.gone()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
-                // Currently there is no need to react on offline
+                no_internet_overlay.visible()
             }
         }
     }
