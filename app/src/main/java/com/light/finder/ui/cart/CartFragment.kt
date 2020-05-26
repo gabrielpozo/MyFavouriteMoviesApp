@@ -15,16 +15,15 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.finder.common.ActivityCallback
-import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.InternetUtil
-import com.light.finder.common.ReloadingCallback
+import com.light.finder.R
+import com.light.finder.common.*
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
+import kotlinx.android.synthetic.main.cart_fragment_offline.*
 import timber.log.Timber
 
 class CartFragment : BaseFragment() {
@@ -67,8 +66,18 @@ class CartFragment : BaseFragment() {
         setObserver()
         setupWebView()
         observeLayout()
+        setListeners()
     }
 
+    private fun setListeners() {
+        retry_internet.setOnClickListener {
+            if (!InternetUtil.isInternetOn()) {
+                displayNoInternetBanner()
+            } else {
+                no_internet_overlay.gone()
+            }
+        }
+    }
 
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -78,14 +87,14 @@ class CartFragment : BaseFragment() {
 
             val keypadHeight = screenHeight - rec.bottom
             val param: ViewGroup.MarginLayoutParams
-
+            
             // add margin bottom when keyboard is visible
             if (keypadHeight > screenHeight * 0.15) {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0, 0, 0, keypadHeight / 2)
+                param.setMargins(0,0,0, keypadHeight / 2 )
             } else {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0, 0, 0, 0)
+                param.setMargins(0,0,0,0)
             }
 
             webView.layoutParams = param
@@ -122,8 +131,7 @@ class CartFragment : BaseFragment() {
                 activityCallback.onCartCleared()
             }
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
-                //todo uncomment for 1.0
-                //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 activityCallback.onCartCleared()
             }
         }
@@ -135,9 +143,16 @@ class CartFragment : BaseFragment() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
-                progressBar?.let {
-                    setProgress(newProgress)
+
+                if (newProgress < 100 && progressBar.isGone) {
+                    progressBar?.showWithAnimation()
                 }
+
+                if (newProgress == 100) {
+                    progressBar?.hideWithAnimation()
+                }
+
+                progressBar?.progress = newProgress
             }
         }
 
@@ -155,6 +170,7 @@ class CartFragment : BaseFragment() {
                 if (!InternetUtil.isInternetOn()) {
                     view?.invisible()
                     displayNoInternetBanner()
+                    displayNoConnectionOverlay()
                 } else {
                     view?.visible()
                 }
@@ -188,7 +204,7 @@ class CartFragment : BaseFragment() {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
                 webView.reload()
-
+                no_internet_overlay.gone()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
                 // Currently there is no need to react on offline
@@ -207,21 +223,12 @@ class CartFragment : BaseFragment() {
         }, NO_INTERNET_BANNER_DELAY)
     }
 
-
-    private fun setProgress(newProgress: Int) {
-        if (newProgress < 100 && progressBar.isGone) {
-            progressBar?.showWithAnimation()
-        }
-
-        if (newProgress == 100) {
-            progressBar?.hideWithAnimation()
-        }
-
-        progressBar?.progress = newProgress
-    }
-
     fun onLoadWebView() {
         viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
+    }
+
+    private fun displayNoConnectionOverlay() {
+        no_internet_overlay.visible()
     }
 
 
@@ -229,6 +236,7 @@ class CartFragment : BaseFragment() {
         if (!InternetUtil.isInternetOn()) {
             webView.invisible()
             displayNoInternetBanner()
+            displayNoConnectionOverlay()
         }
     }
 }

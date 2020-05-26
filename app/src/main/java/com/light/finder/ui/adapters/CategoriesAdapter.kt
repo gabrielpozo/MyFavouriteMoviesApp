@@ -56,10 +56,10 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             tmpFirstIndexOfMaxInt = result[0]
             tmpMaxEnergy = categories[tmpFirstIndexOfMaxInt].maxEnergySaving
 
-            if (tmpEnergy > tmpMaxEnergy && (tmpEnergy != 0f)) {
+            if ((tmpEnergy != 0f) && tmpEnergy > tmpMaxEnergy ) {
                 result.clear()
                 result.add(i)
-            } else if ((tmpEnergy == tmpMaxEnergy) && (tmpEnergy != 0f)) {
+            } else if ( (tmpEnergy != 0f) && (tmpEnergy == tmpMaxEnergy) ) {
                 result.add(i)
             }
         }
