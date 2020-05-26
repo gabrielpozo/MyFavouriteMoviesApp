@@ -73,7 +73,6 @@ class DetailViewModel(
 
     fun onRequestAddToCart(productSapId: String) {
         if (productSapId.isNotEmpty()) {
-            checkCoroutineIsCancelled()
             launch {
                 getAddToCart.execute(
                     ::handleSuccessResponse,
@@ -89,7 +88,6 @@ class DetailViewModel(
     }
 
     fun onRequestGetItemCount() {
-        checkCoroutineIsCancelled()
         launch {
             getItemCount.execute(
                 ::handleItemCountSuccessResponse

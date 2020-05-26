@@ -30,21 +30,65 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
 
-        val maxEnergySaving = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
+        val indexes = getAllMaxIndices(categories)
 
-        holder.bind(category, maxEnergySaving ?: -0.0f)
+        holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
+    }
+
+
+
+    private fun getAllMaxIndices(categories: List<Category>?): List<Int> {
+
+        val result = ArrayList<Int>()
+
+        if (categories == null || categories.isEmpty()) {
+            return result
+        }
+        result.add(0)
+
+        var tmpEnergy: Float?
+        var tmpFirstIndexOfMaxInt: Int?
+        var tmpMaxEnergy: Float?
+        for (i in categories.indices) {
+
+            tmpEnergy = categories[i].maxEnergySaving
+            tmpFirstIndexOfMaxInt = result[0]
+            tmpMaxEnergy = categories[tmpFirstIndexOfMaxInt].maxEnergySaving
+
+            if ((tmpEnergy != 0f) && tmpEnergy > tmpMaxEnergy ) {
+                result.clear()
+                result.add(i)
+            } else if ( (tmpEnergy != 0f) && (tmpEnergy == tmpMaxEnergy) ) {
+                result.add(i)
+            }
+        }
+
+        return result
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
-        fun bind(category: Category, maxSaving: Float) {
+
+        fun bind(category: Category, indexes: List<Int>, categoriesSize: Int, position: Int) {
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
-            category.maxEnergySaving
-            if (maxSaving == category.maxEnergySaving) {
-                itemView.energyButton.visibility = View.VISIBLE
+
+            if (indexes.size == 1 && position == indexes[0]) {
+                itemView.energyButton.text = "Most energy efficient"
+                itemView.energyButton.visible()
+            } else if (indexes.size != 1 && indexes.size < categoriesSize) {
+                for (i in indexes) {
+                    if (i == position) {
+                        itemView.energyButton.text = "More energy efficient"
+                        itemView.energyButton.visible()
+                    }
+                }
+            } else if (indexes.size == categoriesSize) {
+                itemView.energyButton.gone()
+            } else {
+                itemView.energyButton.gone()
             }
 
 

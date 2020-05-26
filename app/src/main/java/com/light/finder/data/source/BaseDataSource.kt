@@ -2,7 +2,6 @@ package com.light.finder.data.source
 
 import com.google.gson.JsonParseException
 import com.light.data.Result
-import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import com.light.util.NO_CONTENT_CODE
 import com.light.util.NO_PRODUCTS_CODE
 import kotlinx.coroutines.*
@@ -16,24 +15,22 @@ abstract class BaseDataSource {
         call: suspend () -> Response<T>
     ): Result<D> = try {
         withContext(Dispatchers.IO) {
-            withTimeout(IMMERSIVE_FLAG_TIMEOUT) {
-                val response = call()
-                if (response.isSuccessful) {
-                    when {
-                        response.code() == NO_CONTENT_CODE -> {
-                            Result.success(code = NO_CONTENT_CODE)
-                        }
-                        response.code() == NO_PRODUCTS_CODE -> {
-                            Result.success(mapper(response.body()!!), code = NO_PRODUCTS_CODE)
-                        }
-                        else -> {
-                            Result.success(mapper(response.body()!!))
-                        }
+            val response = call()
+            if (response.isSuccessful) {
+                when {
+                    response.code() == NO_CONTENT_CODE -> {
+                        Result.success(code = NO_CONTENT_CODE)
                     }
-
-                } else {
-                    Result.error(response.message())
+                    response.code() == NO_PRODUCTS_CODE -> {
+                        Result.success(mapper(response.body()!!), code = NO_PRODUCTS_CODE)
+                    }
+                    else -> {
+                        Result.success(mapper(response.body()!!))
+                    }
                 }
+
+            } else {
+                Result.error(response.message())
             }
         }
 

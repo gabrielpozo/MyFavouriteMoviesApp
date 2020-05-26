@@ -68,20 +68,35 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
 
-        activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
+        activity.bottom_navigation_view.setOnTabSelectedListener { position, _ ->
             when (position) {
                 INDEX_LIGHT_FINDER -> {
                     fragNavController.switchTab(INDEX_LIGHT_FINDER)
+                    //TODO("create show/navigate event for every single fragment -> BaseFragment")
+                    val current = getCurrentFragment()
+                    if (current is CameraFragment) {
+                        current.enableCameraCaptureButton()
+                    }
+                    //TODO("create show/navigate event for every single fragment -> BaseFragment")
                     firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_CART -> {
+                    val current = getCurrentFragment()
+                    if (current is CameraFragment) {
+                        current.disableCameraCaptureButton()
+                    }
                     fragNavController.switchTab(INDEX_CART)
                     reloadCartFragment()
+                    //TODO("create show/navigate event for every single fragment -> BaseFragment")
                     firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_ABOUT -> {
+                    //TODO("create show/navigate event for every single fragment -> BaseFragment")
+                    val current = getCurrentFragment()
+                    if (current is CameraFragment) {
+                        current.disableCameraCaptureButton()
+                    }
                     fragNavController.switchTab(INDEX_ABOUT)
-                    val current = fragNavController.currentFrag
                     if (current is AboutFragment) {
                         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         current.setLightStatusBar()
@@ -92,6 +107,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
     }
 
+
     fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
 
 
@@ -101,6 +117,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     fun popFragmentNot(): Boolean {
         fragNavController.popFragment().not()
+        //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
         return false
     }
@@ -158,7 +175,6 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
             activity,
             activity.getString(R.string.camera_feed)
         )
-
     }
 
     fun toCameraLoading(cameraFragment: CameraFragment) {
