@@ -590,15 +590,15 @@ class CameraFragment : BaseFragment() {
 
         controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setSafeOnClickListener {
+        controls.cameraCaptureButton.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
-                    activityCallback.setBottomBarInvisibility(true)
                     firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
                         putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
                     }
                     onCameraCaptureClick()
                 } else {
+                    activityCallback.setBottomBarInvisibility(false)
                     activityCallback.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -665,6 +665,12 @@ class CameraFragment : BaseFragment() {
          * once camera container is initialize we start observing camera events from camera viewmodels
          */
         viewModel.modelFlash.observe(viewLifecycleOwner, Observer(::observeFlashButtonAction))
+    }
+
+    private fun checkFlagOnView(flag: Boolean) {
+        if (flag) {
+            activityCallback.setBottomBarInvisibility(true)
+        }
     }
 
     //TODO set this method for extension when media user is implemented
