@@ -245,7 +245,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
-        modelUiState = ModelStatus.FEED
+        modelUiState = ModelStatus.LOADING
         screenNavigator.toCameraFeedScreen(this)
         modelErrorEvent.getContentIfNotHandled()?.let { dialogModel ->
             when (dialogModel) {
