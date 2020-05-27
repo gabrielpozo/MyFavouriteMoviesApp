@@ -15,6 +15,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
@@ -25,6 +26,7 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import kotlinx.android.synthetic.main.cart_fragment.*
+import kotlinx.android.synthetic.main.cart_fragment_offline.*
 import timber.log.Timber
 
 class CartFragment : BaseFragment() {
@@ -55,7 +57,7 @@ class CartFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(com.light.finder.R.layout.cart_fragment, container, false)
+        return inflater.inflate(R.layout.cart_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,8 +69,18 @@ class CartFragment : BaseFragment() {
         setObserver()
         setupWebView()
         observeLayout()
+        setListeners()
     }
 
+    private fun setListeners() {
+        retry_internet.setOnClickListener {
+            if (!InternetUtil.isInternetOn()) {
+                displayNoInternetBanner()
+            } else {
+                no_internet_overlay.gone()
+            }
+        }
+    }
 
     private fun observeLayout() {
         cart_fragment_root.viewTreeObserver.addOnGlobalLayoutListener {
@@ -122,8 +134,7 @@ class CartFragment : BaseFragment() {
                 activityCallback.onCartCleared()
             }
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
-                //todo uncomment for 1.0
-                //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 activityCallback.onCartCleared()
             }
         }
@@ -135,6 +146,7 @@ class CartFragment : BaseFragment() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
+
                 progressBar?.let {
                     setProgress(newProgress)
                 }
@@ -155,6 +167,7 @@ class CartFragment : BaseFragment() {
                 if (!InternetUtil.isInternetOn()) {
                     view?.invisible()
                     displayNoInternetBanner()
+                    displayNoConnectionOverlay()
                 } else {
                     view?.visible()
                 }
@@ -188,10 +201,10 @@ class CartFragment : BaseFragment() {
         when (model) {
             is CartViewModel.NetworkModel.NetworkOnline -> {
                 webView.reload()
-
+                no_internet_overlay.gone()
             }
             is CartViewModel.NetworkModel.NetworkOffline -> {
-                // Currently there is no need to react on offline
+                no_internet_overlay.visible()
             }
         }
     }
@@ -207,6 +220,13 @@ class CartFragment : BaseFragment() {
         }, NO_INTERNET_BANNER_DELAY)
     }
 
+    fun onLoadWebView() {
+        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
+    }
+
+    private fun displayNoConnectionOverlay() {
+        no_internet_overlay.visible()
+    }
 
     private fun setProgress(newProgress: Int) {
         if (newProgress < 100 && progressBar.isGone) {
@@ -220,15 +240,11 @@ class CartFragment : BaseFragment() {
         progressBar?.progress = newProgress
     }
 
-    fun onLoadWebView() {
-        viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
-    }
-
-
     fun onCheckIfOffline() {
         if (!InternetUtil.isInternetOn()) {
             webView.invisible()
             displayNoInternetBanner()
+            displayNoConnectionOverlay()
         }
     }
 }
