@@ -71,7 +71,6 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var controls: View
     private var modelUiState: ModelStatus = ModelStatus.FEED
-    //private var rotationDegree = 200
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -655,8 +654,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            //todo uncomment for 1.0
-            //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
+           firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
 
         }
@@ -682,7 +680,7 @@ class CameraFragment : BaseFragment() {
 
     //TODO set this method for extension
     private fun initializeLottieAnimation() {
-        lottieAnimationView.progress = 0.0f
+        lottieAnimationView?.progress = 0.0f
     }
 
     override fun onDestroyView() {
@@ -691,12 +689,12 @@ class CameraFragment : BaseFragment() {
     }
 
     fun disableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = false
+        controls.cameraCaptureButton?.isEnabled = false
 
     }
 
     fun enableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = true
+        controls.cameraCaptureButton?.isEnabled = true
     }
 }
 

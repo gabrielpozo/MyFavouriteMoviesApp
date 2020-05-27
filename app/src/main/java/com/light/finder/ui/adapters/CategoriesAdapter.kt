@@ -12,6 +12,7 @@ import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
 
+
 class CategoriesAdapter(private val listener: (Category) -> Unit) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -30,21 +31,47 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
 
-        val maxEnergySaving = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
+        val indexes = getMaxIndices(categories)
 
-        holder.bind(category, maxEnergySaving ?: -0.0f)
+        holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
+    private fun getMaxIndices(categories: List<Category>): List<Int> {
+        val max = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
+
+        val maxIndices = mutableListOf<Int>()
+        for (i in categories.indices) {
+            if (categories[i].maxEnergySaving == max) {
+                maxIndices.add(i)
+            }
+        }
+        return maxIndices
+    }
+
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
-        fun bind(category: Category, maxSaving: Float) {
+
+        fun bind(category: Category, indexes: List<Int>, categoriesSize: Int, position: Int) {
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
-            category.maxEnergySaving
-            if (maxSaving == category.maxEnergySaving) {
-                itemView.energyButton.visibility = View.VISIBLE
+
+            if (indexes.size == 1 && position == indexes[0]) {
+                itemView.energyButton.text = "Most energy efficient"
+                itemView.energyButton.visible()
+            } else if (indexes.size in 2 until categoriesSize) {
+                for (i in indexes) {
+                    if (i == position) {
+                        itemView.energyButton.text = "More energy efficient"
+                        itemView.energyButton.visible()
+                    }
+                }
+            } else if (indexes.size == categoriesSize) {
+                itemView.energyButton.gone()
+            } else {
+                itemView.energyButton.gone()
             }
 
 
