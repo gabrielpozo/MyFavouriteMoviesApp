@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cart_fragment_root"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +13,6 @@
         android:background="@color/backgroundDark"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize">
-
 
         <TextView
             android:id="@+id/cart_toolbar_text"
@@ -36,30 +36,33 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        android:visibility="gone"
         android:id="@+id/no_internet_banner_cart"
-        layout="@layout/layout_no_internet"/>
+        layout="@layout/layout_no_internet"
+        android:visibility="gone" />
 
     <include
-        android:visibility="gone"
         android:id="@+id/no_internet_overlay"
-        layout="@layout/cart_fragment_offline"/>
-    
+        layout="@layout/cart_fragment_offline"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="gone"
         style="?android:attr/progressBarStyleHorizontal"
+        android:layout_below="@+id/cart_toolbar"
+        android:visibility="gone"
         android:maxHeight="4dp"
         android:minHeight="4dp"
+        android:elevation="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:progress="0"
         android:indeterminate="false"
-        android:max="100"/>
+        android:max="100" />
+
     <WebView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/webView"
-        />
-</LinearLayout>
+        android:layout_below="@+id/cart_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
