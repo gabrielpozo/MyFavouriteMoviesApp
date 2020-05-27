@@ -682,7 +682,7 @@ class CameraFragment : BaseFragment() {
 
     //TODO set this method for extension
     private fun initializeLottieAnimation() {
-        lottieAnimationView.progress = 0.0f
+        lottieAnimationView?.progress = 0.0f
     }
 
     override fun onDestroyView() {
@@ -691,12 +691,12 @@ class CameraFragment : BaseFragment() {
     }
 
     fun disableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = false
+        controls.cameraCaptureButton?.isEnabled = false
 
     }
 
     fun enableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = true
+        controls.cameraCaptureButton?.isEnabled = true
     }
 }
 
