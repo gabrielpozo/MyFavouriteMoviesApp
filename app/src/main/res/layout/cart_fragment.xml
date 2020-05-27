@@ -41,9 +41,12 @@
         android:visibility="gone" />
 
     <include
+        android:layout_below="@+id/cart_toolbar"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:id="@+id/no_internet_overlay"
         layout="@layout/cart_fragment_offline"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progressBar"
