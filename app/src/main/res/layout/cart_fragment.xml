@@ -36,9 +36,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
+        android:layout_below="@+id/cart_toolbar"
+        android:layout_height="60dp"
+        android:layout_width="match_parent"
         android:id="@+id/no_internet_banner_cart"
-        layout="@layout/layout_no_internet"
-        android:visibility="gone" />
+        layout="@layout/layout_no_internet" />
 
     <include
         android:layout_below="@+id/cart_toolbar"
