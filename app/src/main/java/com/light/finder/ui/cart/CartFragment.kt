@@ -210,13 +210,13 @@ class CartFragment : BaseFragment() {
     }
 
     private fun displayNoInternetBanner() {
-        if (no_internet_banner_cart.isVisible) {
+        if (no_internet_banner_cart.translationY == 0F) {
             return
         }
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
+            no_internet_banner_cart.slideVertically(-totalDistance)
         }, NO_INTERNET_BANNER_DELAY)
     }
 
