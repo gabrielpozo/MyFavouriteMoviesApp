@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:id="@+id/no_internet_overlay"
         layout="@layout/cart_fragment_offline"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"
