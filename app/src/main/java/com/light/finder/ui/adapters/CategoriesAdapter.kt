@@ -22,7 +22,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(com.light.finder.R.layout.item_category, false)
+        val view = parent.inflate(R.layout.item_category, false)
         return ViewHolder(view)
     }
 
