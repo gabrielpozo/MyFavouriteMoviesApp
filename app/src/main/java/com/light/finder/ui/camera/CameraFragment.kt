@@ -71,7 +71,6 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var controls: View
     private var modelUiState: ModelStatus = ModelStatus.FEED
-    //private var rotationDegree = 200
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -246,7 +245,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
-        modelUiState = ModelStatus.FEED
+        modelUiState = ModelStatus.LOADING
         screenNavigator.toCameraFeedScreen(this)
         modelErrorEvent.getContentIfNotHandled()?.let { dialogModel ->
             when (dialogModel) {
@@ -590,15 +589,15 @@ class CameraFragment : BaseFragment() {
 
         controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setSafeOnClickListener {
+        controls.cameraCaptureButton.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
-                    activityCallback.setBottomBarInvisibility(true)
                     firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
                         putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
                     }
                     onCameraCaptureClick()
                 } else {
+                    activityCallback.setBottomBarInvisibility(false)
                     activityCallback.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -666,6 +665,12 @@ class CameraFragment : BaseFragment() {
         viewModel.modelFlash.observe(viewLifecycleOwner, Observer(::observeFlashButtonAction))
     }
 
+    private fun checkFlagOnView(flag: Boolean) {
+        if (flag) {
+            activityCallback.setBottomBarInvisibility(true)
+        }
+    }
+
     //TODO set this method for extension when media user is implemented
     private fun createFile(baseFolder: File, format: String, extension: String) =
         File(
@@ -675,7 +680,7 @@ class CameraFragment : BaseFragment() {
 
     //TODO set this method for extension
     private fun initializeLottieAnimation() {
-        lottieAnimationView.progress = 0.0f
+        lottieAnimationView?.progress = 0.0f
     }
 
     override fun onDestroyView() {
@@ -684,12 +689,12 @@ class CameraFragment : BaseFragment() {
     }
 
     fun disableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = false
+        controls.cameraCaptureButton?.isEnabled = false
 
     }
 
     fun enableCameraCaptureButton() {
-        controls.cameraCaptureButton.isEnabled = true
+        controls.cameraCaptureButton?.isEnabled = true
     }
 }
 

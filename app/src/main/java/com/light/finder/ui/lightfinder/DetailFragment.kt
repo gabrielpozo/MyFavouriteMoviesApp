@@ -332,28 +332,9 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun populateProductData(product: Product) {
-        val packs = String.format(
-            getString(R.string.form_factor_pack),
-            requireContext().getformFactortType(product.formfactorType),
-            product.qtyLampSku * product.qtyLampscase
-        )
-        //val isDimmable = if (product.dimmingCode == 0) "" else "Dimmable"
-        var title = String.format(
-            getString(R.string.product_title),
-            product.categoryName,
-            product.wattageReplaced,
-            product.factorBase,
-            packs
-        )
 
-        val space = " "
-        val splitedStr = title.split(space)
-        title = splitedStr.joinToString(space) {
-            if (it != "packs" || it != "pack") {
-                it.capitalize()
-            }
-            it
-        }
+        val title = product.name
+
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
@@ -380,7 +361,7 @@ class DetailFragment : BaseFragment() {
             )
         )
 
-        textViewDetailTitle.text = title.trim().replace(Regex("(\\s)+"), " ")
+        textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
         textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()

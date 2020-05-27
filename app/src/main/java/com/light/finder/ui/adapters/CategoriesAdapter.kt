@@ -12,6 +12,7 @@ import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
 
+
 class CategoriesAdapter(private val listener: (Category) -> Unit) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -30,42 +31,24 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
 
-        val indexes = getAllMaxIndices(categories)
+        val indexes = getMaxIndices(categories)
 
         holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
+    private fun getMaxIndices(categories: List<Category>): List<Int> {
+        val max = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
 
-
-    private fun getAllMaxIndices(categories: List<Category>?): List<Int> {
-
-        val result = ArrayList<Int>()
-
-        if (categories == null || categories.isEmpty()) {
-            return result
-        }
-        result.add(0)
-
-        var tmpEnergy: Float?
-        var tmpFirstIndexOfMaxInt: Int?
-        var tmpMaxEnergy: Float?
+        val maxIndices = mutableListOf<Int>()
         for (i in categories.indices) {
-
-            tmpEnergy = categories[i].maxEnergySaving
-            tmpFirstIndexOfMaxInt = result[0]
-            tmpMaxEnergy = categories[tmpFirstIndexOfMaxInt].maxEnergySaving
-
-            if ((tmpEnergy != 0f) && tmpEnergy > tmpMaxEnergy ) {
-                result.clear()
-                result.add(i)
-            } else if ( (tmpEnergy != 0f) && (tmpEnergy == tmpMaxEnergy) ) {
-                result.add(i)
+            if (categories[i].maxEnergySaving == max) {
+                maxIndices.add(i)
             }
         }
-
-        return result
+        return maxIndices
     }
+
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
@@ -78,7 +61,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             if (indexes.size == 1 && position == indexes[0]) {
                 itemView.energyButton.text = "Most energy efficient"
                 itemView.energyButton.visible()
-            } else if (indexes.size != 1 && indexes.size < categoriesSize) {
+            } else if (indexes.size in 2 until categoriesSize) {
                 for (i in indexes) {
                     if (i == position) {
                         itemView.energyButton.text = "More energy efficient"
