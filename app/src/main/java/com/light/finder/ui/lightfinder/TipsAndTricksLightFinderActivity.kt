@@ -2,6 +2,7 @@ package com.light.finder.ui.lightfinder
 
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
@@ -16,12 +17,14 @@ class TipsAndTricksLightFinderActivity : BaseLightFinderActivity() {
         const val REQUEST_CODE_TIPS = 1
     }
 
-    private lateinit var activityCallback: ActivityCallback
+    private val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.fragment_tips_and_tricks)
+
+        firebaseAnalytics.setCurrentScreen(this, getString(R.string.photo_tips), null)
 
         initAdapters()
         setDoneClickListener()

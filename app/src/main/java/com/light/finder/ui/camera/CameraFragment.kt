@@ -71,7 +71,6 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var controls: View? = null
     private var modelUiState: ModelStatus = ModelStatus.FEED
-    //private var rotationDegree = 200
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -655,8 +654,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-            //todo uncomment for 1.0
-            //firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
+           firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
 
         }

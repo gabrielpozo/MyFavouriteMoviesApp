@@ -94,10 +94,10 @@ class CartFragment : BaseFragment() {
             // add margin bottom when keyboard is visible
             if (keypadHeight > screenHeight * 0.15) {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0, 0, 0, keypadHeight / 2)
+                param.setMargins(0,0,0, keypadHeight / 2 )
             } else {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0, 0, 0, 0)
+                param.setMargins(0,0,0,0)
             }
 
             webView.layoutParams = param
