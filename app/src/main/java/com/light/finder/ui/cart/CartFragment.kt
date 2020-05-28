@@ -16,7 +16,10 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.finder.R
-import com.light.finder.common.*
+import com.light.finder.common.ActivityCallback
+import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.InternetUtil
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.di.modules.submodules.CartComponent
 import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
@@ -87,7 +90,7 @@ class CartFragment : BaseFragment() {
 
             val keypadHeight = screenHeight - rec.bottom
             val param: ViewGroup.MarginLayoutParams
-            
+
             // add margin bottom when keyboard is visible
             if (keypadHeight > screenHeight * 0.15) {
                 param = webView.layoutParams as ViewGroup.MarginLayoutParams
@@ -144,8 +147,8 @@ class CartFragment : BaseFragment() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
 
-                if (newProgress < 100 && progressBar.isGone) {
-                    progressBar?.showWithAnimation()
+                progressBar?.let {
+                    setProgress(newProgress)
                 }
 
                 if (newProgress == 100) {
@@ -213,13 +216,13 @@ class CartFragment : BaseFragment() {
     }
 
     private fun displayNoInternetBanner() {
-        if (no_internet_banner_cart.isVisible) {
+        if (no_internet_banner_cart.translationY == 0F) {
             return
         }
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner_cart.slideVertically(-totalDistance, hide = true)
+            no_internet_banner_cart.slideVertically(-totalDistance)
         }, NO_INTERNET_BANNER_DELAY)
     }
 
@@ -231,6 +234,17 @@ class CartFragment : BaseFragment() {
         no_internet_overlay.visible()
     }
 
+    private fun setProgress(newProgress: Int) {
+        if (newProgress < 100 && progressBar.isGone) {
+            progressBar?.showWithAnimation()
+        }
+
+        if (newProgress == 100) {
+            progressBar?.hideWithAnimation()
+        }
+
+        progressBar?.progress = newProgress
+    }
 
     fun onCheckIfOffline() {
         if (!InternetUtil.isInternetOn()) {

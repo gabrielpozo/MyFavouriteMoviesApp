@@ -69,7 +69,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraSelector: CameraSelector
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
     private lateinit var cameraProvider: ProcessCameraProvider
-    private lateinit var controls: View
+    private var controls: View? = null
     private var modelUiState: ModelStatus = ModelStatus.FEED
 
 
@@ -589,7 +589,7 @@ class CameraFragment : BaseFragment() {
 
         controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
 
-        controls.cameraCaptureButton.setSafeOnClickListener(::checkFlagOnView) {
+        controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
                     firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
@@ -689,12 +689,12 @@ class CameraFragment : BaseFragment() {
     }
 
     fun disableCameraCaptureButton() {
-        controls.cameraCaptureButton?.isEnabled = false
+        controls?.cameraCaptureButton?.isEnabled = false
 
     }
 
     fun enableCameraCaptureButton() {
-        controls.cameraCaptureButton?.isEnabled = true
+        controls?.cameraCaptureButton?.isEnabled = true
     }
 }
 
