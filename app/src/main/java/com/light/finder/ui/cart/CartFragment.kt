@@ -151,10 +151,6 @@ class CartFragment : BaseFragment() {
                     setProgress(newProgress)
                 }
 
-                if (newProgress == 100) {
-                    progressBar?.hideWithAnimation()
-                }
-
                 progressBar?.progress = newProgress
             }
         }
