@@ -150,8 +150,6 @@ class CartFragment : BaseFragment() {
                 progressBar?.let {
                     setProgress(newProgress)
                 }
-
-                progressBar?.progress = newProgress
             }
         }
 
