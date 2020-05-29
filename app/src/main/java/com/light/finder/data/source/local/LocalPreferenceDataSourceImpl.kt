@@ -27,19 +27,19 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override suspend fun saveLegendFilterNames(legend: Legend) {
         editor.putString(PRODUCT_CCT, Gson().toJson(legend.cctFilter))
-
-        editor.putString(PRODUCT_FINISH,  Gson().toJson(legend.finishFilter))
-
+        editor.putString(PRODUCT_FINISH, Gson().toJson(legend.finishFilter))
         editor.putString(FORM_FACTOR, Gson().toJson(legend.lightShapeFilter))
+        
+        editor.commit()
     }
 
     override fun loadLegendCctFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(PRODUCT_CCT, null) ?: "")
 
-    override  fun loadLegendFinishFilterNames(): List<FilterType> =
+    override fun loadLegendFinishFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(PRODUCT_FINISH, null) ?: "")
 
-    override  fun loadLegendFormFactorFilterNames(): List<FilterType> =
+    override fun loadLegendFormFactorFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(FORM_FACTOR, null) ?: "")
 }
 
