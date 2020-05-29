@@ -42,7 +42,7 @@
         style="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5"
+        android:text="@string/_8"
         android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toTopOf="@+id/cancelButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/loader" />
+        app:lottie_rawRes="@raw/loader8s" />
 
     <Button
         android:id="@+id/cancelButton"
