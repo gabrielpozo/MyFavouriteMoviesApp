@@ -58,7 +58,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
 
-            if (indexes.size == 1 && position == indexes[0]) {
+            if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
                 itemView.energyButton.visible()
             } else if (indexes.size in 2 until categoriesSize) {
