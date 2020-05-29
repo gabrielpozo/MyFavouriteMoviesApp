@@ -88,7 +88,7 @@ class CameraFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "CameraX"
-        private const val INIT_INTERVAL = 6000L
+        private const val INIT_INTERVAL = 9000L
         private const val DOWN_INTERVAL = 1000L
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
