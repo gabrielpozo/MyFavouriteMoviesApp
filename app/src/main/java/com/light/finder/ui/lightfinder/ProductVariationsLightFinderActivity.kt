@@ -8,6 +8,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
+import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.submodules.ProductsOptionsComponent
 import com.light.finder.di.modules.submodules.ProductsOptionsModule
@@ -18,6 +19,7 @@ import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.ProductsOptionsViewModel
 import com.light.presentation.viewmodels.ProductsOptionsViewModel.*
+import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
 
 
@@ -35,11 +37,14 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private val localPreferences: LocalPreferenceDataSource by lazy { LocalPreferenceDataSourceImpl(this) }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
         setContentView(R.layout.layout_filter_dialog)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -99,10 +104,10 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
         recyclerViewWattage.adapter = filterWattageAdapter
 
-        filterColorAdapter = FilterColorAdapter(::handleFilterColorPressed)
+        filterColorAdapter = FilterColorAdapter(::handleFilterColorPressed, localPreferences.loadLegendCctFilterNames())
         recyclerViewColor.adapter = filterColorAdapter
 
-        filterFinishAdapter = FilterFinishAdapter(::handleFilterFinishPressed)
+        filterFinishAdapter = FilterFinishAdapter(::handleFilterFinishPressed, localPreferences.loadLegendFinishFilterNames())
         recyclerViewFinish.adapter = filterFinishAdapter
     }
 
@@ -133,8 +138,16 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text = getColorName(productSelectedModel.productSelected.colorCctCode)
-        textViewFinish.text = getFinishName(productSelectedModel.productSelected.productFinishCode)
+        textViewColor.text = getLegendTagPref(
+            productSelectedModel.productSelected.colorCctCode,
+            filterTypeList = localPreferences.loadLegendCctFilterNames(),
+            legendTag = "product_cct_code"
+        )
+        textViewFinish.text = getLegendTagPref(
+            productSelectedModel.productSelected.productFinishCode,
+            filterTypeList = localPreferences.loadLegendFinishFilterNames(),
+            legendTag = "product_finish_code"
+        )
     }
 
     private fun navigateBackToDetail(navigationModel: Event<NavigationModel>) {
@@ -161,7 +174,7 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
     }
-    
+
     override fun onBackPressed() {
         super.onBackPressed()
         firebaseAnalytics.setCurrentScreen(this, getString(R.string.product_details), null)

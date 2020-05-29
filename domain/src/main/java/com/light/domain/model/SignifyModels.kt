@@ -5,9 +5,9 @@ data class Message(
     val version: String,
     val baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String
+    val shapeIdentified: String,
+    val legend: Legend? = null
 )
-
 
 data class Category(
     val categoryProductBase: String,
@@ -76,3 +76,14 @@ data class Product(
         return wattageReplaced * colorCctCode * productFinishCode
     }
 }
+
+data class Legend(
+    val cctFilter: List<FilterType>?,
+    val finishFilter: List<FilterType>?,
+    val lightShapeFilter: List<FilterType>?
+)
+
+data class FilterType(
+    val id: String,
+    val name: String
+)
