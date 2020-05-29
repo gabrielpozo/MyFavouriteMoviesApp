@@ -15,7 +15,9 @@ data class MessageDto(
     @SerializedName("formfactor")
     val formfactorType: String,
     @SerializedName("shape_identified")
-    val shape_identified: String
+    val shape_identified: String,
+    @SerializedName("legend")
+    val legend: LegendDto
 )
 
 data class CategoriesDto(
@@ -77,4 +79,18 @@ data class Price(
     @SerializedName("min_price") val minPrice: Float
 )
 
+data class LegendDto(
+    @SerializedName("product_cct_name")
+    val cctFilter: List<FilterTypeDto>,
 
+    @SerializedName("product_finish")
+    val finishFilter: List<FilterTypeDto>,
+
+    @SerializedName("product_formfactor_type")
+    val lightShapeFilter: List<FilterTypeDto>
+)
+
+data class FilterTypeDto(
+    @SerializedName("id") var id: String,
+    @SerializedName("name") var name: String
+)

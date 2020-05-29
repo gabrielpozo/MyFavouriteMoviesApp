@@ -3,6 +3,7 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.light.domain.model.FilterType
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
 import com.light.finder.extensions.*
@@ -64,7 +65,10 @@ class FilterWattageAdapter(private val listener: (FilterVariationCF) -> Unit) :
 }
 
 
-class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
+class FilterColorAdapter(
+    private val listener: (FilterVariationCF) -> Unit,
+    private val filterColorList: List<FilterType> = emptyList()
+) :
     RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
     private val viewItemsMap = hashMapOf<Int, View>()
@@ -91,7 +95,7 @@ class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
         if (!viewItemsMap.containsKey(filter.codeFilter)) {
             viewItemsMap[filter.codeFilter] = holder.itemView
         }
-        holder.bind(filter)
+        holder.bind(filter, filterColorList)
 
         holder.itemView.setOnClickListener {
             listener(filterListColor[position])
@@ -99,8 +103,12 @@ class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariationCF) {
-            itemView.variation_name.text = itemView.context.getColorName(filter.codeFilter)
+        fun bind(filter: FilterVariationCF, filterColorList: List<FilterType>) {
+            itemView.variation_name.text = getLegendTagPref(
+                filter.codeFilter,
+                filterTypeList = filterColorList,
+                legendTag = "product_cct_code"
+            )
             itemView.setDrawableOnBackground(filter)
             itemView.setColorVariation(filter.codeFilter)
         }
@@ -108,7 +116,10 @@ class FilterColorAdapter(private val listener: (FilterVariationCF) -> Unit) :
 }
 
 
-class FilterFinishAdapter(private val listener: (FilterVariationCF) -> Unit) :
+class FilterFinishAdapter(
+    private val listener: (FilterVariationCF) -> Unit,
+    private val filterFinishList: List<FilterType> = emptyList()
+) :
     RecyclerView.Adapter<FilterFinishAdapter.ViewHolder>() {
     private val viewItemsMap = hashMapOf<Int, View>()
 
@@ -136,15 +147,19 @@ class FilterFinishAdapter(private val listener: (FilterVariationCF) -> Unit) :
         if (!viewItemsMap.containsKey(filter.codeFilter)) {
             viewItemsMap[filter.codeFilter] = holder.itemView
         }
-        holder.bind(filter)
+        holder.bind(filter, filterFinishList)
         holder.itemView.setOnClickListener {
             listener(filterListFinish[position])
         }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariationCF) {
-            itemView.variation_name.text = itemView.context.getFinishName(filter.codeFilter)
+        fun bind(filter: FilterVariationCF, filterFinishList: List<FilterType>) {
+            itemView.variation_name.text = getLegendTagPref(
+                filter.codeFilter,
+                filterTypeList = filterFinishList,
+                legendTag = "product_finish_code"
+            )
             itemView.setDrawableOnBackground(filter)
             itemView.setFinishVariation(filter.codeFilter)
         }
