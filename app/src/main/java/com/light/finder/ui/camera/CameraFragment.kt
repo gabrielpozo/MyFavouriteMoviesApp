@@ -246,8 +246,12 @@ class CameraFragment : BaseFragment() {
 
     private fun observeErrorResponse(modelErrorEvent: Event<DialogModel>) {
         modelUiState = ModelStatus.LOADING
-        screenNavigator.toCameraFeedScreen(this)
         modelErrorEvent.getContentIfNotHandled()?.let { dialogModel ->
+            if (dialogModel is DialogModel.NoProductsAvailable) {
+                screenNavigator.toCameraLoading(this)
+            } else {
+                screenNavigator.toCameraFeedScreen(this)
+            }
             when (dialogModel) {
                 is DialogModel.TimeOutError -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
@@ -654,7 +658,7 @@ class CameraFragment : BaseFragment() {
         )
 
         helpButton.setOnClickListener {
-           firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
 
         }
