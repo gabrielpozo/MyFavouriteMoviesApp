@@ -27,14 +27,16 @@
             android:name=".UsabillaActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name="com.light.finder.ui.splash.SplashLightFinderActivity"
             android:resizeableActivity="false"
-            android:theme="@style/AppTheme"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +50,8 @@
             android:resizeableActivity="false"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
 
@@ -57,7 +60,8 @@
             android:resizeableActivity="false"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
 
@@ -65,7 +69,8 @@
             android:name=".ui.terms.TermsAndConditionsLightFinderActivity"
             android:theme="@style/LightStatusBar"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity">
 
         </activity>
 
@@ -79,7 +84,8 @@
             android:screenOrientation="portrait"
             android:rotationAnimation="seamless"
             android:windowSoftInputMode="adjustPan"
-            tools:targetApi="O">
+            tools:targetApi="O"
+            tools:ignore="LockedOrientationActivity">
 
 
             <intent-filter>
