@@ -15,6 +15,9 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/backgroundDark</item>
+    </style>
 
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
