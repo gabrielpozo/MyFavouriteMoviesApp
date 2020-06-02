@@ -10,7 +10,7 @@ import com.light.domain.model.Category
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
-
+import timber.log.Timber
 
 
 class CategoriesAdapter(private val listener: (Category) -> Unit) :
@@ -33,6 +33,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
 
         val indexes = getMaxIndices(categories)
 
+        holder.itemView.textViewsLayout.removeAllViews()
         holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
     }
@@ -73,7 +74,6 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
             } else {
                 itemView.energyButton.gone()
             }
-
 
             category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
