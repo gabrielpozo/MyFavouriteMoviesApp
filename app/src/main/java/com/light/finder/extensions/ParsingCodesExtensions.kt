@@ -82,10 +82,10 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     2 -> {
         R.drawable.ic_warm_white
     }
-    3 -> {
+    4 -> {
         R.drawable.ic_cool_white
     }
-    4 -> {
+    5 -> {
         R.drawable.ic_daylight
     }
 
@@ -102,15 +102,15 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.warm_white)
         }
 
-        3 -> {
+        4 -> {
             imageFilterCover.setBackgroundResource(R.drawable.cool_white)
         }
 
-        4 -> {
+        5 -> {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
         }
         else -> {
-            imageFilterCover.invisible()
+            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
         }
     }
 }
