@@ -33,6 +33,7 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
 
         val indexes = getMaxIndices(categories)
 
+        holder.itemView.textViewsLayout.removeAllViews()
         holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
     }
