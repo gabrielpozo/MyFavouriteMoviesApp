@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">www.store.lightguide.signify.com</domain>
+    </domain-config>
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
