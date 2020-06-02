@@ -377,6 +377,7 @@ class DetailFragment : BaseFragment() {
         if (drawableStart == 0) {
             imageViewColor.visibility = View.GONE
         } else {
+            imageViewColor.visibility = View.VISIBLE
             imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
         }
         textViewDetailDescription.text = product.description
