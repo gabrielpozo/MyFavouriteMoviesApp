@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.light.domain.model.Category
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
+import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
@@ -17,6 +18,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
+import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.fragment_categories.*
 
 class CategoriesFragment : BaseFragment() {
@@ -29,6 +31,12 @@ class CategoriesFragment : BaseFragment() {
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
     private lateinit var activityCallback: ActivityCallback
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            requireContext()
+        )
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +90,10 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun initAdapter() {
-        adapter = CategoriesAdapter(viewModel::onCategoryClick)
+        adapter = CategoriesAdapter(
+            viewModel::onCategoryClick,
+            localPreferences.loadLegendCctFilterNames()
+        )
         rvCategories.adapter = adapter
     }
 

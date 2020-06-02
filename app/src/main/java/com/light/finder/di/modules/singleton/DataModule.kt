@@ -7,6 +7,7 @@ import com.light.repository.CartItemCountRepositoryImpl
 import com.light.repository.CartRepositoryImpl
 import com.light.repository.CategoryRepositoryImpl
 import com.light.source.local.LocalMediaDataSource
+import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.CartRemoteDataSource
 import com.light.source.remote.ItemRemoteDataSource
 import com.light.source.remote.RemoteDataSource
@@ -19,9 +20,10 @@ class DataModule {
     @Provides
     fun getApiRepository(
         remoteDataSource: RemoteDataSource,
-        localMediaDataSource: LocalMediaDataSource
+        localMediaDataSource: LocalMediaDataSource,
+        localPreferenceDataSource: LocalPreferenceDataSource
     ): CategoryRepository =
-        CategoryRepositoryImpl(remoteDataSource, localMediaDataSource)
+        CategoryRepositoryImpl(remoteDataSource, localPreferenceDataSource, localMediaDataSource)
 
     @Provides
     fun getCartRepository(

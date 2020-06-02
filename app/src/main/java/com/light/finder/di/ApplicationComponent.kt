@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Component(modules = [ApplicationModule::class, DataModule::class])
 interface ApplicationComponent {
 
-
     fun plus(module: SplashModule): SplashComponent
     fun plus(module: LightFinderModule): LightFinderComponent
     fun plus(module: ProductsOptionsModule): ProductsOptionsComponent

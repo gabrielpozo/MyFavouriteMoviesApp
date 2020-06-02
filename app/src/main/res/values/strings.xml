@@ -144,6 +144,7 @@
     <string name="sorry">Sorry</string>
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
     <string name="photo_tips">photoTips</string>
+    <string name="_8">8</string>
 
 
 </resources>
