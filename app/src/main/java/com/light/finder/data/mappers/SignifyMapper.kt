@@ -39,13 +39,35 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         }
     }
 
+
+    val cctFilter = messageDto.legend.cctFilter.map {
+        FilterType(it.id, it.name)
+    }
+
+    val finishFilter = messageDto.legend.finishFilter.map {
+        FilterType(it.id, it.name)
+    }
+
+    val lightShapeFilter = messageDto.legend.lightShapeFilter.map {
+        FilterType(it.id, it.name)
+    }
+
+
+    val legend = Legend(
+        cctFilter = cctFilter,
+        finishFilter = finishFilter,
+        lightShapeFilter = lightShapeFilter
+    )
+
+
     Message(
         //TODO move sortedBy to repository
         categories = categoriesList.sortedBy { it.categoryIndex },
         version = messageDto.version,
         baseIdentified = messageDto.baseIdentified,
         formfactorType = messageDto.formfactorType,
-        shapeIdentified = messageDto.shape_identified
+        shapeIdentified = messageDto.shape_identified,
+        legend = legend
     )
 }
 
@@ -104,7 +126,6 @@ private val mapCartProductToDomain: (CartProductDto) -> CartProduct = { cartDto 
     )
 
 }
-
 
 val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = { countResultDto ->
 

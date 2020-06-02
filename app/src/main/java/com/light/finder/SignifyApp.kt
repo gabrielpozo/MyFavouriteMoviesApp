@@ -33,6 +33,7 @@ class SignifyApp : Application(), CameraXConfig.Provider {
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
+
     }
 
     override fun getCameraXConfig(): CameraXConfig {
