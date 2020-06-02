@@ -139,11 +139,12 @@ val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = { coun
 fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
     if (minPrice == null || maxPrice == null) {
         "-"
-
     } else if (minPrice == maxPrice && minPrice != 0.0f) {
-        "$$minPrice"
-
+        priceTransform(minPrice)
     } else {
-        "$$minPrice-$$maxPrice"
+        "${priceTransform(minPrice)}-${priceTransform(maxPrice)}"
     }
 
+fun priceTransform(value : Float) : String {
+    return "$%.2f".format(value)
+}
