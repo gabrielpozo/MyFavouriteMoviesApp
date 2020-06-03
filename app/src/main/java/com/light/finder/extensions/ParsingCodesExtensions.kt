@@ -112,7 +112,7 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
         }
         else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_holder)
+            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
         }
     }
 }
