@@ -89,7 +89,9 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
         R.drawable.ic_daylight
     }
 
-    else -> 0
+    else -> {
+        R.drawable.ic_holder
+    }
 }
 
 fun View.setColorVariation(colorCode: Int) {
@@ -110,7 +112,7 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
         }
         else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
+            imageFilterCover.setBackgroundResource(R.drawable.ic_holder)
         }
     }
 }
