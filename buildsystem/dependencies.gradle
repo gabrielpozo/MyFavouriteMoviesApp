@@ -41,8 +41,8 @@ ext {
     lottieVersion = '3.4.0'
     timberVersion = '4.7.1'
     daggerVersion = '2.25'
-    cameraVersion = '1.0.0-beta03'
-    cameraLifeCyleVersion = '1.0.0-beta03'
+    cameraVersion = '1.0.0-beta04'
+    cameraLifeCyleVersion = '1.0.0-beta04'
     cameraViewVersion = '1.0.0-alpha10'
     // Testing dependencies
     junitVersion = '4.12'
