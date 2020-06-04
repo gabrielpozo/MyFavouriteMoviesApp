@@ -273,7 +273,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-            activityCallback.setBottomBarInvisibility(false)
+            displayCameraItemsControl()
             initializeLottieAnimation()
         }
     }
@@ -461,7 +461,7 @@ class CameraFragment : BaseFragment() {
         layoutPreview.gone()
         layoutCamera.visible()
         cameraUiContainer.visible()
-        activityCallback.setBottomBarInvisibility(false)
+        displayCameraItemsControl()
 
         lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
@@ -697,7 +697,7 @@ class CameraFragment : BaseFragment() {
                     }
                     onCameraCaptureClick()
                 } else {
-                    activityCallback.setBottomBarInvisibility(false)
+                    displayCameraItemsControl()
                     activityCallback.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -724,7 +724,13 @@ class CameraFragment : BaseFragment() {
     private fun checkFlagOnView(flag: Boolean) {
         if (flag) {
             activityCallback.setBottomBarInvisibility(true)
+            controls?.cameraCaptureButton?.isEnabled = false
         }
+    }
+
+    private fun displayCameraItemsControl() {
+        controls?.cameraCaptureButton?.isEnabled = true
+        activityCallback.setBottomBarInvisibility(false)
     }
 
     //TODO set this method for extension when media user is implemented
