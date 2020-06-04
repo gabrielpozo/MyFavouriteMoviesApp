@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground">
 
-
         <ImageView
             android:id="@+id/bulbCover"
             android:layout_width="130dp"
@@ -30,11 +29,14 @@
 
         <TextView
             android:id="@+id/category_name"
-            style="@style/TitleTextBook"
+            style="@style/TitleCategory"
             android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="18sp"
+            android:lineSpacingExtra="8sp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
             android:layout_marginEnd="16dp"
@@ -46,12 +48,15 @@
 
         <TextView
             android:id="@+id/product_detail"
-            style="@style/TitleTextBook"
+            style="@style/TitleCategory"
+            android:textSize="18sp"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="8sp"
             android:text="@string/placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
@@ -64,7 +69,7 @@
             android:layout_height="wrap_content"
             android:gravity="fill"
             android:orientation="vertical"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
@@ -74,14 +79,16 @@
 
         <TextView
             android:id="@+id/price"
-            style="@style/TitleTextGreen"
+            style="@style/PriceCategory"
+            android:textSize="18sp"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="8sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:singleLine="true"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="3dp"
-
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toTopOf="@id/energyButton"
             android:layout_marginBottom="24dp"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
@@ -92,6 +99,8 @@
             android:id="@+id/textViewBulb"
             style="@style/SubtitleTextGreen"
             android:text="@string/text_bulb"
+            android:textSize="16sp"
+            android:lineSpacingExtra="6sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
