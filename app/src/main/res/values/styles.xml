@@ -402,5 +402,14 @@
         <item name="android:paddingEnd">20dp</item>
     </style>
 
+    <style name="TitleCategory" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="PriceCategory" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/primaryOnLight</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
 
 </resources>
