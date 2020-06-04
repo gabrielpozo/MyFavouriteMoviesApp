@@ -115,7 +115,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var viewFinder: PreviewView
     //private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
-    private lateinit var mainExecutor: Executor
+    //private lateinit var mainExecutor: Executor
 
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
@@ -148,7 +148,7 @@ class CameraFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainExecutor = ContextCompat.getMainExecutor(requireContext())
+        //mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
     override fun onAttach(context: Context) {
@@ -636,7 +636,7 @@ class CameraFragment : BaseFragment() {
         imageAnalyzer = ImageAnalysis.Builder()
             .build()
             .also {
-                it.setAnalyzer(mainExecutor,
+                it.setAnalyzer(cameraExecutor,
                     LuminosityAnalyzer { luma ->
                         Timber.d("$TAG Average luminosity: $luma")
                     })
@@ -669,7 +669,7 @@ class CameraFragment : BaseFragment() {
 
                 isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
             }
-            imageCapture.takePicture(mainExecutor, imageCaptureListener)
+            imageCapture.takePicture(cameraExecutor, imageCaptureListener)
 
             container.postDelayed({
                 container.foreground = ColorDrawable(Color.WHITE)
