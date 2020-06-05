@@ -87,7 +87,6 @@
             tools:text="$0.00-$0.00" />
 
         <TextView
-            android:id="@+id/textViewBulb"
             style="@style/SubtitleTextGreen"
             android:text="@string/text_bulb"
             android:layout_width="0dp"

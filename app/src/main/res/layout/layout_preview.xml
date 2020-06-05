@@ -19,7 +19,6 @@
         app:srcCompat="@color/bottomNavBarColor" />
 
     <TextView
-        android:id="@+id/textViewIdentify"
         style="@style/TitleText"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="16dp"
