@@ -171,6 +171,8 @@ class CameraFragment : BaseFragment() {
     private val imageCaptureListener = object : ImageCapture.OnImageCapturedCallback() {
         override fun onError(exception: ImageCaptureException) {
             super.onError(exception)
+            displayCameraItemsControl()
+            //TODO(reinitilize the camera here in case something went wrong)
             Timber.e("$TAG Photo capture failed: $exception cause")
         }
 
@@ -729,7 +731,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun displayCameraItemsControl() {
-        controls?.cameraCaptureButton?.isEnabled = true
+        enableCameraCaptureButton()
         activityCallback.setBottomBarInvisibility(false)
     }
 
@@ -750,6 +752,7 @@ class CameraFragment : BaseFragment() {
         cameraExecutor.shutdown()
         // Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
+        cameraProvider.unbindAll()
     }
 
     fun disableCameraCaptureButton() {
