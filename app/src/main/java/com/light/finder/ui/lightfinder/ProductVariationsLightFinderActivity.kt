@@ -37,8 +37,11 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private val localPreferences: LocalPreferenceDataSource by lazy { LocalPreferenceDataSourceImpl(this) }
-
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            this
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,10 +107,16 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
         recyclerViewWattage.adapter = filterWattageAdapter
 
-        filterColorAdapter = FilterColorAdapter(::handleFilterColorPressed, localPreferences.loadLegendCctFilterNames())
+        filterColorAdapter = FilterColorAdapter(
+            ::handleFilterColorPressed,
+            localPreferences.loadLegendCctFilterNames()
+        )
         recyclerViewColor.adapter = filterColorAdapter
 
-        filterFinishAdapter = FilterFinishAdapter(::handleFilterFinishPressed, localPreferences.loadLegendFinishFilterNames())
+        filterFinishAdapter = FilterFinishAdapter(
+            ::handleFilterFinishPressed,
+            localPreferences.loadLegendFinishFilterNames()
+        )
         recyclerViewFinish.adapter = filterFinishAdapter
     }
 

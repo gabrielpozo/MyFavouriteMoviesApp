@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorPrimary">#263238</color>
-    <color name="colorPrimaryVariant">#000a12</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorSecondary">#d81b60</color>
-    <color name="colorSecondaryVariant">#a00037</color>
-    <color name="colorOnSecondary">#FFFFFF</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray">#808080</color>
-    <color name="red">#d50000</color>
-    <color name="whiteGhost">#f8f8ff</color>
-    <color name="gold">#DAA520</color>
-    <color name="openGreen">#008000</color>
-
-
     <!--LightFinder-->
     <color name="backgroundLight">#ffffff</color>
     <color name="textLight">#fefefe</color>
@@ -28,37 +12,17 @@
     <color name="primaryOnLight">#008550</color>
     <color name="informationDefault">#1331ff</color>
     <color name="informationError">#d8d8d9</color>
-    <color name="incompatible">#d8d8d8</color>
-    <color name="dividerOnDark">#49494e</color>
     <color name="gallerySelected">#1332ff</color>
     <color name="dividerOnLight">#f4f5f5</color>
     <color name="galleryUnselected">#49494d</color>
     <color name="divider">#696969</color>
     <color name="outlined">#636367</color>
-    <style name="darkSeaGreen">#0e8b59</style>
-
-
-    <!-- TODO change old colors -->
-    <color name="secondaryTextColor">#00e880</color>
-    <color name="primarySubText">#d7d7d8</color>
-    <color name="primaryAppColor">#00e487</color>
-    <color name="secondaryAppColor">#1ecbd0</color>
-    <color name="lightBackgroundColor">#636367</color>
     <color name="bottomNavBarColor">#1c1c1f</color>
-
-
-    <!--new colors-->
-
-
     <color name="primaryOnDark">#01e487</color>
-    <color name="colorActionBar">@android:color/transparent</color>
     <color name="transparentLightBackgroundColor">#66636367</color>
-    <color name="transp">#80000000</color>
 
 
     <!-- dots inactive colors -->
-    <color name="dot_active">#1332ff</color>
-    <color name="dot_inactive">#49494d</color>
 
 
     <!--Camera -->

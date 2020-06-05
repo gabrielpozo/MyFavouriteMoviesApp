@@ -19,7 +19,6 @@
         app:srcCompat="@color/bottomNavBarColor" />
 
     <TextView
-        android:id="@+id/textViewIdentify"
         style="@style/TitleText"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="16dp"
@@ -49,9 +48,9 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        style="@style/TitleText"
         android:layout_marginBottom="@dimen/counter_bottom_margin"
         android:layout_marginEnd="16dp"
-        style="@style/TitleText"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="16dp"
@@ -86,7 +85,7 @@
         android:text="@string/text_cancel"
         android:textAllCaps="false"
         android:background="@drawable/button_curvy_corners_border"
-        android:textColor="@color/primaryAppColor"
+        android:textColor="@color/primaryOnDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

@@ -12,6 +12,7 @@ class PrefManager(_context: Context) {
         private const val IS_TERMS_ACCEPTED = "isTermsAccepted"
         private const val IS_CONSENT_ACCEPTED = "isConsentAccepted"
     }
+
     private var pref: SharedPreferences
     private var editor: SharedPreferences.Editor
 

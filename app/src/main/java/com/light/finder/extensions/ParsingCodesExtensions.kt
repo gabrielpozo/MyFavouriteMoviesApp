@@ -127,7 +127,7 @@ fun View.setFinishVariation(finishCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.frosted)
         }
         else -> {
-            imageFilterCover.invisible()
+            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
         }
     }
 }

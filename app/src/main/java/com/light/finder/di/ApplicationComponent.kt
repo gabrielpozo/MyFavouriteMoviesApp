@@ -5,9 +5,9 @@ import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.di.modules.global.HardwareInstanceComponents
 import com.light.finder.di.modules.global.HardwareModule
-import com.light.finder.di.modules.submodules.*
 import com.light.finder.di.modules.singleton.ApplicationModule
 import com.light.finder.di.modules.singleton.DataModule
+import com.light.finder.di.modules.submodules.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

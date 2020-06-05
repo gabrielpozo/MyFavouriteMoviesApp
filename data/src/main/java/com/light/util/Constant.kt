@@ -7,14 +7,12 @@ const val CANCEL_ERROR = "Request canceled, cancel error"
 const val EMPTY_RESPONSE = "Empty response"
 
 
-
 const val KEY_EVENT_ACTION = "key_event_action"
 const val KEY_EVENT_EXTRA = "key_event_extra"
 const val IMMERSIVE_FLAG_TIMEOUT = 8100L
 const val NO_CONTENT_CODE = 204
 const val NO_PRODUCTS_CODE = 206
 const val SUCCESSFUL_CODE = 200
-
 
 
 const val FILE_NAME = "gallery_file_name"

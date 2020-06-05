@@ -24,8 +24,6 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
-import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
-import kotlinx.android.synthetic.main.about_fragment.switchConsent
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 
 

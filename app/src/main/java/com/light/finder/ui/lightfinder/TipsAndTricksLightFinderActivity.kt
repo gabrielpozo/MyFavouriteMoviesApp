@@ -5,7 +5,6 @@ import android.view.View
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
-import com.light.finder.common.ActivityCallback
 import com.light.finder.common.WrappingViewPager
 import com.light.finder.ui.adapters.TipsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
