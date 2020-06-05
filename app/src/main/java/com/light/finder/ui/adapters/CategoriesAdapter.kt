@@ -7,13 +7,16 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
+import com.light.domain.model.FilterType
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 import timber.log.Timber
 
-
-class CategoriesAdapter(private val listener: (Category) -> Unit) :
+class CategoriesAdapter(
+    private val listener: (Category) -> Unit,
+    private val filterColorList: List<FilterType> = emptyList()
+) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
     var categories: List<Category> by basicDiffUtil(
@@ -54,7 +57,13 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
 
-        fun bind(category: Category, indexes: List<Int>, categoriesSize: Int, position: Int) {
+        fun bind(
+            category: Category,
+            indexes: List<Int>,
+            categoriesSize: Int,
+            position: Int,
+            filterColorList: List<FilterType>
+        ) {
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
@@ -75,9 +84,14 @@ class CategoriesAdapter(private val listener: (Category) -> Unit) :
                 itemView.energyButton.gone()
             }
 
+
             category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
-                textView.text = itemView.context.getColorName(colorCode)
+                textView.text = getLegendTagPref(
+                    colorCode,
+                    filterTypeList = filterColorList,
+                    legendTag = "product_cct_code"
+                )
                 val drawable = itemView.context.getColorDrawable(colorCode)
                 if (drawable != 0) {
                     textView.endDrawableIcon(drawable)

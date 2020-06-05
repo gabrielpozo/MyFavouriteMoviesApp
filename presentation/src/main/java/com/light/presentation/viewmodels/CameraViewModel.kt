@@ -118,8 +118,8 @@ class CameraViewModel(
     }
 
     fun onCameraButtonClicked(bitmap: Bitmap, rotationDegrees: Int) {
-        _modelPreview.value = Event(PreviewModel(bitmap, rotationDegrees))
-        _modelRequest.value = Content.EncodeImage(bitmap)
+        _modelPreview.postValue(Event(PreviewModel(bitmap, rotationDegrees)))
+        _modelRequest.postValue(Content.EncodeImage(bitmap))
     }
 
     fun onRequestCategoriesMessages(base64: String) {

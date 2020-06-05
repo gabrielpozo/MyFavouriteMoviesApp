@@ -13,7 +13,7 @@ import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 
-class SignifyApp : Application(), CameraXConfig.Provider {
+class SignifyApp : Application() {
 
     lateinit var applicationComponent: ApplicationComponent
         private set
@@ -33,11 +33,9 @@ class SignifyApp : Application(), CameraXConfig.Provider {
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
+
     }
 
-    override fun getCameraXConfig(): CameraXConfig {
-        return Camera2Config.defaultConfig()
-    }
 
     private fun enableCrashlyticsDebugMode() {
         val fabric = Fabric.Builder(this)

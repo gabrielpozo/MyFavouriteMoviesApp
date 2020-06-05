@@ -35,8 +35,9 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
 
     override fun hearShake() {
         stopListening()
+        //finish()
         startActivity<UsabillaActivity> {
-            this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            //this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
 

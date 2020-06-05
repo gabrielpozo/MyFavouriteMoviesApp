@@ -16,9 +16,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.Product
 import com.light.finder.R
+import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
-import com.light.finder.common.ActivityCallback
+import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
@@ -27,6 +28,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
+import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -49,6 +51,11 @@ class DetailFragment : BaseFragment() {
     private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
     private var isSingleProduct: Boolean = false
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            requireContext()
+        )
+    }
 
     private var productSapId: String = ""
     private var pricePerPack: Float = 0.0F
@@ -97,7 +104,7 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-       firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
 
@@ -126,7 +133,8 @@ class DetailFragment : BaseFragment() {
                 height = (dpHeight / 2)
             }
             bottomSheetBehavior.peekHeight = (dpHeight / 2)
-        }    }
+        }
+    }
 
     private fun addToCart() {
         viewModel.onRequestAddToCart(productSapId = productSapId)
@@ -311,7 +319,6 @@ class DetailFragment : BaseFragment() {
     }
 
 
-
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
@@ -349,16 +356,21 @@ class DetailFragment : BaseFragment() {
 
         val changeVariation = String.format(
             getString(R.string.change_variation),
-            requireContext().getColorName(
+            getLegendTagPref(
                 product.colorCctCode,
                 logError = true,
-                isForDetailScreen = true
+                isForDetailScreen = true,
+                filterTypeList = localPreferences.loadLegendCctFilterNames(),
+                legendTag = "product_cct_code"
             ),
             product.wattageReplaced,
-            requireContext().getFinishName(
+            getLegendTagPref(
                 product.productFinishCode, true,
-                isForDetailScreen = true
-            )
+                isForDetailScreen = true,
+                filterTypeList = localPreferences.loadLegendFinishFilterNames(),
+                legendTag = "product_finish_code"
+            ),
+            getString(R.string.finish)
         )
 
         textViewDetailTitle.text = title
@@ -370,6 +382,7 @@ class DetailFragment : BaseFragment() {
         if (drawableStart == 0) {
             imageViewColor.visibility = View.GONE
         } else {
+            imageViewColor.visibility = View.VISIBLE
             imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
         }
         textViewDetailDescription.text = product.description

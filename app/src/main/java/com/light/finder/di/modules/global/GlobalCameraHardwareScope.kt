@@ -5,4 +5,4 @@ import javax.inject.Scope
 
 @Scope
 @Retention
-annotation class GlobalHardwareScope
+annotation class GlobalCameraHardwareScope
