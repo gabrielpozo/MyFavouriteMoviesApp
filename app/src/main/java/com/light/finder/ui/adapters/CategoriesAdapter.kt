@@ -11,7 +11,7 @@ import com.light.domain.model.FilterType
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
-
+import timber.log.Timber
 
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
@@ -37,7 +37,7 @@ class CategoriesAdapter(
         val indexes = getMaxIndices(categories)
 
         holder.itemView.textViewsLayout.removeAllViews()
-        holder.bind(category, indexes, categories.size, position, filterColorList)
+        holder.bind(category, indexes, categories.size, position)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
