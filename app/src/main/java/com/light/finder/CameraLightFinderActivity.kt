@@ -162,7 +162,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
         // Set background color
         bottom_navigation_view.defaultBackgroundColor = getColor(R.color.backgroundDark)
-        bottom_navigation_view.accentColor = getColor(R.color.primaryPressed)
+        bottom_navigation_view.accentColor = getColor(R.color.primaryOnDark)
         bottom_navigation_view.inactiveColor = getColor(R.color.backgroundLight)
 
         val face = ResourcesCompat.getFont(this, R.font.bold)

@@ -147,7 +147,7 @@ class DetailFragment : BaseFragment() {
             context?.let { it1 ->
                 ContextCompat.getColor(
                     it1,
-                    R.color.primaryPressed
+                    R.color.primaryOnDark
                 )
             }?.let { it2 ->
                 buttonAddTocart.setBackgroundColor(
