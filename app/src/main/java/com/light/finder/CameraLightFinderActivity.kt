@@ -115,7 +115,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
         if (!isClickable) {
-            bottom_navigation_view.setItemDisableColor(getColor(R.color.colorOnSecondary))
+            bottom_navigation_view.setItemDisableColor(getColor(R.color.backgroundLight))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
             bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
@@ -162,8 +162,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
         // Set background color
         bottom_navigation_view.defaultBackgroundColor = getColor(R.color.backgroundDark)
-        bottom_navigation_view.accentColor = getColor(R.color.primaryAppColor)
-        bottom_navigation_view.inactiveColor = getColor(R.color.colorOnSecondary)
+        bottom_navigation_view.accentColor = getColor(R.color.primaryPressed)
+        bottom_navigation_view.inactiveColor = getColor(R.color.backgroundLight)
 
         val face = ResourcesCompat.getFont(this, R.font.bold)
         bottom_navigation_view.setTitleTextSize(

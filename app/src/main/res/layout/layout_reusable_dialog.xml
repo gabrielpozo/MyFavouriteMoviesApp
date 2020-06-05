@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/whiteGhost" />
+        app:srcCompat="@android:color/white" />
 
     <TextView
         android:id="@+id/textViewTitleDialog"
