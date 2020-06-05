@@ -23,10 +23,10 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
-            app:layout_constraintGuide_percent="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
             android:layout_width="180dp"
@@ -44,9 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewTerms"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/textViewTerms" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textViewTerms"
@@ -59,9 +59,9 @@
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutPrivacy"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/layoutPrivacy" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/layoutPrivacy"
@@ -103,9 +103,9 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="64dp"
             android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@id/view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/view">
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkBox"
@@ -141,9 +141,9 @@
             android:layout_height="2dp"
             android:background="@color/dividerOnLight"
             android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/layoutConsent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/layoutConsent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/buttonTerms"
@@ -161,10 +161,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
-
-
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutConsent"
             android:orientation="horizontal"
@@ -174,9 +170,9 @@
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@id/buttonTerms"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/buttonTerms">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 style="@style/TitleTextTerms"

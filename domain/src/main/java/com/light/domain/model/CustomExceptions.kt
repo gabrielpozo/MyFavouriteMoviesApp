@@ -1,3 +1,3 @@
 package com.light.domain.model
 
-object ParsingError: Exception()
+object ParsingError : Exception()

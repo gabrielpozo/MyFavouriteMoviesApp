@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="@string/light_finder"
-        app:itemTextAppearance="@style/NavBarText"
-        android:icon="@drawable/ic_bulbb"/>
+        android:icon="@drawable/ic_bulbb"
+        app:itemTextAppearance="@style/NavBarText" />
 
     <item
         android:title="@string/cart"
-        android:icon="@drawable/ic_shopping_cart"/>
+        android:icon="@drawable/ic_shopping_cart" />
 
     <item
         android:title="@string/about"
-        android:icon="@drawable/ic_about"/>
+        android:icon="@drawable/ic_about" />
 </menu>

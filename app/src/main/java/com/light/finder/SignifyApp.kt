@@ -1,8 +1,6 @@
 package com.light.finder
 
 import android.app.Application
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil

@@ -10,7 +10,6 @@ import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class CameraViewModel(

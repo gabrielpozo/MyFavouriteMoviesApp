@@ -35,18 +35,18 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
+        android:id="@+id/no_internet_banner_cart"
+        layout="@layout/layout_no_internet"
         android:layout_below="@+id/cart_toolbar"
         android:layout_height="60dp"
-        android:layout_width="match_parent"
-        android:id="@+id/no_internet_banner_cart"
-        layout="@layout/layout_no_internet" />
+        android:layout_width="match_parent" />
 
     <include
+        android:id="@+id/no_internet_overlay"
+        layout="@layout/cart_fragment_offline"
         android:layout_below="@+id/cart_toolbar"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/no_internet_overlay"
-        layout="@layout/cart_fragment_offline"
         android:visibility="gone" />
 
     <ProgressBar

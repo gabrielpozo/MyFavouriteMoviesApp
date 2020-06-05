@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin_big"
     android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
-    app:cardBackgroundColor="@color/backgroundLight"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardBackgroundColor="@color/backgroundLight">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -73,8 +73,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/price"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/product_detail">
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/product_detail"></LinearLayout>
 
 
         <TextView
@@ -89,8 +88,8 @@
             android:singleLine="true"
             android:layout_marginTop="12dp"
             android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toTopOf="@id/energyButton"
             android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@id/energyButton"
             app:layout_constraintStart_toEndOf="@+id/bulbCover"
             app:layout_constraintTop_toBottomOf="@+id/textViewsLayout"
             tools:text="$0.00-$0.00" />
@@ -122,10 +121,10 @@
             android:gravity="center"
             android:visibility="gone"
             android:text="@string/most_efficient_option"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/price" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,8 @@ package com.light.presentation.viewmodels
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.light.domain.model.*
+import com.light.domain.model.FilterVariationCF
+import com.light.domain.model.Product
 import com.light.presentation.common.Event
 import com.light.presentation.common.getSelectedProduct
 import com.light.presentation.common.setSelectedProduct

@@ -13,7 +13,10 @@ import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
-import com.light.finder.extensions.*
+import com.light.finder.extensions.deparcelizeMessage
+import com.light.finder.extensions.getIntFormatter
+import com.light.finder.extensions.getStringFormatter
+import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
