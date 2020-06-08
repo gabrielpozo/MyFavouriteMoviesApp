@@ -123,9 +123,9 @@ class DetailFragment : BaseFragment() {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
-                height = (dpHeight / 2)
+                height = (dpHeight / 1.5).toInt()
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2)
+            bottomSheetBehavior.peekHeight = (dpHeight / 2.6).toInt()
         }    }
 
     private fun addToCart() {

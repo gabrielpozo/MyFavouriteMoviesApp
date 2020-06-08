@@ -10,24 +10,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/backgroundLight"
-        android:layout_height="wrap_content"
+        android:layout_height="430dp"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerDetail"
             android:layout_width="match_parent"
-            android:layout_height="438dp" />
+            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/livePreviewButton"
             style="@style/BlueButton"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/button_curvy_corners_categories"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="27dp"
             android:gravity="center"
             android:text="Live Preview" />
 
