@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -132,7 +133,10 @@ class DetailFragment : BaseFragment() {
             viewPagerDetail.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = (dpHeight / 1.5).toInt()
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2.6).toInt()
+            val param: ViewGroup.MarginLayoutParams = livePreviewButton.layoutParams as ViewGroup.MarginLayoutParams
+            param.bottomMargin = dpHeight / 12
+            livePreviewButton.layoutParams = param
+            bottomSheetBehavior.peekHeight = (dpHeight / 2.5).toInt()
         }
     }
 
