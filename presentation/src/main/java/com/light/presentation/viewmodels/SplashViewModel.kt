@@ -11,6 +11,7 @@ class SplashViewModel : ViewModel() {
     val liveData: LiveData<SplashState>
         get() = mutableLiveData
     private val mutableLiveData = MutableLiveData<SplashState>()
+
     init {
         // TODO: Improve this by implementing Lottie listener
         GlobalScope.launch {
@@ -19,6 +20,7 @@ class SplashViewModel : ViewModel() {
         }
     }
 }
+
 sealed class SplashState {
     object CameraActivity : SplashState()
 }

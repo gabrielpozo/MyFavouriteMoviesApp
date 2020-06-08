@@ -2,29 +2,27 @@ package com.light.finder.extensions
 
 import android.content.Context
 import android.view.View
+import com.light.domain.model.FilterType
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
-fun Context.getColorName(
+
+fun getLegendTagPref(
     colorCode: Int,
     logError: Boolean = false,
-    isForDetailScreen: Boolean = false
-): String = when (colorCode) {
-    1 -> {
-        getString(R.string.warm)
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FilterType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == colorCode.toString()
     }
-    2 -> {
-        getString(R.string.white_warm)
-    }
-    3 -> {
-        getString(R.string.cool_white)
-    }
-    4 -> {
-        getString(R.string.daylight)
-    }
-    else -> {
-        if (logError) CrashlyticsException(422, "product_cct_code", colorCode).logException()
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, colorCode).logException()
         if (!isForDetailScreen) {
             colorCode.toString()
         } else {
@@ -45,32 +43,6 @@ fun Context.getformFactortType(factorTypeCode: Int): String = when (factorTypeCo
     }
 }
 
-fun Context.getFinishName(
-    finishCode: Int,
-    logError: Boolean = false,
-    isForDetailScreen: Boolean = false
-): String = when (finishCode) {
-    1 -> if (!isForDetailScreen) {
-        getString(R.string.clear)
-    } else {
-        getString(R.string.clear) + " " + getString(R.string.finish)
-    }
-    2 -> if (!isForDetailScreen) {
-        getString(R.string.frosted)
-    } else {
-        getString(R.string.frosted) + " " + getString(R.string.finish)
-    }
-    else -> {
-        if (logError) CrashlyticsException(422, "product_finish_code", finishCode).logException()
-        if (!isForDetailScreen) {
-            finishCode.toString()
-        } else {
-            ""
-        }
-    }
-}
-
-
 fun String.dropFirstAndLastCharacter(): String {
     val removeFirst = removePrefix(" -")
     return when {
@@ -84,10 +56,6 @@ fun String.dropFirstAndLastCharacter(): String {
             removeFirst
         }
     }
-}
-
-fun String.dropLastCharacter(): String {
-    return substring(0, length - 1)
 }
 
 fun checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
@@ -114,14 +82,16 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     2 -> {
         R.drawable.ic_warm_white
     }
-    3 -> {
+    4 -> {
         R.drawable.ic_cool_white
     }
-    4 -> {
+    5 -> {
         R.drawable.ic_daylight
     }
 
-    else -> 0
+    else -> {
+        R.drawable.ic_holder
+    }
 }
 
 fun View.setColorVariation(colorCode: Int) {
@@ -134,15 +104,15 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.warm_white)
         }
 
-        3 -> {
+        4 -> {
             imageFilterCover.setBackgroundResource(R.drawable.cool_white)
         }
 
-        4 -> {
+        5 -> {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
         }
         else -> {
-            imageFilterCover.invisible()
+            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
         }
     }
 }
@@ -157,7 +127,7 @@ fun View.setFinishVariation(finishCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.frosted)
         }
         else -> {
-            imageFilterCover.invisible()
+            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
         }
     }
 }

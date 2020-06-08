@@ -8,14 +8,14 @@ import dagger.Subcomponent
 @Module
 class HardwareModule(private val listener: ShakeDetector.Listener) {
 
-    @GlobalHardwareScope
+    @GlobalCameraHardwareScope
     @Provides
     fun getItemCountUseCase() =
         ShakeDetector(listener)
 }
 
 
-@GlobalHardwareScope
+@GlobalCameraHardwareScope
 @Subcomponent(modules = [(HardwareModule::class)])
 interface HardwareInstanceComponents {
     val shakeDetector: ShakeDetector

@@ -38,7 +38,14 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         } else {
             val scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmapWidth, bitmapHeight, false)
             System.gc()
-            encodeBitmapTo64(Bitmap.createScaledBitmap(scaledBitmap, bitmapWidth, bitmapHeight, false))
+            encodeBitmapTo64(
+                Bitmap.createScaledBitmap(
+                    scaledBitmap,
+                    bitmapWidth,
+                    bitmapHeight,
+                    false
+                )
+            )
         }
     }
 
@@ -46,6 +53,6 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         val b = stream.toByteArray()
-       return encodeToString(b, DEFAULT)
+        return encodeToString(b, DEFAULT)
     }
 }

@@ -116,10 +116,10 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun popFragmentNot(): Boolean {
-        fragNavController.popFragment().not()
+       val isFragmentPopped= fragNavController.popFragment().not()
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
-        return false
+        return isFragmentPopped
     }
 
     private fun reloadCartFragment() {

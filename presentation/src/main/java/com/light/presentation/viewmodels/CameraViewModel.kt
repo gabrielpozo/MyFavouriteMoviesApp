@@ -10,7 +10,6 @@ import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class CameraViewModel(
@@ -118,8 +117,8 @@ class CameraViewModel(
     }
 
     fun onCameraButtonClicked(bitmap: Bitmap, rotationDegrees: Int) {
-        _modelPreview.value = Event(PreviewModel(bitmap, rotationDegrees))
-        _modelRequest.value = Content.EncodeImage(bitmap)
+        _modelPreview.postValue(Event(PreviewModel(bitmap, rotationDegrees)))
+        _modelRequest.postValue(Content.EncodeImage(bitmap))
     }
 
     fun onRequestCategoriesMessages(base64: String) {

@@ -30,7 +30,8 @@ class SplashLightFinderActivity : BaseLightFinderActivity() {
 
         component = app.applicationComponent.plus(SplashModule())
 
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility =
+            (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -49,12 +50,12 @@ class SplashLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun goToTermsAndConditionsActivity() {
-        startActivity<TermsAndConditionsLightFinderActivity> {  }
+        startActivity<TermsAndConditionsLightFinderActivity> { }
         finish()
     }
 
     private fun goToCameraActivity() {
-        startActivity<CameraLightFinderActivity> {  }
+        startActivity<CameraLightFinderActivity> { }
         finish()
     }
 }

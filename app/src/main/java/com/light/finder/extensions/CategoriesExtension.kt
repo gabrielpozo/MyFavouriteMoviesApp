@@ -156,7 +156,8 @@ fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
 }
 
 fun Message.parcelizeMessage(): MessageParcelable =
-    MessageParcelable(categories.map { it.parcelizeCategory() },
+    MessageParcelable(
+        categories.map { it.parcelizeCategory() },
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,

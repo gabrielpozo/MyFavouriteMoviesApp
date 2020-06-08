@@ -7,7 +7,7 @@ data class Result<out T>(
     val isCancelRequest: Boolean = false,
     val code: Int = 0
 
-    ) {
+) {
 
     enum class Status {
         SUCCESS,

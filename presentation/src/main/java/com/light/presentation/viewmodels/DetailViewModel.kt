@@ -12,7 +12,6 @@ import com.light.usecases.GetAddToCartUseCase
 import com.light.usecases.GetItemCountUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class DetailViewModel(
@@ -79,7 +78,7 @@ class DetailViewModel(
                     ::handleErrorResponse,
                     ::handleTimeOutResponse,
                     ::handleEmptyResponse,
-                    params = *arrayOf(  productSapId)
+                    params = *arrayOf(productSapId)
                 )
             }
         } else {

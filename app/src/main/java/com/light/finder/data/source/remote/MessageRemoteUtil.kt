@@ -20,7 +20,6 @@ object MessageRemoteUtil {
         HiddenAnnotationExclusionStrategy()
     )
 
-
     val service: SignifyApiService = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
