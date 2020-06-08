@@ -25,15 +25,13 @@
         android:background="@color/backgroundDark"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_top_margin"
+        android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:ellipsize="end"
-            android:maxLines="1"
             android:id="@+id/textViewBulbType"
             style="@style/ActiveTextWhite"
             android:paddingTop="@dimen/stroke_medium"

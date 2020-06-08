@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
+import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -89,7 +90,7 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateUI(model: CategoryViewModel.Content) {
-        updateData(model.messages)
+        updateData(model.messages, model.message)
     }
 
     private fun initAdapter() {
@@ -106,14 +107,14 @@ class CategoriesFragment : BaseFragment() {
         }
     }
 
-    private fun updateData(categories: List<Category>) {
+    private fun updateData(categories: List<Category>, message: Message) {
         textViewResults.text = if (categories.size == 1) {
             getString(R.string.text_result).getIntFormatter(categories.size)
         } else {
             getString(R.string.text_results).getIntFormatter(categories.size)
         }
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase + " " + categories[0].categoryShape)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)
 
         adapter.categories = categories
     }
