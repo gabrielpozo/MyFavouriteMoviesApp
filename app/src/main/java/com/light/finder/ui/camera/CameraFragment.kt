@@ -673,7 +673,6 @@ class CameraFragment : BaseFragment() {
                     { container.foreground = null }, ANIMATION_FAST_MILLIS
                 )
             }, ANIMATION_SLOW_MILLIS)
-
         }
     }
 
