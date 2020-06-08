@@ -1,14 +1,12 @@
 package com.light.finder
 
 import android.content.Context
-import android.content.Intent
 import android.hardware.SensorManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.light.finder.common.ShakeDetector
 import com.light.finder.di.modules.global.HardwareModule
 import com.light.finder.extensions.startActivity
-import timber.log.Timber
 
 
 abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.Listener {
@@ -35,13 +33,14 @@ abstract class BaseLightFinderActivity : AppCompatActivity(), ShakeDetector.List
 
     override fun hearShake() {
         stopListening()
+        //finish()
         startActivity<UsabillaActivity> {
-            this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            //this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
 
     private fun stopListening() {
-        if(::shakeDetector.isInitialized) {
+        if (::shakeDetector.isInitialized) {
             shakeDetector.stop()
         }
     }

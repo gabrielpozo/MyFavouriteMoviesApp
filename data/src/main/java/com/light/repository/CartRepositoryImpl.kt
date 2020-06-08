@@ -10,6 +10,10 @@ class CartRepositoryImpl(
     private val itemRemoteDataSource: CartRemoteDataSource
 ) : CartRepository {
     override suspend fun getCartItem(productSapId: String?): DataState<Cart> {
-        return repositoryCartHandleSource(remoteSourceRequest = { itemRemoteDataSource.fetchCartItems(productSapId!!) })
+        return repositoryCartHandleSource(remoteSourceRequest = {
+            itemRemoteDataSource.fetchCartItems(
+                productSapId!!
+            )
+        })
     }
 }

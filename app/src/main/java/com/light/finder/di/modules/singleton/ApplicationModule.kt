@@ -1,7 +1,6 @@
 package com.light.finder.di.modules.singleton
 
 import android.app.Application
-import com.light.finder.common.ShakeDetector
 import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CartItemCountRemoteDataSource

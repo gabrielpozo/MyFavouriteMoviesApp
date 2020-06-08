@@ -145,6 +145,6 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
         "${priceTransform(minPrice)}-${priceTransform(maxPrice)}"
     }
 
-fun priceTransform(value : Float) : String {
+fun priceTransform(value: Float): String {
     return "$%.2f".format(value)
 }

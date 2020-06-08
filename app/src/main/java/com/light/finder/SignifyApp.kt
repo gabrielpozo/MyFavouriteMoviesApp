@@ -1,8 +1,6 @@
 package com.light.finder
 
 import android.app.Application
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil
@@ -13,7 +11,7 @@ import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 
-class SignifyApp : Application(), CameraXConfig.Provider {
+class SignifyApp : Application() {
 
     lateinit var applicationComponent: ApplicationComponent
         private set
@@ -36,9 +34,6 @@ class SignifyApp : Application(), CameraXConfig.Provider {
 
     }
 
-    override fun getCameraXConfig(): CameraXConfig {
-        return Camera2Config.defaultConfig()
-    }
 
     private fun enableCrashlyticsDebugMode() {
         val fabric = Fabric.Builder(this)

@@ -17,8 +17,8 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Product
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
@@ -47,7 +47,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         app.applicationComponent.plus(
             LightFinderModule(
                 this
-            ))
+            )
+        )
     }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -71,7 +72,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        
+
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_camera)
@@ -82,7 +83,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         observeConnection()
     }
-    
 
 
     override fun setBottomBarInvisibility(invisible: Boolean) {
@@ -115,7 +115,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
         if (!isClickable) {
-            bottom_navigation_view.setItemDisableColor(getColor(R.color.colorOnSecondary))
+            bottom_navigation_view.setItemDisableColor(getColor(R.color.backgroundLight))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
             bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
@@ -129,7 +129,9 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
                 val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA)
+                    data?.getParcelableArrayListExtra<ProductParcelable>(
+                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
+                    )
                         ?.deparcelizeProductList() ?: emptyList()
                 val currentFragment = screenNavigator.getCurrentFragment()
                 if (currentFragment is DetailFragment) {
@@ -141,7 +143,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onInternetConnectionLost() {
-       firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
         }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
@@ -160,8 +162,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         navigationAdapter.setupWithBottomNavigation(bottom_navigation_view)
         // Set background color
         bottom_navigation_view.defaultBackgroundColor = getColor(R.color.backgroundDark)
-        bottom_navigation_view.accentColor = getColor(R.color.primaryAppColor)
-        bottom_navigation_view.inactiveColor = getColor(R.color.colorOnSecondary)
+        bottom_navigation_view.accentColor = getColor(R.color.primaryOnDark)
+        bottom_navigation_view.inactiveColor = getColor(R.color.backgroundLight)
 
         val face = ResourcesCompat.getFont(this, R.font.bold)
         bottom_navigation_view.setTitleTextSize(

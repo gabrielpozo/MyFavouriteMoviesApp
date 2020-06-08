@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
@@ -19,18 +20,15 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
-import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
+import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.PermissionRequester
-import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import com.light.finder.di.modules.submodules.CameraComponent
@@ -46,13 +44,12 @@ import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
@@ -100,12 +97,19 @@ class CameraFragment : BaseFragment() {
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
+    private val displayManager by lazy {
+        requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    }
+
+    /** Blocking camera operations are performed using this executor */
+    private lateinit var cameraExecutor: ExecutorService
+
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
-    private lateinit var outputDirectory: File
+    //private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
-    private lateinit var mainExecutor: Executor
+    //private lateinit var mainExecutor: Executor
 
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
@@ -117,9 +121,27 @@ class CameraFragment : BaseFragment() {
     private var isComingFromSettings: Boolean = false
 
 
+    /**
+     * We need a display listener for orientation changes that do not trigger a configuration
+     * change, for example if we choose to override config change in manifest or for 180-degree
+     * orientation changes.
+     */
+    private val displayListener = object : DisplayManager.DisplayListener {
+        override fun onDisplayAdded(displayId: Int) = Unit
+        override fun onDisplayRemoved(displayId: Int) = Unit
+        override fun onDisplayChanged(displayId: Int) = view?.let { view ->
+            if (displayId == this@CameraFragment.displayId) {
+                Timber.d(TAG, "Rotation changed: ${view.display.rotation}")
+                imageCapture?.targetRotation = view.display.rotation
+                imageAnalyzer?.targetRotation = view.display.rotation
+            }
+        } ?: Unit
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainExecutor = ContextCompat.getMainExecutor(requireContext())
+        //mainExecutor = ContextCompat.getMainExecutor(requireContext())
     }
 
     override fun onAttach(context: Context) {
@@ -142,6 +164,8 @@ class CameraFragment : BaseFragment() {
     private val imageCaptureListener = object : ImageCapture.OnImageCapturedCallback() {
         override fun onError(exception: ImageCaptureException) {
             super.onError(exception)
+            displayCameraItemsControl()
+            //TODO(reinitilize the camera here in case something went wrong)
             Timber.e("$TAG Photo capture failed: $exception cause")
         }
 
@@ -183,7 +207,12 @@ class CameraFragment : BaseFragment() {
 
 
         requestItemCount()
+
+        displayManager.registerDisplayListener(displayListener, null)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
+
+        // Initialize our background executor
+        cameraExecutor = Executors.newSingleThreadExecutor()
 
 
     }
@@ -239,7 +268,7 @@ class CameraFragment : BaseFragment() {
             layoutPreview.gone()
             layoutCamera.visible()
             cameraUiContainer.visible()
-            activityCallback.setBottomBarInvisibility(false)
+            displayCameraItemsControl()
             initializeLottieAnimation()
         }
     }
@@ -427,7 +456,7 @@ class CameraFragment : BaseFragment() {
         layoutPreview.gone()
         layoutCamera.visible()
         cameraUiContainer.visible()
-        activityCallback.setBottomBarInvisibility(false)
+        displayCameraItemsControl()
 
         lottieAnimationView.playAnimation() //restore lottie view again after being consumed
         initializeLottieAnimation()
@@ -544,7 +573,7 @@ class CameraFragment : BaseFragment() {
         layoutPermission.gone()
 
 
-        outputDirectory = CameraLightFinderActivity.getOutputDirectory(requireContext())
+        //outputDirectory = CameraLightFinderActivity.getOutputDirectory(requireContext())
 
         viewFinder.post {
 
@@ -553,27 +582,90 @@ class CameraFragment : BaseFragment() {
 
             initCameraUi()
 
+            setUpCamera()
+
             flashSwitchButton.setOnClickListener {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
-            //TODO check this and move it to local data source
+            /*//TODO check this and move it to local data source
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
                     EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
                 }
-            }
+            }*/
         }
+    }
+
+    private fun setUpCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener(Runnable {
+
+            // CameraProvider
+            cameraProvider = cameraProviderFuture.get()
+
+            // Build and bind the camera use cases
+            bindCameraUseCases()
+        }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun bindCameraUseCases() {
+        /**
+         * CAMERA USE-CASES
+         */
+        val rotation = viewFinder.display.rotation
+
+        cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+
+
+        preview = Preview.Builder()
+            .build()
+
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .setTargetResolution(Size(600, 800))
+            .setFlashMode(flashMode)
+            .setTargetRotation(rotation)
+            .build()
+
+        imageAnalyzer = ImageAnalysis.Builder()
+            .build()
+            .also {
+                it.setAnalyzer(cameraExecutor,
+                    LuminosityAnalyzer { luma ->
+                        Timber.d("$TAG Average luminosity: $luma")
+                    })
+            }
+
+        // Must unbind the use-cases before rebinding them
+        cameraProvider.unbindAll()
+
+        try {
+            // A variable number of use-cases can be passed here -
+            // camera provides access to CameraControl & CameraInfo
+            camera = cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview, imageCapture, imageAnalyzer
+            )
+
+            // Attach the viewfinder's surface provider to preview use case
+            preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
+        } catch (exc: Exception) {
+            Timber.e(TAG, "Use case binding failed", exc)
+        }
+
+        /**
+         *END USE-CASES
+         */
     }
 
     private fun onCameraCaptureClick() {
         imageCapture?.let { imageCapture ->
-            val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
+            //val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
             val metadata = ImageCapture.Metadata().apply {
 
                 isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT
             }
-            imageCapture.takePicture(mainExecutor, imageCaptureListener)
+            imageCapture.takePicture(cameraExecutor, imageCaptureListener)
 
             container.postDelayed({
                 container.foreground = ColorDrawable(Color.WHITE)
@@ -601,7 +693,7 @@ class CameraFragment : BaseFragment() {
                     }
                     onCameraCaptureClick()
                 } else {
-                    activityCallback.setBottomBarInvisibility(false)
+                    displayCameraItemsControl()
                     activityCallback.onInternetConnectionLost()
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_lightbulb_identified_event)) {
                         putString(
@@ -614,53 +706,9 @@ class CameraFragment : BaseFragment() {
         }
 
 
-        cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProvider = cameraProviderFuture.get()
-
-        /**
-         * CAMERA USE-CASES
-         */
-        val rotation = viewFinder.display.rotation
-
-        cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-
-
-        preview = Preview.Builder()
-            .build()
-
-        imageCapture = ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetResolution(Size(600, 800))
-            .setFlashMode(flashMode)
-            .setTargetRotation(rotation)
-            .build()
-
-        imageAnalyzer = ImageAnalysis.Builder()
-            .build()
-            .also {
-                it.setAnalyzer(mainExecutor,
-                    LuminosityAnalyzer { luma ->
-                        Timber.d("$TAG Average luminosity: $luma")
-                    })
-            }
-
-        /**
-         *END USE-CASES
-         */
-
-        preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
-
-
-        cameraProvider.unbindAll()
-
-        camera = cameraProvider.bindToLifecycle(
-            this as LifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer
-        )
-
-        helpButton.setOnClickListener {
+        helpButton?.setOnClickListener {
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
-
         }
 
         /**
@@ -672,7 +720,13 @@ class CameraFragment : BaseFragment() {
     private fun checkFlagOnView(flag: Boolean) {
         if (flag) {
             activityCallback.setBottomBarInvisibility(true)
+            controls?.cameraCaptureButton?.isEnabled = false
         }
+    }
+
+    private fun displayCameraItemsControl() {
+        enableCameraCaptureButton()
+        activityCallback.setBottomBarInvisibility(false)
     }
 
     //TODO set this method for extension when media user is implemented
@@ -682,13 +736,16 @@ class CameraFragment : BaseFragment() {
                 .format(System.currentTimeMillis()) + extension
         )
 
-    //TODO set this method for extension
     private fun initializeLottieAnimation() {
         lottieAnimationView?.progress = 0.0f
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Shut down our background executor
+        cameraExecutor.shutdown()
+        // Every time the orientation of device changes, update rotation for use cases
+        displayManager.registerDisplayListener(displayListener, null)
         cameraProvider.unbindAll()
     }
 

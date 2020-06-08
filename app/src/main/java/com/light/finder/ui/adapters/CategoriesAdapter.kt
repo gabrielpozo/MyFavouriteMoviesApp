@@ -12,7 +12,6 @@ import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
-
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
     private val filterColorList: List<FilterType> = emptyList()

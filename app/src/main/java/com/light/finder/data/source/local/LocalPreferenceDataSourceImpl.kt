@@ -29,7 +29,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         editor.putString(PRODUCT_CCT, Gson().toJson(legend.cctFilter))
         editor.putString(PRODUCT_FINISH, Gson().toJson(legend.finishFilter))
         editor.putString(FORM_FACTOR, Gson().toJson(legend.lightShapeFilter))
-        
+
         editor.commit()
     }
 

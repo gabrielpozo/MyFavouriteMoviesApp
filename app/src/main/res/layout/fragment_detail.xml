@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/detailLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundDark"
@@ -36,18 +35,17 @@
 
     <View
         android:id="@+id/space"
-        app:layout_anchor="@id/bottomSheetLayout"
-        app:layout_anchorGravity="right"
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="20dp"
+        app:layout_anchor="@id/bottomSheetLayout"
+        app:layout_anchorGravity="right" />
 
-    <include
-        layout="@layout/layout_detail_bottom_sheet" />
+    <include layout="@layout/layout_detail_bottom_sheet" />
 
     <View
         android:layout_gravity="bottom"
         android:background="@color/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
