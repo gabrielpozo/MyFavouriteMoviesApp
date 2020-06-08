@@ -110,7 +110,7 @@ class CategoriesFragment : BaseFragment() {
             getString(R.string.text_results).getIntFormatter(categories.size)
         }
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase + " " + categories[0].categoryShape)
 
         adapter.categories = categories
     }
