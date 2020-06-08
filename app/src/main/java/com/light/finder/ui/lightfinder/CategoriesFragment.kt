@@ -2,6 +2,7 @@ package com.light.finder.ui.lightfinder
 
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -112,6 +113,7 @@ class CategoriesFragment : BaseFragment() {
         } else {
             getString(R.string.text_results).getIntFormatter(categories.size)
         }
+        textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase + " " + categories[0].categoryShape)
 
