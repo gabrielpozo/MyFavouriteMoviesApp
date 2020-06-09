@@ -34,11 +34,13 @@ import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
+import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
+import kotlinx.android.synthetic.main.product_title_banner.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -423,33 +425,57 @@ class DetailFragment : BaseFragment() {
         }
 
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
+        bottomSheetBehavior.setBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(p0: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        //dots_indicator.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        //dots_indicator.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onSlide(p0: View, p1: Float) {
+                p0.height
+                p1.toString()
+                if (p1 == 1F) {
+                    productTitleBanner?.slideVertically(0F, 250)
+                } else {
+                    productTitleBanner?.slideVertically(-productTitleBanner.height.toFloat(), 200)
+                }
+            }
+        })
         setImageGalleryDots(productImageList)
     }
 
     private fun setImageGalleryDots(productImageList: MutableList<String>) {
+
         if (productImageList.size < 2) {
             return
         }
 
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.attachViewPager(viewPagerDetail)
-        bottomSheetBehavior.setBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(p0: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        dots_indicator.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        dots_indicator.visibility = View.GONE
-                    }
-                }
-            }
-
-            override fun onSlide(p0: View, p1: Float) {
-
-            }
-        })
+//        bottomSheetBehavior.setBottomSheetCallback(object :
+//            BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(p0: View, newState: Int) {
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_COLLAPSED -> {
+//                        dots_indicator.visibility = View.VISIBLE
+//                    }
+//                    else -> {
+//                        dots_indicator.visibility = View.GONE
+//                    }
+//                }
+//            }
+//
+//            override fun onSlide(p0: View, p1: Float) {
+//
+//            }
+//        })
     }
 
     private fun checkCodesValidity(category: Category) {
