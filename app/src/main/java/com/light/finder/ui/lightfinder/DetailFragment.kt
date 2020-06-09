@@ -15,6 +15,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
+import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
@@ -27,12 +28,16 @@ import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.DetailImageAdapter
+import com.light.finder.ui.adapters.FilterColorAdapter
+import com.light.finder.ui.adapters.FilterFinishAdapter
+import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_filter_dialog.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -51,6 +56,9 @@ class DetailFragment : BaseFragment() {
     private lateinit var activityCallback: ActivityCallback
     private lateinit var reloadingCallback: ReloadingCallback
     private lateinit var connectivityRequester: ConnectivityRequester
+    private lateinit var filterWattageAdapter: FilterWattageAdapter
+    private lateinit var filterColorAdapter: FilterColorAdapter
+    private lateinit var filterFinishAdapter: FilterFinishAdapter
     private var isSingleProduct: Boolean = false
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
@@ -119,6 +127,8 @@ class DetailFragment : BaseFragment() {
             }
         }
 
+       // initAdapters()
+        setVariationsObservers()
         setCartListeners()
         setBottomSheetBehaviour()
     }
@@ -453,5 +463,104 @@ class DetailFragment : BaseFragment() {
             view?.systemUiVisibility = flags
         }
     }
+
+
+    /***
+     *
+     *
+     */
+
+    private fun initAdapters() {
+        filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
+        recyclerViewWattage.adapter = filterWattageAdapter
+
+        filterColorAdapter = FilterColorAdapter(
+            ::handleFilterColorPressed,
+            localPreferences.loadLegendCctFilterNames()
+        )
+        recyclerViewColor.adapter = filterColorAdapter
+
+        filterFinishAdapter = FilterFinishAdapter(
+            ::handleFilterFinishPressed,
+            localPreferences.loadLegendFinishFilterNames()
+        )
+        recyclerViewFinish.adapter = filterFinishAdapter
+    }
+
+
+    private fun setVariationsObservers() {
+        viewModel.dataFilterWattageButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringWattage)
+        )
+
+        viewModel.dataFilterColorButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringColor)
+        )
+
+        viewModel.dataFilterFinishButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFinishWattage)
+        )
+
+        viewModel.productSelected.observe(
+            viewLifecycleOwner,
+            Observer(::observeProductSelectedResult)
+        )
+    }
+
+
+    private fun observeFilteringWattage(filteringWattage: DetailViewModel.FilteringWattage) {
+        if (filteringWattage.isUpdated) {
+            filterWattageAdapter.updateBackgroundAppearance(filteringWattage.filteredWattageButtons)
+        }
+        filterWattageAdapter.filterListWattage = filteringWattage.filteredWattageButtons
+    }
+
+    private fun observeFilteringColor(filteringColor: DetailViewModel.FilteringColor) {
+        if (filteringColor.isUpdated) {
+            filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
+        }
+        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
+
+    }
+
+    private fun observeFinishWattage(filterFinish: DetailViewModel.FilteringFinish) {
+        if (filterFinish.isUpdated) {
+            filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
+        }
+        filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
+    }
+
+    private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
+        textViewWattage.text = String.format(
+            getString(R.string.wattage_variation),
+            productSelectedModel.productSelected.wattageReplaced.toString()
+        )
+        textViewColor.text = getLegendTagPref(
+            productSelectedModel.productSelected.colorCctCode,
+            filterTypeList = localPreferences.loadLegendCctFilterNames(),
+            legendTag = "product_cct_code"
+        )
+        textViewFinish.text = getLegendTagPref(
+            productSelectedModel.productSelected.productFinishCode,
+            filterTypeList = localPreferences.loadLegendFinishFilterNames(),
+            legendTag = "product_finish_code"
+        )
+    }
+
+    private fun handleFilterWattagePressed(filter: FilterVariationCF) {
+        viewModel.onFilterWattageTap(filter)
+    }
+
+    private fun handleFilterColorPressed(filter: FilterVariationCF) {
+        viewModel.onFilterColorTap(filter)
+    }
+
+    private fun handleFilterFinishPressed(filter: FilterVariationCF) {
+        viewModel.onFilterFinishTap(filter)
+    }
+
 }
 
