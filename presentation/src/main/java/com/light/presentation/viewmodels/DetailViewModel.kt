@@ -29,24 +29,15 @@ class DetailViewModel(
     val modelNavigation: LiveData<Event<NavigationModel>>
         get() = _modelNavigation
 
-    class NavigationModel(val productList: List<Product>)
-
-
     private val _model = MutableLiveData<Content>()
     val model: LiveData<Content>
         get() {
             return _model
         }
 
-    private val _modelDialog = MutableLiveData<Event<DialogModel>>()
-    val modelDialog: LiveData<Event<DialogModel>>
+    private val _modelDialog = MutableLiveData<Event<ServerError>>()
+    val modelDialog: LiveData<Event<ServerError>>
         get() = _modelDialog
-
-    sealed class DialogModel {
-        object TimeOutError : DialogModel()
-        object NotBulbIdentified : DialogModel()
-        object ServerError : DialogModel()
-    }
 
     private val _modelRequest = MutableLiveData<RequestModelContent>()
     val modelRequest: LiveData<RequestModelContent>
@@ -57,11 +48,16 @@ class DetailViewModel(
         get() = _modelItemCountRequest
 
 
+    class NavigationModel(val productList: List<Product>)
+
     data class RequestModelContent(val cartItem: Event<Cart>)
 
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
     data class Content(val product: Product, val isSingleProduct: Boolean = false)
+
+    object ServerError
+
 
 
     /***
@@ -156,7 +152,7 @@ class DetailViewModel(
         exception: Exception?,
         message: String
     ) {
-        _modelDialog.value = Event(DialogModel.ServerError)
+        _modelDialog.value = Event(ServerError)
     }
 
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
