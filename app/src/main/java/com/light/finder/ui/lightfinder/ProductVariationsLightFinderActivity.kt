@@ -98,9 +98,9 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun setDoneClickListener() {
-        textViewDone.setOnClickListener {
-            viewModel.onDoneButtonClicked()
-        }
+//        textViewDone.setOnClickListener {
+//            viewModel.onDoneButtonClicked()
+//        }
     }
 
     private fun initAdapters() {
