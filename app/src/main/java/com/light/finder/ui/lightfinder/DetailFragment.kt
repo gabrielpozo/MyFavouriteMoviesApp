@@ -105,6 +105,7 @@ class DetailFragment : BaseFragment() {
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
                     val category = categoryParcelable.deparcelizeCategory()
+                    viewModel.onRetrieveProductsVariation(category.categoryProducts)
                     viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
 //                    linearVariationContainer.setOnClickListener {
@@ -127,7 +128,7 @@ class DetailFragment : BaseFragment() {
             }
         }
 
-       // initAdapters()
+        initAdapters()
         setVariationsObservers()
         setCartListeners()
         setBottomSheetBehaviour()
