@@ -107,9 +107,9 @@ class DetailFragment : BaseFragment() {
                     val category = categoryParcelable.deparcelizeCategory()
                     viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
-                    linearVariationContainer.setOnClickListener {
-                        viewModel.onChangeVariationClick()
-                    }
+//                    linearVariationContainer.setOnClickListener {
+//                        viewModel.onChangeVariationClick()
+//                    }
                 }
         }
 
@@ -176,8 +176,8 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 activityCallback.onBottomBarBlocked(isClickable = false)
-                linearVariationContainer?.isClickable = false
-                linearVariationContainer?.isFocusable = false
+//                linearVariationContainer?.isClickable = false
+//                linearVariationContainer?.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
@@ -194,8 +194,8 @@ class DetailFragment : BaseFragment() {
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
                     if (!isSingleProduct) {
-                        linearVariationContainer?.isClickable = true
-                        linearVariationContainer?.isFocusable = true
+//                        linearVariationContainer?.isClickable = true
+//                        linearVariationContainer?.isFocusable = true
                     }
 
                     context?.let { it1 ->
@@ -218,8 +218,8 @@ class DetailFragment : BaseFragment() {
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
                 if (!isSingleProduct) {
-                    linearVariationContainer?.isClickable = true
-                    linearVariationContainer?.isFocusable = true
+//                    linearVariationContainer?.isClickable = true
+//                    linearVariationContainer?.isFocusable = true
                 }
 
                 context?.let { it1 ->
@@ -388,25 +388,25 @@ class DetailFragment : BaseFragment() {
         textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
-        textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()
+        //textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()
 
         val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
         if (drawableStart == 0) {
-            imageViewColor.visibility = View.GONE
+            //imageViewColor.visibility = View.GONE
         } else {
-            imageViewColor.visibility = View.VISIBLE
-            imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
+//            imageViewColor.visibility = View.VISIBLE
+//            imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
         }
         textViewDetailDescription.text = product.description
 
         if (isSingleProduct) {
-            val param = imageViewColor.layoutParams as ViewGroup.MarginLayoutParams
-            param.marginStart = 4
-            imageViewColor.layoutParams = param
-            linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
-            linearVariationContainer.isClickable = false
-            textViewDetailChange.visibility = View.GONE
-            imageViewArrow.visibility = View.INVISIBLE
+//            val param = imageViewColor.layoutParams as ViewGroup.MarginLayoutParams
+//            param.marginStart = 4
+//            imageViewColor.layoutParams = param
+//            linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
+//            linearVariationContainer.isClickable = false
+//            textViewDetailChange.visibility = View.GONE
+//            imageViewArrow.visibility = View.INVISIBLE
         }
     }
 
