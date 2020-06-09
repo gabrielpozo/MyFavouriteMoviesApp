@@ -63,93 +63,9 @@ class DetailViewModel(
 
     data class Content(val product: Product, val isSingleProduct: Boolean = false)
 
-    fun onRetrieveProduct(category: Category) {
-        if (!::dataProducts.isInitialized) {
-            dataProducts = category.categoryProducts
-            _model.value = Content(
-                category.categoryProducts[0].also { it.isSelected = true },
-                isSingleProduct = isSingleProduct()
-            )
-        }
-    }
-
-    fun onRequestAddToCart(productSapId: String) {
-        if (productSapId.isNotEmpty()) {
-            launch {
-                getAddToCart.execute(
-                    ::handleSuccessResponse,
-                    ::handleErrorResponse,
-                    ::handleTimeOutResponse,
-                    ::handleEmptyResponse,
-                    params = *arrayOf(productSapId)
-                )
-            }
-        } else {
-            Log.e("ege", "Sap id is empty")
-        }
-    }
-
-    fun onRequestGetItemCount() {
-        launch {
-            getItemCount.execute(
-                ::handleItemCountSuccessResponse
-            )
-        }
-    }
-
-    private fun handleSuccessResponse(cartItem: Cart) {
-        _modelRequest.value = RequestModelContent(Event(cartItem))
-    }
-
-    private fun handleErrorResponse(
-        hasBeenCancelled: Boolean,
-        exception: Exception?,
-        message: String
-    ) {
-        _modelDialog.value = Event(DialogModel.ServerError)
-    }
-
-    private fun handleEmptyResponse() {
-        _modelDialog.value = Event(DialogModel.NotBulbIdentified)
-    }
-
-    private fun handleTimeOutResponse(message: String) {
-        _modelDialog.value = Event(DialogModel.TimeOutError)
-    }
-
-    private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
-        _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
-    }
-
-    private fun handleItemCountErrorResponse(hasBeenCancelled: Boolean) {
-        _modelDialog.value = Event(DialogModel.ServerError)
-    }
-
-    private fun handleItemCountEmptyResponse() {
-        _modelDialog.value = Event(DialogModel.NotBulbIdentified)
-    }
-
-    private fun handleItemCountTimeOutResponse(message: String) {
-        _modelDialog.value = Event(DialogModel.TimeOutError)
-    }
-
-    fun onRetrieveListFromProductVariation(productList: List<Product>) {
-        dataProducts = productList
-        val productSelected = dataProducts.find { it.isSelected }
-        if (productSelected != null) {
-            _model.value =
-                Content(productSelected)
-        }
-    }
-
-    fun onChangeVariationClick() {
-        _modelNavigation.value = Event(NavigationModel(dataProducts))
-    }
-
-    private fun isSingleProduct(): Boolean = dataProducts.toHashSet().size == 1
 
     /***
-     * New Variations
+     * variation data classes
      */
     private lateinit var dataProductsVariation: List<Product>
 
@@ -197,20 +113,76 @@ class DetailViewModel(
         val productSelected: Product
     )
 
-/*    private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
-    val modelNavigation: LiveData<Event<NavigationModel>>
-        get() = _modelNavigation
-
-    class NavigationModel(val categoryProducts: List<Product>)*/
 
 
-    fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
-        categoryProducts.forEach {
-            Log.d(
-                "GabrielDebugGuide",
-                "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}"
+    fun onRetrieveProduct(category: Category) {
+        if (!::dataProducts.isInitialized) {
+            dataProducts = category.categoryProducts
+            _model.value = Content(
+                category.categoryProducts[0].also { it.isSelected = true },
+                isSingleProduct = isSingleProduct()
             )
         }
+    }
+
+    fun onRequestAddToCart(productSapId: String) {
+        if (productSapId.isNotEmpty()) {
+            launch {
+                getAddToCart.execute(
+                    ::handleSuccessResponse,
+                    ::handleErrorResponse,
+                    params = *arrayOf(productSapId)
+                )
+            }
+        } else {
+            Log.e("ege", "Sap id is empty")
+        }
+    }
+
+    fun onRequestGetItemCount() {
+        launch {
+            getItemCount.execute(
+                ::handleItemCountSuccessResponse
+            )
+        }
+    }
+
+    private fun handleSuccessResponse(cartItem: Cart) {
+        _modelRequest.value = RequestModelContent(Event(cartItem))
+    }
+
+    private fun handleErrorResponse(
+        hasBeenCancelled: Boolean,
+        exception: Exception?,
+        message: String
+    ) {
+        _modelDialog.value = Event(DialogModel.ServerError)
+    }
+
+    private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
+        _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
+    }
+
+    fun onRetrieveListFromProductVariation(productList: List<Product>) {
+        dataProducts = productList
+        val productSelected = dataProducts.find { it.isSelected }
+        if (productSelected != null) {
+            _model.value =
+                Content(productSelected)
+        }
+    }
+
+    fun onChangeVariationClick() {
+        _modelNavigation.value = Event(NavigationModel(dataProducts))
+    }
+
+    private fun isSingleProduct(): Boolean = dataProducts.toHashSet().size == 1
+
+    /***
+     * variation controller methods
+     */
+
+    fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         dataProductsVariation = categoryProducts
         val productSelected = dataProductsVariation.find {
             it.isSelected
@@ -357,7 +329,6 @@ class DetailViewModel(
             isUpdated = isAnUpdate
         )
     }
-
 
     private fun handleFinishUseCaseResult(
         filterFinishButtons: List<FilterVariationCF>, isAnUpdate: Boolean = false
