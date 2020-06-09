@@ -23,6 +23,9 @@ class DetailViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    /**
+     * observable product page variables
+     */
     private lateinit var dataProducts: List<Product>
 
     private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
@@ -46,22 +49,8 @@ class DetailViewModel(
     private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
     val modelItemCountRequest: LiveData<RequestModelItemCount>
         get() = _modelItemCountRequest
-
-
-    class NavigationModel(val productList: List<Product>)
-
-    data class RequestModelContent(val cartItem: Event<Cart>)
-
-    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
-
-    data class Content(val product: Product, val isSingleProduct: Boolean = false)
-
-    object ServerError
-
-
-
-    /***
-     * variation data classes
+    /**
+     * observable variation variables
      */
     private lateinit var dataProductsVariation: List<Product>
 
@@ -90,6 +79,23 @@ class DetailViewModel(
             return _productSelected
         }
 
+
+    /***
+     * product page data classes
+     */
+    class NavigationModel(val productList: List<Product>)
+
+    data class RequestModelContent(val cartItem: Event<Cart>)
+
+    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
+
+    data class Content(val product: Product, val isSingleProduct: Boolean = false)
+
+    object ServerError
+    /***
+     * variation data classes
+     */
+
     data class FilteringWattage(
         val filteredWattageButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
@@ -108,8 +114,6 @@ class DetailViewModel(
     data class ProductSelectedModel(
         val productSelected: Product
     )
-
-
 
     fun onRetrieveProduct(category: Category) {
         if (!::dataProducts.isInitialized) {
