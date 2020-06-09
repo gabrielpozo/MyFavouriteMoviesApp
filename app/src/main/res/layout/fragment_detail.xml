@@ -52,7 +52,7 @@
         android:lineSpacingExtra="12sp"
         android:gravity="center"
         android:textSize="18sp"
-        android:text="Live Preview" />
+        android:text="@string/live_preview_button_text" />
 
     <View
         android:id="@+id/space"

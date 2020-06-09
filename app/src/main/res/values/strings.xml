@@ -34,6 +34,8 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
+    <string name="live_preview_button_text">Live preview</string>
+
 
 
     <string name="try_again">Try again</string>
