@@ -291,7 +291,7 @@ class DetailFragment : BaseFragment() {
 
     }
 
-    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.ServerError>) {
         Timber.e("Add to cart failed")
         cartAnimation.cancelAnimation()
         showErrorDialog(
