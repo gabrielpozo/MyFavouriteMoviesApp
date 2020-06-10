@@ -31,22 +31,25 @@ fun List<FilterVariationCF>.setBackgroundLayout(viewItemsMap: HashMap<Int, View>
 
 fun View.setDrawableOnBackground(filter: FilterVariationCF) {
     if (!filter.isAvailable) {
-        setBackgroundResource(R.drawable.card_filter_disabled)
         variation_name.setTextAppearance(R.style.DisabledText)
-        availableOptions.visibility = View.VISIBLE
+        //availableOptions.visibility = View.VISIBLE
         gradientView.visibility = View.VISIBLE
 
     } else {
-        setBackgroundResource(R.drawable.card_filter_unselected)
         variation_name.setTextAppearance(R.style.InactiveTextDark)
-        availableOptions.visibility = View.GONE
+       // availableOptions.visibility = View.GONE
         gradientView.visibility = View.GONE
     }
 
     if (filter.isSelected) {
-        setBackgroundResource(R.drawable.card_filter_selected)
+        imageFilterCover.setBorderWidth(5)
+        imageFilterCover.setBorderColor(
+            context.getColor(R.color.primaryPressed)
+        )
+
+        // setBackgroundResource(R.drawable.card_filter_selected)
         variation_name.setTextAppearance(R.style.ActiveText)
-        availableOptions.visibility = View.GONE
+       // availableOptions.visibility = View.GONE
     }
 
 }

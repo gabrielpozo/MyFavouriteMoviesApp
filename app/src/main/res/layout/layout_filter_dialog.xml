@@ -58,9 +58,17 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <View
+        android:layout_gravity="bottom"
+        android:layout_marginTop="16dp"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal">
 
         <TextView
@@ -70,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="24dp"
             android:text="Color:"
@@ -85,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:text="Warm White"
@@ -108,9 +116,17 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+
+    <View
+        android:layout_gravity="bottom"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal">
 
         <TextView
@@ -120,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="24dp"
             android:text="Finish:"
@@ -135,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:text="Clear"
@@ -157,5 +173,10 @@
         tools:listitem="@layout/item_card_filter_unselected">
 
     </androidx.recyclerview.widget.RecyclerView>
+    <View
+        android:layout_gravity="bottom"
+        android:background="@color/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
 </LinearLayout>
