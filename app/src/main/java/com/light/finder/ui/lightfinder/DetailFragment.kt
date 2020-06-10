@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
@@ -139,6 +140,11 @@ class DetailFragment : BaseFragment() {
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false);
+        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false);
+        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false);
+
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
