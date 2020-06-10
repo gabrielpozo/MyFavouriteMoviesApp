@@ -141,10 +141,10 @@ class DetailFragment : BaseFragment() {
         val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
+        // avoid unwanted scroll when bottom sheet collapsed
         ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false);
         ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false);
         ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false);
-
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
