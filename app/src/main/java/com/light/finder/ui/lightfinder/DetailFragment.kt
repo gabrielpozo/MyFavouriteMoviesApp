@@ -7,7 +7,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginBottom
@@ -138,7 +137,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setBottomSheetBehaviour() {
-        val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayout)
+        val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
         context?.let {
