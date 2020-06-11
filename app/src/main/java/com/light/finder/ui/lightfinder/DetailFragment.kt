@@ -63,6 +63,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private var isSingleProduct: Boolean = false
+    private var isSingleImage : Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
             requireContext()
@@ -111,9 +112,6 @@ class DetailFragment : BaseFragment() {
                     viewModel.onRetrieveProductsVariation(category.categoryProducts)
                     viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
-//                    linearVariationContainer.setOnClickListener {
-//                        viewModel.onChangeVariationClick()
-//                    }
                 }
         }
 
@@ -185,8 +183,6 @@ class DetailFragment : BaseFragment() {
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 activityCallback.onBottomBarBlocked(isClickable = false)
-//                linearVariationContainer?.isClickable = false
-//                linearVariationContainer?.isFocusable = false
                 cartButtonText.text = getString(R.string.adding_to_cart)
             }
 
@@ -203,8 +199,7 @@ class DetailFragment : BaseFragment() {
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
                     if (!isSingleProduct) {
-//                        linearVariationContainer?.isClickable = true
-//                        linearVariationContainer?.isFocusable = true
+                        // for future use?
                     }
 
                     context?.let { it1 ->
@@ -227,8 +222,7 @@ class DetailFragment : BaseFragment() {
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
                 if (!isSingleProduct) {
-//                    linearVariationContainer?.isClickable = true
-//                    linearVariationContainer?.isFocusable = true
+                    // for future use?
                 }
 
                 context?.let { it1 ->
@@ -424,22 +418,25 @@ class DetailFragment : BaseFragment() {
         //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
         productImageList.addAll(product.imageUrls)
 
-        when (productImageList.size) {
-            0 -> {
-                productImageList.add("")
-            }
+        if (productImageList.size == 0) {
+            productImageList.add("")
+        } else if (productImageList.size > 1) {
+            isSingleImage = false
         }
 
         viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(p0: View, newState: Int) {
+                if (isSingleImage) {
+                    return
+                }
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        //dots_indicator.visibility = View.VISIBLE
+                        dots_indicator.visibility = View.VISIBLE
                     }
                     else -> {
-                        //dots_indicator.visibility = View.GONE
+                        dots_indicator.visibility = View.GONE
                     }
                 }
             }
@@ -454,34 +451,17 @@ class DetailFragment : BaseFragment() {
                 }
             }
         })
-        setImageGalleryDots(productImageList)
+        setImageGalleryDots()
     }
 
-    private fun setImageGalleryDots(productImageList: MutableList<String>) {
+    private fun setImageGalleryDots() {
 
-        if (productImageList.size < 2) {
+        if (isSingleImage) {
             return
         }
 
         dots_indicator?.visibility = View.VISIBLE
         dots_indicator?.attachViewPager(viewPagerDetail)
-//        bottomSheetBehavior.setBottomSheetCallback(object :
-//            BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(p0: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_COLLAPSED -> {
-//                        dots_indicator.visibility = View.VISIBLE
-//                    }
-//                    else -> {
-//                        dots_indicator.visibility = View.GONE
-//                    }
-//                }
-//            }
-//
-//            override fun onSlide(p0: View, p1: Float) {
-//
-//            }
-//        })
     }
 
     private fun checkCodesValidity(category: Category) {
