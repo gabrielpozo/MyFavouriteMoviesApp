@@ -16,15 +16,14 @@ class SignifyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         if (BuildConfig.DEBUG) {
             //debug
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
-            Usabilla.debugEnabled = true
         }
 
         InternetUtil.init(this)
-        Usabilla.initialize(this)
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
 
