@@ -124,24 +124,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
-                val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(
-                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
-                    )
-                        ?.deparcelizeProductList() ?: emptyList()
-                val currentFragment = screenNavigator.getCurrentFragment()
-                if (currentFragment is DetailFragment) {
-                    currentFragment.retrieveLisFromProductVariation(productList)
-                    firebaseAnalytics.trackScreen(currentFragment, this)
-                }
-            }
-        }
-    }
-
     override fun onInternetConnectionLost() {
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.no_internet_banner)) {
         }

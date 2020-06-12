@@ -26,7 +26,6 @@ class DetailViewModel(
     /**
      * observable product page variables
      */
-    private lateinit var dataProducts: List<Product>
 
     private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
     val modelNavigation: LiveData<Event<NavigationModel>>
@@ -115,11 +114,10 @@ class DetailViewModel(
         val productSelected: Product
     )
 
-    fun onRetrieveProduct(category: Category) {
-        if (!::dataProducts.isInitialized) {
-            dataProducts = category.categoryProducts
+    fun onRetrieveProduct(products: List<Product>) {
+        if (::dataProductsVariation.isInitialized) {
             _model.value = Content(
-                category.categoryProducts[0].also { it.isSelected = true },
+                products[0].also { it.isSelected = true },
                 isSingleProduct = isSingleProduct()
             )
         }
@@ -163,20 +161,8 @@ class DetailViewModel(
         _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
     }
 
-    fun onRetrieveListFromProductVariation(productList: List<Product>) {
-        dataProducts = productList
-        val productSelected = dataProducts.find { it.isSelected }
-        if (productSelected != null) {
-            _model.value =
-                Content(productSelected)
-        }
-    }
 
-    fun onChangeVariationClick() {
-        _modelNavigation.value = Event(NavigationModel(dataProducts))
-    }
-
-    private fun isSingleProduct(): Boolean = dataProducts.toHashSet().size == 1
+    private fun isSingleProduct(): Boolean = dataProductsVariation.toHashSet().size == 1
 
     /***
      * variation controller methods
@@ -184,6 +170,8 @@ class DetailViewModel(
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         dataProductsVariation = categoryProducts
+        //TODO(change the name of this method
+        onRetrieveProduct(dataProductsVariation)
         val productSelected = dataProductsVariation.find {
             it.isSelected
         }
@@ -305,7 +293,7 @@ class DetailViewModel(
 
 
     private fun handleCompatibleResult(filter: FilterVariationCF, newListProduct: List<Product>) {
-        dataProducts = newListProduct
+        dataProductsVariation = newListProduct
         setProductSelectedOnView(getSelectedProduct(dataProductsVariation))
         getFilterVariationList(true)
     }

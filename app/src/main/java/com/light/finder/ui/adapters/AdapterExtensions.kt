@@ -1,5 +1,6 @@
 package com.light.finder.ui.adapters
 
+import android.util.Log
 import android.view.View
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
@@ -31,25 +32,20 @@ fun List<FilterVariationCF>.setBackgroundLayout(viewItemsMap: HashMap<Int, View>
 
 fun View.setDrawableOnBackground(filter: FilterVariationCF) {
     if (!filter.isAvailable) {
+        Log.d("Gabriel"," is Disable!! ${filter.codeFilter}")
+        frame.setBackgroundResource(R.drawable.circle_background_grey)
         variation_name.setTextAppearance(R.style.DisabledText)
-        //availableOptions.visibility = View.VISIBLE
         gradientView.visibility = View.VISIBLE
 
     } else {
+        frame.setBackgroundResource(R.drawable.circle_background_grey)
         variation_name.setTextAppearance(R.style.InactiveTextDark)
-       // availableOptions.visibility = View.GONE
         gradientView.visibility = View.GONE
     }
 
     if (filter.isSelected) {
-        imageFilterCover.setBorderWidth(5)
-        imageFilterCover.setBorderColor(
-            context.getColor(R.color.primaryPressed)
-        )
-
-        // setBackgroundResource(R.drawable.card_filter_selected)
+        frame.setBackgroundResource(R.drawable.circle_background_green)
         variation_name.setTextAppearance(R.style.ActiveText)
-       // availableOptions.visibility = View.GONE
     }
 
 }

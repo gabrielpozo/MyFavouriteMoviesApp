@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginEnd="32dp"
-    android:layout_marginStart="12dp"
-    android:layout_width="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="-4dp"
+    android:layout_width="136dp"
     android:layout_height="160dp">
 
     <FrameLayout
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.228"
-        android:background="@drawable/circle_background">
+        android:background="@drawable/circle_background_green">
 
         <com.light.finder.ui.common.CircleImageView
             android:id="@+id/imageFilterCover"
@@ -33,8 +33,6 @@
         android:id="@+id/gradientView"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="28dp"
-        android:layout_margin="8dp"
         android:layout_gravity="center|top"
         android:background="@drawable/image_gradient"
         android:visibility="gone"
@@ -51,6 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Variant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

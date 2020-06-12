@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -35,7 +34,6 @@ import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -63,7 +61,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private var isSingleProduct: Boolean = false
-    private var isSingleImage : Boolean = true
+    private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
             requireContext()
@@ -109,8 +107,8 @@ class DetailFragment : BaseFragment() {
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
                     val category = categoryParcelable.deparcelizeCategory()
+                    //viewModel.onRetrieveProduct(category)
                     viewModel.onRetrieveProductsVariation(category.categoryProducts)
-                    viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
                 }
         }
@@ -338,19 +336,12 @@ class DetailFragment : BaseFragment() {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
-        productSapId = contentProduct.product.sapID12NC.toString()
-        pricePerPack = contentProduct.product.pricePack
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             screenNavigator.navigateToVariationScreen(navModel.productList)
         }
-    }
-
-
-    fun retrieveLisFromProductVariation(productList: List<Product>) {
-        viewModel.onRetrieveListFromProductVariation(productList)
     }
 
     private fun populateProductData(product: Product) {
@@ -547,6 +538,9 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
+        productSapId = productSelectedModel.productSelected.sapID12NC.toString()
+        pricePerPack = productSelectedModel.productSelected.pricePack
+
         textViewWattage.text = String.format(
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
