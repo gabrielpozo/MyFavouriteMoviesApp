@@ -114,15 +114,6 @@ class DetailViewModel(
         val productSelected: Product
     )
 
-    fun onRetrieveProduct(products: List<Product>) {
-        if (::dataProductsVariation.isInitialized) {
-            _model.value = Content(
-                products[0].also { it.isSelected = true },
-                isSingleProduct = isSingleProduct()
-            )
-        }
-    }
-
     fun onRequestAddToCart(productSapId: String) {
         if (productSapId.isNotEmpty()) {
             launch {
@@ -161,8 +152,8 @@ class DetailViewModel(
         _modelItemCountRequest.value = RequestModelItemCount(Event(cartItemCount))
     }
 
-
     private fun isSingleProduct(): Boolean = dataProductsVariation.toHashSet().size == 1
+
 
     /***
      * variation controller methods
@@ -170,8 +161,7 @@ class DetailViewModel(
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
         dataProductsVariation = categoryProducts
-        //TODO(change the name of this method
-        onRetrieveProduct(dataProductsVariation)
+        setProductSelected(dataProductsVariation)
         val productSelected = dataProductsVariation.find {
             it.isSelected
         }
@@ -325,6 +315,15 @@ class DetailViewModel(
             filteredFinishButtons = filterFinishButtons,
             isUpdated = isAnUpdate
         )
+    }
+
+    private fun setProductSelected(products: List<Product>) {
+        if (::dataProductsVariation.isInitialized) {
+            _model.value = Content(
+                products[0].also { it.isSelected = true },
+                isSingleProduct = isSingleProduct()
+            )
+        }
     }
 
 }
