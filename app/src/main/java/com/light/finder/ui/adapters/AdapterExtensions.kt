@@ -1,6 +1,5 @@
 package com.light.finder.ui.adapters
 
-import android.util.Log
 import android.view.View
 import com.light.domain.model.FilterVariationCF
 import com.light.finder.R
@@ -32,7 +31,6 @@ fun List<FilterVariationCF>.setBackgroundLayout(viewItemsMap: HashMap<Int, View>
 
 fun View.setDrawableOnBackground(filter: FilterVariationCF) {
     if (!filter.isAvailable) {
-        Log.d("Gabriel"," is Disable!! ${filter.codeFilter}")
         frame.setBackgroundResource(R.drawable.circle_background_grey)
         variation_name.setTextAppearance(R.style.DisabledText)
         gradientView.visibility = View.VISIBLE
