@@ -336,6 +336,9 @@ class DetailFragment : BaseFragment() {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
+        populateStickyHeaderData(contentProduct.product)
+        productSapId = contentProduct.product.sapID12NC.toString()
+        pricePerPack = contentProduct.product.pricePack
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
@@ -382,7 +385,7 @@ class DetailFragment : BaseFragment() {
         textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
-        //textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()
+
 
         val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
         if (drawableStart == 0) {
@@ -402,6 +405,18 @@ class DetailFragment : BaseFragment() {
 //            textViewDetailChange.visibility = View.GONE
 //            imageViewArrow.visibility = View.INVISIBLE
         }
+    }
+
+    private fun populateStickyHeaderData(product: Product) {
+        // product sticky header
+        val bannerPrice = String.format(getString(R.string.banner_price),
+            product.qtyLampscase, product.qtyLampSku)
+
+        val bannerTitle = String.format(getString(R.string.banner_title),
+            product.categoryName, product.wattageReplaced,  product.factorBase )
+
+        product_banner_title.text = bannerTitle
+        product_banner_packs.text = bannerPrice
     }
 
     private fun setViewPager(product: Product) {
