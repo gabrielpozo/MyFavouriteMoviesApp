@@ -406,7 +406,6 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun populateStickyHeaderData(product: Product) {
-
         // product sticky header
         val bannerPacks = String.format(
             getString(R.string.banner_packs),
