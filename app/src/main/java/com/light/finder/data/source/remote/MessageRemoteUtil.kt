@@ -11,10 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object MessageRemoteUtil {
 
-    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpErrorInterceptor())
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
+        addInterceptor(HttpErrorInterceptor())
+        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+    }.build()
+
 
     val gsonBuilder: GsonBuilder = GsonBuilder().setLenient().setExclusionStrategies(
         HiddenAnnotationExclusionStrategy()

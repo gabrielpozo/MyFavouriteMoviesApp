@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.light.finder.BuildConfig
 import com.light.finder.extensions.createCookieStore
+import com.light.util.QA
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,10 +21,14 @@ class CartRemoteUtil private constructor(val context: Context) {
         CookiePolicy.ACCEPT_ALL
     )
 
-    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .cookieJar(JavaNetCookieJar(cookieManager))
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
+        cookieJar(JavaNetCookieJar(cookieManager))
+        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+    }.also {
+        if (BuildConfig.FLAVOR == QA) {
+            it.addNetworkInterceptor(AddHeaderInterceptor())
+        }
+    }.build()
 
     val gsonBuilder: GsonBuilder = GsonBuilder().setLenient()
 
@@ -43,6 +48,7 @@ class CartRemoteUtil private constructor(val context: Context) {
 
 open class SingletonHolder<out T : Any, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator
+
     @Volatile
     private var instance: T? = null
 
