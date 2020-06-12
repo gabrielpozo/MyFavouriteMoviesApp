@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Light Finder</string>
+    <string name="app_name">LightFinder</string>
 
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>

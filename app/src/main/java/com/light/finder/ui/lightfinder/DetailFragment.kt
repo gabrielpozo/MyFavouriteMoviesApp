@@ -61,7 +61,7 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private var isSingleProduct: Boolean = false
-    private var isSingleImage : Boolean = true
+    private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
             requireContext()
@@ -107,8 +107,8 @@ class DetailFragment : BaseFragment() {
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
                 ?.let { categoryParcelable ->
                     val category = categoryParcelable.deparcelizeCategory()
+                    //viewModel.onRetrieveProduct(category)
                     viewModel.onRetrieveProductsVariation(category.categoryProducts)
-                    viewModel.onRetrieveProduct(category)
                     checkCodesValidity(category)
                 }
         }
@@ -347,11 +347,6 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-
-    fun retrieveLisFromProductVariation(productList: List<Product>) {
-        viewModel.onRetrieveListFromProductVariation(productList)
-    }
-
     private fun populateProductData(product: Product) {
 
         val title = product.name
@@ -558,6 +553,9 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
+        productSapId = productSelectedModel.productSelected.sapID12NC.toString()
+        pricePerPack = productSelectedModel.productSelected.pricePack
+
         textViewWattage.text = String.format(
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
