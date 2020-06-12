@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isGone
 import androidx.lifecycle.Observer
+import com.light.finder.BuildConfig
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
@@ -31,6 +32,7 @@ import timber.log.Timber
 class CartFragment : BaseFragment() {
     companion object {
         const val URL = "https://www.store.lightguide.signify.com/us/checkout/cart/"
+        const val URL_QA = "https://lightfinder-staging.luzernsolutions.com/us/checkout/cart/"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
@@ -116,7 +118,14 @@ class CartFragment : BaseFragment() {
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         when (modelReload) {
             CartViewModel.ContentReload.ContentToBeLoaded -> {
-                webView.loadUrl(URL)
+                if(BuildConfig.DEBUG) {
+                    val extraHeaders: MutableMap<String, String> =
+                        HashMap()
+                    extraHeaders["Authorization"] = "Bearer 49385fe86a8fd424a98bacbdd8845357"
+                    webView.loadUrl(URL_QA,extraHeaders)
+                } else {
+                    webView.loadUrl(URL)
+                }
                 reloadingCallback.setCurrentlyReloaded(false)
             }
             CartViewModel.ContentReload.ContentOnCheckProcess -> {

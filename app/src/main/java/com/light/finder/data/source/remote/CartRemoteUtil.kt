@@ -20,16 +20,20 @@ class CartRemoteUtil private constructor(val context: Context) {
         CookiePolicy.ACCEPT_ALL
     )
 
-    private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .cookieJar(JavaNetCookieJar(cookieManager))
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
+        cookieJar(JavaNetCookieJar(cookieManager))
+        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+    }.also {
+        if (BuildConfig.DEBUG) {
+            it.addNetworkInterceptor(AddHeaderInterceptor())
+        }
+    }.build()
 
     val gsonBuilder: GsonBuilder = GsonBuilder().setLenient()
 
 
     val service: SignifyApiService = Retrofit.Builder()
-        .baseUrl(BuildConfig.CART_URL)
+        .baseUrl(if (BuildConfig.DEBUG) BuildConfig.CART_URL_QA else BuildConfig.CART_URL)
         .client(okHttpClient)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
@@ -43,6 +47,7 @@ class CartRemoteUtil private constructor(val context: Context) {
 
 open class SingletonHolder<out T : Any, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator
+
     @Volatile
     private var instance: T? = null
 
