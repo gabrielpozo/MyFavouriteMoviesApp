@@ -69,9 +69,9 @@ fun View.showWithAnimation() {
         })
 }
 
-fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
+fun View.slideVertically(distance: Float, duration: Long = 500, hide: Boolean = false) {
     val view = this
-    this.animate().translationY(distance).setDuration(500)
+    this.animate().translationY(distance).setDuration(duration)
         .setListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
 

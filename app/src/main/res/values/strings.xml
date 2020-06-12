@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Light Finder</string>
+    <string name="app_name">LightFinder</string>
 
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>
@@ -34,8 +34,9 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
+    <string name="banner_title">%s %sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
-
+    <string name="banner_price">%s packs of %s bulbs</string>
 
 
     <string name="try_again">Try again</string>
