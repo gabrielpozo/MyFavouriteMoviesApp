@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -35,7 +34,6 @@ import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.custom_button_cart.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
@@ -338,6 +336,7 @@ class DetailFragment : BaseFragment() {
         isSingleProduct = contentProduct.isSingleProduct
         setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
+        populateStickyHeaderData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
         pricePerPack = contentProduct.product.pricePack
     }
@@ -391,7 +390,7 @@ class DetailFragment : BaseFragment() {
         textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
-        //textViewDetailVariation.text = changeVariation.dropFirstAndLastCharacter()
+
 
         val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
         if (drawableStart == 0) {
@@ -411,6 +410,18 @@ class DetailFragment : BaseFragment() {
 //            textViewDetailChange.visibility = View.GONE
 //            imageViewArrow.visibility = View.INVISIBLE
         }
+    }
+
+    private fun populateStickyHeaderData(product: Product) {
+        // product sticky header
+        val bannerPrice = String.format(getString(R.string.banner_price),
+            product.qtyLampscase, product.qtyLampSku)
+
+        val bannerTitle = String.format(getString(R.string.banner_title),
+            product.categoryName, product.wattageReplaced,  product.factorBase )
+
+        product_banner_title.text = bannerTitle
+        product_banner_packs.text = bannerPrice
     }
 
     private fun setViewPager(product: Product) {
