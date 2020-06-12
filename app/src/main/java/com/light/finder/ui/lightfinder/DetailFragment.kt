@@ -348,9 +348,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun populateProductData(product: Product) {
-
         val title = product.name
-
 
         val pricePack = String.format(
             getString(R.string.price_per_pack),
@@ -363,24 +361,24 @@ class DetailFragment : BaseFragment() {
         )
 
 
-        val changeVariation = String.format(
-            getString(R.string.change_variation),
-            getLegendTagPref(
-                product.colorCctCode,
-                logError = true,
-                isForDetailScreen = true,
-                filterTypeList = localPreferences.loadLegendCctFilterNames(),
-                legendTag = "product_cct_code"
-            ),
-            product.wattageReplaced,
-            getLegendTagPref(
-                product.productFinishCode, true,
-                isForDetailScreen = true,
-                filterTypeList = localPreferences.loadLegendFinishFilterNames(),
-                legendTag = "product_finish_code"
-            ),
-            getString(R.string.finish)
-        )
+        /*       val changeVariation = String.format(
+                   getString(R.string.change_variation),
+                   getLegendTagPref(
+                       product.colorCctCode,
+                       logError = true,
+                       isForDetailScreen = true,
+                       filterTypeList = localPreferences.loadLegendCctFilterNames(),
+                       legendTag = "product_cct_code"
+                   ),
+                   product.wattageReplaced,
+                   getLegendTagPref(
+                       product.productFinishCode, true,
+                       isForDetailScreen = true,
+                       filterTypeList = localPreferences.loadLegendFinishFilterNames(),
+                       legendTag = "product_finish_code"
+                   ),
+                   getString(R.string.finish)
+               )*/
 
         textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
@@ -409,14 +407,24 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-        val bannerPrice = String.format(getString(R.string.banner_price),
-            product.qtyLampscase, product.qtyLampSku)
+        val bannerPacks = String.format(
+            getString(R.string.banner_packs),
+            product.qtyLampscase, product.qtySkuCase.pluralOrSingular(), product.qtyLampSku, product.qtyLampSku.pluralOrSingular()
+        )
 
-        val bannerTitle = String.format(getString(R.string.banner_title),
-            product.categoryName, product.wattageReplaced,  product.factorBase )
+        val bannerTitle = String.format(
+            getString(R.string.banner_title),
+            product.categoryName, product.wattageReplaced, product.factorBase
+        )
+
+        val pricePerPack = String.format(
+            getString(R.string.banner_price),
+            product.pricePack
+        )
 
         product_banner_title.text = bannerTitle
-        product_banner_packs.text = bannerPrice
+        product_banner_packs.text = bannerPacks
+        banner_price.text = pricePerPack
     }
 
     private fun setViewPager(product: Product) {
@@ -482,7 +490,6 @@ class DetailFragment : BaseFragment() {
             view?.systemUiVisibility = flags
         }
     }
-
 
     /***
      *
@@ -555,6 +562,9 @@ class DetailFragment : BaseFragment() {
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
         productSapId = productSelectedModel.productSelected.sapID12NC.toString()
         pricePerPack = productSelectedModel.productSelected.pricePack
+
+        populateProductData(productSelectedModel.productSelected)
+        populateStickyHeaderData(productSelectedModel.productSelected)
 
         textViewWattage.text = String.format(
             getString(R.string.wattage_variation),
