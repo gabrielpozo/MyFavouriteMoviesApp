@@ -147,6 +147,14 @@ fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
     setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
 }
 
+fun Int.pluralOrSingular() =
+    if (this > 1) {
+        "s"
+    } else {
+        ""
+    }
+
+
 
 
 

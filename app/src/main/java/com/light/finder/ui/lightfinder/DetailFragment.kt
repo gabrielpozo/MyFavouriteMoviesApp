@@ -406,10 +406,11 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun populateStickyHeaderData(product: Product) {
+
         // product sticky header
-        val bannerPrice = String.format(
-            getString(R.string.banner_price),
-            product.qtyLampscase, product.qtyLampSku
+        val bannerPacks = String.format(
+            getString(R.string.banner_packs),
+            product.qtyLampscase, product.qtySkuCase.pluralOrSingular(), product.qtyLampSku, product.qtyLampSku.pluralOrSingular()
         )
 
         val bannerTitle = String.format(
@@ -417,8 +418,14 @@ class DetailFragment : BaseFragment() {
             product.categoryName, product.wattageReplaced, product.factorBase
         )
 
+        val pricePerPack = String.format(
+            getString(R.string.banner_price),
+            product.pricePack
+        )
+
         product_banner_title.text = bannerTitle
-        product_banner_packs.text = bannerPrice
+        product_banner_packs.text = bannerPacks
+        banner_price.text = pricePerPack
     }
 
     private fun setViewPager(product: Product) {
