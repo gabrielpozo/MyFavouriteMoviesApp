@@ -47,6 +47,8 @@ fun View.setDrawableOnBackground(filter: FilterVariationCF) {
         setBackgroundResource(R.drawable.card_filter_selected)
         variation_name.setTextAppearance(R.style.ActiveText)
         availableOptions.visibility = View.GONE
+        gradientView.visibility = View.GONE
+
     }
 
 }

@@ -22,7 +22,7 @@ object MessageRemoteUtil {
     )
 
     val service: SignifyApiService = Retrofit.Builder()
-        .baseUrl(if (BuildConfig.DEBUG) BuildConfig.BASE_URL_QA else BuildConfig.BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))

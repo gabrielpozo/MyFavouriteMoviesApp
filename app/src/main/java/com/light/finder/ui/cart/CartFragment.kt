@@ -25,6 +25,7 @@ import com.light.finder.di.modules.submodules.CartModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
+import com.light.util.QA
 import kotlinx.android.synthetic.main.cart_fragment.*
 import kotlinx.android.synthetic.main.cart_fragment_offline.*
 import timber.log.Timber
@@ -118,7 +119,7 @@ class CartFragment : BaseFragment() {
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         when (modelReload) {
             CartViewModel.ContentReload.ContentToBeLoaded -> {
-                if(BuildConfig.DEBUG) {
+                if(BuildConfig.FLAVOR == QA) {
                     val extraHeaders: MutableMap<String, String> =
                         HashMap()
                     extraHeaders["Authorization"] = "Bearer 49385fe86a8fd424a98bacbdd8845357"
