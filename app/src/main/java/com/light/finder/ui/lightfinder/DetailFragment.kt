@@ -177,7 +177,6 @@ class DetailFragment : BaseFragment() {
 
 
     private fun setCartListeners() {
-
         cartAnimation.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 activityCallback.onBottomBarBlocked(isClickable = false)
@@ -409,12 +408,19 @@ class DetailFragment : BaseFragment() {
         // product sticky header
         val bannerPacks = String.format(
             getString(R.string.banner_packs),
-            product.qtyLampscase, product.qtySkuCase.pluralOrSingular(), product.qtyLampSku, product.qtyLampSku.pluralOrSingular()
+            product.qtySkuCase,
+            product.qtySkuCase.pluralOrSingular(),
+            product.qtyLampSku,
+            product.qtyLampSku.pluralOrSingular()
         )
 
         val bannerTitle = String.format(
             getString(R.string.banner_title),
-            product.categoryName, product.wattageReplaced, product.factorBase
+            product.categoryName, product.wattageReplaced, getLegendTagPref(
+                product.formfactorType,
+                filterTypeList = localPreferences.loadLegendFormFactorFilterNames(),
+                legendTag = FORM_FACTOR_LEGEND_TAG
+            )
         )
 
         val pricePerPack = String.format(
@@ -573,12 +579,12 @@ class DetailFragment : BaseFragment() {
         textViewColor.text = getLegendTagPref(
             productSelectedModel.productSelected.colorCctCode,
             filterTypeList = localPreferences.loadLegendCctFilterNames(),
-            legendTag = "product_cct_code"
+            legendTag = COLOR_LEGEND_TAG
         )
         textViewFinish.text = getLegendTagPref(
             productSelectedModel.productSelected.productFinishCode,
             filterTypeList = localPreferences.loadLegendFinishFilterNames(),
-            legendTag = "product_finish_code"
+            legendTag = FINISH_LEGEND_TAG
         )
     }
 

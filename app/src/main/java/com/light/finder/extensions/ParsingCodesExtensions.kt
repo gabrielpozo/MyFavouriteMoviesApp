@@ -8,6 +8,11 @@ import com.light.finder.data.source.remote.reports.CrashlyticsException
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 
+const val COLOR_LEGEND_TAG = "product_cct_code"
+const val FINISH_LEGEND_TAG = "product_finish_code"
+const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
+
+
 fun getLegendTagPref(
     colorCode: Int,
     logError: Boolean = false,
@@ -28,18 +33,6 @@ fun getLegendTagPref(
         } else {
             ""
         }
-    }
-}
-
-
-fun Context.getformFactortType(factorTypeCode: Int): String = when (factorTypeCode) {
-    1 -> "Bulb"
-    2 -> "Reflector"
-    3 -> "Coil"
-    4 -> "Tube"
-    else -> {
-        CrashlyticsException(422, "product_formfactor_type_code", factorTypeCode).logException()
-        ""
     }
 }
 
