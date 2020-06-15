@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.layout_detail_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_filter_dialog.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
-import kotlinx.android.synthetic.main.product_title_banner.*
+import kotlinx.android.synthetic.main.layout_sticky_header.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -407,24 +407,24 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-        val bannerPacks = String.format(
-            getString(R.string.banner_packs),
+        val stickyHeaderPacks = String.format(
+            getString(R.string.sticky_header_packs),
             product.qtyLampscase, product.qtySkuCase.pluralOrSingular(), product.qtyLampSku, product.qtyLampSku.pluralOrSingular()
         )
 
-        val bannerTitle = String.format(
-            getString(R.string.banner_title),
+        val stickyHeaderTitle = String.format(
+            getString(R.string.sticky_header_title),
             product.categoryName, product.wattageReplaced, product.factorBase
         )
 
         val pricePerPack = String.format(
-            getString(R.string.banner_price),
+            getString(R.string.sticky_header_price),
             product.pricePack
         )
 
-        product_banner_title.text = bannerTitle
-        product_banner_packs.text = bannerPacks
-        banner_price.text = pricePerPack
+        sticky_header_title.text = stickyHeaderTitle
+        sticky_header_packs.text = stickyHeaderPacks
+        sticky_header_price.text = pricePerPack
     }
 
     private fun setViewPager(product: Product) {
@@ -459,9 +459,9 @@ class DetailFragment : BaseFragment() {
                 p0.height
                 p1.toString()
                 if (p1 == 1F) {
-                    productTitleBanner?.slideVertically(0F, 250)
+                    stickyHeaderTitle?.slideVertically(0F, 250)
                 } else {
-                    productTitleBanner?.slideVertically(-productTitleBanner.height.toFloat(), 200)
+                    stickyHeaderTitle?.slideVertically(-stickyHeaderTitle.height.toFloat(), 200)
                 }
             }
         })

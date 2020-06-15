@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundDark"
     android:orientation="vertical">
-    <include layout="@layout/product_title_banner" />
+
+    <include layout="@layout/layout_sticky_header" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/productTitleBanner"
+    android:id="@+id/stickyHeaderTitle"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="120dp"
@@ -13,7 +13,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/product_banner_title"
+        android:id="@+id/sticky_header_title"
         style="TitleTextBookSmall"
         android:textColor="@color/backgroundLight"
         android:fontFamily="@font/book"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        app:layout_constraintTop_toBottomOf="@+id/product_banner_title"
+        app:layout_constraintTop_toBottomOf="@+id/sticky_header_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/product_banner_packs"
+            android:id="@+id/sticky_header_packs"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/book"
             android:textSize="20sp"
@@ -56,7 +56,7 @@
             />
 
         <TextView
-            android:id="@+id/banner_price"
+            android:id="@+id/sticky_header_price"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="wrap_content"
             android:layout_marginStart="5dp"

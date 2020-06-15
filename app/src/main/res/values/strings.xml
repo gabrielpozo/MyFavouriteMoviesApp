@@ -34,10 +34,10 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
-    <string name="banner_title">%s %sW %s</string>
+    <string name="sticky_header_title">%s %sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
-    <string name="banner_packs">%s pack%s of %s bulb%s</string>
-    <string name="banner_price">$%.2f</string>
+    <string name="sticky_header_packs">%s pack%s of %s bulb%s</string>
+    <string name="sticky_header_price">$%.2f</string>
 
 
     <string name="try_again">Try again</string>
