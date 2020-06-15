@@ -86,7 +86,8 @@ class UsabillaActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaRead
         // to process events right after this callback is called.
         usabilla.debugEnabled = true
         usabilla.updateFragmentManager(supportFragmentManager)
-        usabilla.preloadFeedbackForms(listOf(FORM_ID))
+        usabilla.preloadFeedbackForms(listOf(FORM_ID)) // make sure that preloadFeedbackForms is called only when online
+        //usabilla.removeCachedForms() // use that
         usabilla.loadFeedbackForm(FORM_ID, null, null, this)
     }
 }

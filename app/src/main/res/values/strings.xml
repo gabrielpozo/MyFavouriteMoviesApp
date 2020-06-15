@@ -34,12 +34,7 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
-    <string name="sticky_header_title">%s %sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
-    <string name="sticky_header_packs">%s pack%s of %s bulb%s</string>
-    <string name="sticky_header_price">$%.2f</string>
-
-
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="timeout_sub">That took longer than expected</string>
@@ -117,5 +112,9 @@
     <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
 
+    // Sticky Header Product Details
+    <string name="sticky_header_title">%s %sW %s</string>
+    <string name="sticky_header_packs">%s pack%s of %s %s%s</string>
+    <string name="sticky_header_price">$%.2f</string>
 
 </resources>
