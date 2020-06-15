@@ -14,22 +14,22 @@ const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
 
 
 fun getLegendTagPref(
-    colorCode: Int,
+    code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
     filterTypeList: List<FilterType>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
-        it.id == colorCode.toString()
+        it.id == code.toString()
     }
     return if (productColor != null) {
         productColor.name
 
     } else {
-        if (logError) CrashlyticsException(422, legendTag, colorCode).logException()
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
         if (!isForDetailScreen) {
-            colorCode.toString()
+            code.toString()
         } else {
             ""
         }
