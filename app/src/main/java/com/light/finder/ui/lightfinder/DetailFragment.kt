@@ -406,21 +406,24 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
+        val formFactorType = getLegendTagPref(
+            product.formfactorType,
+            filterTypeList = localPreferences.loadLegendFormFactorFilterNames(),
+            legendTag = FORM_FACTOR_LEGEND_TAG
+        )
+
         val bannerPacks = String.format(
             getString(R.string.banner_packs),
             product.qtySkuCase,
             product.qtySkuCase.pluralOrSingular(),
             product.qtyLampSku,
+            formFactorType,
             product.qtyLampSku.pluralOrSingular()
         )
 
         val bannerTitle = String.format(
             getString(R.string.banner_title),
-            product.categoryName, product.wattageReplaced, getLegendTagPref(
-                product.formfactorType,
-                filterTypeList = localPreferences.loadLegendFormFactorFilterNames(),
-                legendTag = FORM_FACTOR_LEGEND_TAG
-            )
+            product.categoryName, product.wattageReplaced, product.factorBase
         )
 
         val pricePerPack = String.format(
