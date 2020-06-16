@@ -411,7 +411,7 @@ class DetailFragment : BaseFragment() {
             product.formfactorType,
             filterTypeList = localPreferences.loadLegendFormFactorFilterNames(),
             legendTag = FORM_FACTOR_LEGEND_TAG
-        )
+        ).toLowerCase()
 
         val stickyHeaderPacks = String.format(
             getString(R.string.sticky_header_packs),
