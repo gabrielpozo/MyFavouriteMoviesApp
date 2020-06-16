@@ -116,7 +116,7 @@ fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
 }
 
 fun View.setSafeOnClickListener(
-    onViewResponse: (Boolean) -> Unit,
+    onViewResponse: (Boolean) -> Unit = {},
     onSafeClick: (View) -> Unit
 ) {
     val safeClickListener = SafeClickListener {

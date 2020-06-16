@@ -704,11 +704,10 @@ class CameraFragment : BaseFragment() {
             }
         }
 
-
-        helpButton?.setOnClickListener {
+        helpButton?.setSafeOnClickListener(onSafeClick = {
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
-        }
+        })
 
         /**
          * once camera container is initialize we start observing camera events from camera viewmodels
