@@ -55,9 +55,7 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterVariationCF>>() {
             }
         }
 
-        return DataState.Success(filterHashSet.sortedWith(Comparator { f1, f2 ->
-            (f1?.codeFilter ?: -1) - (f2?.codeFilter ?: -1)
-        }).toList())
+        return DataState.Success(filterHashSet.toList())
     }
 
 }
