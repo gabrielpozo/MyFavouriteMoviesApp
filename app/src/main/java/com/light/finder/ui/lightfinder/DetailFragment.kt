@@ -131,6 +131,8 @@ class DetailFragment : BaseFragment() {
         setVariationsObservers()
         setCartListeners()
         setBottomSheetBehaviour()
+        setViewPager()
+
     }
 
     private fun setBottomSheetBehaviour() {
@@ -333,7 +335,6 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductContent(contentProduct: DetailViewModel.Content) {
         isSingleProduct = contentProduct.isSingleProduct
-        setViewPager(contentProduct.product)
         populateProductData(contentProduct.product)
         populateStickyHeaderData(contentProduct.product)
         productSapId = contentProduct.product.sapID12NC.toString()
@@ -347,6 +348,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun populateProductData(product: Product) {
+        setImageAdapter(product)
         val title = product.name
 
         val pricePack = String.format(
@@ -437,18 +439,7 @@ class DetailFragment : BaseFragment() {
         sticky_header_price.text = pricePerPack
     }
 
-    private fun setViewPager(product: Product) {
-        val productImageList: MutableList<String> = mutableListOf()
-        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
-        productImageList.addAll(product.imageUrls)
-
-        if (productImageList.size == 0) {
-            productImageList.add("")
-        } else if (productImageList.size > 1) {
-            isSingleImage = false
-        }
-
-        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
+    private fun setViewPager() {
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(p0: View, newState: Int) {
@@ -476,6 +467,19 @@ class DetailFragment : BaseFragment() {
             }
         })
         setImageGalleryDots()
+    }
+
+    private fun setImageAdapter(product: Product) {
+        val productImageList: MutableList<String> = mutableListOf()
+        //productImageList.add("https://s3.us-east-2.amazonaws.com/imagessimonprocessed/HAL_A19_E26_FROSTED.jpg")
+        productImageList.addAll(product.imageUrls)
+
+        if (productImageList.size == 0) {
+            productImageList.add("")
+        } else if (productImageList.size > 1) {
+            isSingleImage = false
+        }
+        viewPagerDetail.adapter = DetailImageAdapter(requireContext(), productImageList)
     }
 
     private fun setImageGalleryDots() {
