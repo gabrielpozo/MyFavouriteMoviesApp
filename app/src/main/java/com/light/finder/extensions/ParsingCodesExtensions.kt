@@ -79,10 +79,10 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
         R.drawable.ic_soft_white
     }
     4 -> {
-        R.drawable.ic_cool_white
+        R.drawable.cool_white
     }
     5 -> {
-        R.drawable.ic_daylight
+        R.drawable.daylight
     }
     6 -> {
         R.drawable.tunnable_white
