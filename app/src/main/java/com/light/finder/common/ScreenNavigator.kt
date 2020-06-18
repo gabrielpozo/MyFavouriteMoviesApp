@@ -96,10 +96,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     if (current is CameraFragment) {
                         current.disableCameraCaptureButton()
                     }
+
                     fragNavController.switchTab(INDEX_ABOUT)
-                    if (current is AboutFragment) {
+                    if (getCurrentFragment() is AboutFragment) {
                         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
-                        current.setLightStatusBar()
+                        (getCurrentFragment() as AboutFragment).setLightStatusBar()
                     }
                 }
             }
