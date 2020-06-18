@@ -98,7 +98,6 @@ class DetailViewModel(
 
     data class ContentProductId(val productSapId: String)
 
-
     object ServerError
 
     /***

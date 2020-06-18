@@ -247,7 +247,6 @@ class DetailFragment : BaseFragment() {
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
     }
 
-
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
@@ -342,7 +341,6 @@ class DetailFragment : BaseFragment() {
         populateProductData(contentProduct.product)
         populateStickyHeaderData(contentProduct.product)
         pricePerPack = contentProduct.product.pricePack
-
     }
 
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
