@@ -109,12 +109,25 @@ fun View.setColorVariation(colorCode: Int) {
             imageFilterCover.setBackgroundResource(R.drawable.warm_white)
         }
 
+        3 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.variation_color_soft_white)
+
+        }
+
         4 -> {
             imageFilterCover.setBackgroundResource(R.drawable.cool_white)
         }
 
         5 -> {
             imageFilterCover.setBackgroundResource(R.drawable.daylight)
+        }
+
+        6 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.tunable)
+        }
+
+        7 -> {
+            imageFilterCover.setBackgroundResource(R.drawable.full_color)
         }
         else -> {
             imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
