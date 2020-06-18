@@ -687,8 +687,8 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
-                    firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
-                        putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
+                        putBoolean(getString(R.string.flash_enabled), flashMode == ImageCapture.FLASH_MODE_ON)
                     }
                     onCameraCaptureClick()
                 } else {
