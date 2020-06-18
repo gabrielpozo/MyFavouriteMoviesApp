@@ -75,11 +75,23 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     2 -> {
         R.drawable.ic_warm_white
     }
+
+    3 -> {
+        R.drawable.ic_soft_white
+    }
     4 -> {
         R.drawable.ic_cool_white
     }
     5 -> {
         R.drawable.ic_daylight
+    }
+
+    6 -> {
+        R.drawable.tunnable_white
+    }
+
+    7 -> {
+        R.drawable.full_color_range
     }
 
     else -> {
