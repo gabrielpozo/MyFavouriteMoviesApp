@@ -23,7 +23,7 @@
         android:text="LED Lamps Dimmable 60W E26"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="40dp"
         android:maxLines="1"
         android:ellipsize="end"
         android:singleLine="true"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:layout_height="wrap_content">
 
         <TextView
