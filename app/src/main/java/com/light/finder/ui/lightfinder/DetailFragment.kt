@@ -113,10 +113,6 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
-            putString(getString(R.string.parameter_sku), productSapId)
-        }
-
         buttonAddTocart.setOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
@@ -244,12 +240,19 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setDetailObservers() {
+        viewModel.modelSapId.observe(viewLifecycleOwner, Observer(::observeProductSapId))
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
     }
 
+    private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
+        productSapId = contentCart.productSapId
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
+    }
 
     private fun observeUpdateUi(contentCart: DetailViewModel.RequestModelContent) {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
@@ -337,7 +340,6 @@ class DetailFragment : BaseFragment() {
         isSingleProduct = contentProduct.isSingleProduct
         populateProductData(contentProduct.product)
         populateStickyHeaderData(contentProduct.product)
-        productSapId = contentProduct.product.sapID12NC.toString()
         pricePerPack = contentProduct.product.pricePack
     }
 
@@ -574,6 +576,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
+        //TODO(improve this logic) working along with the viewModel
         productSapId = productSelectedModel.productSelected.sapID12NC.toString()
         pricePerPack = productSelectedModel.productSelected.pricePack
 

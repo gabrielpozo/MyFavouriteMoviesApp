@@ -36,6 +36,11 @@ class DetailViewModel(
         get() {
             return _model
         }
+    private val _modelSapId = MutableLiveData<ContentProductId>()
+    val modelSapId: LiveData<ContentProductId>
+        get() {
+            return _modelSapId
+        }
 
     private val _modelDialog = MutableLiveData<Event<ServerError>>()
     val modelDialog: LiveData<Event<ServerError>>
@@ -48,6 +53,7 @@ class DetailViewModel(
     private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
     val modelItemCountRequest: LiveData<RequestModelItemCount>
         get() = _modelItemCountRequest
+
     /**
      * observable variation variables
      */
@@ -90,7 +96,10 @@ class DetailViewModel(
 
     data class Content(val product: Product, val isSingleProduct: Boolean = false)
 
+    data class ContentProductId(val productSapId: String)
+
     object ServerError
+
     /***
      * variation data classes
      */
@@ -318,9 +327,12 @@ class DetailViewModel(
     }
 
     private fun setProductSelected(products: List<Product>) {
+        _modelSapId
         if (::dataProductsVariation.isInitialized) {
+            val product = products[0].also { it.isSelected = true }
+            _modelSapId.value = ContentProductId(product.sapID12NC.toString())
             _model.value = Content(
-                products[0].also { it.isSelected = true },
+                product,
                 isSingleProduct = isSingleProduct()
             )
         }
