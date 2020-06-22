@@ -107,7 +107,7 @@ class FilterColorAdapter(
             itemView.variation_name.text = getLegendTagPref(
                 filter.codeFilter,
                 filterTypeList = filterColorList,
-                legendTag = COLOR_LEGEND_TAG
+                legendTag = "product_cct_code"
             )
             itemView.setDrawableOnBackground(filter)
             itemView.setColorVariation(filter.codeFilter)
@@ -158,7 +158,7 @@ class FilterFinishAdapter(
             itemView.variation_name.text = getLegendTagPref(
                 filter.codeFilter,
                 filterTypeList = filterFinishList,
-                legendTag = FINISH_LEGEND_TAG
+                legendTag = "product_finish_code"
             )
             itemView.setDrawableOnBackground(filter)
             itemView.setFinishVariation(filter.codeFilter)

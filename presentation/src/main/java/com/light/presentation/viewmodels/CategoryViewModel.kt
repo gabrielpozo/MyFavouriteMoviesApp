@@ -23,7 +23,7 @@ class CategoryViewModel(
 
     class NavigationModel(val category: Category)
 
-    data class Content(val messages: List<Category>, val message: Message)
+    data class Content(val messages: List<Category>)
 
 
     fun onCategoryClick(category: Category) {
@@ -33,6 +33,6 @@ class CategoryViewModel(
     }
 
     fun onRetrieveCategories(message: Message) {
-        _model.value = Content(message.categories, message)
+        _model.value = Content(message.categories)
     }
 }

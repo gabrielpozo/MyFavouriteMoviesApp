@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LightFinder</string>
+    <string name="app_name">Light Finder</string>
 
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>
@@ -24,7 +24,7 @@
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
-    <string name="light_bulb_recognised_as">Identified as %s</string>
+    <string name="light_bulb_recognised_as">Base identified as %s</string>
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient option</string>
@@ -34,7 +34,8 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
-    <string name="live_preview_button_text">Live preview</string>
+
+
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="timeout_sub">That took longer than expected</string>
@@ -91,8 +92,6 @@
     <string name="cancel_identified_event">cancel_identify</string>
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
-    <string name="flash_enabled">flash_enabled</string>
-    <string name="send_photo">send_photo</string>
     <string name="lightbulb_identified_but_no_products">identified_but_no_products</string>
     <string name="error_reason_event">error_reason</string>
     <string name="time_out_event">timeout</string>
@@ -114,9 +113,5 @@
     <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
 
-    // Sticky Header Product Details
-    <string name="sticky_header_title">%s %sW %s</string>
-    <string name="sticky_header_packs">%s pack%s of %s %s%s</string>
-    <string name="sticky_header_price">$%.2f</string>
 
 </resources>

@@ -2,13 +2,11 @@ package com.light.finder.ui.lightfinder
 
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
-import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -91,7 +89,7 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateUI(model: CategoryViewModel.Content) {
-        updateData(model.messages, model.message)
+        updateData(model.messages)
     }
 
     private fun initAdapter() {
@@ -108,15 +106,14 @@ class CategoriesFragment : BaseFragment() {
         }
     }
 
-    private fun updateData(categories: List<Category>, message: Message) {
+    private fun updateData(categories: List<Category>) {
         textViewResults.text = if (categories.size == 1) {
             getString(R.string.text_result).getIntFormatter(categories.size)
         } else {
             getString(R.string.text_results).getIntFormatter(categories.size)
         }
-        textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)
 
         adapter.categories = categories
     }

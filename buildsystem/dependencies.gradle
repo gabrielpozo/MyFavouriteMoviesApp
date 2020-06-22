@@ -61,12 +61,12 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.4"
-    googleAnalyticsFirebase = "17.4.3"
-    googleCrashAnalyticsFirebase = "17.0.1"
+    googleAnalyticsFirebase = "17.2.2"
+    googleCrashAnalyticsFirebase = "2.10.1"
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
-    usabillaVersion = "7.0.3"
+    usabillaVersion = "7.0.1"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -186,10 +186,12 @@ ext {
     ]
 
     googleServicesDependencies = [
-            analytics  : "com.google.firebase:firebase-analytics-ktx:$googleAnalyticsFirebase",
-            crashlytics: "com.google.firebase:firebase-crashlytics:$googleCrashAnalyticsFirebase",
+            analytics  : "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase",
             performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance",
-            tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion"
+            tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion",
+            //   authf      : 'com.google.firebase:firebase-auth:16.2.0'
+            //  sevicesanalytics: "com.google.android.gms:play-services-analytics-impl:$tagManagerVersion"
     ]
 
     usabillaDependencies = [
