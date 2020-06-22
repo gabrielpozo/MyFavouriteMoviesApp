@@ -113,6 +113,11 @@ class ProductsOptionsViewModel(
         }
     }
 
+    fun onDoneButtonClicked() {
+        _modelNavigation.value = Event(NavigationModel(dataProducts))
+
+    }
+
     private fun setProductSelectedOnView(productSelected: Product?) {
         if (productSelected != null) {
             _productSelected.value = ProductSelectedModel(productSelected)

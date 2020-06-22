@@ -83,21 +83,39 @@ suspend fun <T> repositoryCartHandleSource(
                             } ?: DataState.Error(NULLABLE_ERROR)
                         }
                     }
+                    NO_CONTENT_CODE -> {
+                        DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
+
+                    }
+                    NO_PRODUCTS_CODE -> {
+                        resultRequest.data?.run {
+                            ProductsNotAvailable(data = this)
+                        } ?: DataState.Error(NULLABLE_ERROR)
+
+                    }
+
                     else -> {
                         DataState.Error(NULLABLE_ERROR)
                     }
                 }
             }
 
+            Result.Status.TIME_OUT_ERROR -> {
+                DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
+            }
+
+            Result.Status.PARSE_ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    cause = ParsingError,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
             Result.Status.ERROR -> {
                 DataState.Error(
                     resultRequest.message ?: GENERAL_ERROR,
                     isCanceled = resultRequest.isCancelRequest
-                )
-            }
-            else -> {
-                DataState.Error(
-                    resultRequest.message ?: GENERAL_ERROR
                 )
             }
 

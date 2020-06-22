@@ -23,8 +23,12 @@ class TipsAndTricksLightFinderActivity : BaseLightFinderActivity() {
 
         setContentView(R.layout.fragment_tips_and_tricks)
 
+        firebaseAnalytics.setCurrentScreen(this, getString(R.string.photo_tips), null)
+
         initAdapters()
         setDoneClickListener()
+
+
     }
 
 

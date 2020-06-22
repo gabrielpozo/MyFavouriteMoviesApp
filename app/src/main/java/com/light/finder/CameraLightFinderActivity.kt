@@ -1,5 +1,6 @@
 package com.light.finder
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,16 +15,20 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.light.domain.model.Product
 import com.light.finder.common.*
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.data.source.remote.ProductParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -45,7 +50,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             )
         )
     }
-    private var isBackButtonBlocked = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override val numberOfRootFragments: Int = 3
@@ -111,14 +115,30 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
         if (!isClickable) {
-            isBackButtonBlocked = true
             bottom_navigation_view.setItemDisableColor(getColor(R.color.backgroundLight))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
             bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
-            isBackButtonBlocked = false
             bottom_navigation_view.enableItemAtPosition(INDEX_CART)
             bottom_navigation_view.enableItemAtPosition(INDEX_ABOUT)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
+                val productList: List<Product> =
+                    data?.getParcelableArrayListExtra<ProductParcelable>(
+                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
+                    )
+                        ?.deparcelizeProductList() ?: emptyList()
+                val currentFragment = screenNavigator.getCurrentFragment()
+                if (currentFragment is DetailFragment) {
+                    currentFragment.retrieveLisFromProductVariation(productList)
+                    firebaseAnalytics.trackScreen(currentFragment, this)
+                }
+            }
         }
     }
 
@@ -184,7 +204,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onBackPressed() {
-        if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
+        if (screenNavigator.popFragmentNot()) {
             super.onBackPressed()
         }
     }
