@@ -1,6 +1,6 @@
 package com.light.finder.data.source.remote.reports
 
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.light.util.FAILED_RECOGNITION
 import com.light.util.FORMAT_INVALID
 import com.light.util.SERVER_ERROR_RECOGNITION
@@ -13,7 +13,7 @@ class CrashlyticsException(
     private val value: Int?
 ) {
 
-    private var msg: String? = "Crashlytics Exception"
+    private var msg: String = "Crashlytics Exception"
 
     init {
         when (code) {
@@ -29,19 +29,18 @@ class CrashlyticsException(
         e.stackTrace = arrayOfNulls(0)
 
         if (field != null) {
-            Crashlytics.setString("Field", field)
+            FirebaseCrashlytics.getInstance().setCustomKey("Field", field)
         }
 
         if (value != null) {
-            Crashlytics.setInt("Value", value)
+            FirebaseCrashlytics.getInstance().setCustomKey("Value", value)
         }
 
-        Crashlytics.setInt("Response Code", code)
-        Crashlytics.setString("Reason", msg)
-        Crashlytics.log(msg)
-        Crashlytics.logException(e)
+        FirebaseCrashlytics.getInstance().setCustomKey("Response Code", code)
+        FirebaseCrashlytics.getInstance().setCustomKey("Reason", msg)
+        FirebaseCrashlytics.getInstance().log(msg)
+        FirebaseCrashlytics.getInstance().recordException(e)
         Timber.d(e)
     }
-
 
 }

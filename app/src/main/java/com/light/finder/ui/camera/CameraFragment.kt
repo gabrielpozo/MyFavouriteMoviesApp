@@ -673,7 +673,6 @@ class CameraFragment : BaseFragment() {
                     { container.foreground = null }, ANIMATION_FAST_MILLIS
                 )
             }, ANIMATION_SLOW_MILLIS)
-
         }
     }
 
@@ -688,8 +687,8 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
-                    firebaseAnalytics.logEventOnGoogleTagManager("send_photo") {
-                        putBoolean("flash_enable", flashMode == ImageCapture.FLASH_MODE_ON)
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
+                        putBoolean(getString(R.string.flash_enabled), flashMode == ImageCapture.FLASH_MODE_ON)
                     }
                     onCameraCaptureClick()
                 } else {
@@ -705,11 +704,10 @@ class CameraFragment : BaseFragment() {
             }
         }
 
-
-        helpButton?.setOnClickListener {
+        helpButton?.setSafeOnClickListener(onSafeClick = {
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.photo_help)) {}
             screenNavigator.navigateToTipsAndTricksScreen()
-        }
+        })
 
         /**
          * once camera container is initialize we start observing camera events from camera viewmodels
@@ -746,7 +744,9 @@ class CameraFragment : BaseFragment() {
         cameraExecutor.shutdown()
         // Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
-        cameraProvider.unbindAll()
+        if(::cameraProvider.isInitialized){
+            cameraProvider.unbindAll()
+        }
     }
 
     fun disableCameraCaptureButton() {

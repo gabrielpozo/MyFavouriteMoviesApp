@@ -120,10 +120,7 @@ class CartFragment : BaseFragment() {
         when (modelReload) {
             CartViewModel.ContentReload.ContentToBeLoaded -> {
                 if(BuildConfig.FLAVOR == QA) {
-                    val extraHeaders: MutableMap<String, String> =
-                        HashMap()
-                    extraHeaders["Authorization"] = "Bearer 49385fe86a8fd424a98bacbdd8845357"
-                    webView.loadUrl(URL_QA,extraHeaders)
+                    webView.loadUrl(URL_QA)
                 } else {
                     webView.loadUrl(URL)
                 }

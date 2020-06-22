@@ -8,7 +8,6 @@
     app:behavior_hideable="false"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -18,7 +17,6 @@
         <TextView
             android:id="@+id/textViewDetailTitle"
             style="@style/TitleTextLight"
-
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
@@ -26,8 +24,8 @@
             android:layout_height="wrap_content"
             tools:text="Title" />
 
-
         <LinearLayout
+            android:id="@+id/price_container"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal">
@@ -52,85 +50,7 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewDetailChange"
-                style="@style/SubtitleTextSmallBoldLight"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="visible"
-                android:text="@string/change_variation_title"
-                app:layout_constraintBottom_toTopOf="@+id/linearVariationContainer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginTop="0dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearVariationContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/outlined"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDetailChange"
-                app:layout_goneMarginTop="0dp">
-
-                <ImageView
-                    android:id="@+id/imageViewColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="4dp"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_gray" />
-
-                <TextView
-                    android:id="@+id/textViewDetailVariation"
-                    style="@style/SubtitleTextSmallLight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="18dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageViewArrow"
-                    app:layout_constraintStart_toEndOf="@id/imageViewColor"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginTop="16dp"
-                    tools:text="Details etc" />
-
-                <ImageView
-                    android:id="@+id/imageViewArrow"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_gray" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <include layout="@layout/layout_filter_dialog" />
 
         <LinearLayout
             android:visibility="visible"
@@ -282,9 +202,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/arrow_gray" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

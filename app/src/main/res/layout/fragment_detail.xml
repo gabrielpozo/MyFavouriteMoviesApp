@@ -6,16 +6,19 @@
     android:background="@color/backgroundDark"
     android:orientation="vertical">
 
+    <include layout="@layout/layout_sticky_header" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/backgroundLight"
+        android:layout_height="430dp"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPagerDetail"
             android:layout_width="match_parent"
-            android:layout_height="375dp" />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 
@@ -32,6 +35,26 @@
         app:dot_width="10dp"
         app:layout_anchor="@id/space"
         app:layout_anchorGravity="right" />
+
+    <Button
+        android:id="@+id/livePreviewButton"
+        style="@style/BlueButton"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/textLight"
+        android:background="@drawable/button_curvy_corners_categories"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawableStart="@drawable/ic_camera"
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:lineSpacingExtra="12sp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text="@string/live_preview_button_text" />
 
     <View
         android:id="@+id/space"
