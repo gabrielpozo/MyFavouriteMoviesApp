@@ -45,13 +45,14 @@
     <TextView
         android:id="@+id/variation_name"
         style="@style/InactiveTextDark"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:text="Variant"
+        android:maxLines="2"
+        android:text="Full Color Range"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frame" />
