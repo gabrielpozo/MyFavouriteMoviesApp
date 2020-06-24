@@ -36,6 +36,7 @@ class CameraViewModel(
         object RequestCameraViewDisplay : UiModel()
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
+        object GalleryViewDisplay : UiModel()
     }
 
     private val _modelPreview = MutableLiveData<Event<PreviewModel>>()
@@ -142,6 +143,12 @@ class CameraViewModel(
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
 
+        }
+    }
+
+    fun onGalleryPermissionRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _model.value = UiModel.GalleryViewDisplay
         }
     }
 

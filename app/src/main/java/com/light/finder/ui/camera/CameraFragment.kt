@@ -5,9 +5,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
@@ -99,6 +101,7 @@ class CameraFragment : BaseFragment() {
         private const val IMAGE_PICK_CODE = 1000;
         //Permission code
         private const val PERMISSION_CODE = 1001;
+        private const val REQUEST_IMAGE_GET = 1
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -224,10 +227,11 @@ class CameraFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            //image_view.setImageURI(data?.data)
+        if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
+            val thumbnail: Bitmap? = data?.getParcelableExtra("data")
+            val fullPhotoUri: Uri? = data?.data
+            // Do work with photo saved at fullPhotoUri
         }
-        super.onActivityResult(requestCode, resultCode, data)
 
     }
 
@@ -271,6 +275,10 @@ class CameraFragment : BaseFragment() {
                 modelUiState = ModelStatus.FEED
                 screenNavigator.toCameraFeedScreen(this)
                 setCameraSpecs()
+            }
+
+            is UiModel.GalleryViewDisplay -> {
+                pickImageFromGallery()
             }
         }
     }
@@ -604,7 +612,8 @@ class CameraFragment : BaseFragment() {
 
             imageGalleryButton.setOnClickListener {
                 galleryPermissionRequester.request({ isPermissionGranted ->
-                    pickImageFromGallery()
+                    viewModel.onGalleryPermissionRequested(isPermissionGranted)
+                    //pickImageFromGallery(isPermissionGranted)
                 })
             }
 
@@ -618,10 +627,13 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun pickImageFromGallery() {
-        //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+            //Intent to pick image
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+        }
+
+        startActivityForResult(intent, REQUEST_IMAGE_GET)
+
     }
 
     private fun setUpCamera() {
