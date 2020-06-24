@@ -26,6 +26,11 @@ fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSel
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
+fun CameraFragment.checkSelfStoragePermission(): Boolean = ContextCompat.checkSelfPermission(
+    requireContext(),
+    Manifest.permission.READ_EXTERNAL_STORAGE
+) == PackageManager.PERMISSION_GRANTED
+
 
 fun String.encodeImage(): String {
     val bytes = File(this).readBytes()

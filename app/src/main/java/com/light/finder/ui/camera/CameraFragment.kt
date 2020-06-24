@@ -588,6 +588,10 @@ class CameraFragment : BaseFragment() {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
+            imageGalleryButton.setOnClickListener {
+                
+            }
+
             /*//TODO check this and move it to local data source
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
