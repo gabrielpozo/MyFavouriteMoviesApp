@@ -2,6 +2,7 @@ package com.light.finder.ui.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -60,6 +61,7 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
+    private lateinit var galleryPermissionRequester: PermissionRequester
     private lateinit var connectivityRequester: ConnectivityRequester
     private lateinit var activityCallback: ActivityCallback
     private lateinit var alertDialog: AlertDialog
@@ -93,7 +95,10 @@ class CameraFragment : BaseFragment() {
         private const val ANIMATION_SLOW_MILLIS = 100L
         private const val TIME_OUT_LOG_REPORT = 408
         private const val PARSE_ERROR_LOG_REPORT = 422
-
+        //image pick code
+        private const val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private const val PERMISSION_CODE = 1001;
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -186,6 +191,7 @@ class CameraFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+            galleryPermissionRequester = PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
@@ -214,6 +220,14 @@ class CameraFragment : BaseFragment() {
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            //image_view.setImageURI(data?.data)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
 
     }
 
@@ -589,7 +603,9 @@ class CameraFragment : BaseFragment() {
             }
 
             imageGalleryButton.setOnClickListener {
-                
+                galleryPermissionRequester.request({ isPermissionGranted ->
+                    pickImageFromGallery()
+                })
             }
 
             /*//TODO check this and move it to local data source
@@ -599,6 +615,13 @@ class CameraFragment : BaseFragment() {
                 }
             }*/
         }
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
     private fun setUpCamera() {
