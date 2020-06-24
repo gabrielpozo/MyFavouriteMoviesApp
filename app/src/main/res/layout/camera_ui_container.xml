@@ -58,6 +58,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewCameraSubtitle" />
 
     <ImageButton
+        android:id="@+id/imageGalleryButton"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/switch_camera_button_alt"
+        android:padding="@dimen/spacing_small"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
+        app:srcCompat="@drawable/ic_image_gallery" />
+
+    <ImageButton
         android:id="@+id/flashSwitchButton"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="42dp"
