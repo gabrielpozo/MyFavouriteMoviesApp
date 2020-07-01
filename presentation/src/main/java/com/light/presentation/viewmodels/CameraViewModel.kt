@@ -1,11 +1,9 @@
 package com.light.presentation.viewmodels
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CartItemCount
-import com.light.domain.model.LegendParsing
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
 import com.light.source.local.LocalPreferenceDataSource
@@ -130,7 +128,6 @@ class CameraViewModel(
 
     fun onRequestCategoriesMessages(base64: String) {
         if (localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()) {
-            Log.d("Gabriel", "Getting Tags")
             launch {
                 getLegendUseCase.execute(
                     onSuccess = { handleRequestLegendOnSuccess(base64) },
@@ -138,7 +135,6 @@ class CameraViewModel(
                 )
             }
         } else {
-            Log.d("Gabriel", "Sending Directly")
             handleRequestLegendOnSuccess(base64)
         }
     }
