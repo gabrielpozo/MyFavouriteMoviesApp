@@ -1,6 +1,7 @@
 package com.light.presentation.viewmodels
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CartItemCount
@@ -127,45 +128,18 @@ class CameraViewModel(
     }
 
 
-    fun onRequestLegendTags() {
+    fun onRequestCategoriesMessages(base64: String) {
         if (localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()) {
+            Log.d("Gabriel", "Getting Tags")
             launch {
                 getLegendUseCase.execute(
-                    onSuccess = ::handleRequestLegendOnSuccess,
+                    onSuccess = { handleRequestLegendOnSuccess(base64) },
                     onError = ::handleRequestLegendOnError
                 )
             }
         } else {
-            //TODO(send base64 request to server)
-        }
-    }
-
-    private fun handleRequestLegendOnSuccess(legendParsing: LegendParsing) {
-        launch {
-            localPreferenceDataSource.saveLegendParsingFilterNames(legendParsing)
-            //TODO(send base64 request to server)
-        }
-    }
-
-    private fun handleRequestLegendOnError(dataSate: String) {
-        _modelDialog.value = Event(
-            DialogModel.ServerError(
-                exception = Exception("errorException"),
-                errorMessage = "messageError"
-            )
-        )
-    }
-
-    fun onRequestCategoriesMessages(base64: String) {
-        launch {
-            getCategoryResultUseCase.execute(
-                ::handleSuccessResponse,
-                ::handleErrorResponse,
-                ::handleTimeOutResponse,
-                ::handleEmptyResponse,
-                ::handleNoProductsResponse,
-                base64
-            )
+            Log.d("Gabriel", "Sending Directly")
+            handleRequestLegendOnSuccess(base64)
         }
     }
 
@@ -246,6 +220,28 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
 
+    private fun handleRequestLegendOnSuccess(base64: String) {
+        launch {
+            getCategoryResultUseCase.execute(
+                ::handleSuccessResponse,
+                ::handleErrorResponse,
+                ::handleTimeOutResponse,
+                ::handleEmptyResponse,
+                ::handleNoProductsResponse,
+                base64
+            )
+        }
+    }
+
+    private fun handleRequestLegendOnError(exception: Exception, message: String) {
+        _modelDialog.value = Event(
+            DialogModel.ServerError(
+                exception = exception,
+                errorMessage = message
+            )
+        )
+    }
+
     //TODO it might be used on media image user story
     private fun handleFileImageRetrieved(imageEncoded: String) {
         _modelRequest.value = Content.RequestCategoriesMessages(imageEncoded)
@@ -254,6 +250,5 @@ class CameraViewModel(
     private fun handleTimeOutResponse(message: String) {
         _modelDialog.value = Event(DialogModel.TimeOutError)
     }
-
 }
 

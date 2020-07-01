@@ -411,9 +411,9 @@ class DetailFragment : BaseFragment() {
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
 
-        val formFactorType = getLegendTagPref(
+        val formFactorType = getLegendTagPrefFormFactor(
             product.formfactorType,
-            filterTypeList = localPreferences.loadLegendFormFactorFilterNames(),
+            filterTypeList = localPreferences.loadFormFactorLegendTags(),
             legendTag = FORM_FACTOR_LEGEND_TAG
         ).toLowerCase()
 
