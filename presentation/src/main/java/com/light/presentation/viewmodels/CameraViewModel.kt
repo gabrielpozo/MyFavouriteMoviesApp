@@ -4,10 +4,13 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CartItemCount
+import com.light.domain.model.LegendParsing
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
+import com.light.source.local.LocalPreferenceDataSource
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
+import com.light.usecases.GetLegendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -15,6 +18,8 @@ import kotlinx.coroutines.launch
 class CameraViewModel(
     private val getItemCount: GetItemCountUseCase,
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
+    private val getLegendUseCase: GetLegendUseCase,
+    private val localPreferenceDataSource: LocalPreferenceDataSource,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -119,6 +124,36 @@ class CameraViewModel(
     fun onCameraButtonClicked(bitmap: Bitmap, rotationDegrees: Int) {
         _modelPreview.postValue(Event(PreviewModel(bitmap, rotationDegrees)))
         _modelRequest.postValue(Content.EncodeImage(bitmap))
+    }
+
+
+    fun onRequestLegendTags() {
+        if (localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()) {
+            launch {
+                getLegendUseCase.execute(
+                    onSuccess = ::handleRequestLegendOnSuccess,
+                    onError = ::handleRequestLegendOnError
+                )
+            }
+        } else {
+            //TODO(send base64 request to server)
+        }
+    }
+
+    private fun handleRequestLegendOnSuccess(legendParsing: LegendParsing) {
+        launch {
+            localPreferenceDataSource.saveLegendParsingFilterNames(legendParsing)
+            //TODO(send base64 request to server)
+        }
+    }
+
+    private fun handleRequestLegendOnError(dataSate: String) {
+        _modelDialog.value = Event(
+            DialogModel.ServerError(
+                exception = Exception("errorException"),
+                errorMessage = "messageError"
+            )
+        )
     }
 
     fun onRequestCategoriesMessages(base64: String) {

@@ -1,4 +1,4 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.utils
 
 import okhttp3.Interceptor
 import okhttp3.Request

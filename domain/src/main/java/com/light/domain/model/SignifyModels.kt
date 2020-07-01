@@ -87,3 +87,10 @@ data class FilterType(
     val id: String,
     val name: String
 )
+
+data class LegendParsing(val legend: LegendValue)
+data class LegendValue(val productFormFactorType: List<FormFactorType>)
+data class FormFactorType(
+    val id: Int,
+    val name: String
+)

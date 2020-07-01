@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.light.domain.model.FilterType
+import com.light.domain.model.FormFactorType
 import com.light.domain.model.Legend
+import com.light.domain.model.LegendParsing
 
 import com.light.source.local.LocalPreferenceDataSource
 
@@ -18,6 +20,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_CCT = "cctColor"
         private const val PRODUCT_FINISH = "productFinish"
         private const val FORM_FACTOR = "productFormFactor"
+        private const val FORM_FACTOR_LEGEND = "productFormFactorLegend"
+
     }
 
     private val PRIVATE_MODE = 0
@@ -33,6 +37,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         editor.commit()
     }
 
+    override suspend fun saveLegendParsingFilterNames(legend: LegendParsing) {
+        editor.putString(FORM_FACTOR, Gson().toJson(legend.legend.productFormFactorType))
+    }
+
     override fun loadLegendCctFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(PRODUCT_CCT, null) ?: "")
 
@@ -41,6 +49,13 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override fun loadLegendFormFactorFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(FORM_FACTOR, null) ?: "")
+
+    override fun loadFormFactorLegendTags(): List<FormFactorType> =
+        Gson().fromJson(
+            pref.getString(FORM_FACTOR_LEGEND, null) ?: emptyList<FormFactorType>().toString()
+        )
+
+
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T =
