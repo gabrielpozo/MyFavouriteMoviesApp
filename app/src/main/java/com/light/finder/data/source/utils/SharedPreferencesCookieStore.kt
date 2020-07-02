@@ -1,9 +1,10 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.utils
 
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.light.finder.data.source.remote.InMemoryCookieStore
 import java.net.HttpCookie
 import java.net.URI
 

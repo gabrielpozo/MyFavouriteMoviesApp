@@ -1,4 +1,4 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

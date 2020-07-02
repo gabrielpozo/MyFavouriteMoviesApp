@@ -5,6 +5,8 @@ import com.light.data.Result
 import com.light.domain.model.Message
 import com.light.finder.data.mappers.mapServerMessagesToDomain
 import com.light.finder.data.source.BaseDataSource
+import com.light.finder.data.source.remote.dto.CategoryResultDto
+import com.light.finder.data.source.remote.services.MessageRemoteUtil
 import com.light.source.remote.RemoteDataSource
 import com.light.util.BASE64_PREFIX
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT

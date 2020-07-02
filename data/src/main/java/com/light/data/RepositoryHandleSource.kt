@@ -91,8 +91,46 @@ suspend fun <T> repositoryCartHandleSource(
 
             Result.Status.ERROR -> {
                 DataState.Error(
-                    resultRequest.message ?: GENERAL_ERROR,
-                    isCanceled = resultRequest.isCancelRequest
+                    resultRequest.message ?: GENERAL_ERROR
+                )
+            }
+            else -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR
+                )
+            }
+
+        }
+    }
+}
+
+
+suspend fun <T> repositoryLegendHandleSource(
+    remoteSourceRequest: suspend () -> Result<T>,
+    localPreferenceDataSource: suspend (T) -> Unit
+): DataState<T> {
+    remoteSourceRequest.invoke().also { resultRequest ->
+
+        return when (resultRequest.status) {
+            Result.Status.SUCCESS -> {
+                when (resultRequest.code) {
+                    SUCCESSFUL_CODE -> {
+                        resultRequest.let { result ->
+                            result.data?.run {
+                                localPreferenceDataSource.invoke(this)
+                                DataState.Success(data = this)
+                            } ?: DataState.Error(NULLABLE_ERROR)
+                        }
+                    }
+                    else -> {
+                        DataState.Error(NULLABLE_ERROR)
+                    }
+                }
+            }
+
+            Result.Status.ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR
                 )
             }
             else -> {

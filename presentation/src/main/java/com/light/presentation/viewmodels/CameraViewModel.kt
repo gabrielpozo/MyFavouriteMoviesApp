@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CartItemCount
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
+import com.light.source.local.LocalPreferenceDataSource
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
+import com.light.usecases.GetLegendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -15,6 +17,8 @@ import kotlinx.coroutines.launch
 class CameraViewModel(
     private val getItemCount: GetItemCountUseCase,
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
+    private val getLegendUseCase: GetLegendUseCase,
+    private val localPreferenceDataSource: LocalPreferenceDataSource,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -121,16 +125,17 @@ class CameraViewModel(
         _modelRequest.postValue(Content.EncodeImage(bitmap))
     }
 
+
     fun onRequestCategoriesMessages(base64: String) {
-        launch {
-            getCategoryResultUseCase.execute(
-                ::handleSuccessResponse,
-                ::handleErrorResponse,
-                ::handleTimeOutResponse,
-                ::handleEmptyResponse,
-                ::handleNoProductsResponse,
-                base64
-            )
+        if (localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()) {
+            launch {
+                getLegendUseCase.execute(
+                    onSuccess = { handleRequestLegendOnSuccess(base64) },
+                    onError = ::handleRequestLegendOnError
+                )
+            }
+        } else {
+            handleRequestLegendOnSuccess(base64)
         }
     }
 
@@ -211,6 +216,28 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
 
+    private fun handleRequestLegendOnSuccess(base64: String) {
+        launch {
+            getCategoryResultUseCase.execute(
+                ::handleSuccessResponse,
+                ::handleErrorResponse,
+                ::handleTimeOutResponse,
+                ::handleEmptyResponse,
+                ::handleNoProductsResponse,
+                base64
+            )
+        }
+    }
+
+    private fun handleRequestLegendOnError(exception: Exception, message: String) {
+        _modelDialog.value = Event(
+            DialogModel.ServerError(
+                exception = exception,
+                errorMessage = message
+            )
+        )
+    }
+
     //TODO it might be used on media image user story
     private fun handleFileImageRetrieved(imageEncoded: String) {
         _modelRequest.value = Content.RequestCategoriesMessages(imageEncoded)
@@ -219,6 +246,5 @@ class CameraViewModel(
     private fun handleTimeOutResponse(message: String) {
         _modelDialog.value = Event(DialogModel.TimeOutError)
     }
-
 }
 
