@@ -105,6 +105,7 @@ suspend fun <T> repositoryCartHandleSource(
 }
 
 
+
 suspend fun <T> repositoryLegendHandleSource(
     remoteSourceRequest: suspend () -> Result<T>,
     localPreferenceDataSource: suspend (T) -> Unit
@@ -141,4 +142,108 @@ suspend fun <T> repositoryLegendHandleSource(
 
         }
     }
+}
+
+
+
+
+
+suspend fun <T, S, A> repositoryCategoryHandleSource(
+    initialRemoteRequest: suspend () -> Result<A>,
+    mainRemoteRequest: suspend () -> Result<T>,
+    localPreferenceDataSource: suspend (S) -> Unit,
+    parameterToSave: suspend (T) -> S?
+): DataState<T> {
+
+    initialRemoteRequest.invoke().also { resultInitialRequest ->
+        return when (resultInitialRequest.status) {
+            Result.Status.SUCCESS -> {
+                //TODO save localy teh new form factor legend
+               // localPreferenceDataSource.invoke()
+                sendMainRequest(
+                    mainRemoteRequest,
+                    localPreferenceDataSource,
+                    parameterToSave
+                )
+            }
+
+            Result.Status.ERROR -> {
+                DataState.Error(
+                    resultInitialRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultInitialRequest.isCancelRequest
+                )
+            }
+            else -> {
+                DataState.Error(
+                    resultInitialRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultInitialRequest.isCancelRequest
+                )
+            }
+        }
+    }
+
+}
+
+
+private suspend fun <T, S> sendMainRequest(
+    mainRemoteRequest: suspend () -> Result<T>,
+    localPreferenceDataSource: suspend (S) -> Unit,
+    parameterToSave: suspend (T) -> S?
+): DataState<T> {
+
+    mainRemoteRequest.invoke().also { resultRequest ->
+        return when (resultRequest.status) {
+            Result.Status.SUCCESS -> {
+                when (resultRequest.code) {
+                    SUCCESSFUL_CODE -> {
+                        resultRequest.let { result ->
+                            result.data?.run {
+                                val param = parameterToSave(this)
+                                if (param != null) {
+                                    localPreferenceDataSource.invoke(param)
+                                }
+                                DataState.Success(data = this)
+                            } ?: DataState.Error(NULLABLE_ERROR)
+                        }
+                    }
+                    NO_CONTENT_CODE -> {
+                        DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
+                    }
+
+                    NO_PRODUCTS_CODE -> {
+                        resultRequest.data?.run {
+                            ProductsNotAvailable(data = this)
+                        } ?: DataState.Error(NULLABLE_ERROR)
+
+                    }
+
+                    else -> {
+                        DataState.Error(NULLABLE_ERROR)
+                    }
+                }
+            }
+
+
+            Result.Status.TIME_OUT_ERROR -> {
+                DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
+            }
+
+            Result.Status.PARSE_ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    cause = ParsingError,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+            Result.Status.ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+        }
+    }
+
 }
