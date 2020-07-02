@@ -5,7 +5,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
+import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
@@ -44,6 +45,7 @@ import com.light.presentation.viewmodels.CameraViewModel.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.gallery_preview_layout.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
@@ -214,6 +216,7 @@ class CameraFragment : BaseFragment() {
             Observer(::observeDialogButtonAction)
 
         )
+        viewModel.modelGallery.observe(viewLifecycleOwner, Observer(::observeModelGallery))
 
 
         requestItemCount()
@@ -227,13 +230,36 @@ class CameraFragment : BaseFragment() {
 
     }
 
+    private fun observeModelGallery(model : Event<GalleryViewDisplay>) {
+        model.getContentIfNotHandled()?.let {
+            pickImageFromGallery()
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
-            val thumbnail: Bitmap? = data?.getParcelableExtra("data")
-            val fullPhotoUri: Uri? = data?.data
-            // Do work with photo saved at fullPhotoUri
-        }
+            data?.data?.let { uri ->
+                val bitmap = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
 
+                // ui
+                layoutPreviewGallery.visible()
+                cameraUiContainer.gone()
+
+                activityCallback.setBottomBarInvisibility(true)
+                galleryPreview.setImageURI(uri)
+
+                confirmPhoto.setOnClickListener {
+                    viewModel.onCameraButtonClicked(bitmap, 0)
+                    layoutPreviewGallery.gone()
+                }
+
+                cancelPhoto.setOnClickListener {
+                    layoutPreviewGallery.gone()
+                    cameraUiContainer.visible()
+
+                }
+            }
+        }
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -276,10 +302,6 @@ class CameraFragment : BaseFragment() {
                 modelUiState = ModelStatus.FEED
                 screenNavigator.toCameraFeedScreen(this)
                 setCameraSpecs()
-            }
-
-            is UiModel.GalleryViewDisplay -> {
-                pickImageFromGallery()
             }
         }
     }
@@ -614,8 +636,7 @@ class CameraFragment : BaseFragment() {
             imageGalleryButton.setOnClickListener {
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
-                    //pickImageFromGallery(isPermissionGranted)
-                })
+                },(::observeDenyPermission))
             }
 
             /*//TODO check this and move it to local data source
@@ -631,10 +652,10 @@ class CameraFragment : BaseFragment() {
             //Intent to pick image
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "image/*"
+            flags = FLAG_ACTIVITY_NO_HISTORY
         }
 
         startActivityForResult(intent, REQUEST_IMAGE_GET)
-
     }
 
     private fun setUpCamera() {
