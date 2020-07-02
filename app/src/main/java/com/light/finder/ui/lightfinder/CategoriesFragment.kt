@@ -119,9 +119,10 @@ class CategoriesFragment : BaseFragment() {
                 textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
             }
         }
-        textViewBulbType.ellipsize = TextUtils.TruncateAt.END
+        /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
+        textViewFitting.text = getString(R.string.based_on_s_fitting).getStringFormatter(message.baseIdentified)
 
         adapter.categories = categories
     }
