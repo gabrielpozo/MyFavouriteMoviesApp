@@ -47,26 +47,40 @@
                 app:layout_anchor="@id/bulbCover"
                 app:layout_anchorGravity="top|left" />
 
-            <Button
-                android:id="@+id/priceButton"
-                style="@style/PriceButton"
-                android:clickable="false"
-                android:focusable="false"
-                android:background="@drawable/button_curvy_corners_categories_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:text="@string/_0_00_0_00_each"
-                app:layout_anchor="@id/cover_line"
-                app:layout_anchorGravity="bottom|right" />
+
 
             <View
                 android:id="@+id/cover_line"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_marginBottom="12dp"
                 android:background="@color/primaryDisabled"
                 app:layout_anchor="@id/bulbCover"
                 app:layout_anchorGravity="bottom" />
+
+            <Button
+                android:id="@+id/priceButton"
+                style="@style/PriceButton"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/button_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/_0_00_0_00_each"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|right" />
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:background="@drawable/all_circle"
+                android:padding="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:visibility="visible"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|left" />
 
 
             <LinearLayout
@@ -113,7 +127,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
-            tools:text="Bulb (A19)" />
+            android:text="@string/bulb_s" />
 
         <TextView
             android:id="@+id/textOptions"
@@ -131,7 +145,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bulbName"
-            tools:text="Available options:" />
+            android:text="@string/available_options" />
 
         <LinearLayout
             android:id="@+id/colorsLayout"

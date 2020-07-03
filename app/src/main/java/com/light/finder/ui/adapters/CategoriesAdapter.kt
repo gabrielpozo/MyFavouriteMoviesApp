@@ -3,6 +3,7 @@ package com.light.finder.ui.adapters
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,9 @@ class CategoriesAdapter(
 
         val indexes = getMaxIndices(categories)
 
-        holder.itemView.textViewsLayout.removeAllViews()
+        holder.itemView.colorsLayout.removeAllViews()
+        holder.itemView.wattageLayout.removeAllViews()
+        holder.itemView.imagesLayout.removeAllViews()
         holder.bind(category, indexes, categories.size, position, filterColorList)
         holder.itemView.setOnClickListener { listener(category) }
     }
@@ -64,8 +67,10 @@ class CategoriesAdapter(
             filterColorList: List<FilterType>
         ) {
             itemView.category_name.text = category.categoryName
-            itemView.price.text = category.priceRange
+            itemView.priceButton.text = category.priceRange
             itemView.bulbCover.loadUrl(category.categoryImage)
+            itemView.thumbnail.loadThumbnail(category.categoryImage)
+            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryProductBase)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
@@ -83,33 +88,32 @@ class CategoriesAdapter(
                 itemView.energyButton.gone()
             }
 
-
             category.colors.forEachIndexed { index, colorCode ->
-                val textView = TextView(itemView.context)
-                textView.text = getLegendTagPref(
+                val imageView = ImageView(itemView.context)
+                /*textView.text = getLegendTagPref(
                     colorCode,
                     filterTypeList = filterColorList,
                     legendTag = "product_cct_code"
-                )
+                )*/
                 val drawable = itemView.context.getColorDrawable(colorCode)
                 if (drawable != 0) {
-                    textView.endDrawableIcon(drawable)
+                    imageView.setBackgroundResource(drawable)
                 }
-                textView.layoutParams = LinearLayout.LayoutParams(
+                imageView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                textView.setTextAppearance(R.style.SubTitleField)
+                //textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
-                    textView.setPadding(0, 0, 0, 32)
+                    imageView.setPadding(0, 0, 0, 32)
                 } else if (category.colors.size == 1) {
-                    textView.setPadding(0, 0, 0, 8)
+                    imageView.setPadding(0, 0, 0, 8)
                 }
-                textView.compoundDrawablePadding = 32
-                itemView.textViewsLayout.addView(textView)
+                //textView.compoundDrawablePadding = 32
+                itemView.colorsLayout.addView(imageView)
             }
 
-            val minMaxWattage = itemView.context.getString(
+           /* val minMaxWattage = itemView.context.getString(
                 R.string.description_wattage,
                 category.minWattage,
                 category.maxWattage,
@@ -120,7 +124,7 @@ class CategoriesAdapter(
             if (category.minWattage != itemView.context.getString(R.string.no_value)) {
                 itemView.product_detail.text = minMaxWattage.replace("-W", "")
 
-            }
+            }*/
         }
     }
 }

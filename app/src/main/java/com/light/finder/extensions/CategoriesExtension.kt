@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
@@ -23,6 +24,7 @@ import com.light.finder.SignifyApp
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.ui.common.CircleImageView
 import kotlin.properties.Delegates
 
 
@@ -89,6 +91,13 @@ fun ImageView.loadUrl(url: String) {
         .override(460, 460)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(R.drawable.category_placeholder).into(this)
+}
+
+fun ImageView.loadThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .into(this)
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
