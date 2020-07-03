@@ -24,9 +24,16 @@ class DataModule {
     fun getApiRepository(
         remoteDataSource: RemoteDataSource,
         localMediaDataSource: LocalMediaDataSource,
-        localPreferenceDataSource: LocalPreferenceDataSource
+        localPreferenceDataSource: LocalPreferenceDataSource,
+        legendRemoteDataSource: RemoteFetchLegendDataSource
+
     ): CategoryRepository =
-        CategoryRepositoryImpl(remoteDataSource, localPreferenceDataSource, localMediaDataSource)
+        CategoryRepositoryImpl(
+            remoteDataSource,
+            localPreferenceDataSource,
+            localMediaDataSource,
+            legendRemoteDataSource
+        )
 
     @Provides
     fun getCartRepository(

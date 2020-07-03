@@ -105,7 +105,6 @@ suspend fun <T> repositoryCartHandleSource(
 }
 
 
-
 suspend fun <T> repositoryLegendHandleSource(
     remoteSourceRequest: suspend () -> Result<T>,
     localPreferenceDataSource: suspend (T) -> Unit
@@ -145,41 +144,48 @@ suspend fun <T> repositoryLegendHandleSource(
 }
 
 
-
-
-
-suspend fun <T, S, A> repositoryCategoryHandleSource(
+suspend fun <T, S, A> repositoryScanningRequest(
     initialRemoteRequest: suspend () -> Result<A>,
     mainRemoteRequest: suspend () -> Result<T>,
-    localPreferenceDataSource: suspend (S) -> Unit,
-    parameterToSave: suspend (T) -> S?
+    saveOnLocalDataSourceInitRequest: suspend (A) -> Unit,
+    localDataSource: suspend (S) -> Unit,
+    parameterToSave: suspend (T) -> S?,
+    shouldDoInitialRequest: Boolean
 ): DataState<T> {
+    if (shouldDoInitialRequest) {
+        initialRemoteRequest.invoke().also { resultInitialRequest ->
+            return when (resultInitialRequest.status) {
+                Result.Status.SUCCESS -> {
+                    //TODO save locally teh new form factor legend
+                    saveOnLocalDataSourceInitRequest.invoke(resultInitialRequest.data!!)
+                    sendMainRequest(
+                        mainRemoteRequest,
+                        localDataSource,
+                        parameterToSave
+                    )
+                }
 
-    initialRemoteRequest.invoke().also { resultInitialRequest ->
-        return when (resultInitialRequest.status) {
-            Result.Status.SUCCESS -> {
-                //TODO save localy teh new form factor legend
-               // localPreferenceDataSource.invoke()
-                sendMainRequest(
-                    mainRemoteRequest,
-                    localPreferenceDataSource,
-                    parameterToSave
-                )
-            }
-
-            Result.Status.ERROR -> {
-                DataState.Error(
-                    resultInitialRequest.message ?: GENERAL_ERROR,
-                    isCanceled = resultInitialRequest.isCancelRequest
-                )
-            }
-            else -> {
-                DataState.Error(
-                    resultInitialRequest.message ?: GENERAL_ERROR,
-                    isCanceled = resultInitialRequest.isCancelRequest
-                )
+                Result.Status.ERROR -> {
+                    DataState.Error(
+                        resultInitialRequest.message ?: GENERAL_ERROR,
+                        isCanceled = resultInitialRequest.isCancelRequest
+                    )
+                }
+                else -> {
+                    DataState.Error(
+                        resultInitialRequest.message ?: GENERAL_ERROR,
+                        isCanceled = resultInitialRequest.isCancelRequest
+                    )
+                }
             }
         }
+
+    } else {
+        return sendMainRequest(
+            mainRemoteRequest,
+            localDataSource,
+            parameterToSave
+        )
     }
 
 }

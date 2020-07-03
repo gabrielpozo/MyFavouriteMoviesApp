@@ -43,14 +43,10 @@ class CameraModule {
     @Provides
     fun cameraViewModel(
         getItemCountUseCase: GetItemCountUseCase,
-        getCategoryResultUseCase: GetCategoriesResultUseCase,
-        getLegendUseCase: GetLegendUseCase,
-        localPreferenceDataSource: LocalPreferenceDataSource
+        getCategoryResultUseCase: GetCategoriesResultUseCase
     ) = CameraViewModel(
         getItemCountUseCase,
         getCategoryResultUseCase,
-        getLegendUseCase,
-        localPreferenceDataSource,
         Dispatchers.Main
     )
 }
