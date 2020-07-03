@@ -24,7 +24,7 @@
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
-    <string name="light_bulb_recognised_as">Identified as %s</string>
+    <string name="light_bulb_recognised_as">Scan results</string>
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient</string>

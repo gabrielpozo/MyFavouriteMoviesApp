@@ -1,17 +1,22 @@
 package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
+import android.text.Html
+import android.text.Layout
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.paris.extensions.*
+import com.google.android.material.button.MaterialButton
 import com.light.domain.model.Category
 import com.light.domain.model.FilterType
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
+
 
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
@@ -67,7 +72,10 @@ class CategoriesAdapter(
             filterColorList: List<FilterType>
         ) {
             itemView.category_name.text = category.categoryName
-            itemView.priceButton.text = category.priceRange
+
+            val sourceString = "<b>" + category.priceRange + "</b> " + "each"
+            itemView.priceButton.text = Html.fromHtml(sourceString)
+
             itemView.bulbCover.loadUrl(category.categoryImage)
             itemView.thumbnail.loadThumbnail(category.categoryImage)
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryProductBase)
@@ -88,6 +96,18 @@ class CategoriesAdapter(
                 itemView.energyButton.gone()
             }
 
+            category.categoryWattReplaced.forEachIndexed { index, watt ->
+                val wattButton = Button(itemView.context)
+                wattButton.text = "$watt W"
+                wattButton.style{
+                    add(R.style.WattButton)
+                    backgroundRes(R.drawable.button_wattage)
+                    layoutMarginEndDp(8)
+                }
+                itemView.wattageLayout.addView(wattButton)
+
+            }
+
             category.colors.forEachIndexed { index, colorCode ->
                 val imageView = ImageView(itemView.context)
                 /*textView.text = getLegendTagPref(
@@ -105,9 +125,9 @@ class CategoriesAdapter(
                 )
                 //textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
-                    imageView.setPadding(0, 0, 0, 32)
+                    imageView.setPadding(0, 0, 32, 0)
                 } else if (category.colors.size == 1) {
-                    imageView.setPadding(0, 0, 0, 8)
+                    imageView.setPadding(0, 0, 8, 0)
                 }
                 //textView.compoundDrawablePadding = 32
                 itemView.colorsLayout.addView(imageView)
