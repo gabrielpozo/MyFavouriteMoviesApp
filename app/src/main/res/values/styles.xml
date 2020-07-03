@@ -75,6 +75,33 @@
         <item name="android:paddingEnd">20dp</item>
     </style>
 
+    <style name="EnergyButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">20dp</item>
+        <item name="android:height">20dp</item>
+        <item name="android:fontFamily">@font/book</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="PriceButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">24dp</item>
+        <item name="android:height">24dp</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+
     <!-- End New atributes -->
 
     <style name="TitleTextGreen" parent="TextAppearance.AppCompat">
@@ -364,6 +391,11 @@
     <style name="TitleCategory" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/textDark</item>
         <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="BulbCategory" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:fontFamily">@font/book</item>
     </style>
 
     <style name="PriceCategory" parent="TextAppearance.AppCompat">
