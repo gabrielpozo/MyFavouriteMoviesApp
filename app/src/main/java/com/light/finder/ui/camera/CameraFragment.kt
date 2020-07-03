@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
@@ -32,6 +31,7 @@ import com.light.domain.model.ParsingError
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.InternetUtil
 import com.light.finder.common.PermissionRequester
 import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -130,7 +130,7 @@ class CameraFragment : BaseFragment() {
     private var camera: Camera? = null
 
     private var isComingFromSettings: Boolean = false
-
+    private var isGalleryDenied : Boolean = false
 
     /**
      * We need a display listener for orientation changes that do not trigger a configuration
@@ -249,8 +249,13 @@ class CameraFragment : BaseFragment() {
                 galleryPreview.setImageURI(uri)
 
                 confirmPhoto.setOnClickListener {
-                    viewModel.onCameraButtonClicked(bitmap, 0)
-                    layoutPreviewGallery.gone()
+                    if (InternetUtil.isInternetOn()) {
+                        viewModel.onCameraButtonClicked(bitmap, 0)
+                        layoutPreviewGallery.gone()
+                    } else {
+                        activityCallback.onInternetConnectionLost()
+                    }
+
                 }
 
                 cancelPhoto.setOnClickListener {
@@ -275,7 +280,7 @@ class CameraFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isComingFromSettings) {
+        if (isComingFromSettings && !isGalleryDenied) {
             viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
             isComingFromSettings = false
         }
@@ -408,6 +413,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
                 is DialogModel.PermissionPermanentlyDenied -> {
+                    isGalleryDenied = false
                     showErrorDialog(
                         getString(R.string.enable_camera_access),
                         getString(R.string.enable_subtitle),
@@ -416,6 +422,17 @@ class CameraFragment : BaseFragment() {
                     )
 
                 }
+
+                is DialogModel.GalleryPermissionPermanentlyDenied -> {
+                    isGalleryDenied = true
+                    showErrorDialog(
+                        getString(R.string.enable_gallery_access),
+                        getString(R.string.enable_gallery_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+                }
+
             }
         }
     }
@@ -490,7 +507,11 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeDenyPermission(isPermanentlyDenied: Boolean) {
-        viewModel.onPermissionDenied(isPermanentlyDenied)
+        viewModel.onPermissionDenied(isPermanentlyDenied, false)
+    }
+
+    private fun observeGalleryDenyPermission(isPermanentlyDenied: Boolean) {
+        viewModel.onPermissionDenied(isPermanentlyDenied, true)
     }
 
     private fun handleResultBase64(base64: String) {
@@ -636,7 +657,7 @@ class CameraFragment : BaseFragment() {
             imageGalleryButton.setOnClickListener {
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
-                },(::observeDenyPermission))
+                },(::observeGalleryDenyPermission))
             }
 
             /*//TODO check this and move it to local data source
