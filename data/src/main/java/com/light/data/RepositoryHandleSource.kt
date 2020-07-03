@@ -156,7 +156,6 @@ suspend fun <T, S, A> repositoryScanningRequest(
         initialRemoteRequest.invoke().also { resultInitialRequest ->
             return when (resultInitialRequest.status) {
                 Result.Status.SUCCESS -> {
-                    //TODO save locally teh new form factor legend
                     saveOnLocalDataSourceInitRequest.invoke(resultInitialRequest.data!!)
                     sendMainRequest(
                         mainRemoteRequest,
