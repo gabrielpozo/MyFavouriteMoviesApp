@@ -83,6 +83,8 @@ class CameraViewModel(
             DialogModel()
 
         data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        data class GalleryPermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+
     }
 
     private val _modelResponseDialog = MutableLiveData<Event<ResponseDialogModel>>()
@@ -187,9 +189,11 @@ class CameraViewModel(
         }
     }
 
-    fun onPermissionDenied(isPermanentlyDenied: Boolean) {
-        if (isPermanentlyDenied) {
+    fun onPermissionDenied(isPermanentlyDenied: Boolean, isGalleryPermission: Boolean) {
+        if (isPermanentlyDenied && !isGalleryPermission) {
             _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        } else if (isPermanentlyDenied && isGalleryPermission) {
+            _modelDialog.value = Event(DialogModel.GalleryPermissionPermanentlyDenied(isPermanentlyDenied))
         }
     }
 
