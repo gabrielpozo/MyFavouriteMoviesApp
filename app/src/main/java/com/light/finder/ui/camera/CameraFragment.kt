@@ -2,11 +2,16 @@ package com.light.finder.ui.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.Settings
@@ -28,6 +33,7 @@ import com.light.domain.model.ParsingError
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.InternetUtil
 import com.light.finder.common.PermissionRequester
 import com.light.finder.data.source.local.ImageRepository
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -41,6 +47,7 @@ import com.light.presentation.viewmodels.CameraViewModel.*
 import kotlinx.android.synthetic.main.camera_ui_container.*
 import kotlinx.android.synthetic.main.camera_ui_container.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.gallery_preview_layout.*
 import kotlinx.android.synthetic.main.layout_permission.*
 import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
@@ -60,6 +67,7 @@ class CameraFragment : BaseFragment() {
     private val viewModel: CameraViewModel by lazy { getViewModel { component.cameraViewModel } }
     private val imageRepository: ImageRepository by lazy { component.imageRepository }
     private lateinit var cameraPermissionRequester: PermissionRequester
+    private lateinit var galleryPermissionRequester: PermissionRequester
     private lateinit var connectivityRequester: ConnectivityRequester
     private lateinit var activityCallback: ActivityCallback
     private lateinit var alertDialog: AlertDialog
@@ -93,7 +101,7 @@ class CameraFragment : BaseFragment() {
         private const val ANIMATION_SLOW_MILLIS = 100L
         private const val TIME_OUT_LOG_REPORT = 408
         private const val PARSE_ERROR_LOG_REPORT = 422
-
+        private const val REQUEST_IMAGE_GET = 1
         private var flashMode = ImageCapture.FLASH_MODE_OFF
     }
 
@@ -101,12 +109,14 @@ class CameraFragment : BaseFragment() {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     }
 
+
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
 
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
+
     //private lateinit var outputDirectory: File
     private lateinit var broadcastManager: LocalBroadcastManager
     //private lateinit var mainExecutor: Executor
@@ -119,7 +129,7 @@ class CameraFragment : BaseFragment() {
     private var camera: Camera? = null
 
     private var isComingFromSettings: Boolean = false
-
+    private var isGalleryDenied: Boolean = false
 
     /**
      * We need a display listener for orientation changes that do not trigger a configuration
@@ -131,7 +141,6 @@ class CameraFragment : BaseFragment() {
         override fun onDisplayRemoved(displayId: Int) = Unit
         override fun onDisplayChanged(displayId: Int) = view?.let { view ->
             if (displayId == this@CameraFragment.displayId) {
-                Timber.d(TAG, "Rotation changed: ${view.display.rotation}")
                 imageCapture?.targetRotation = view.display.rotation
                 imageAnalyzer?.targetRotation = view.display.rotation
             }
@@ -186,6 +195,8 @@ class CameraFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
+            galleryPermissionRequester =
+                PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
@@ -204,6 +215,7 @@ class CameraFragment : BaseFragment() {
             Observer(::observeDialogButtonAction)
 
         )
+        viewModel.modelGallery.observe(viewLifecycleOwner, Observer(::observeModelGallery))
 
 
         requestItemCount()
@@ -215,6 +227,50 @@ class CameraFragment : BaseFragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
 
+    }
+
+    private fun observeModelGallery(model: Event<GalleryViewDisplay>) {
+        model.getContentIfNotHandled()?.let {
+            pickImageFromGallery()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                val bitmapImage =
+                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
+                initGalleryPreviewUI(uri)
+                setGalleryPreviewListeners(bitmapImage)
+            }
+        }
+    }
+
+    private fun initGalleryPreviewUI(uri: Uri) {
+        // ui
+        layoutPreviewGallery.visible()
+        cameraUiContainer.gone()
+
+        activityCallback.setBottomBarInvisibility(true)
+        galleryPreview.setImageURI(uri)
+    }
+
+    private fun setGalleryPreviewListeners(bitmapImage: Bitmap) {
+        confirmPhoto.setOnClickListener {
+            if (InternetUtil.isInternetOn()) {
+                viewModel.onCameraButtonClicked(bitmapImage, 0)
+                layoutPreviewGallery.gone()
+            } else {
+                activityCallback.onInternetConnectionLost()
+            }
+
+        }
+
+        cancelPhoto.setOnClickListener {
+            layoutPreviewGallery.gone()
+            cameraUiContainer.visible()
+
+        }
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -230,7 +286,7 @@ class CameraFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (isComingFromSettings) {
+        if (isComingFromSettings && !isGalleryDenied) {
             viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
             isComingFromSettings = false
         }
@@ -363,6 +419,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
                 is DialogModel.PermissionPermanentlyDenied -> {
+                    isGalleryDenied = false
                     showErrorDialog(
                         getString(R.string.enable_camera_access),
                         getString(R.string.enable_subtitle),
@@ -371,6 +428,17 @@ class CameraFragment : BaseFragment() {
                     )
 
                 }
+
+                is DialogModel.GalleryPermissionPermanentlyDenied -> {
+                    isGalleryDenied = true
+                    showErrorDialog(
+                        getString(R.string.enable_gallery_access),
+                        getString(R.string.enable_gallery_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+                }
+
             }
         }
     }
@@ -445,7 +513,11 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun observeDenyPermission(isPermanentlyDenied: Boolean) {
-        viewModel.onPermissionDenied(isPermanentlyDenied)
+        viewModel.onPermissionDenied(isPermanentlyDenied, false)
+    }
+
+    private fun observeGalleryDenyPermission(isPermanentlyDenied: Boolean) {
+        viewModel.onPermissionDenied(isPermanentlyDenied, true)
     }
 
     private fun handleResultBase64(base64: String) {
@@ -588,6 +660,12 @@ class CameraFragment : BaseFragment() {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
+            imageGalleryButton.setOnClickListener {
+                galleryPermissionRequester.request({ isPermissionGranted ->
+                    viewModel.onGalleryPermissionRequested(isPermissionGranted)
+                }, (::observeGalleryDenyPermission))
+            }
+
             /*//TODO check this and move it to local data source
             lifecycleScope.launch(Dispatchers.IO) {
                 outputDirectory.listFiles { file ->
@@ -595,6 +673,16 @@ class CameraFragment : BaseFragment() {
                 }
             }*/
         }
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+            flags = FLAG_ACTIVITY_NO_HISTORY
+        }
+
+        startActivityForResult(intent, REQUEST_IMAGE_GET)
     }
 
     private fun setUpCamera() {
@@ -688,7 +776,10 @@ class CameraFragment : BaseFragment() {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
-                        putBoolean(getString(R.string.flash_enabled), flashMode == ImageCapture.FLASH_MODE_ON)
+                        putBoolean(
+                            getString(R.string.flash_enabled),
+                            flashMode == ImageCapture.FLASH_MODE_ON
+                        )
                     }
                     onCameraCaptureClick()
                 } else {
@@ -744,7 +835,7 @@ class CameraFragment : BaseFragment() {
         cameraExecutor.shutdown()
         // Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
-        if(::cameraProvider.isInitialized){
+        if (::cameraProvider.isInitialized) {
             cameraProvider.unbindAll()
         }
     }
