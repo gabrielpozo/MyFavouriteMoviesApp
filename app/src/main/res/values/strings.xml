@@ -47,7 +47,10 @@
     <string name="not_now">Not now</string>
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
+    <string name="enable_gallery_access">LightFinder wants to access your photos</string>
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
+    <string name="enable_gallery_subtitle">This way, you can use a photo to find an exact match or recommendation.</string>
+
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>
     <string name="adding_to_cart">Adding to cart</string>
