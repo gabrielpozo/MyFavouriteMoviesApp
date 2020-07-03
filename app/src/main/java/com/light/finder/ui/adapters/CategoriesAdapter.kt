@@ -78,7 +78,7 @@ class CategoriesAdapter(
 
             itemView.bulbCover.loadUrl(category.categoryImage)
             itemView.thumbnail.loadThumbnail(category.categoryImage)
-            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryProductBase)
+            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryProducts[0].factorShape, category.categoryProductBase)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
@@ -118,6 +118,8 @@ class CategoriesAdapter(
                 val drawable = itemView.context.getColorDrawable(colorCode)
                 if (drawable != 0) {
                     imageView.setBackgroundResource(drawable)
+                } else {
+                    imageView.setBackgroundResource(R.drawable.ic_placeholder_variation)
                 }
                 imageView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,

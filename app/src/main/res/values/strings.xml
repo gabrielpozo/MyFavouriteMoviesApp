@@ -123,6 +123,6 @@
     <string name="based_on_s_fitting">Identified as: %s(%s) with %s fitting</string>
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
-    <string name="bulb_s">Bulb (%s)</string>
+    <string name="bulb_s">%s (%s)</string>
 
 </resources>
