@@ -3,6 +3,7 @@ package com.light.finder.extensions
 import android.content.Context
 import android.view.View
 import com.light.domain.model.FilterType
+import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
@@ -12,7 +13,7 @@ const val COLOR_LEGEND_TAG = "product_cct_code"
 const val FINISH_LEGEND_TAG = "product_finish_code"
 const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
 
-
+//TODO("this method will be removed at some point")
 fun getLegendTagPref(
     code: Int,
     logError: Boolean = false,
@@ -25,6 +26,29 @@ fun getLegendTagPref(
     }
     return if (productColor != null) {
         productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendTagPrefFormFactor(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FormFactorType>,
+    legendTag: String
+): String {
+    val formFactorType = filterTypeList.find {
+        it.id == code
+    }
+    return if (formFactorType != null) {
+        formFactorType.name
 
     } else {
         if (logError) CrashlyticsException(422, legendTag, code).logException()

@@ -1,4 +1,4 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.utils
 
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 import okhttp3.Interceptor

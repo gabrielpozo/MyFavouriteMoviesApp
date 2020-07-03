@@ -5,12 +5,14 @@ import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CartItemCountRemoteDataSource
 import com.light.finder.data.source.remote.CartItemRemoteDataSource
+import com.light.finder.data.source.remote.LegendRemoteDataSource
 import com.light.finder.data.source.remote.SignifyRemoteDataSource
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.CartRemoteDataSource
 import com.light.source.remote.ItemRemoteDataSource
 import com.light.source.remote.RemoteDataSource
+import com.light.source.remote.RemoteFetchLegendDataSource
 import dagger.Module
 import dagger.Provides
 
@@ -29,10 +31,16 @@ class ApplicationModule {
         CartItemCountRemoteDataSource(app)
 
     @Provides
+    fun getLegendDataSource(): RemoteFetchLegendDataSource =
+        LegendRemoteDataSource()
+
+    @Provides
     fun getLocalMediaDataSource(): LocalMediaDataSource = LocalMediaDataSourceImpl()
 
     @Provides
     fun getLocalPreferenceDataSource(app: Application): LocalPreferenceDataSource =
         LocalPreferenceDataSourceImpl(app)
+
+
 
 }

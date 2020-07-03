@@ -1,10 +1,13 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.remote.services
 
+import com.light.finder.data.source.remote.CartItemCountResultDto
+import com.light.finder.data.source.remote.dto.CartResultDto
+import com.light.finder.data.source.remote.dto.CategoryResultDto
+import com.light.finder.data.source.remote.Image
+import com.light.finder.data.source.remote.dto.LegendDto
+import com.light.finder.data.source.remote.dto.LegendParsingDto
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface SignifyApiService {
@@ -25,5 +28,10 @@ interface SignifyApiService {
     @POST("getCart")
     suspend fun fetchCartItemCountAsync(
     ): Response<CartItemCountResultDto>
+
+    @Headers("Content-Type: application/json")
+    @GET("legend")
+    suspend fun fetchLegendTagsAsync(
+    ): Response<LegendParsingDto>
 }
 

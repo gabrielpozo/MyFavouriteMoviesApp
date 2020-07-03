@@ -1,4 +1,4 @@
-package com.light.finder.data.source.remote
+package com.light.finder.data.source.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
@@ -94,3 +94,4 @@ data class FilterTypeDto(
     @SerializedName("id") var id: String,
     @SerializedName("name") var name: String
 )
+

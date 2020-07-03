@@ -3,7 +3,7 @@ package com.light.finder.extensions
 import android.content.Context
 import android.os.Build
 import com.light.finder.data.source.remote.InMemoryCookieStore
-import com.light.finder.data.source.remote.SharedPreferencesCookieStore
+import com.light.finder.data.source.utils.SharedPreferencesCookieStore
 import java.net.CookieStore
 import java.net.HttpCookie
 import java.text.SimpleDateFormat
@@ -50,7 +50,10 @@ fun android.webkit.CookieManager.removeAll() {
 }
 
 fun Context.createCookieStore(name: String, persistent: Boolean) = if (persistent) {
-    SharedPreferencesCookieStore(applicationContext, name)
+    SharedPreferencesCookieStore(
+        applicationContext,
+        name
+    )
 } else {
     InMemoryCookieStore(name)
 }

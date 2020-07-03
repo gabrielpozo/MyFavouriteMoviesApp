@@ -2,6 +2,7 @@ package com.light.finder.data.mappers
 
 import com.light.domain.model.*
 import com.light.finder.data.source.remote.*
+import com.light.finder.data.source.remote.dto.*
 
 val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
@@ -132,6 +133,25 @@ val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = { coun
     CartItemCount(
         itemCount = countResultDto.itemsCount ?: 0,
         itemQuantity = countResultDto.itemsQuantity ?: 0
+    )
+}
+
+
+val mapLegendToDomain: (LegendParsingDto) -> LegendParsing = { legendDto ->
+    LegendParsing(
+        legend = mapLegendValueToDomain(legendDto.legend)
+
+    )
+}
+
+private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendValueDto ->
+    LegendValue(
+        productFormFactorType = legendValueDto.productFormFactorType.map {
+            FormFactorType(
+                it.id,
+                it.name
+            )
+        }
     )
 }
 

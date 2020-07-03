@@ -29,7 +29,7 @@ android {
         applicationId "com.light.finder"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 2
+        versionCode 4
         versionName "0.9"
         vectorDrawables.useSupportLibrary true
     }
@@ -55,11 +55,14 @@ android {
             applicationIdSuffix ".qa"
             buildConfigField "String", "BASE_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "CART_URL", "\"https://lightfinder-staging.luzernsolutions.com/us/hueCart/api/\""
+            buildConfigField "String", "LEGEND_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
+
         }
         production {
             applicationId "com.light.finder"
             buildConfigField "String", "BASE_URL", "\"https://sajy0j9z0l.execute-api.us-east-2.amazonaws.com/v1/api/\""
             buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
+            buildConfigField "String", "LEGEND_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
 
         }
     }
