@@ -78,7 +78,7 @@ class CategoriesAdapter(
 
             itemView.bulbCover.loadUrl(category.categoryImage)
             itemView.thumbnail.loadThumbnail(category.categoryImage)
-            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryProducts[0].factorShape, category.categoryProductBase)
+            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryShape, category.categoryProducts[0].factorShape)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
