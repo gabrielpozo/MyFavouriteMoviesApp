@@ -38,7 +38,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     }
 
     override suspend fun saveLegendParsingFilterNames(legend: LegendParsing) {
-        editor.putString(FORM_FACTOR_LEGEND, Gson().toJson(legend.legend.productFormFactorType)).commit()
+        editor.putString(FORM_FACTOR_LEGEND, Gson().toJson(legend.legend.productFormFactorType))
+            .commit()
     }
 
     override fun loadLegendCctFilterNames(): List<FilterType> =
@@ -51,10 +52,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun loadLegendFormFactorFilterNames(): List<FilterType> =
         Gson().fromJson(pref.getString(FORM_FACTOR, null) ?: "")
 
-    override fun loadFormFactorLegendTags(): List<FormFactorType> =
-        Gson().fromJson(
-            pref.getString(FORM_FACTOR_LEGEND, null) ?: emptyList<FormFactorType>().toString()
-        )
+    override fun loadFormFactorLegendTags(): List<FormFactorType> = Gson().fromJson(
+        pref.getString(FORM_FACTOR_LEGEND, null) ?: emptyList<FormFactorType>().toString()
+    )
+
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T =

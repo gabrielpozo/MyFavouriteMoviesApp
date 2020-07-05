@@ -6,10 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CartItemCount
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
-import com.light.source.local.LocalPreferenceDataSource
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetItemCountUseCase
-import com.light.usecases.GetLegendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -17,8 +15,6 @@ import kotlinx.coroutines.launch
 class CameraViewModel(
     private val getItemCount: GetItemCountUseCase,
     private val getCategoryResultUseCase: GetCategoriesResultUseCase,
-    private val getLegendUseCase: GetLegendUseCase,
-    private val localPreferenceDataSource: LocalPreferenceDataSource,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -41,6 +37,13 @@ class CameraViewModel(
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
     }
+
+    class GalleryViewDisplay
+
+    private val _modelGallery = MutableLiveData<Event<GalleryViewDisplay>>()
+    val modelGallery: LiveData<Event<GalleryViewDisplay>>
+        get() = _modelGallery
+
 
     private val _modelPreview = MutableLiveData<Event<PreviewModel>>()
     val modelPreview: LiveData<Event<PreviewModel>>
@@ -80,6 +83,8 @@ class CameraViewModel(
             DialogModel()
 
         data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        data class GalleryPermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+
     }
 
     private val _modelResponseDialog = MutableLiveData<Event<ResponseDialogModel>>()
@@ -127,15 +132,15 @@ class CameraViewModel(
 
 
     fun onRequestCategoriesMessages(base64: String) {
-        if (localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()) {
-            launch {
-                getLegendUseCase.execute(
-                    onSuccess = { handleRequestLegendOnSuccess(base64) },
-                    onError = ::handleRequestLegendOnError
-                )
-            }
-        } else {
-            handleRequestLegendOnSuccess(base64)
+        launch {
+            getCategoryResultUseCase.execute(
+                ::handleSuccessResponse,
+                ::handleErrorResponse,
+                ::handleTimeOutResponse,
+                ::handleEmptyResponse,
+                ::handleNoProductsResponse,
+                base64
+            )
         }
     }
 
@@ -147,6 +152,12 @@ class CameraViewModel(
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
 
+        }
+    }
+
+    fun onGalleryPermissionRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _modelGallery.value = Event(GalleryViewDisplay())
         }
     }
 
@@ -179,9 +190,11 @@ class CameraViewModel(
         }
     }
 
-    fun onPermissionDenied(isPermanentlyDenied: Boolean) {
-        if (isPermanentlyDenied) {
+    fun onPermissionDenied(isPermanentlyDenied: Boolean, isGalleryPermission: Boolean) {
+        if (isPermanentlyDenied && !isGalleryPermission) {
             _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        } else if (isPermanentlyDenied && isGalleryPermission) {
+            _modelDialog.value = Event(DialogModel.GalleryPermissionPermanentlyDenied(isPermanentlyDenied))
         }
     }
 
@@ -216,27 +229,6 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
 
-    private fun handleRequestLegendOnSuccess(base64: String) {
-        launch {
-            getCategoryResultUseCase.execute(
-                ::handleSuccessResponse,
-                ::handleErrorResponse,
-                ::handleTimeOutResponse,
-                ::handleEmptyResponse,
-                ::handleNoProductsResponse,
-                base64
-            )
-        }
-    }
-
-    private fun handleRequestLegendOnError(exception: Exception, message: String) {
-        _modelDialog.value = Event(
-            DialogModel.ServerError(
-                exception = exception,
-                errorMessage = message
-            )
-        )
-    }
 
     //TODO it might be used on media image user story
     private fun handleFileImageRetrieved(imageEncoded: String) {
