@@ -103,12 +103,6 @@ fun ImageView.loadUrlCenterCrop(url: String) {
         .into(this)
 }
 
-fun ImageView.loadCircleImage(url: String) {
-    Glide.with(context).load(url).circleCrop()
-        .into(this)
-}
-
-
 fun ImageView.setPlaceholder() {
     Glide.with(context).load(R.drawable.fallback_image).centerInside()
         .into(this)

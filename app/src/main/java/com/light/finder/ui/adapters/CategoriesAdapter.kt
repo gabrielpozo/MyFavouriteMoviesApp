@@ -78,7 +78,8 @@ class CategoriesAdapter(
 
             itemView.bulbCover.loadUrl(category.categoryImage)
             itemView.thumbnail.loadThumbnail(category.categoryImage)
-            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s).format(category.categoryShape, category.categoryProducts[0].factorShape)
+            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
+                .format(category.categoryShape, category.categoryProducts[0].factorShape)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
@@ -99,7 +100,7 @@ class CategoriesAdapter(
             category.categoryWattReplaced.forEachIndexed { index, watt ->
                 val wattButton = Button(itemView.context)
                 wattButton.text = "$watt W"
-                wattButton.style{
+                wattButton.style {
                     add(R.style.WattButton)
                     backgroundRes(R.drawable.button_wattage)
                     layoutMarginEndDp(8)
@@ -108,16 +109,22 @@ class CategoriesAdapter(
 
             }
 
+
             category.colors.forEachIndexed { index, colorCode ->
                 val imageView = ImageView(itemView.context)
-                /*textView.text = getLegendTagPref(
-                    colorCode,
-                    filterTypeList = filterColorList,
-                    legendTag = "product_cct_code"
-                )*/
                 val drawable = itemView.context.getColorDrawable(colorCode)
                 if (drawable != 0) {
-                    imageView.setBackgroundResource(drawable)
+                    imageView.layoutParams = LinearLayout.LayoutParams(
+                        82,
+                        82
+                    )
+                    imageView.loadThumbnail(
+                        getLegendCctTagPrefSmallIcon(
+                            colorCode,
+                            filterTypeList = filterColorList,
+                            legendTag = COLOR_LEGEND_TAG
+                        )
+                    )
                 } else {
                     imageView.setBackgroundResource(R.drawable.ic_placeholder_variation)
                 }
@@ -125,28 +132,13 @@ class CategoriesAdapter(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                //textView.setTextAppearance(R.style.SubTitleField)
                 if (index < category.colors.size - 1) {
                     imageView.setPadding(0, 0, 32, 0)
                 } else if (category.colors.size == 1) {
                     imageView.setPadding(0, 0, 8, 0)
                 }
-                //textView.compoundDrawablePadding = 32
                 itemView.colorsLayout.addView(imageView)
             }
-
-           /* val minMaxWattage = itemView.context.getString(
-                R.string.description_wattage,
-                category.minWattage,
-                category.maxWattage,
-                category.categoryProductBase
-            )
-
-
-            if (category.minWattage != itemView.context.getString(R.string.no_value)) {
-                itemView.product_detail.text = minMaxWattage.replace("-W", "")
-
-            }*/
         }
     }
 }
