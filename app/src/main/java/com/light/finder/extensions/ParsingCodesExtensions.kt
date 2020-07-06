@@ -2,7 +2,8 @@ package com.light.finder.extensions
 
 import android.content.Context
 import android.view.View
-import com.light.domain.model.FilterType
+import com.light.domain.model.CctType
+import com.light.domain.model.FinishType
 import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -14,15 +15,15 @@ const val FINISH_LEGEND_TAG = "product_finish_code"
 const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
 
 //TODO("this method will be removed at some point")
-fun getLegendTagPref(
+fun getLegendCctTagPref(
     code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
-    filterTypeList: List<FilterType>,
+    filterTypeList: List<CctType>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
-        it.id == code.toString()
+        it.id == code
     }
     return if (productColor != null) {
         productColor.name
@@ -36,6 +37,55 @@ fun getLegendTagPref(
         }
     }
 }
+
+fun getLegendCctTagPrefIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.bigIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
+fun getLegendFinishTagPref(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
 
 fun getLegendTagPrefFormFactor(
     code: Int,
@@ -56,21 +106,6 @@ fun getLegendTagPrefFormFactor(
             code.toString()
         } else {
             ""
-        }
-    }
-}
-
-fun String.dropFirstAndLastCharacter(): String {
-    val removeFirst = removePrefix(" -")
-    return when {
-        removeFirst.isEmpty() -> {
-            removeFirst
-        }
-        removeFirst.takeLast(2) == "- " -> {
-            removeFirst.substring(0, removeFirst.length - 2)
-        }
-        else -> {
-            removeFirst
         }
     }
 }
@@ -118,36 +153,6 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
         R.drawable.ic_holder
     }
 }
-
-fun View.setColorVariation(colorCode: Int) {
-    when (colorCode) {
-        1 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm)
-        }
-        2 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm_white)
-        }
-        3 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.variation_color_soft_white)
-        }
-        4 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.cool_white_variation)
-        }
-        5 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.daylight_variation)
-        }
-        6 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.tunable)
-        }
-        7 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.full_color)
-        }
-        else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
-        }
-    }
-}
-
 
 fun View.setFinishVariation(finishCode: Int) {
     when (finishCode) {

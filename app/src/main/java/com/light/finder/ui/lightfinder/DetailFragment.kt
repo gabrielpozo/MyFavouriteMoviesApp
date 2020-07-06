@@ -410,7 +410,6 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-
         val formFactorType = getLegendTagPrefFormFactor(
             product.formfactorType,
             filterTypeList = localPreferences.loadFormFactorLegendTags(),
@@ -587,12 +586,12 @@ class DetailFragment : BaseFragment() {
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text = getLegendTagPref(
+        textViewColor.text = getLegendCctTagPref(
             productSelectedModel.productSelected.colorCctCode,
             filterTypeList = localPreferences.loadLegendCctFilterNames(),
             legendTag = COLOR_LEGEND_TAG
         )
-        textViewFinish.text = getLegendTagPref(
+        textViewFinish.text = getLegendFinishTagPref(
             productSelectedModel.productSelected.productFinishCode,
             filterTypeList = localPreferences.loadLegendFinishFilterNames(),
             legendTag = FINISH_LEGEND_TAG

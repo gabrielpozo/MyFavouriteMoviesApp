@@ -138,30 +138,23 @@ suspend fun <T> repositoryLegendHandleSource(
                     resultRequest.message ?: GENERAL_ERROR
                 )
             }
-
         }
     }
 }
 
 
-suspend fun <T, S, A> repositoryScanningRequest(
-    initialRemoteRequest: suspend () -> Result<A>,
+suspend fun <T, A> repositoryScanningRequest(
+    legendTagsRemoteRequest: suspend () -> Result<A>,
     mainRemoteRequest: suspend () -> Result<T>,
     saveOnLocalDataSourceInitRequest: suspend (A) -> Unit,
-    localDataSource: suspend (S) -> Unit,
-    parameterToSave: suspend (T) -> S?,
     shouldDoInitialRequest: Boolean
 ): DataState<T> {
     if (shouldDoInitialRequest) {
-        initialRemoteRequest.invoke().also { resultInitialRequest ->
+        legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
             return when (resultInitialRequest.status) {
                 Result.Status.SUCCESS -> {
                     saveOnLocalDataSourceInitRequest.invoke(resultInitialRequest.data!!)
-                    sendMainRequest(
-                        mainRemoteRequest,
-                        localDataSource,
-                        parameterToSave
-                    )
+                    sendMainRequest(mainRemoteRequest)
                 }
 
                 Result.Status.ERROR -> {
@@ -180,20 +173,14 @@ suspend fun <T, S, A> repositoryScanningRequest(
         }
 
     } else {
-        return sendMainRequest(
-            mainRemoteRequest,
-            localDataSource,
-            parameterToSave
-        )
+        return sendMainRequest(mainRemoteRequest)
     }
 
 }
 
 
-private suspend fun <T, S> sendMainRequest(
-    mainRemoteRequest: suspend () -> Result<T>,
-    localPreferenceDataSource: suspend (S) -> Unit,
-    parameterToSave: suspend (T) -> S?
+private suspend fun <T> sendMainRequest(
+    mainRemoteRequest: suspend () -> Result<T>
 ): DataState<T> {
 
     mainRemoteRequest.invoke().also { resultRequest ->
@@ -203,10 +190,6 @@ private suspend fun <T, S> sendMainRequest(
                     SUCCESSFUL_CODE -> {
                         resultRequest.let { result ->
                             result.data?.run {
-                                val param = parameterToSave(this)
-                                if (param != null) {
-                                    localPreferenceDataSource.invoke(param)
-                                }
                                 DataState.Success(data = this)
                             } ?: DataState.Error(NULLABLE_ERROR)
                         }

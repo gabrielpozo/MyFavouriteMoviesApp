@@ -4,7 +4,6 @@ import com.light.finder.data.source.remote.CartItemCountResultDto
 import com.light.finder.data.source.remote.dto.CartResultDto
 import com.light.finder.data.source.remote.dto.CategoryResultDto
 import com.light.finder.data.source.remote.Image
-import com.light.finder.data.source.remote.dto.LegendDto
 import com.light.finder.data.source.remote.dto.LegendParsingDto
 import retrofit2.Response
 import retrofit2.http.*

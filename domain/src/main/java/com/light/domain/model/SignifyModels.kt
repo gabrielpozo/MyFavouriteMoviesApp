@@ -5,9 +5,7 @@ data class Message(
     val version: String,
     val baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String,
-    val legend: Legend? = null
-)
+    val shapeIdentified: String)
 
 data class Category(
     val categoryProductBase: String,
@@ -77,20 +75,37 @@ data class Product(
     }
 }
 
-data class Legend(
-    val cctFilter: List<FilterType>?,
-    val finishFilter: List<FilterType>?,
-    val lightShapeFilter: List<FilterType>?
-)
 
-data class FilterType(
-    val id: String,
-    val name: String
-)
 
 data class LegendParsing(val legend: LegendValue)
-data class LegendValue(val productFormFactorType: List<FormFactorType>)
+data class LegendValue(
+    val productFormFactorType: List<FormFactorType>,
+    val finishType: List<FinishType>,
+    val cctType: List<CctType>
+)
+
 data class FormFactorType(
     val id: Int,
-    val name: String
+    val name: String,
+    val image: String,
+    val order: String
 )
+
+data class FinishType(
+    val id: Int,
+    val name: String,
+    val image: String,
+    val order: String
+)
+
+data class CctType(
+    val id: Int,
+    val name: String,
+    val smallIcon: String,
+    val bigIcon: String,
+    val order: Int,
+    val arType: Int,
+    val kevinSpec: KevinSpec
+)
+
+data class KevinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
