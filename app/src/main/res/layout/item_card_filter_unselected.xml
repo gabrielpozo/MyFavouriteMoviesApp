@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.228"
         android:background="@drawable/circle_background_green">
 
-        <com.light.finder.ui.common.CircleImageView
+        <ImageView
             android:id="@+id/imageFilterCover"
             android:layout_width="90dp"
             android:layout_height="90dp"

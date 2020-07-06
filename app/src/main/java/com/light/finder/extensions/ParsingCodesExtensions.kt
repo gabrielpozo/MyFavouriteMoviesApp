@@ -2,7 +2,8 @@ package com.light.finder.extensions
 
 import android.content.Context
 import android.view.View
-import com.light.domain.model.FilterType
+import com.light.domain.model.CctType
+import com.light.domain.model.FinishType
 import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -14,15 +15,15 @@ const val FINISH_LEGEND_TAG = "product_finish_code"
 const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
 
 //TODO("this method will be removed at some point")
-fun getLegendTagPref(
+fun getLegendCctTagPref(
     code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
-    filterTypeList: List<FilterType>,
+    filterTypeList: List<CctType>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
-        it.id == code.toString()
+        it.id == code
     }
     return if (productColor != null) {
         productColor.name
@@ -36,6 +37,55 @@ fun getLegendTagPref(
         }
     }
 }
+
+fun getLegendCctTagPrefIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.bigIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
+fun getLegendFinishTagPref(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
 
 fun getLegendTagPrefFormFactor(
     code: Int,

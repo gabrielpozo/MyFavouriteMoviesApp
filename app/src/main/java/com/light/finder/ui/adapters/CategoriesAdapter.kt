@@ -7,14 +7,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
-import com.light.domain.model.FilterType
+import com.light.domain.model.CctType
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
-    private val filterColorList: List<FilterType> = emptyList()
+    private val filterColorList: List<CctType> = emptyList()
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -61,7 +61,7 @@ class CategoriesAdapter(
             indexes: List<Int>,
             categoriesSize: Int,
             position: Int,
-            filterColorList: List<FilterType>
+            filterColorList: List<CctType>
         ) {
             itemView.category_name.text = category.categoryName
             itemView.price.text = category.priceRange
@@ -86,7 +86,7 @@ class CategoriesAdapter(
 
             category.colors.forEachIndexed { index, colorCode ->
                 val textView = TextView(itemView.context)
-                textView.text = getLegendTagPref(
+                textView.text = getLegendCctTagPref(
                     colorCode,
                     filterTypeList = filterColorList,
                     legendTag = "product_cct_code"
