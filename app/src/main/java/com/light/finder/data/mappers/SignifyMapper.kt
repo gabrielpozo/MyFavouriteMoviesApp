@@ -31,35 +31,13 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         }
     }
 
-
-    val cctFilter = messageDto.legend.cctFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-    val finishFilter = messageDto.legend.finishFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-    val lightShapeFilter = messageDto.legend.lightShapeFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-
-    val legend = Legend(
-        cctFilter = cctFilter,
-        finishFilter = finishFilter,
-        lightShapeFilter = lightShapeFilter
-    )
-
-
     Message(
         //TODO move sortedBy to repository
         categories = categoriesList.sortedBy { it.categoryIndex },
         version = messageDto.version,
         baseIdentified = messageDto.baseIdentified,
         formfactorType = messageDto.formfactorType,
-        shapeIdentified = messageDto.shape_identified,
-        legend = legend
+        shapeIdentified = messageDto.shape_identified
     )
 }
 
@@ -140,12 +118,41 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
         productFormFactorType = legendValueDto.productFormFactorType.map {
             FormFactorType(
                 it.id,
-                it.name
+                it.name,
+                it.image,
+                it.order
+            )
+        },
+        finishType = legendValueDto.productFinish.map {
+            FinishType(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
+        }
+        , cctType = legendValueDto.productCctName.map {
+            CctType(
+                it.id,
+                it.name,
+                it.smallIcon,
+                it.bigIcon,
+                it.order,
+                it.arType,
+                mapKelvinDtoToDomain(it.kelvinSpec)
             )
         }
     )
 }
 
+private val mapKelvinDtoToDomain: (KelvinSpecDto) -> KevinSpec =
+    {
+        KevinSpec(
+            it.minValue,
+            it.maxValue,
+            it.defaultValue
+        )
+    }
 
 fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
     if (minPrice == null || maxPrice == null) {
