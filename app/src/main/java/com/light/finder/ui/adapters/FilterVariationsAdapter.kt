@@ -112,7 +112,6 @@ class FilterColorAdapter(
                 legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-
             itemView.imageFilterCover.loadCircleImage(getLegendCctTagPrefIcon(
                 filter.codeFilter,
                 filterTypeList = filterColorList,

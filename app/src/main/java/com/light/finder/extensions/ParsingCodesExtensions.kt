@@ -110,21 +110,6 @@ fun getLegendTagPrefFormFactor(
     }
 }
 
-fun String.dropFirstAndLastCharacter(): String {
-    val removeFirst = removePrefix(" -")
-    return when {
-        removeFirst.isEmpty() -> {
-            removeFirst
-        }
-        removeFirst.takeLast(2) == "- " -> {
-            removeFirst.substring(0, removeFirst.length - 2)
-        }
-        else -> {
-            removeFirst
-        }
-    }
-}
-
 fun checkCategoryColorCodesAreValid(categoryCodes: List<Int>) {
     categoryCodes.forEach { code ->
         if (code > 4 || code < 1) {
@@ -168,36 +153,6 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
         R.drawable.ic_holder
     }
 }
-
-fun View.setColorVariation(colorCode: Int) {
-    when (colorCode) {
-        1 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm)
-        }
-        2 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm_white)
-        }
-        3 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.variation_color_soft_white)
-        }
-        4 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.cool_white_variation)
-        }
-        5 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.daylight_variation)
-        }
-        6 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.tunable)
-        }
-        7 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.full_color)
-        }
-        else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
-        }
-    }
-}
-
 
 fun View.setFinishVariation(finishCode: Int) {
     when (finishCode) {
