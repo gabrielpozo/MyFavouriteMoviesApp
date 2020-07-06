@@ -2,15 +2,15 @@ package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
 import android.text.Html
-import android.text.Layout
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.paris.extensions.*
-import com.google.android.material.button.MaterialButton
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.layoutMarginEndDp
+import com.airbnb.paris.extensions.style
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
 import com.light.finder.R
@@ -113,10 +113,11 @@ class CategoriesAdapter(
             category.colors.forEachIndexed { index, colorCode ->
                 val imageView = ImageView(itemView.context)
                 val drawable = itemView.context.getColorDrawable(colorCode)
+                val size = itemView.resources.getDimensionPixelSize(R.dimen.icon)
                 if (drawable != 0) {
                     imageView.layoutParams = LinearLayout.LayoutParams(
-                        82,
-                        82
+                        size,
+                        size
                     )
                     imageView.loadThumbnail(
                         getLegendCctTagPrefSmallIcon(
@@ -128,14 +129,14 @@ class CategoriesAdapter(
                 } else {
                     imageView.setBackgroundResource(R.drawable.ic_placeholder_variation)
                 }
-                imageView.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
+               imageView.layoutParams = LinearLayout.LayoutParams(
+                     LinearLayout.LayoutParams.WRAP_CONTENT,
+                     LinearLayout.LayoutParams.WRAP_CONTENT
+                 )
                 if (index < category.colors.size - 1) {
-                    imageView.setPadding(0, 0, 32, 0)
+                    imageView.setPadding(0, 0, 4, 0)
                 } else if (category.colors.size == 1) {
-                    imageView.setPadding(0, 0, 8, 0)
+                    imageView.setPadding(0, 0, 32, 0)
                 }
                 itemView.colorsLayout.addView(imageView)
             }
