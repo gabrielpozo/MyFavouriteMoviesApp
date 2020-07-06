@@ -116,7 +116,7 @@ class CategoriesAdapter(
                         82,
                         82
                     )
-                    imageView.loadCircleImage(
+                    imageView.loadThumbnail(
                         getLegendCctTagPrefSmallIcon(
                             colorCode,
                             filterTypeList = filterColorList,
