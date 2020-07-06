@@ -15,10 +15,7 @@ import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
-import com.light.finder.extensions.deparcelizeMessage
-import com.light.finder.extensions.getIntFormatter
-import com.light.finder.extensions.getStringFormatter
-import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
@@ -109,14 +106,23 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateData(categories: List<Category>, message: Message) {
-        textViewResults.text = if (categories.size == 1) {
-            getString(R.string.text_result).getIntFormatter(categories.size)
-        } else {
-            getString(R.string.text_results).getIntFormatter(categories.size)
+        when {
+            categories.isEmpty() -> {
+                textViewNoResultSubTitle.visible()
+                textViewNoResultTitle.visible()
+                rvCategories.gone()
+            }
+            categories.size == 1 -> {
+                textViewResults.text = getString(R.string.text_result).getIntFormatter(categories.size)
+            }
+            else -> {
+                textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
+            }
         }
-        textViewBulbType.ellipsize = TextUtils.TruncateAt.END
+        /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)
+            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
+        textViewFitting.text = getString(R.string.based_on_s_fitting).format(message.shapeIdentified, categories[0].categoryProducts[0].factorShape, message.baseIdentified)
 
         adapter.categories = categories
     }

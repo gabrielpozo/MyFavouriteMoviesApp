@@ -20,16 +20,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                         categoryDto.categoryPrice?.minPrice,
                         categoryDto.categoryPrice?.maxPrice
                     ),
-                    minWattage = categoryDto.categoryWattReplace.let { list ->
-                        if (list.isNotEmpty()) {
-                            list.min().toString()
-                        } else ""
-                    },
-                    maxWattage = categoryDto.categoryWattReplace.let { list ->
-                        if (list.isNotEmpty() && list.size > 1) {
-                            list.max().toString()
-                        } else ""
-                    },
+                    categoryWattReplaced = categoryDto.categoryWattReplace,
                     maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
                     colors = categoryDto.categoryCctCode.map { it },

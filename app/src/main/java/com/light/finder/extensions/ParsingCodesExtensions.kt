@@ -61,6 +61,29 @@ fun getLegendCctTagPrefIcon(
     }
 }
 
+fun getLegendCctTagPrefSmallIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.smallIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
 
 fun getLegendFinishTagPref(
     code: Int,
