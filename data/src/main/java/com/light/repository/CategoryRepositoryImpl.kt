@@ -20,13 +20,10 @@ class CategoryRepositoryImpl(
 
     override suspend fun getMessage(base64: String?): DataState<List<Message>> =
         repositoryScanningRequest(
-            initialRemoteRequest = { legendRemoteDataSource.fetchLegendTags() },
+            legendTagsRemoteRequest = { legendRemoteDataSource.fetchLegendTags() },
             mainRemoteRequest = { remoteDataSource.fetchMessages(base64!!) },
             saveOnLocalDataSourceInitRequest = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
-            localDataSource = { localPreferenceDataSource.saveLegendFilterNames(it) },
-            parameterToSave = { it[0].legend },
             shouldDoInitialRequest = localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()
-
         )
 
     //TODO(is this this method needed?)
