@@ -64,7 +64,7 @@
         android:layout_marginStart="44dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/switch_camera_button_alt"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"

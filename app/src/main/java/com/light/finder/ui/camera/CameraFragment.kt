@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -14,6 +15,7 @@ import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Size
 import android.view.LayoutInflater
@@ -195,8 +197,7 @@ class CameraFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
-            galleryPermissionRequester =
-                PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            galleryPermissionRequester = PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
@@ -232,6 +233,7 @@ class CameraFragment : BaseFragment() {
     private fun observeModelGallery(model: Event<GalleryViewDisplay>) {
         model.getContentIfNotHandled()?.let {
             pickImageFromGallery()
+            pickLatestFromGallery()
         }
     }
 
@@ -292,6 +294,32 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    private fun pickLatestFromGallery() {
+        val projection = arrayOf(
+            MediaStore.Images.ImageColumns._ID,
+            MediaStore.Images.ImageColumns.DATA,
+            MediaStore.Images.ImageColumns.DISPLAY_NAME,
+            MediaStore.Images.ImageColumns.DATE_ADDED,
+            MediaStore.Images.ImageColumns.MIME_TYPE
+        )
+        val cursor: Cursor? = context?.contentResolver
+            ?.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
+                null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC"
+            )
+
+        if (cursor != null)
+            if (cursor.moveToFirst()) {
+                val imageLocation: String = cursor.getString(1)
+                val imageFile = File(imageLocation)
+                val imageUri = Uri.parse(Uri.decode(imageLocation))
+                if (imageFile.exists()) {
+                    if (imageUri != null)
+                    imageGalleryButton.setImageURI(imageUri)
+                    cursor.close()
+                }
+            }
+    }
 
     private fun observeUpdateUI(model: UiModel) {
         when (model) {
@@ -644,7 +672,6 @@ class CameraFragment : BaseFragment() {
         layoutCamera.visible()
         layoutPermission.gone()
 
-
         //outputDirectory = CameraLightFinderActivity.getOutputDirectory(requireContext())
 
         viewFinder.post {
@@ -665,6 +692,8 @@ class CameraFragment : BaseFragment() {
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))
             }
+
+            pickLatestFromGallery()
 
             /*//TODO check this and move it to local data source
             lifecycleScope.launch(Dispatchers.IO) {
