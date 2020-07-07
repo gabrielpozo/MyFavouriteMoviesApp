@@ -141,12 +141,14 @@ class DetailFragment : BaseFragment() {
                 livePreviewButton.style {
                     add(R.style.LiveButton)
                     backgroundRes(R.drawable.button_curvy_corners_categories)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera))
                 }
                 livePreviewButton.text = getString(R.string.live_preview_button_text)
             } else {
                 livePreviewButton.style {
                     add(R.style.LiveButtonDisabled)
                     backgroundRes(R.drawable.button_disabled_live)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
                 }
                 livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
             }
@@ -159,9 +161,9 @@ class DetailFragment : BaseFragment() {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
         // avoid unwanted scroll when bottom sheet collapsed
-        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false);
+        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false)
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
