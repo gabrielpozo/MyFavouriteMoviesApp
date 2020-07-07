@@ -295,6 +295,10 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun pickLatestFromGallery() {
+        if (!checkSelfStoragePermission()) {
+            return
+        }
+
         val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DATA,
