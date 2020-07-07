@@ -13,6 +13,7 @@ import com.airbnb.paris.extensions.layoutMarginEndDp
 import com.airbnb.paris.extensions.style
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
+import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -20,7 +21,8 @@ import kotlinx.android.synthetic.main.item_category.view.*
 
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
-    private val filterColorList: List<CctType> = emptyList()
+    private val filterColorList: List<CctType> = emptyList(),
+    private val formFactorList: List<FormFactorType> = emptyList()
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -44,7 +46,7 @@ class CategoriesAdapter(
         holder.itemView.colorsLayout.removeAllViews()
         holder.itemView.wattageLayout.removeAllViews()
         holder.itemView.imagesLayout.removeAllViews()
-        holder.bind(category, indexes, categories.size, position, filterColorList)
+        holder.bind(category, indexes, categories.size, position, filterColorList, formFactorList)
         holder.itemView.setOnClickListener { listener(category) }
     }
 
@@ -69,7 +71,8 @@ class CategoriesAdapter(
             indexes: List<Int>,
             categoriesSize: Int,
             position: Int,
-            filterColorList: List<CctType>
+            filterColorList: List<CctType>,
+            formFactorList: List<FormFactorType>
         ) {
             itemView.category_name.text = category.categoryName
 
@@ -79,7 +82,7 @@ class CategoriesAdapter(
             itemView.bulbCover.loadUrl(category.categoryImage)
             itemView.thumbnail.loadThumbnail(category.categoryImage)
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
-                .format(category.categoryShape, category.categoryProducts[0].factorShape)
+                .format(formFactorList[0].name, category.categoryProducts[0].factorShape)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
@@ -129,10 +132,10 @@ class CategoriesAdapter(
                 } else {
                     imageView.setBackgroundResource(R.drawable.ic_placeholder_variation)
                 }
-               imageView.layoutParams = LinearLayout.LayoutParams(
-                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                     LinearLayout.LayoutParams.WRAP_CONTENT
-                 )
+                imageView.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
                 if (index < category.colors.size - 1) {
                     imageView.setPadding(0, 0, 4, 0)
                 } else if (category.colors.size == 1) {

@@ -94,7 +94,8 @@ class CategoriesFragment : BaseFragment() {
     private fun initAdapter() {
         adapter = CategoriesAdapter(
             viewModel::onCategoryClick,
-            localPreferences.loadLegendCctFilterNames()
+            localPreferences.loadLegendCctFilterNames(),
+            localPreferences.loadFormFactorLegendTags()
         )
         rvCategories.adapter = adapter
     }
@@ -122,7 +123,7 @@ class CategoriesFragment : BaseFragment() {
         /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
-        textViewFitting.text = getString(R.string.based_on_s_fitting).format(message.shapeIdentified, categories[0].categoryProducts[0].factorShape, message.baseIdentified)
+        textViewFitting.text = getString(R.string.based_on_s_fitting).format(localPreferences.loadFormFactorLegendTags()[0].name, categories[0].categoryProducts[0].factorShape, message.baseIdentified)
 
         adapter.categories = categories
     }
