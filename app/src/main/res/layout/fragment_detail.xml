@@ -39,8 +39,6 @@
     <Button
         android:id="@+id/livePreviewButton"
         style="@style/BlueButton"
-        android:fontFamily="@font/bold"
-        android:textColor="@color/textLight"
         android:background="@drawable/button_curvy_corners_categories"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -53,7 +51,6 @@
         android:layout_marginEnd="27dp"
         android:lineSpacingExtra="12sp"
         android:gravity="center"
-        android:textSize="18sp"
         android:text="@string/live_preview_button_text" />
 
     <View
