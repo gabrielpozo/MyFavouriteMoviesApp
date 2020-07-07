@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.airbnb.paris.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -102,6 +103,7 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
+        setLivePreview()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -123,11 +125,32 @@ class DetailFragment : BaseFragment() {
             }
         }
 
+
         initAdapters()
         setVariationsObservers()
         setCartListeners()
         setBottomSheetBehaviour()
         setViewPager()
+
+    }
+
+    private fun setLivePreview() {
+        //todo change drawable once you get it from design
+        localPreferences.loadLegendCctFilterNames().forEach {
+            if (it.arType == 1) {
+                livePreviewButton.style {
+                    add(R.style.LiveButton)
+                    backgroundRes(R.drawable.button_curvy_corners_categories)
+                }
+                livePreviewButton.text = getString(R.string.live_preview_button_text)
+            } else {
+                livePreviewButton.style {
+                    add(R.style.LiveButtonDisabled)
+                    backgroundRes(R.drawable.button_disabled_live)
+                }
+                livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+            }
+        }
 
     }
 
