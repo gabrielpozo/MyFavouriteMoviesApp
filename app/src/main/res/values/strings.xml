@@ -35,6 +35,7 @@
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
     <string name="live_preview_button_text">Live preview</string>
+    <string name="live_preview_disabled_button_text">Preview not available</string>
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="timeout_sub">That took longer than expected</string>

@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.airbnb.paris.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -102,6 +103,7 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
+        setLivePreview()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -123,6 +125,7 @@ class DetailFragment : BaseFragment() {
             }
         }
 
+
         initAdapters()
         setVariationsObservers()
         setCartListeners()
@@ -131,14 +134,36 @@ class DetailFragment : BaseFragment() {
 
     }
 
+    private fun setLivePreview() {
+        //todo change drawable once you get it from design
+        localPreferences.loadLegendCctFilterNames().forEach {
+            if (it.arType == 1) {
+                livePreviewButton.style {
+                    add(R.style.LiveButton)
+                    backgroundRes(R.drawable.button_curvy_corners_categories)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera))
+                }
+                livePreviewButton.text = getString(R.string.live_preview_button_text)
+            } else {
+                livePreviewButton.style {
+                    add(R.style.LiveButtonDisabled)
+                    backgroundRes(R.drawable.button_disabled_live)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
+                }
+                livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+            }
+        }
+
+    }
+
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
         // avoid unwanted scroll when bottom sheet collapsed
-        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false);
+        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false)
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
