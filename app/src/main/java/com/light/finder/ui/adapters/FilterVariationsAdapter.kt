@@ -173,7 +173,6 @@ class FilterFinishAdapter(
                 filterTypeList = filterFinishList,
                 legendTag = FINISH_LEGEND_TAG
             ))
-            //itemView.setFinishVariation(filter.codeFilter)
         }
     }
 }
