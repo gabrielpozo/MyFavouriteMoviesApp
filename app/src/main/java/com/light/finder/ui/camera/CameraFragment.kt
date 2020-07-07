@@ -295,19 +295,17 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun pickLatestFromGallery() {
-        // Find the last picture
-        // Find the last picture
-        val projection = arrayOf<String>(
+        val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DATA,
-            MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATE_TAKEN,
+            MediaStore.Images.ImageColumns.DISPLAY_NAME,
+            MediaStore.Images.ImageColumns.DATE_ADDED,
             MediaStore.Images.ImageColumns.MIME_TYPE
         )
         val cursor: Cursor? = context!!.contentResolver
             .query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
-                null, MediaStore.Images.ImageColumns.DATE_TAKEN.toString() + " DESC"
+                null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC"
             )
 
         if (cursor != null)
@@ -318,6 +316,7 @@ class CameraFragment : BaseFragment() {
                 if (imageFile.exists()) {
                     if (imageUri != null)
                     imageGalleryButton.setImageURI(imageUri)
+                    cursor.close()
                 }
             }
     }
