@@ -302,8 +302,8 @@ class CameraFragment : BaseFragment() {
             MediaStore.Images.ImageColumns.DATE_ADDED,
             MediaStore.Images.ImageColumns.MIME_TYPE
         )
-        val cursor: Cursor? = context!!.contentResolver
-            .query(
+        val cursor: Cursor? = context?.contentResolver
+            ?.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
                 null, MediaStore.Images.ImageColumns.DATE_ADDED + " DESC"
             )
