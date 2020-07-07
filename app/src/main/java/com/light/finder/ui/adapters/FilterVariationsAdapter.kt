@@ -167,7 +167,13 @@ class FilterFinishAdapter(
                 legendTag = FINISH_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.setFinishVariation(filter.codeFilter)
+
+            itemView.imageFilterCover.loadCircleImage(getLegendFinishTagPrefImage(
+                filter.codeFilter,
+                filterTypeList = filterFinishList,
+                legendTag = FINISH_LEGEND_TAG
+            ))
+            //itemView.setFinishVariation(filter.codeFilter)
         }
     }
 }
