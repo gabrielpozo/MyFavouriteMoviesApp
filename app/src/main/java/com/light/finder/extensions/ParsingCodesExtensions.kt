@@ -109,6 +109,30 @@ fun getLegendFinishTagPref(
 }
 
 
+fun getLegendFinishTagPrefImage(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.image
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
 
 fun getLegendTagPrefFormFactor(
     code: Int,
