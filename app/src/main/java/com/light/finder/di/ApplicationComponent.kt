@@ -22,6 +22,7 @@ interface ApplicationComponent {
     fun plus(module: ProductsOptionsModule): ProductsOptionsComponent
     fun plus(module: TermsModule): TermsComponent
     fun plus(module: HardwareModule): HardwareInstanceComponents
+    fun plus(module: LiveAmbianceModule): LiveAmbianceComponent
 
     @Component.Factory
     interface Factory {

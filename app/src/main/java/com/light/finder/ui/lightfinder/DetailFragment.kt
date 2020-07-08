@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
@@ -32,6 +33,7 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -135,7 +137,6 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setLivePreview() {
-        //todo change drawable once you get it from design
         localPreferences.loadLegendCctFilterNames().forEach {
             if (it.arType == 1) {
                 livePreviewButton.style {
@@ -151,6 +152,12 @@ class DetailFragment : BaseFragment() {
                     drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
                 }
                 livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+            }
+        }
+
+        livePreviewButton.setOnClickListener {
+            activity?.startActivity<LiveAmbianceLightFinderActivity> {
+                //todo pass intent with colors
             }
         }
 
