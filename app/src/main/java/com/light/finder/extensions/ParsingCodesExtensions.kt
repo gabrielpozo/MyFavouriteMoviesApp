@@ -93,6 +93,17 @@ fun getOrderColor(
     return productColor?.order ?: -1
 }
 
+fun getOrderFinish(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.order?.toInt() ?: -1
+}
+
+
 fun getLegendFinishTagPrefImage(
     code: Int,
     logError: Boolean = false,
