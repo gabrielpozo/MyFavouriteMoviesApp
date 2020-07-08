@@ -112,13 +112,11 @@ class FilterColorAdapter(
                 legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.imageFilterCover.loadCircleImage(
-                getLegendCctTagPrefIcon(
-                    filter.codeFilter,
-                    filterTypeList = filterColorList,
-                    legendTag = COLOR_LEGEND_TAG
-                )
-            )
+            itemView.imageFilterCover.loadCircleImage(getLegendCctTagPrefIcon(
+                filter.codeFilter,
+                filterTypeList = filterColorList,
+                legendTag = COLOR_LEGEND_TAG
+            ))
         }
     }
 }
@@ -137,13 +135,11 @@ class FilterFinishAdapter(
         shouldRefreshData = false
     )
 
+
     fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
-        filterVariationList.forEach {
-            it.order = getOrderFinish(it.codeFilter, filterFinishList)
-        }
-        filterVariationList.sortedBy { it.order }
         filterVariationList.setBackgroundLayout(viewItemsMap)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_card_filter_unselected, false)
@@ -172,13 +168,11 @@ class FilterFinishAdapter(
             )
             itemView.setDrawableOnBackground(filter)
 
-            itemView.imageFilterCover.loadCircleImage(
-                getLegendFinishTagPrefImage(
-                    filter.codeFilter,
-                    filterTypeList = filterFinishList,
-                    legendTag = FINISH_LEGEND_TAG
-                )
-            )
+            itemView.imageFilterCover.loadCircleImage(getLegendFinishTagPrefImage(
+                filter.codeFilter,
+                filterTypeList = filterFinishList,
+                legendTag = FINISH_LEGEND_TAG
+            ))
         }
     }
 }

@@ -1,10 +1,7 @@
 package com.light.finder.extensions
 
 import android.content.Context
-import com.light.domain.model.CctType
-import com.light.domain.model.ColorOrderList
-import com.light.domain.model.FinishType
-import com.light.domain.model.FormFactorType
+import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
 
@@ -97,10 +94,10 @@ fun getOrderFinish(
     code: Int,
     filterTypeList: List<FinishType>
 ): Int {
-    val productColor = filterTypeList.find {
+    val productFinish = filterTypeList.find {
         it.id == code
     }
-    return productColor?.order?.toInt() ?: -1
+    return productFinish?.order?.toInt() ?: -1
 }
 
 
@@ -196,6 +193,15 @@ fun List<Int>.sortColorByOrderField(filterColorList: List<CctType>): List<ColorO
     forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
     orderedColors.sortBy { it.order }
     return orderedColors
+}
+
+fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<FinishType>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderFinish(it.codeFilter, filterFinishList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
 }
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {

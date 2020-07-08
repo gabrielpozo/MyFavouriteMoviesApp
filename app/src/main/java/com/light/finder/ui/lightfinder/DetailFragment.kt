@@ -28,10 +28,7 @@ import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.FilterColorAdapter
-import com.light.finder.ui.adapters.FilterFinishAdapter
-import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.adapters.*
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -596,7 +593,9 @@ class DetailFragment : BaseFragment() {
         if (filterFinish.isUpdated) {
             filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
         }
-        filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
+
+        filterFinishAdapter.filterListFinish =
+            filterFinish.filteredFinishButtons.sortFinishByOrderField(localPreferences.loadLegendFinishFilterNames())
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
