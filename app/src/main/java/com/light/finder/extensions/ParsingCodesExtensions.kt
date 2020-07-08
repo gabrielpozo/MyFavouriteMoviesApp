@@ -100,6 +100,16 @@ fun getOrderFinish(
     return productFinish?.order?.toInt() ?: -1
 }
 
+fun getOrderColorVariation(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productFinish = filterTypeList.find {
+        it.id == code
+    }
+    return productFinish?.order?.toInt() ?: -1
+}
+
 
 fun getLegendFinishTagPrefImage(
     code: Int,
@@ -188,12 +198,6 @@ fun checkCategoryFinishCodesAreValid(finishCodes: List<Int>) {
     }
 }
 
-fun List<Int>.sortColorByOrderField(filterColorList: List<CctType>): List<ColorOrderList> {
-    val orderedColors = arrayListOf<ColorOrderList>()
-    forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
-    orderedColors.sortBy { it.order }
-    return orderedColors
-}
 
 fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<FinishType>): List<FilterVariationCF> {
     val orderedList = map {
@@ -203,6 +207,26 @@ fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<Finish
 
     return orderedList.sortedBy { it.order }
 }
+
+fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderColor(it.codeFilter, filterColorList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<ColorOrderList> {
+    val orderedColors = arrayListOf<ColorOrderList>()
+    forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
+    orderedColors.sortBy { it.order }
+    return orderedColors
+}
+
+
+
+
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {

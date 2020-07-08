@@ -84,7 +84,7 @@ class CategoriesAdapter(
             }
 
 
-            category.colors.sortColorByOrderField(filterColorList)
+            category.colors.sortSmallColorByOrderField(filterColorList)
                 .forEachIndexed { index, orderColor ->
                     val textView = TextView(itemView.context)
                     textView.text = getLegendCctTagPref(
