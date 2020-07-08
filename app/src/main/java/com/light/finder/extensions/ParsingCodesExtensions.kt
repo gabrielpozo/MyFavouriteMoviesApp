@@ -217,6 +217,14 @@ fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>
     return orderedList.sortedBy { it.order }
 }
 
+fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<ColorOrderList> {
+    val orderedColors = arrayListOf<ColorOrderList>()
+    forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
+    orderedColors.sortBy { it.order }
+    return orderedColors
+}
+
+
 
 
 
