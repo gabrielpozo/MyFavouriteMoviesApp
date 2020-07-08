@@ -19,7 +19,7 @@ import com.light.source.local.LocalPreferenceDataSource
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
-import kotlinx.android.synthetic.main.layout_filter_dialog.*
+import kotlinx.android.synthetic.main.activity_live_ambiance.*
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -58,7 +58,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             ::handleFilterColorPressed,
             localPreferences.loadLegendCctFilterNames()
         )
-        recyclerViewColor.adapter = filterColorAdapter
+        recyclerViewFilter.adapter = filterColorAdapter
     }
 
     private fun handleFilterColorPressed(filter: FilterVariationCF) {
