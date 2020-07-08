@@ -564,7 +564,7 @@ class DetailFragment : BaseFragment() {
 
         viewModel.dataFilterFinishButtons.observe(
             viewLifecycleOwner,
-            Observer(::observeFinishWattage)
+            Observer(::observeFilteringFinish)
         )
 
         viewModel.productSelected.observe(
@@ -585,11 +585,10 @@ class DetailFragment : BaseFragment() {
         if (filteringColor.isUpdated) {
             filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
         }
-        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
-
+        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons.sortColorByOrderField(localPreferences.loadLegendCctFilterNames())
     }
 
-    private fun observeFinishWattage(filterFinish: DetailViewModel.FilteringFinish) {
+    private fun observeFilteringFinish(filterFinish: DetailViewModel.FilteringFinish) {
         if (filterFinish.isUpdated) {
             filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
         }
