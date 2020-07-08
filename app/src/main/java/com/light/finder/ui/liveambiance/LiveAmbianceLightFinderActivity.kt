@@ -2,7 +2,7 @@ package com.light.finder.ui.liveambiance
 
 import android.os.Bundle
 import android.view.View
-import com.light.domain.model.FilterVariationCF
+import com.light.domain.model.CctType
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -10,7 +10,7 @@ import com.light.finder.di.modules.submodules.LiveAmbianceComponent
 import com.light.finder.di.modules.submodules.LiveAmbianceModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
-import com.light.finder.ui.adapters.FilterColorAdapter
+import com.light.finder.ui.adapters.LiveAmbianceAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
@@ -20,12 +20,13 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
 import kotlinx.android.synthetic.main.activity_live_ambiance.*
+import timber.log.Timber
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     private lateinit var component: LiveAmbianceComponent
     private val liveAmbianceViewModel: LiveAmbianceViewModel by lazy { getViewModel { component.liveAmbianceViewModel } }
-    private lateinit var filterColorAdapter: FilterColorAdapter
+    private lateinit var filterColorAdapter: LiveAmbianceAdapter
     private var gpuImageView: GPUImageView? = null
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
@@ -54,14 +55,16 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun initAdapter() {
-        filterColorAdapter = FilterColorAdapter(
-            ::handleFilterColorPressed,
+        filterColorAdapter = LiveAmbianceAdapter(
+            ::handleFilterPressed,
             localPreferences.loadLegendCctFilterNames()
         )
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
-    private fun handleFilterColorPressed(filter: FilterVariationCF) {
+    private fun handleFilterPressed(filter: CctType) {
+
+        GPUImageFilterTools.createFilterForType(filter)
         //liveAmbianceViewModel.onFilterColorTap(filter)
     }
 
@@ -136,11 +139,11 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         cameraLoader?.onPause()
     }
 
+    //todo move this to adapter
     private val onGpuFilterClickListener: GPUImageFilterTools.OnGpuImageFilterChosenListener =
         object : GPUImageFilterTools.OnGpuImageFilterChosenListener {
             override fun onGpuImageFilterChosenListener(
-                filter: GPUImageFilter?,
-                filterName: String?
+                filter: GPUImageFilter?
             ) {
                 filter?.let { switchFilterTo(it) }
             }

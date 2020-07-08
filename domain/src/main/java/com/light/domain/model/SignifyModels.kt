@@ -105,7 +105,7 @@ data class CctType(
     val bigIcon: String,
     val order: Int,
     val arType: Int,
-    val kevinSpec: KevinSpec
+    val kelvinSpec: KelvinSpec
 )
 
-data class KevinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
+data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
