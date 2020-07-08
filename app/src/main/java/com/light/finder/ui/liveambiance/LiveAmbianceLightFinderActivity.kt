@@ -1,11 +1,7 @@
 package com.light.finder.ui.liveambiance
 
 import android.os.Bundle
-import android.os.FileUtils
-import android.util.Log
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.LiveAmbianceComponent
@@ -18,6 +14,7 @@ import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
 import com.light.presentation.viewmodels.LiveAmbianceViewModel
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
+import jp.co.cyberagent.android.gpuimage.util.Rotation
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -59,7 +56,31 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             }
         })
         gpuImageView?.setRatio(0.75f)
+        updateGPUImageRotate()
         gpuImageView?.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY)
+    }
+
+    private fun updateGPUImageRotate() {
+        val rotation: Rotation = getRotation(cameraLoader?.cameraOrientation!!)
+        var flipHorizontal = false
+        var flipVertical = false
+        if (cameraLoader?.isFrontCamera!!) {
+            if (rotation == Rotation.NORMAL || rotation == Rotation.ROTATION_180) {
+                flipHorizontal = true
+            } else {
+                flipVertical = true
+            }
+        }
+        gpuImageView?.gpuImage?.setRotation(rotation, flipHorizontal, flipVertical)
+    }
+
+    private fun getRotation(orientation: Int): Rotation {
+        return when (orientation) {
+            90 -> Rotation.ROTATION_90
+            180 -> Rotation.ROTATION_180
+            270 -> Rotation.ROTATION_270
+            else -> Rotation.NORMAL
+        }
     }
 
     override fun onResume() {

@@ -184,7 +184,7 @@ class Camera2Loader(private val activity: Activity) : CameraLoader() {
         sizes: Array<Size>,
         width: Int,
         height: Int,
-        aspectRatio: Float = 0.75f
+        aspectRatio: Float
     ): Size {
         var minDelta = Int.MAX_VALUE
         var index = 0
