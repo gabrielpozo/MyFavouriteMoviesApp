@@ -2,29 +2,39 @@ package com.light.finder.ui.liveambiance
 
 import android.os.Bundle
 import android.view.View
+import com.light.domain.model.FilterVariationCF
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
+import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.di.modules.submodules.LiveAmbianceComponent
 import com.light.finder.di.modules.submodules.LiveAmbianceModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
+import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
 import com.light.presentation.viewmodels.LiveAmbianceViewModel
+import com.light.source.local.LocalPreferenceDataSource
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
+import kotlinx.android.synthetic.main.layout_filter_dialog.*
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     private lateinit var component: LiveAmbianceComponent
     private val liveAmbianceViewModel: LiveAmbianceViewModel by lazy { getViewModel { component.liveAmbianceViewModel } }
-
+    private lateinit var filterColorAdapter: FilterColorAdapter
     private var gpuImageView: GPUImageView? = null
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            this
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +49,20 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
         initView()
         initCamera()
+        initAdapter()
 
+    }
+
+    private fun initAdapter() {
+        filterColorAdapter = FilterColorAdapter(
+            ::handleFilterColorPressed,
+            localPreferences.loadLegendCctFilterNames()
+        )
+        recyclerViewColor.adapter = filterColorAdapter
+    }
+
+    private fun handleFilterColorPressed(filter: FilterVariationCF) {
+        //liveAmbianceViewModel.onFilterColorTap(filter)
     }
 
 
@@ -113,7 +136,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         cameraLoader?.onPause()
     }
 
-    private val mOnGpuImageFilterChosenListener: GPUImageFilterTools.OnGpuImageFilterChosenListener =
+    private val onGpuFilterClickListener: GPUImageFilterTools.OnGpuImageFilterChosenListener =
         object : GPUImageFilterTools.OnGpuImageFilterChosenListener {
             override fun onGpuImageFilterChosenListener(
                 filter: GPUImageFilter?,
