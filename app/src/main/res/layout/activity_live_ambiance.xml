@@ -28,7 +28,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -36,10 +36,8 @@
             android:id="@+id/recyclerViewColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_margin="12dp"
             android:orientation="horizontal"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_card_filter_unselected">
 
