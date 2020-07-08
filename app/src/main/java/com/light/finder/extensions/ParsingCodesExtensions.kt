@@ -1,13 +1,12 @@
 package com.light.finder.extensions
 
 import android.content.Context
-import android.view.View
 import com.light.domain.model.CctType
+import com.light.domain.model.ColorOrderList
 import com.light.domain.model.FinishType
 import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 
 const val COLOR_LEGEND_TAG = "product_cct_code"
@@ -84,6 +83,16 @@ fun getLegendCctTagPrefSmallIcon(
     }
 }
 
+fun getOrderColor(
+    code: Int,
+    filterTypeList: List<CctType>
+): Int {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.order ?: -1
+}
+
 fun getLegendFinishTagPrefImage(
     code: Int,
     logError: Boolean = false,
@@ -132,7 +141,6 @@ fun getLegendFinishTagPref(
 }
 
 
-
 fun getLegendTagPrefFormFactor(
     code: Int,
     logError: Boolean = false,
@@ -172,6 +180,12 @@ fun checkCategoryFinishCodesAreValid(finishCodes: List<Int>) {
     }
 }
 
+fun List<Int>.sortColorByOrderField(filterColorList: List<CctType>): List<ColorOrderList> {
+    val orderedColors = arrayListOf<ColorOrderList>()
+    forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
+    orderedColors.sortBy { it.order }
+    return orderedColors
+}
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {
@@ -197,22 +211,5 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     }
     else -> {
         R.drawable.ic_holder
-    }
-}
-
-fun View.setFinishVariation(finishCode: Int) {
-    when (finishCode) {
-        1 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.clear)
-        }
-        2 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.frosted)
-        }
-        3 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.variation_finish_amber)
-        }
-        else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
-        }
     }
 }
