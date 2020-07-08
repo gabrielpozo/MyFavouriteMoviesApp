@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
@@ -140,11 +139,6 @@ fun String?.getSplitUrl(): String {
     }
 
     return chain
-}
-
-
-fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
-    setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
 }
 
 fun Int.pluralOrSingular() =
