@@ -93,7 +93,14 @@ class CategoriesAdapter(
                 )
                 val drawable = itemView.context.getColorDrawable(colorCode)
                 if (drawable != 0) {
-                    textView.endDrawableIcon(drawable)
+                    textView.loadSmallColorIcon(
+                        getLegendCctTagPrefSmallIcon(
+                            colorCode,
+                            filterTypeList = filterColorList,
+                            legendTag = COLOR_LEGEND_TAG
+                        ), drawable
+                    )
+
                 }
                 textView.layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,

@@ -1,10 +1,13 @@
 package com.light.finder.extensions
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
 import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.domain.model.Product
@@ -107,6 +111,24 @@ fun ImageView.setPlaceholder() {
         .into(this)
 }
 
+fun TextView.loadSmallColorIcon(url: String, @DrawableRes id: Int = 0) {
+    Glide.with(context)
+        .load(url)
+        .placeholder(R.drawable.ic_holder)
+        .error(R.drawable.ic_holder)
+        .into(object : CustomTarget<Drawable>(100, 100) {
+            override fun onLoadCleared(drawable: Drawable?) {
+                setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
+            }
+
+            override fun onResourceReady(
+                res: Drawable,
+                transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
+            ) {
+                setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
+            }
+        })
+}
 
 fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(
