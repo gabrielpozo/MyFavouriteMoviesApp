@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -53,6 +54,7 @@ import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -260,7 +262,7 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
-                viewModel.onCameraButtonClicked(bitmapImage, 0)
+                viewModel.onCameraButtonClicked(bitmapImage, getExifOrientation(uri.path))
                 layoutPreviewGallery.gone()
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -271,6 +273,27 @@ class CameraFragment : BaseFragment() {
         cancelPhoto.setOnClickListener {
             hideGalleryPreview()
         }
+    }
+
+    private fun getExifOrientation(filepath: String?): Int {
+        var degree = 0
+        var exif: ExifInterface? = null
+        try {
+            exif = ExifInterface(filepath!!)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+        }
+        if (exif != null) {
+            val orientation: Int = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)
+            if (orientation != -1) {
+                when (orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
+                    ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
+                }
+            }
+        }
+        return degree
     }
 
     private fun hideGalleryPreview() {
