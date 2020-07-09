@@ -95,6 +95,7 @@ fun ImageView.loadThumbnail(url: String) {
     Glide.with(context)
         .load(url)
         .circleCrop()
+        .placeholder(R.color.primaryDisabled)
         .into(this)
 }
 
