@@ -105,6 +105,29 @@ fun getLegendFinishTagPrefImage(
     }
 }
 
+fun getLegendCctTagPrefSmallIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.smallIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
 
 fun getLegendTagPrefFormFactor(
     code: Int,
@@ -172,8 +195,25 @@ fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<C
 }
 
 
+fun getOrderColor(
+    code: Int,
+    filterTypeList: List<CctType>
+): Int {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.order ?: -1
+}
 
-
+fun getOrderFinish(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productFinish = filterTypeList.find {
+        it.id == code
+    }
+    return productFinish?.order?.toInt() ?: -1
+}
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {

@@ -103,6 +103,11 @@ fun ImageView.loadThumbnail(url: String) {
         .into(this)
 }
 
+fun ImageView.loadCircleImage(url: String) {
+    Glide.with(context).load(url).circleCrop()
+        .into(this)
+}
+
 fun ImageView.loadUrlCenterCrop(url: String) {
     Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
         .into(this)
