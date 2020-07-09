@@ -256,6 +256,7 @@ class CameraFragment : BaseFragment() {
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         modelUiState = ModelStatus.GALLERY
+        screenNavigator.toGalleryPreview(this)
     }
 
     private fun setGalleryPreviewListeners(bitmapImage: Bitmap) {

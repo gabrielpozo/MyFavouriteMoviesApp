@@ -89,6 +89,7 @@
     <string name="product_variations">ProductVariations</string>
     <string name="my_cart_fire">MyCart</string>
     <string name="about_page">AboutPage</string>
+    <string name="gallery_preview">ConfirmSelectedPhoto</string>
 
 
     //FireBase Events
