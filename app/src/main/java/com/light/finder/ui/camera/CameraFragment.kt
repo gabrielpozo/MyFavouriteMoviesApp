@@ -5,9 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.*
 import android.database.Cursor
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -240,9 +238,8 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 initGalleryPreviewUI(uri)
-                setGalleryPreviewListeners(bitmapImage)
+                setGalleryPreviewListeners(uri)
             }
         } else {
             hideGalleryPreview()
@@ -259,9 +256,10 @@ class CameraFragment : BaseFragment() {
         screenNavigator.toGalleryPreview(this)
     }
 
-    private fun setGalleryPreviewListeners(bitmapImage: Bitmap) {
+    private fun setGalleryPreviewListeners(uri: Uri) {
         confirmPhoto.setOnClickListener {
             if (InternetUtil.isInternetOn()) {
+                val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, 0)
                 layoutPreviewGallery.gone()
             } else {
