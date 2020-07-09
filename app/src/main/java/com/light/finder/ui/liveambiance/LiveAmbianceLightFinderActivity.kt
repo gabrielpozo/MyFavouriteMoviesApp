@@ -81,7 +81,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
                 gpuImageView?.updatePreviewFrame(data, width, height)
             }
         })
-        gpuImageView?.setRatio(0.75f)
+        //gpuImageView?.setRatio(0.75f)
         updateGPUImageRotate()
         gpuImageView?.setRenderMode(GPUImageView.RENDERMODE_CONTINUOUSLY)
     }
