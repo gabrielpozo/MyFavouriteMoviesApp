@@ -36,6 +36,4 @@
         tools:listitem="@layout/item_card_filter_unselected">
 
     </androidx.recyclerview.widget.RecyclerView>
-    
-
 </LinearLayout>
