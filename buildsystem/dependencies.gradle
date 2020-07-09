@@ -119,7 +119,7 @@ ext {
             cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
             cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
             cameraxView    : "androidx.camera:camera-view:$cameraViewVersion",
-            dexter         : 'com.karumi:dexter:5.0.0',
+            dexter         : 'com.karumi:dexter:6.2.1',
             gpu            : "jp.co.cyberagent.android:gpuimage:$gpuVersion"
     ]
 

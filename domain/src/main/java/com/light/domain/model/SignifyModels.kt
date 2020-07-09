@@ -5,7 +5,8 @@ data class Message(
     val version: String,
     val baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String)
+    val shapeIdentified: String
+)
 
 data class Category(
     val categoryProductBase: String,
@@ -76,7 +77,6 @@ data class Product(
 }
 
 
-
 data class LegendParsing(val legend: LegendValue)
 data class LegendValue(
     val productFormFactorType: List<FormFactorType>,
@@ -109,3 +109,4 @@ data class CctType(
 )
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
+data class ColorOrderList(val cctCode: Int, val order: Int)

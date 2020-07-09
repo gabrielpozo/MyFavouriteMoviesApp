@@ -4,7 +4,8 @@ data class FilterVariationCF(
     var codeFilter: Int,
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
-    var type: TYPE
+    var type: TYPE,
+    var order: Int = -1
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

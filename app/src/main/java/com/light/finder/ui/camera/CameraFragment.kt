@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
+import android.content.Intent.*
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -240,11 +240,12 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val bitmapImage =
-                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
+                val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 initGalleryPreviewUI(uri)
                 setGalleryPreviewListeners(bitmapImage)
             }
+        } else {
+            hideGalleryPreview()
         }
     }
 
@@ -252,9 +253,10 @@ class CameraFragment : BaseFragment() {
         // ui
         layoutPreviewGallery.visible()
         cameraUiContainer.gone()
-
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
+        modelUiState = ModelStatus.GALLERY
+        screenNavigator.toGalleryPreview(this)
     }
 
     private fun setGalleryPreviewListeners(bitmapImage: Bitmap) {
@@ -269,10 +271,15 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setOnClickListener {
-            layoutPreviewGallery.gone()
-            cameraUiContainer.visible()
-
+            hideGalleryPreview()
         }
+    }
+
+    private fun hideGalleryPreview() {
+        modelUiState = ModelStatus.FEED
+        activityCallback.setBottomBarInvisibility(false)
+        layoutPreviewGallery.gone()
+        cameraUiContainer.visible()
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -295,6 +302,10 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun pickLatestFromGallery() {
+        if (!checkSelfStoragePermission()) {
+            return
+        }
+
         val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DATA,
@@ -704,14 +715,14 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun pickImageFromGallery() {
+    fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "image/*"
-            flags = FLAG_ACTIVITY_NO_HISTORY
         }
 
         startActivityForResult(intent, REQUEST_IMAGE_GET)
+
     }
 
     private fun setUpCamera() {
@@ -879,4 +890,4 @@ class CameraFragment : BaseFragment() {
     }
 }
 
-enum class ModelStatus { FEED, LOADING, PERMISSION }
+enum class ModelStatus { FEED, LOADING, PERMISSION, GALLERY }

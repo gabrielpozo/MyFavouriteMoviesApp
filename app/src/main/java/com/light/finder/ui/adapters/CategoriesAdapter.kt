@@ -84,30 +84,38 @@ class CategoriesAdapter(
             }
 
 
-            category.colors.forEachIndexed { index, colorCode ->
-                val textView = TextView(itemView.context)
-                textView.text = getLegendCctTagPref(
-                    colorCode,
-                    filterTypeList = filterColorList,
-                    legendTag = "product_cct_code"
-                )
-                val drawable = itemView.context.getColorDrawable(colorCode)
-                if (drawable != 0) {
-                    textView.endDrawableIcon(drawable)
+            category.colors.sortSmallColorByOrderField(filterColorList)
+                .forEachIndexed { index, orderColor ->
+                    val textView = TextView(itemView.context)
+                    textView.text = getLegendCctTagPref(
+                        orderColor.cctCode,
+                        filterTypeList = filterColorList,
+                        legendTag = "product_cct_code"
+                    )
+                    val drawable = itemView.context.getColorDrawable(orderColor.cctCode)
+                    if (drawable != 0) {
+                        textView.loadSmallColorIcon(
+                            getLegendCctTagPrefSmallIcon(
+                                orderColor.cctCode,
+                                filterTypeList = filterColorList,
+                                legendTag = COLOR_LEGEND_TAG
+                            ), drawable
+                        )
+
+                    }
+                    textView.layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    textView.setTextAppearance(R.style.SubTitleField)
+                    if (index < category.colors.size - 1) {
+                        textView.setPadding(0, 0, 0, 32)
+                    } else if (category.colors.size == 1) {
+                        textView.setPadding(0, 0, 0, 8)
+                    }
+                    textView.compoundDrawablePadding = 32
+                    itemView.textViewsLayout.addView(textView)
                 }
-                textView.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                textView.setTextAppearance(R.style.SubTitleField)
-                if (index < category.colors.size - 1) {
-                    textView.setPadding(0, 0, 0, 32)
-                } else if (category.colors.size == 1) {
-                    textView.setPadding(0, 0, 0, 8)
-                }
-                textView.compoundDrawablePadding = 32
-                itemView.textViewsLayout.addView(textView)
-            }
 
             val minMaxWattage = itemView.context.getString(
                 R.string.description_wattage,
