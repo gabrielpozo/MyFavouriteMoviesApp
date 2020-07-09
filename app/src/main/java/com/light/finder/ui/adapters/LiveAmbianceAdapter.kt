@@ -7,7 +7,11 @@ import com.light.domain.model.CctType
 import com.light.finder.R
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadCircleImage
+import kotlinx.android.synthetic.main.filter_background.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
+import kotlinx.android.synthetic.main.item_card_filter_unselected.view.frame
+import kotlinx.android.synthetic.main.item_card_filter_unselected.view.imageFilterCover
+import kotlinx.android.synthetic.main.item_card_filter_unselected.view.variation_name
 
 class LiveAmbianceAdapter(
     private val listener: (CctType) -> Unit,
@@ -15,7 +19,7 @@ class LiveAmbianceAdapter(
 ) :
     RecyclerView.Adapter<LiveAmbianceAdapter.ViewHolder>() {
 
-    private val viewItemsMap = hashMapOf<Int, View>()
+   var lastPosition = 0
 
 
    /* fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
@@ -23,7 +27,7 @@ class LiveAmbianceAdapter(
     }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_card_filter_unselected, false)
+        val view = parent.inflate(R.layout.filter_background, false)
         return ViewHolder(view)
     }
 
@@ -35,14 +39,21 @@ class LiveAmbianceAdapter(
         holder.bind(filter)
         holder.itemView.setOnClickListener {
             listener(filter)
+            lastPosition = position
+            notifyDataSetChanged()
+        }
+
+        if (lastPosition == position) {
+            holder.itemView.frame.setBackgroundResource(R.drawable.circle_background_green)
+        } else {
+            holder.itemView.frame.setBackgroundResource(R.drawable.circle_background_grey)
         }
     }
 
-    //todo change background according to click
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(filter: CctType) {
             itemView.variation_name.text = filter.name
-           // itemView.setBackgroundResource(R.drawable.circle_background_green)
             itemView.imageFilterCover.loadCircleImage(filter.bigIcon)
         }
     }
