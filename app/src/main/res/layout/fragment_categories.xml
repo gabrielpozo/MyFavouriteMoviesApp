@@ -11,11 +11,10 @@
     <LinearLayout
         android:id="@+id/layoutBulbType"
         android:background="@color/backgroundDark"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_top_margin"
+        android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
-        android:layout_marginBottom="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,16 +22,25 @@
         <TextView
             android:id="@+id/textViewBulbType"
             style="@style/ActiveTextWhite"
-            android:paddingTop="@dimen/stroke_medium"
-            android:paddingBottom="@dimen/stroke_medium"
             android:text="@string/light_bulb_recognised_as"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+             />
+
+        <View
+            android:layout_gravity="bottom"
+            android:id="@+id/divider"
+            android:background="@color/backgroundDarkPressed"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </LinearLayout>
 
@@ -46,11 +54,15 @@
 
             <!--Results header-->
             <LinearLayout
-                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/rvCategories"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
 
                 <TextView
                     android:id="@+id/textViewResults"
@@ -78,15 +90,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewResults" />
             </LinearLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:background="@color/backgroundDarkPressed"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
 
             <TextView
@@ -133,7 +136,6 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategories"
                 android:visibility="visible"
-                android:background="@drawable/categories_gradient_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

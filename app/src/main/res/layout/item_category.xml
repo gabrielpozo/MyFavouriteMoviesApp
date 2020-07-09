@@ -8,6 +8,8 @@
     android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
     android:focusableInTouchMode="false"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
     app:cardBackgroundColor="@color/backgroundLight">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
