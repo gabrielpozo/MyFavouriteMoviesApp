@@ -2,7 +2,7 @@ package com.light.finder.ui.liveambiance
 
 import android.os.Bundle
 import android.view.View
-import com.light.domain.model.CctType
+import androidx.lifecycle.Observer
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -20,7 +20,6 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
 import kotlinx.android.synthetic.main.activity_live_ambiance.*
-import timber.log.Timber
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -48,6 +47,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live_ambiance)
 
+        liveAmbianceViewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
+
         initView()
         initCamera()
         initAdapter()
@@ -56,21 +57,20 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     private fun initAdapter() {
         filterColorAdapter = LiveAmbianceAdapter(
-            ::handleFilterPressed,
+            liveAmbianceViewModel::onFilterClick,
             localPreferences.loadLegendCctFilterNames()
         )
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
-    private fun handleFilterPressed(filter: CctType) {
 
-        GPUImageFilterTools.createFilterForType(filter)
-        //liveAmbianceViewModel.onFilterColorTap(filter)
+    private fun updateUI(model: LiveAmbianceViewModel.Content) {
+        switchFilterTo(GPUImageFilterTools.createFilterForType(model.filter))
     }
 
 
     private fun initView() {
-        gpuImageView = findViewById(R.id.gpuimage)
+        gpuImageView =findViewById(R.id.gpuimage)
 
     }
 
@@ -139,23 +139,10 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         cameraLoader?.onPause()
     }
 
-    //todo move this to adapter
-    private val onGpuFilterClickListener: GPUImageFilterTools.OnGpuImageFilterChosenListener =
-        object : GPUImageFilterTools.OnGpuImageFilterChosenListener {
-            override fun onGpuImageFilterChosenListener(
-                filter: GPUImageFilter?
-            ) {
-                filter?.let { switchFilterTo(it) }
-            }
-        }
-
 
     private fun switchFilterTo(filter: GPUImageFilter) {
-        //todo is this check needed?
-        if (currentImageFilter.javaClass != filter.javaClass
-        ) {
             currentImageFilter = filter
             gpuImageView?.filter = currentImageFilter
-        }
+
     }
 }

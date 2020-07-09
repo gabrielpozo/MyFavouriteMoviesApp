@@ -1,6 +1,5 @@
 package com.light.finder.ui.liveambiance.util
 
-import android.content.Context
 import com.light.domain.model.CctType
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageRGBFilter

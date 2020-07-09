@@ -34,7 +34,7 @@ class LiveAmbianceAdapter(
 
         holder.bind(filter)
         holder.itemView.setOnClickListener {
-
+            listener(filter)
         }
     }
 
