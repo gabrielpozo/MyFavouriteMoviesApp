@@ -55,6 +55,7 @@ import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -240,29 +241,32 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                initGalleryPreviewUI(uri)
-                setGalleryPreviewListeners(uri)
+                val file = File(uri.path!!)
+                val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
+                initGalleryPreviewUI(uri, rotation)
+                setGalleryPreviewListeners(uri, rotation)
             }
         } else {
             hideGalleryPreview()
         }
     }
 
-    private fun initGalleryPreviewUI(uri: Uri) {
+    private fun initGalleryPreviewUI(uri: Uri, rotation: Int) {
         // ui
         layoutPreviewGallery.visible()
         cameraUiContainer.gone()
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
+        galleryPreview.rotation = rotation.toFloat()
         modelUiState = ModelStatus.GALLERY
         screenNavigator.toGalleryPreview(this)
     }
 
-    private fun setGalleryPreviewListeners(uri: Uri) {
+    private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
         confirmPhoto.setOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
-                viewModel.onCameraButtonClicked(bitmapImage, getExifOrientation(uri.path))
+                viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -275,7 +279,7 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun getExifOrientation(filepath: String?): Int {
+    private fun getExifOrientation(filepath: InputStream?): Int {
         var degree = 0
         var exif: ExifInterface? = null
         try {
