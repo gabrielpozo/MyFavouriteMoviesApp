@@ -40,6 +40,14 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
+            android:name=".ui.liveambiance.LiveAmbianceLightFinderActivity"
+            android:resizeableActivity="false"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            tools:ignore="LockedOrientationActivity"/>
+
+        <activity
             android:name="com.light.finder.ui.splash.SplashLightFinderActivity"
             android:resizeableActivity="false"
             android:theme="@style/SplashTheme"

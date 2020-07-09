@@ -67,6 +67,7 @@ ext {
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
     usabillaVersion = "7.0.3"
+    gpuVersion = "2.0.3"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -118,7 +119,8 @@ ext {
             cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
             cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
             cameraxView    : "androidx.camera:camera-view:$cameraViewVersion",
-            dexter         : 'com.karumi:dexter:6.2.1'
+            dexter         : 'com.karumi:dexter:6.2.1',
+            gpu            : "jp.co.cyberagent.android:gpuimage:$gpuVersion"
     ]
 
     coroutinesDependencies = [
