@@ -13,10 +13,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.airbnb.paris.extensions.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
+import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
@@ -31,6 +33,7 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -102,6 +105,7 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
+        setLivePreview()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -123,6 +127,7 @@ class DetailFragment : BaseFragment() {
             }
         }
 
+
         initAdapters()
         setVariationsObservers()
         setCartListeners()
@@ -131,14 +136,45 @@ class DetailFragment : BaseFragment() {
 
     }
 
+    private fun setLivePreview() {
+        var disabled = true
+        localPreferences.loadLegendCctFilterNames().forEach {
+            if (it.arType == 1) {
+                livePreviewButton.style {
+                    add(R.style.LiveButton)
+                    backgroundRes(R.drawable.button_curvy_corners_categories)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera))
+                }
+                disabled = false
+                livePreviewButton.text = getString(R.string.live_preview_button_text)
+            } else {
+                livePreviewButton.style {
+                    add(R.style.LiveButtonDisabled)
+                    backgroundRes(R.drawable.button_disabled_live)
+                    drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
+                }
+                disabled = true
+                livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+            }
+        }
+
+        livePreviewButton.setOnClickListener {
+            if (!disabled)
+            activity?.startActivity<LiveAmbianceLightFinderActivity> {
+                //todo LIVE AMBIANCE pass intent back and forth with colors
+            }
+        }
+
+    }
+
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayout)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
         // avoid unwanted scroll when bottom sheet collapsed
-        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false);
-        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false);
+        ViewCompat.setNestedScrollingEnabled(recyclerViewWattage, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewColor, false)
+        ViewCompat.setNestedScrollingEnabled(recyclerViewFinish, false)
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
@@ -542,7 +578,7 @@ class DetailFragment : BaseFragment() {
 
         viewModel.dataFilterFinishButtons.observe(
             viewLifecycleOwner,
-            Observer(::observeFinishWattage)
+            Observer(::observeFilteringFinish)
         )
 
         viewModel.productSelected.observe(
@@ -563,15 +599,16 @@ class DetailFragment : BaseFragment() {
         if (filteringColor.isUpdated) {
             filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
         }
-        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons
-
+        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons.sortColorByOrderField(localPreferences.loadLegendCctFilterNames())
     }
 
-    private fun observeFinishWattage(filterFinish: DetailViewModel.FilteringFinish) {
+    private fun observeFilteringFinish(filterFinish: DetailViewModel.FilteringFinish) {
         if (filterFinish.isUpdated) {
             filterFinishAdapter.updateBackgroundAppearance(filterFinish.filteredFinishButtons)
         }
-        filterFinishAdapter.filterListFinish = filterFinish.filteredFinishButtons
+
+        filterFinishAdapter.filterListFinish =
+            filterFinish.filteredFinishButtons.sortFinishByOrderField(localPreferences.loadLegendFinishFilterNames())
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {

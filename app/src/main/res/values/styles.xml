@@ -75,17 +75,17 @@
         <item name="android:paddingEnd">20dp</item>
     </style>
 
-    <style name="EnergyButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:minHeight">30dp</item>
-        <item name="android:height">30dp</item>
-        <item name="android:fontFamily">@font/book</item>
-        <item name="android:textColor">@color/backgroundLight</item>
-        <item name="android:textSize">12sp</item>
+    <style name="LiveButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:height">50dp</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
+        <item name="android:textColor">@color/textLight</item>
     </style>
 
     <style name="WattButton" parent="Widget.AppCompat.Button.Borderless">
@@ -115,6 +115,31 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="EnergyButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:height">30dp</item>
+        <item name="android:fontFamily">@font/book</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="LiveButtonDisabled" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:height">50dp</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:textColor">@color/textDisabled</item>
+    </style>
 
     <!-- End New atributes -->
 

@@ -5,13 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
 import android.database.Cursor
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -55,6 +54,8 @@ import kotlinx.android.synthetic.main.layout_preview.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -240,27 +241,32 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val bitmapImage =
-                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
-                initGalleryPreviewUI(uri)
-                setGalleryPreviewListeners(bitmapImage)
+                val file = File(uri.path!!)
+                val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
+                initGalleryPreviewUI(uri, rotation)
+                setGalleryPreviewListeners(uri, rotation)
             }
+        } else {
+            hideGalleryPreview()
         }
     }
 
-    private fun initGalleryPreviewUI(uri: Uri) {
+    private fun initGalleryPreviewUI(uri: Uri, rotation: Int) {
         // ui
         layoutPreviewGallery.visible()
         cameraUiContainer.gone()
-
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
+        galleryPreview.rotation = rotation.toFloat()
+        modelUiState = ModelStatus.GALLERY
+        screenNavigator.toGalleryPreview(this)
     }
 
-    private fun setGalleryPreviewListeners(bitmapImage: Bitmap) {
+    private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
         confirmPhoto.setOnClickListener {
             if (InternetUtil.isInternetOn()) {
-                viewModel.onCameraButtonClicked(bitmapImage, 0)
+                val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
+                viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -269,10 +275,36 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setOnClickListener {
-            layoutPreviewGallery.gone()
-            cameraUiContainer.visible()
-
+            hideGalleryPreview()
         }
+    }
+
+    private fun getExifOrientation(filepath: InputStream?): Int {
+        var degree = 0
+        var exif: ExifInterface? = null
+        try {
+            exif = ExifInterface(filepath!!)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+        }
+        if (exif != null) {
+            val orientation: Int = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)
+            if (orientation != -1) {
+                when (orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
+                    ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
+                }
+            }
+        }
+        return degree
+    }
+
+    private fun hideGalleryPreview() {
+        modelUiState = ModelStatus.FEED
+        activityCallback.setBottomBarInvisibility(false)
+        layoutPreviewGallery.gone()
+        cameraUiContainer.visible()
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -298,6 +330,7 @@ class CameraFragment : BaseFragment() {
         if (!checkSelfStoragePermission()) {
             return
         }
+
         val projection = arrayOf(
             MediaStore.Images.ImageColumns._ID,
             MediaStore.Images.ImageColumns.DATA,
@@ -707,14 +740,14 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun pickImageFromGallery() {
+    fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "image/*"
-            flags = FLAG_ACTIVITY_NO_HISTORY
         }
 
         startActivityForResult(intent, REQUEST_IMAGE_GET)
+
     }
 
     private fun setUpCamera() {
@@ -882,4 +915,4 @@ class CameraFragment : BaseFragment() {
     }
 }
 
-enum class ModelStatus { FEED, LOADING, PERMISSION }
+enum class ModelStatus { FEED, LOADING, PERMISSION, GALLERY }

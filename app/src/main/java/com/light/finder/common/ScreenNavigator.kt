@@ -170,6 +170,14 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         )
     }
 
+    fun toGalleryPreview(cameraFragment: CameraFragment) {
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.gallery_preview)
+        )
+    }
+
     fun toCameraFeedScreen(cameraFragment: CameraFragment) {
         firebaseAnalytics.trackScreen(
             cameraFragment,

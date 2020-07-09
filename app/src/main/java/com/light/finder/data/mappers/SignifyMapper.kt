@@ -139,15 +139,15 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.bigIcon,
                 it.order,
                 it.arType,
-                mapKelvinDtoToDomain(it.kelvinSpec)
+                MAP_KELVIN_DTO_TO_DOMAIN(it.kelvinSpec)
             )
         }
     )
 }
 
-private val mapKelvinDtoToDomain: (KelvinSpecDto) -> KevinSpec =
+private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
     {
-        KevinSpec(
+        KelvinSpec(
             it.minValue,
             it.maxValue,
             it.defaultValue

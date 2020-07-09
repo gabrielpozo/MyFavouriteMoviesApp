@@ -10,7 +10,7 @@ import com.karumi.dexter.listener.single.BasePermissionListener
 class PermissionRequester(private val activity: Activity, private val permission: String) {
     fun request(continuation: (Boolean) -> Unit, isPermanentlyDenied: (Boolean) -> Unit = {}) {
         Dexter
-            .withActivity(activity)
+            .withContext(activity)
             .withPermission(permission)
             .withListener(object : BasePermissionListener() {
                 override fun onPermissionGranted(response: PermissionGrantedResponse?) {

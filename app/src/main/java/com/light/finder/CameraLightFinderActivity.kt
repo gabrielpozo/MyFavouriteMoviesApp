@@ -23,6 +23,7 @@ import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
+import com.light.finder.ui.camera.ModelStatus
 import com.light.finder.ui.cart.CartFragment
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
@@ -184,6 +185,17 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onBackPressed() {
+        val current = screenNavigator.getCurrentFragment()
+        if (current is CameraFragment) {
+            if (current.getStatusView() == ModelStatus.GALLERY) {
+                // go back to gallery
+                current.pickImageFromGallery()
+
+                return
+            }
+        }
+
+
         if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
             super.onBackPressed()
         }
