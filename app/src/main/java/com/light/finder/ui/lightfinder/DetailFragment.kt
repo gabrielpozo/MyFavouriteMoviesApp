@@ -137,6 +137,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setLivePreview() {
+        var disabled = true
         localPreferences.loadLegendCctFilterNames().forEach {
             if (it.arType == 1) {
                 livePreviewButton.style {
@@ -144,6 +145,7 @@ class DetailFragment : BaseFragment() {
                     backgroundRes(R.drawable.button_curvy_corners_categories)
                     drawableLeft(context?.getDrawable(R.drawable.ic_camera))
                 }
+                disabled = false
                 livePreviewButton.text = getString(R.string.live_preview_button_text)
             } else {
                 livePreviewButton.style {
@@ -151,13 +153,15 @@ class DetailFragment : BaseFragment() {
                     backgroundRes(R.drawable.button_disabled_live)
                     drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
                 }
+                disabled = true
                 livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
             }
         }
 
         livePreviewButton.setOnClickListener {
+            if (!disabled)
             activity?.startActivity<LiveAmbianceLightFinderActivity> {
-                //todo pass intent with colors
+                //todo LIVE AMBIANCE pass intent back and forth with colors
             }
         }
 
