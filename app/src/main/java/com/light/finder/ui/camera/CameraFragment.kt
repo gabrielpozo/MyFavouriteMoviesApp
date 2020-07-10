@@ -268,6 +268,8 @@ class CameraFragment : BaseFragment() {
                 val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
+                modelUiState = ModelStatus.FEED
+
             } else {
                 activityCallback.onInternetConnectionLost()
             }
