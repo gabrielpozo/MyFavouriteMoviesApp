@@ -259,11 +259,11 @@ class CameraFragment : BaseFragment() {
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
         modelUiState = ModelStatus.GALLERY
-        screenNavigator.toGalleryPreview(this)
     }
 
     private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
         confirmPhoto.setOnClickListener {
+            screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, rotation)
@@ -275,6 +275,7 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setOnClickListener {
+            screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
         }
     }
