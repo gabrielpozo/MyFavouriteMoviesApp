@@ -113,9 +113,9 @@ class CategoriesAdapter(
             }
 
 
-            category.colors.forEachIndexed { index, colorCode ->
+            category.colors.sortSmallColorByOrderField(filterColorList).forEachIndexed { index, colorCode ->
                 val imageView = ImageView(itemView.context)
-                val drawable = itemView.context.getColorDrawable(colorCode)
+                val drawable = itemView.context.getColorDrawable(colorCode.cctCode)
                 val size = itemView.resources.getDimensionPixelSize(R.dimen.icon)
                 if (drawable != 0) {
                     imageView.layoutParams = LinearLayout.LayoutParams(
@@ -124,7 +124,7 @@ class CategoriesAdapter(
                     )
                     imageView.loadThumbnail(
                         getLegendCctTagPrefSmallIcon(
-                            colorCode,
+                            colorCode.cctCode,
                             filterTypeList = filterColorList,
                             legendTag = COLOR_LEGEND_TAG
                         )
