@@ -112,7 +112,6 @@ class CategoriesAdapter(
 
             }
 
-
             category.colors.sortSmallColorByOrderField(filterColorList).forEachIndexed { index, colorCode ->
                 val imageView = ImageView(itemView.context)
                 val drawable = itemView.context.getColorDrawable(colorCode.cctCode)
