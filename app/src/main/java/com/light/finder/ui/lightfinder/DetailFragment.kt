@@ -18,7 +18,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
-import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
@@ -33,7 +32,6 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
-import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -63,7 +61,6 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterWattageAdapter: FilterWattageAdapter
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
-    private var isSingleProduct: Boolean = false
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
@@ -105,7 +102,6 @@ class DetailFragment : BaseFragment() {
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
-        setLivePreview()
 
         arguments?.let { bundle ->
             bundle.getParcelable<CategoryParcelable>(PRODUCTS_ID_KEY)
@@ -133,37 +129,6 @@ class DetailFragment : BaseFragment() {
         setCartListeners()
         setBottomSheetBehaviour()
         setViewPager()
-
-    }
-
-    private fun setLivePreview() {
-        var disabled = true
-        localPreferences.loadLegendCctFilterNames().forEach {
-            if (it.arType == 1) {
-                livePreviewButton.style {
-                    add(R.style.LiveButton)
-                    backgroundRes(R.drawable.button_curvy_corners_categories)
-                    drawableLeft(context?.getDrawable(R.drawable.ic_camera))
-                }
-                disabled = false
-                livePreviewButton.text = getString(R.string.live_preview_button_text)
-            } else {
-                livePreviewButton.style {
-                    add(R.style.LiveButtonDisabled)
-                    backgroundRes(R.drawable.button_disabled_live)
-                    drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
-                }
-                disabled = true
-                livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
-            }
-        }
-
-        livePreviewButton.setOnClickListener {
-            if (!disabled)
-            activity?.startActivity<LiveAmbianceLightFinderActivity> {
-                //todo LIVE AMBIANCE pass intent back and forth with colors
-            }
-        }
 
     }
 
@@ -229,9 +194,6 @@ class DetailFragment : BaseFragment() {
                     cartAnimation?.invisible()
                     buttonAddTocart?.isClickable = true
                     buttonAddTocart?.isFocusable = true
-                    if (!isSingleProduct) {
-                        // for future use?
-                    }
 
                     context?.let { it1 ->
                         ContextCompat.getColor(
@@ -252,9 +214,6 @@ class DetailFragment : BaseFragment() {
                 cartAnimation?.invisible()
                 buttonAddTocart?.isClickable = true
                 buttonAddTocart?.isFocusable = true
-                if (!isSingleProduct) {
-                    // for future use?
-                }
 
                 context?.let { it1 ->
                     ContextCompat.getColor(
@@ -277,7 +236,6 @@ class DetailFragment : BaseFragment() {
 
     private fun setDetailObservers() {
         viewModel.modelSapId.observe(viewLifecycleOwner, Observer(::observeProductSapId))
-        viewModel.model.observe(viewLifecycleOwner, Observer(::observeProductContent))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
@@ -372,13 +330,6 @@ class DetailFragment : BaseFragment() {
     }
 
 
-    private fun observeProductContent(contentProduct: DetailViewModel.Content) {
-        isSingleProduct = contentProduct.isSingleProduct
-        populateProductData(contentProduct.product)
-        populateStickyHeaderData(contentProduct.product)
-        pricePerPack = contentProduct.product.pricePack
-    }
-
     private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             screenNavigator.navigateToVariationScreen(navModel.productList)
@@ -398,50 +349,12 @@ class DetailFragment : BaseFragment() {
             getString(R.string.price_detail),
             product.priceLamp
         )
-
-
-        /*       val changeVariation = String.format(
-                   getString(R.string.change_variation),
-                   getLegendTagPref(
-                       product.colorCctCode,
-                       logError = true,
-                       isForDetailScreen = true,
-                       filterTypeList = localPreferences.loadLegendCctFilterNames(),
-                       legendTag = "product_cct_code"
-                   ),
-                   product.wattageReplaced,
-                   getLegendTagPref(
-                       product.productFinishCode, true,
-                       isForDetailScreen = true,
-                       filterTypeList = localPreferences.loadLegendFinishFilterNames(),
-                       legendTag = "product_finish_code"
-                   ),
-                   getString(R.string.finish)
-               )*/
-
         textViewDetailTitle.text = title
         textViewDetailPricePerPack.text = pricePack
         textViewDetailPrice.text = priceLamp
 
-
-        val drawableStart = requireContext().getColorDrawable(product.colorCctCode)
-        if (drawableStart == 0) {
-            //imageViewColor.visibility = View.GONE
-        } else {
-//            imageViewColor.visibility = View.VISIBLE
-//            imageViewColor.setImageDrawable(requireContext().getDrawable(drawableStart))
-        }
         textViewDetailDescription.text = product.description
 
-        if (isSingleProduct) {
-//            val param = imageViewColor.layoutParams as ViewGroup.MarginLayoutParams
-//            param.marginStart = 4
-//            imageViewColor.layoutParams = param
-//            linearVariationContainer.setBackgroundResource(R.drawable.not_outlined)
-//            linearVariationContainer.isClickable = false
-//            textViewDetailChange.visibility = View.GONE
-//            imageViewArrow.visibility = View.INVISIBLE
-        }
     }
 
     private fun populateStickyHeaderData(product: Product) {
@@ -474,6 +387,28 @@ class DetailFragment : BaseFragment() {
         sticky_header_title.text = stickyHeaderTitle
         sticky_header_packs.text = stickyHeaderPacks
         sticky_header_price.text = pricePerPack
+    }
+
+    private fun setLivePreviewButton(product: Product) {
+        if (getLegendArTypeTagPref(
+                product.colorCctCode,
+                localPreferences.loadLegendCctFilterNames()
+            )
+        ) {
+            livePreviewButton.style {
+                add(R.style.LiveButton)
+                backgroundRes(R.drawable.button_curvy_corners_categories)
+                drawableLeft(context?.getDrawable(R.drawable.ic_camera))
+            }
+            livePreviewButton.text = getString(R.string.live_preview_button_text)
+        } else {
+            livePreviewButton.style {
+                add(R.style.LiveButtonDisabled)
+                backgroundRes(R.drawable.button_disabled_live)
+                drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
+            }
+            livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+        }
     }
 
     private fun setViewPager() {
@@ -587,7 +522,6 @@ class DetailFragment : BaseFragment() {
         )
     }
 
-
     private fun observeFilteringWattage(filteringWattage: DetailViewModel.FilteringWattage) {
         if (filteringWattage.isUpdated) {
             filterWattageAdapter.updateBackgroundAppearance(filteringWattage.filteredWattageButtons)
@@ -599,7 +533,8 @@ class DetailFragment : BaseFragment() {
         if (filteringColor.isUpdated) {
             filterColorAdapter.updateBackgroundAppearance(filteringColor.filteredColorButtons)
         }
-        filterColorAdapter.filterListColor = filteringColor.filteredColorButtons.sortColorByOrderField(localPreferences.loadLegendCctFilterNames())
+        filterColorAdapter.filterListColor =
+            filteringColor.filteredColorButtons.sortColorByOrderField(localPreferences.loadLegendCctFilterNames())
     }
 
     private fun observeFilteringFinish(filterFinish: DetailViewModel.FilteringFinish) {
@@ -615,7 +550,7 @@ class DetailFragment : BaseFragment() {
         //TODO(improve this logic) working along with the viewModel
         productSapId = productSelectedModel.productSelected.sapID12NC.toString()
         pricePerPack = productSelectedModel.productSelected.pricePack
-
+        setLivePreviewButton(productSelectedModel.productSelected)
         populateProductData(productSelectedModel.productSelected)
         populateStickyHeaderData(productSelectedModel.productSelected)
 

@@ -80,6 +80,19 @@ fun getLegendCctTagPrefSmallIcon(
     }
 }
 
+
+fun getLegendArTypeTagPref(
+    code: Int,
+    filterTypeList: List<CctType>
+
+): Boolean {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.arType == 1
+}
+
+
 fun getOrderColor(
     code: Int,
     filterTypeList: List<CctType>
