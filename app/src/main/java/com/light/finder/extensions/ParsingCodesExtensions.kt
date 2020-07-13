@@ -81,6 +81,28 @@ fun getLegendFinishTagPref(
     }
 }
 
+fun getLegendArTypeTagPref(
+    code: Int,
+    filterTypeList: List<CctType>
+
+): Boolean {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.arType == 1
+}
+
+
+fun getOrderColorVariation(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productFinish = filterTypeList.find {
+        it.id == code
+    }
+    return productFinish?.order?.toInt() ?: -1
+}
+
 
 fun getLegendFinishTagPrefImage(
     code: Int,
