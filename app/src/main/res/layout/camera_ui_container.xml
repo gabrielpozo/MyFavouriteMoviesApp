@@ -61,7 +61,6 @@
         android:id="@+id/imageGalleryButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:adjustViewBounds="true"
         android:layout_marginStart="44dp"
         android:background="@drawable/imagegallery_button_curvy"
         android:contentDescription="@string/switch_camera_button_alt"
