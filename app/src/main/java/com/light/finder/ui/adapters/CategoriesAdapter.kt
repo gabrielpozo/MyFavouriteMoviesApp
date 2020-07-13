@@ -92,17 +92,14 @@ class CategoriesAdapter(
                         filterTypeList = filterColorList,
                         legendTag = "product_cct_code"
                     )
-                    val drawable = itemView.context.getColorDrawable(orderColor.cctCode)
-                    if (drawable != 0) {
-                        textView.loadSmallColorIcon(
-                            getLegendCctTagPrefSmallIcon(
-                                orderColor.cctCode,
-                                filterTypeList = filterColorList,
-                                legendTag = COLOR_LEGEND_TAG
-                            ), drawable
+                    textView.loadSmallColorIcon(
+                        getLegendCctTagPrefSmallIcon(
+                            orderColor.cctCode,
+                            filterTypeList = filterColorList,
+                            legendTag = COLOR_LEGEND_TAG
                         )
+                    )
 
-                    }
                     textView.layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT

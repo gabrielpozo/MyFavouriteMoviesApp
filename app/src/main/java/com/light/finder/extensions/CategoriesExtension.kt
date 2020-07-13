@@ -116,16 +116,15 @@ fun TextView.loadSmallColorIcon(url: String, @DrawableRes id: Int = 0) {
         .load(url)
         .placeholder(R.drawable.ic_holder)
         .error(R.drawable.ic_holder)
-        .into(object : CustomTarget<Drawable>(100, 100) {
+        .into(object : CustomTarget<Drawable>(75, 75) {
             override fun onLoadCleared(drawable: Drawable?) {
-                //setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_holder, 0)
+                setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
             }
-
             override fun onResourceReady(
                 res: Drawable,
                 transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
             ) {
-                setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
+                setCompoundDrawablesWithIntrinsicBounds(null, null, res, null)
             }
         })
 }
