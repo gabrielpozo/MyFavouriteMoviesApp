@@ -118,7 +118,7 @@ fun TextView.loadSmallColorIcon(url: String, @DrawableRes id: Int = 0) {
         .error(R.drawable.ic_holder)
         .into(object : CustomTarget<Drawable>(100, 100) {
             override fun onLoadCleared(drawable: Drawable?) {
-                setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
+                //setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_holder, 0)
             }
 
             override fun onResourceReady(
