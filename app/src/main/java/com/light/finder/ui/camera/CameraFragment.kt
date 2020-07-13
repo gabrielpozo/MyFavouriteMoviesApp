@@ -28,6 +28,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
@@ -354,7 +356,11 @@ class CameraFragment : BaseFragment() {
                 val imageUri = Uri.parse(Uri.decode(imageLocation))
                 if (imageFile.exists()) {
                     if (imageUri != null)
-                    imageGalleryButton.setImageURI(imageUri)
+                        Glide.with(this).load(imageUri.path)
+                            .override(100, 100)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(imageGalleryButton)
                     cursor.close()
                 }
             }
