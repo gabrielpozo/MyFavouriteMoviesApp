@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.*
@@ -31,11 +30,6 @@ class DetailViewModel(
     val modelNavigation: LiveData<Event<NavigationModel>>
         get() = _modelNavigation
 
-    private val _model = MutableLiveData<Content>()
-    val model: LiveData<Content>
-        get() {
-            return _model
-        }
     private val _modelSapId = MutableLiveData<ContentProductId>()
     val modelSapId: LiveData<ContentProductId>
         get() {
@@ -94,8 +88,6 @@ class DetailViewModel(
 
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
-    data class Content(val product: Product, val isSingleProduct: Boolean = false)
-
     data class ContentProductId(val productSapId: String)
 
     object ServerError
@@ -132,8 +124,6 @@ class DetailViewModel(
                     params = *arrayOf(productSapId)
                 )
             }
-        } else {
-            Log.e("ege", "Sap id is empty")
         }
     }
 
@@ -327,14 +317,9 @@ class DetailViewModel(
     }
 
     private fun setProductSelected(products: List<Product>) {
-        _modelSapId
         if (::dataProductsVariation.isInitialized) {
             val product = products[0].also { it.isSelected = true }
             _modelSapId.value = ContentProductId(product.sapID12NC.toString())
-            _model.value = Content(
-                product,
-                isSingleProduct = isSingleProduct()
-            )
         }
     }
 
