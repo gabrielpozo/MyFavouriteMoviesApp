@@ -52,6 +52,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         initView()
         initCamera()
         initAdapter()
+        switchFilterTo(GPUImageFilterTools.createFilterForType(localPreferences.loadLegendCctFilterNames()[0]))
+        //todo get it from intent
 
     }
 
@@ -60,6 +62,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             liveAmbianceViewModel::onFilterClick,
             localPreferences.loadLegendCctFilterNames()
         )
+        //todo get it from intent
         recyclerViewFilter.adapter = filterColorAdapter
     }
 

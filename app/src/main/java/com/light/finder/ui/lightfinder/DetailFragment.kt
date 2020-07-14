@@ -2,6 +2,7 @@ package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
 import android.content.Context
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -13,7 +14,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import com.airbnb.paris.extensions.*
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.drawableLeft
+import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -32,6 +35,7 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -390,6 +394,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setLivePreviewButton(product: Product) {
+        var disabled = true
         if (getLegendArTypeTagPref(
                 product.colorCctCode,
                 localPreferences.loadLegendCctFilterNames()
@@ -400,6 +405,7 @@ class DetailFragment : BaseFragment() {
                 backgroundRes(R.drawable.button_curvy_corners_categories)
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera))
             }
+            disabled = false
             livePreviewButton.text = getString(R.string.live_preview_button_text)
         } else {
             livePreviewButton.style {
@@ -407,7 +413,16 @@ class DetailFragment : BaseFragment() {
                 backgroundRes(R.drawable.button_disabled_live)
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
             }
+            disabled = true
             livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+        }
+
+        livePreviewButton.setOnClickListener {
+            if (!disabled)
+                activity?.startActivity<LiveAmbianceLightFinderActivity> {
+                    //todo pass intent with colors
+                    //todo LIVE AMBIANCE pass intent back and forth with colors
+                }
         }
     }
 
