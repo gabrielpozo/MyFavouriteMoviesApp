@@ -427,6 +427,7 @@ class DetailFragment : BaseFragment() {
                 )
             ) {
                 activity?.startActivity<LiveAmbianceLightFinderActivity> {
+                    //todo pass parcelable
                   // putParcelableArrayListExtra(BUNDLE_ID, localPreferences.loadLegendCctFilterNames().parcelizeCctTypeList() as ArrayList<CctTypeParcelable>)
                 }
             }

@@ -50,7 +50,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         val intent = Intent()
         val ccttypes = intent.getParcelableArrayListExtra<CctTypeParcelable>(BUNDLE_ID)
         if (!ccttypes.isNullOrEmpty()) {
-
+            //todo get it from intent
         }
 
 
@@ -76,6 +76,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
            ccttypeList
+        //todo pass intent to adapter
         )
         recyclerViewFilter.adapter = filterColorAdapter
     }
