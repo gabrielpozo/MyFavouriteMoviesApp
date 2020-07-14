@@ -263,6 +263,13 @@ fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<C
     return orderedColors
 }
 
+fun List<Int>.sortSmallFinishByOrderField(filterFinishList: List<FinishType>): List<FinishOrderList> {
+    val orderedFinish = arrayListOf<FinishOrderList>()
+    forEach { orderedFinish.add(FinishOrderList(it, getOrderFinish(it, filterFinishList))) }
+    orderedFinish.sortBy { it.order }
+    return orderedFinish
+}
+
 
 fun getOrderColor(
     code: Int,

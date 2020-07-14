@@ -93,7 +93,7 @@ class CategoriesAdapter(
 
             itemView.bulbCover.loadUrl(category.categoryImage)
 
-            category.finishCodes.forEachIndexed { index, finishCode ->
+            category.finishCodes.sortSmallFinishByOrderField(finishList).forEachIndexed { index, finishType ->
                 val imageViewFinish = ImageView(itemView.context)
                 val size = itemView.resources.getDimensionPixelSize(R.dimen.icon_factor)
                 imageViewFinish.layoutParams = LinearLayout.LayoutParams(
@@ -102,7 +102,7 @@ class CategoriesAdapter(
                 )
                 imageViewFinish.loadBulbThumbnail(
                     getLegendFormFactorTagPrefSmallIcon(
-                        finishCode,
+                        finishType.finnishCode,
                         filterTypeList = finishList,
                         legendTag = FORM_FACTOR_LEGEND_TAG
                     )
