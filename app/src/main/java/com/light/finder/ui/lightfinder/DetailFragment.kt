@@ -2,10 +2,9 @@ package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,6 @@ import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.CctTypeParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
@@ -38,7 +36,6 @@ import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
-import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.BUNDLE_ID
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -52,7 +49,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.ArrayList
 
 
 class DetailFragment : BaseFragment() {
@@ -426,10 +422,8 @@ class DetailFragment : BaseFragment() {
                     localPreferences.loadLegendCctFilterNames()
                 )
             ) {
-                activity?.startActivity<LiveAmbianceLightFinderActivity> {
-                    //todo pass parcelable
-                  // putParcelableArrayListExtra(BUNDLE_ID, localPreferences.loadLegendCctFilterNames().parcelizeCctTypeList() as ArrayList<CctTypeParcelable>)
-                }
+                Log.d("Gabriel","Getting on Click")
+                screenNavigator.navigateToLiveAmbiance(localPreferences.loadLegendCctFilterNames())
             }
         }
     }
