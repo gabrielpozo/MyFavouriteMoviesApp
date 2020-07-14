@@ -356,7 +356,8 @@ class CameraFragment : BaseFragment() {
                 val imageUri = Uri.parse(Uri.decode(imageLocation))
                 if (imageFile.exists()) {
                     if (imageUri != null)
-                        Glide.with(this).load(imageUri.path)
+                    imageGalleryButton.setPadding(4, 4, 4 ,4)
+                    Glide.with(this).load(imageUri.path)
                             .override(100, 100)
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
