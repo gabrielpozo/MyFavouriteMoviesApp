@@ -599,5 +599,9 @@ class DetailFragment : BaseFragment() {
         viewModel.onFilterFinishTap(filter)
     }
 
+    fun returningFromLiveAmbiance(colorCode: Int ) {
+        filterColorAdapter.setColorFromAmbiance(colorCode)
+    }
+
 }
 

@@ -12,7 +12,6 @@ import com.light.finder.di.modules.submodules.LiveAmbianceComponent
 import com.light.finder.di.modules.submodules.LiveAmbianceModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.LiveAmbianceAdapter
-import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
@@ -28,6 +27,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     companion object {
         const val LIVE_AMBIANCE_ID_KEY = "LiveAmbianceActivity::id"
         const val CCT_LIST_EXTRA = "ccTListId"
+        const val REQUEST_CODE_AMBIANCE = 1
     }
 
     private lateinit var component: LiveAmbianceComponent
@@ -160,12 +160,12 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     }
 
     override fun onBackPressed() {
-/*        setIntentForResult {
-            putParcelableArrayListExtra(
-                LiveAmbianceLightFinderActivity.CCT_LIST_EXTRA,
-               // navModel.categoryProducts.parcelizeProductList()
+        setIntentForResult {
+            putExtra(
+                CCT_LIST_EXTRA,
+                liveAmbianceViewModel.onRetrievingColorSelected()
             )
-        }*/
+        }
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }

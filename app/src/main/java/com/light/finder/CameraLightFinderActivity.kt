@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.FrameLayout
@@ -25,6 +26,8 @@ import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.camera.ModelStatus
 import com.light.finder.ui.cart.CartFragment
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -209,6 +212,28 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
                 true
             }
             else -> super.onKeyDown(keyCode, event)
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val op = data?.getIntExtra(
+            LiveAmbianceLightFinderActivity.CCT_LIST_EXTRA,
+            0
+        ) ?: -1
+        Log.d("Gabriel","onDetailFragment current Fragment OUT: $op")
+        if (resultCode == LiveAmbianceLightFinderActivity.REQUEST_CODE_AMBIANCE) {
+            val currentFragment = screenNavigator.getCurrentFragment()
+            if (currentFragment is DetailFragment) {
+                Log.d("Gabriel","onDetailFragment current Fragment")
+                currentFragment.returningFromLiveAmbiance(
+                    data?.getIntExtra(
+                        LiveAmbianceLightFinderActivity.CCT_LIST_EXTRA,
+                        0
+                    ) ?: -1
+                )
+            }
         }
     }
 

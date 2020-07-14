@@ -81,6 +81,14 @@ class FilterColorAdapter(
         shouldRefreshData = false
     )
 
+    fun setColorFromAmbiance(color: Int) {
+        filterListColor.forEachIndexed { index, element ->
+            if (element.codeFilter == color) {
+                listener(filterListColor[index])
+            }
+        }
+    }
+
     fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
         filterVariationList.setBackgroundLayout(viewItemsMap)
     }
