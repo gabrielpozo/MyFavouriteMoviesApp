@@ -22,7 +22,8 @@ import kotlinx.android.synthetic.main.item_category.view.*
 class CategoriesAdapter(
     private val listener: (Category) -> Unit,
     private val filterColorList: List<CctType> = emptyList(),
-    private val formFactorList: List<FormFactorType> = emptyList()
+    private val formFactorList: List<FormFactorType> = emptyList(),
+    private val shapeIdentified: String
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
@@ -80,7 +81,35 @@ class CategoriesAdapter(
             itemView.priceButton.text = Html.fromHtml(sourceString)
 
             itemView.bulbCover.loadUrl(category.categoryImage)
-            itemView.thumbnail.loadThumbnail(category.categoryImage)
+
+            category.finishCodes.forEachIndexed { index, finishCode ->
+                val imageViewFinish = ImageView(itemView.context)
+                val size = itemView.resources.getDimensionPixelSize(R.dimen.icon_factor)
+                imageViewFinish.layoutParams = LinearLayout.LayoutParams(
+                    size,
+                    size
+                )
+                imageViewFinish.loadBulbThumbnail(
+                    getLegendFormFactorTagPrefSmallIcon(
+                        finishCode,
+                        filterTypeList = formFactorList,
+                        legendTag = FORM_FACTOR_LEGEND_TAG
+                    )
+                )
+
+                imageViewFinish.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                if (index < category.colors.size - 1) {
+                    imageViewFinish.setPadding(0, 0, 4, 0)
+                } else if (category.colors.size == 1) {
+                    imageViewFinish.setPadding(0, 0, 32, 0)
+                }
+
+                itemView.thumbnail.addView(imageViewFinish)
+            }
+
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
                 .format(formFactorList[0].name, category.categoryProducts[0].factorShape)
 
@@ -112,11 +141,10 @@ class CategoriesAdapter(
 
             }
 
-            category.colors.sortSmallColorByOrderField(filterColorList).forEachIndexed { index, colorCode ->
-                val imageView = ImageView(itemView.context)
-                val drawable = itemView.context.getColorDrawable(colorCode.cctCode)
-                val size = itemView.resources.getDimensionPixelSize(R.dimen.icon)
-                if (drawable != 0) {
+            category.colors.sortSmallColorByOrderField(filterColorList)
+                .forEachIndexed { index, colorCode ->
+                    val imageView = ImageView(itemView.context)
+                    val size = itemView.resources.getDimensionPixelSize(R.dimen.icon)
                     imageView.layoutParams = LinearLayout.LayoutParams(
                         size,
                         size
@@ -128,20 +156,18 @@ class CategoriesAdapter(
                             legendTag = COLOR_LEGEND_TAG
                         )
                     )
-                } else {
-                    imageView.setBackgroundResource(R.drawable.ic_placeholder_variation)
+
+                    imageView.layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    if (index < category.colors.size - 1) {
+                        imageView.setPadding(0, 0, 4, 0)
+                    } else if (category.colors.size == 1) {
+                        imageView.setPadding(0, 0, 32, 0)
+                    }
+                    itemView.colorsLayout.addView(imageView)
                 }
-                imageView.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                if (index < category.colors.size - 1) {
-                    imageView.setPadding(0, 0, 4, 0)
-                } else if (category.colors.size == 1) {
-                    imageView.setPadding(0, 0, 32, 0)
-                }
-                itemView.colorsLayout.addView(imageView)
-            }
         }
     }
 }

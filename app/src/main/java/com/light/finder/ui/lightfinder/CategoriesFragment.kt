@@ -2,7 +2,6 @@ package com.light.finder.ui.lightfinder
 
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,7 +73,6 @@ class CategoriesFragment : BaseFragment() {
         }
 
         navigationObserver()
-        initAdapter()
     }
 
 
@@ -91,15 +89,6 @@ class CategoriesFragment : BaseFragment() {
         updateData(model.messages, model.message)
     }
 
-    private fun initAdapter() {
-        adapter = CategoriesAdapter(
-            viewModel::onCategoryClick,
-            localPreferences.loadLegendCctFilterNames(),
-            localPreferences.loadFormFactorLegendTags()
-        )
-        rvCategories.adapter = adapter
-    }
-
     private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             screenNavigator.navigateToDetailScreen(navModel.category)
@@ -114,18 +103,44 @@ class CategoriesFragment : BaseFragment() {
                 rvCategories.gone()
             }
             categories.size == 1 -> {
-                textViewResults.text = getString(R.string.text_result).getIntFormatter(categories.size)
+                textViewResults.text =
+                    getString(R.string.text_result).getIntFormatter(categories.size)
             }
             else -> {
-                textViewResults.text = getString(R.string.text_results).getIntFormatter(categories.size)
+                textViewResults.text =
+                    getString(R.string.text_results).getIntFormatter(categories.size)
             }
         }
         /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
-        textViewFitting.text = getString(R.string.based_on_s_fitting).format(localPreferences.loadFormFactorLegendTags()[0].name, categories[0].categoryProducts[0].factorShape, message.baseIdentified)
+        getLegendFormFactorTag(
+            code = message.shapeIdentified.toInt(),
+            filterTypeList = localPreferences.loadFormFactorLegendTags(),
+            legendTag = ""
+        )
+        textViewFitting.text = getString(R.string.based_on_s_fitting).format(
+            localPreferences.loadFormFactorLegendTags()[0].name,
+            categories[0].categoryProducts[0].factorShape,
+            message.baseIdentified
+        )
 
+        setAdapter(message)
+        //TODO(move it to a standalone method)
         adapter.categories = categories
+
+    }
+
+
+    private fun setAdapter(message: Message) {
+        adapter = CategoriesAdapter(
+            viewModel::onCategoryClick,
+            localPreferences.loadLegendCctFilterNames(),
+            localPreferences.loadFormFactorLegendTags(),
+            message.shapeIdentified
+        )
+        rvCategories.adapter = adapter
+
     }
 
 }

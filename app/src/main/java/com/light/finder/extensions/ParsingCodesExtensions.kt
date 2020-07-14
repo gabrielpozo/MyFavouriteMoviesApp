@@ -93,6 +93,30 @@ fun getLegendArTypeTagPref(
 }
 
 
+fun getLegendFormFactorTag(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FormFactorType>,
+    legendTag: String
+): String {
+    val formFactorType = filterTypeList.find {
+        it.id == code
+    }
+    return if (formFactorType != null) {
+        formFactorType.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+
+}
+
 fun getOrderColorVariation(
     code: Int,
     filterTypeList: List<FinishType>
@@ -139,6 +163,29 @@ fun getLegendCctTagPrefSmallIcon(
     }
     return if (productColor != null) {
         productColor.smallIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendFormFactorTagPrefSmallIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FormFactorType>,
+    legendTag: String
+): String {
+    val productFormFactor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productFormFactor != null) {
+        productFormFactor.image
 
     } else {
         if (logError) CrashlyticsException(422, legendTag, code).logException()

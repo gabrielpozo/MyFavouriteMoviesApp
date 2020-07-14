@@ -78,14 +78,13 @@
                 app:layout_anchor="@id/bulbCover"
                 app:layout_anchorGravity="bottom|right" />
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/thumbnail"
-                android:background="@drawable/all_circle"
-                android:padding="1dp"
+                android:orientation="horizontal"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:layout_anchor="@id/bulbCover"
                 app:layout_anchorGravity="bottom|left" />

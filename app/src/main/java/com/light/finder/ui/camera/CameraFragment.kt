@@ -28,6 +28,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
@@ -259,15 +261,17 @@ class CameraFragment : BaseFragment() {
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
         modelUiState = ModelStatus.GALLERY
-        screenNavigator.toGalleryPreview(this)
     }
 
     private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
         confirmPhoto.setOnClickListener {
+            screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
+                modelUiState = ModelStatus.FEED
+
             } else {
                 activityCallback.onInternetConnectionLost()
             }
@@ -275,6 +279,7 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setOnClickListener {
+            screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
         }
     }
@@ -351,7 +356,11 @@ class CameraFragment : BaseFragment() {
                 val imageUri = Uri.parse(Uri.decode(imageLocation))
                 if (imageFile.exists()) {
                     if (imageUri != null)
-                    imageGalleryButton.setImageURI(imageUri)
+                        Glide.with(this).load(imageUri.path)
+                            .override(100, 100)
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(imageGalleryButton)
                     cursor.close()
                 }
             }
@@ -641,6 +650,12 @@ class CameraFragment : BaseFragment() {
         alertDialog.setCanceledOnTouchOutside(false)
         alertDialog.setCancelable(false)
         alertDialog.window?.setDimAmount(0.6f)
+        alertDialog.setOnDismissListener {
+            //lottie reset after closing dialog
+            lottieAnimationView?.playAnimation()
+            initializeLottieAnimation()
+        }
+
         timer.cancel()
         lottieAnimationView.pauseAnimation()
         dialogView.buttonPositive.text = buttonPositiveText
