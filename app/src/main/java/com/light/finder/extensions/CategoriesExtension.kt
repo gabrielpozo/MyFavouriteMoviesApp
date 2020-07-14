@@ -95,8 +95,19 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
-fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
+fun ImageView.loadThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_holder)
+        .into(this)
+}
+
+fun ImageView.loadBulbThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_holder)
         .into(this)
 }
 
@@ -105,6 +116,10 @@ fun ImageView.loadCircleImage(url: String) {
         .into(this)
 }
 
+fun ImageView.loadUrlCenterCrop(url: String) {
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
+        .into(this)
+}
 
 fun ImageView.setPlaceholder() {
     Glide.with(context).load(R.drawable.fallback_image).centerInside()
@@ -137,8 +152,7 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         categoryName,
         categoryImage,
         priceRange,
-        minWattage,
-        maxWattage,
+        categoryWattReplaced,
         maxEnergySaving,
         minEnergySaving,
         colors,
@@ -156,7 +170,6 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         categoryImage,
         priceRange,
         minWattage,
-        maxWattage,
         maxEnergySaving,
         minEnergySaving,
         colors,

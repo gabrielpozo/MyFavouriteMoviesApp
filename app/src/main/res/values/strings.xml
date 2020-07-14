@@ -24,10 +24,10 @@
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
-    <string name="light_bulb_recognised_as">Identified as %s</string>
+    <string name="light_bulb_recognised_as">Scan results</string>
     <string name="description_wattage">%sW-%sW %s</string>
     <string name="no_value"></string>
-    <string name="most_efficient_option">Most energy efficient option</string>
+    <string name="most_efficient_option">Most energy efficient</string>
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
     <string name="change_variation">%s - %sW - %s %s</string>
@@ -123,5 +123,11 @@
     <string name="sticky_header_title">%s %sW %s</string>
     <string name="sticky_header_packs">%s pack%s of %s %s%s</string>
     <string name="sticky_header_price">$%.2f</string>
+    <string name="no_results">No Results</string>
+    <string name="no_result_sub">We couldn\'t find any matches with your search. Adjust your search by changing the fitting, shape or by removing filters.</string>
+    <string name="based_on_s_fitting">Identified as: %s (%s) with %s fitting</string>
+    <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
+    <string name="available_options">Available options:</string>
+    <string name="bulb_s">%s (%s)</string>
 
 </resources>
