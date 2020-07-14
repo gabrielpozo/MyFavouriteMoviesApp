@@ -20,6 +20,7 @@ import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.REQUEST_CODE_AMBIANCE
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -150,7 +151,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun navigateToLiveAmbiance(listCctType: List<CctType>) {
-        activity.startActivityForResult<LiveAmbianceLightFinderActivity> {
+        activity.startActivityForResult<LiveAmbianceLightFinderActivity>(REQUEST_CODE_AMBIANCE) {
             putParcelableArrayListExtra(
                 LiveAmbianceLightFinderActivity.LIVE_AMBIANCE_ID_KEY,
                 listCctType.parcelizeCctList()

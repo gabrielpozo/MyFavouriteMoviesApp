@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.CctType
@@ -28,7 +27,6 @@ class LiveAmbianceViewModel(
     data class ContentColors(val cctList: List<CctType>)
 
     fun onFilterClick(filter: CctType) {
-        Log.d("Gabriel","On Filter Click")
         _model.value = Content(filter)
     }
 
