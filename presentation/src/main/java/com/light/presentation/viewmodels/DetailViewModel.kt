@@ -19,6 +19,7 @@ class DetailViewModel(
     private val getFinishVariationsUseCase: GetFinishVariationsUseCase,
     private val getNewCompatibleListUseCase: GetNewCompatibleVariationListUseCase,
     private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase,
+    private val getCctCodeListUseCase: GetDisplayedCctCodes,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -47,6 +48,10 @@ class DetailViewModel(
     private val _modelItemCountRequest = MutableLiveData<RequestModelItemCount>()
     val modelItemCountRequest: LiveData<RequestModelItemCount>
         get() = _modelItemCountRequest
+
+    private val _modelCctType = MutableLiveData<Event<CctColorsSelected>>()
+    val modelCctType: LiveData<Event<CctColorsSelected>>
+        get() = _modelCctType
 
     /**
      * observable variation variables
@@ -89,6 +94,8 @@ class DetailViewModel(
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
     data class ContentProductId(val productSapId: String)
+
+    data class CctColorsSelected(val cctTypeList: List<CctType>)
 
     object ServerError
 
@@ -133,6 +140,17 @@ class DetailViewModel(
                 ::handleItemCountSuccessResponse
             )
         }
+    }
+
+    fun onRetrievingCctSelectedColors(cctTypesLegendList: List<CctType>) {
+        _modelCctType.value = Event(
+            CctColorsSelected(
+                getCctCodeListUseCase.execute(
+                    cctTypesLegendList,
+                    _dataFilterColorButtons.value?.filteredColorButtons
+                )
+            )
+        )
     }
 
     private fun handleSuccessResponse(cartItem: Cart) {

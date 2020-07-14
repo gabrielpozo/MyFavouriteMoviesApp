@@ -42,9 +42,14 @@ class DetailModule {
         GetNewIncompatibleVariationListUseCase()
 
     @Provides
+    fun getCctDisplayedCctCodesList() =
+        GetDisplayedCctCodes()
+
+    @Provides
     fun categoryViewModel(
         detailsUseCase: GetAddToCartUseCase,
-        getItemCountUseCase: GetItemCountUseCase
+        getItemCountUseCase: GetItemCountUseCase,
+        getDisplayedCctCodes: GetDisplayedCctCodes
     ) = DetailViewModel(
         detailsUseCase,
         getItemCountUseCase,
@@ -53,6 +58,7 @@ class DetailModule {
         getFinishVariationsUseCase(),
         getAvailableSelectedFilterUseCase(),
         getNewSelectedProduct(),
+        getDisplayedCctCodes,
         Dispatchers.Main
     )
 

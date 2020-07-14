@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,6 @@ import com.light.finder.ui.adapters.DetailImageAdapter
 import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
-import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -243,6 +241,7 @@ class DetailFragment : BaseFragment() {
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+        viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
@@ -300,6 +299,13 @@ class DetailFragment : BaseFragment() {
             getString(R.string.ok),
             false
         )
+    }
+
+
+    private fun observeCctType(modelCctTypeEvent: Event<DetailViewModel.CctColorsSelected>) {
+        modelCctTypeEvent.getContentIfNotHandled()?.let { contentCctList ->
+            screenNavigator.navigateToLiveAmbiance(contentCctList.cctTypeList)
+        }
     }
 
     private fun showErrorDialog(
@@ -422,8 +428,7 @@ class DetailFragment : BaseFragment() {
                     localPreferences.loadLegendCctFilterNames()
                 )
             ) {
-                Log.d("Gabriel","Getting on Click")
-                screenNavigator.navigateToLiveAmbiance(localPreferences.loadLegendCctFilterNames())
+                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
             }
         }
     }
@@ -599,7 +604,7 @@ class DetailFragment : BaseFragment() {
         viewModel.onFilterFinishTap(filter)
     }
 
-    fun returningFromLiveAmbiance(colorCode: Int ) {
+    fun returningFromLiveAmbiance(colorCode: Int) {
         filterColorAdapter.setColorFromAmbiance(colorCode)
     }
 
