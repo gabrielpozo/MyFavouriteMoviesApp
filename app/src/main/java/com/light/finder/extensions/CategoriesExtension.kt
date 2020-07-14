@@ -96,7 +96,7 @@ fun ImageView.loadUrl(url: String) {
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside().placeholder(R.drawable.fallback_image)
         .into(this)
 }
 
