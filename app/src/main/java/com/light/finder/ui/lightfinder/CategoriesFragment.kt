@@ -114,11 +114,11 @@ class CategoriesFragment : BaseFragment() {
         /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
             getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
-        getLegendFormFactorTag(
+/*        getLegendFormFactorTag(
             code = message.shapeIdentified.toInt(),
             filterTypeList = localPreferences.loadFormFactorLegendTags(),
             legendTag = ""
-        )
+        )*/
         textViewFitting.text = getString(R.string.based_on_s_fitting).format(
             localPreferences.loadFormFactorLegendTags()[0].name,
             categories[0].categoryProducts[0].factorShape,
