@@ -178,7 +178,7 @@ fun getLegendFormFactorTagPrefSmallIcon(
     code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
-    filterTypeList: List<FormFactorType>,
+    filterTypeList: List<FinishType>,
     legendTag: String
 ): String {
     val productFormFactor = filterTypeList.find {
@@ -261,6 +261,13 @@ fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<C
     forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
     orderedColors.sortBy { it.order }
     return orderedColors
+}
+
+fun List<Int>.sortSmallFinishByOrderField(filterFinishList: List<FinishType>): List<FinishOrderList> {
+    val orderedFinish = arrayListOf<FinishOrderList>()
+    forEach { orderedFinish.add(FinishOrderList(it, getOrderFinish(it, filterFinishList))) }
+    orderedFinish.sortBy { it.order }
+    return orderedFinish
 }
 
 
