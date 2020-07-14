@@ -103,7 +103,12 @@ fun ImageView.loadBulbThumbnail(url: String) {
     Glide.with(context)
         .load(url)
         .circleCrop()
-        .placeholder(R.drawable.ic_holder)
+        .placeholder(R.drawable.ic_holder).into(this)
+
+}
+
+fun ImageView.loadUrlCenterCrop(url: String) {
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside().placeholder(R.drawable.fallback_image)
         .into(this)
 }
 
@@ -112,10 +117,6 @@ fun ImageView.loadCircleImage(url: String) {
         .into(this)
 }
 
-fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
-        .into(this)
-}
 
 fun ImageView.setPlaceholder() {
     Glide.with(context).load(R.drawable.fallback_image).centerInside()
