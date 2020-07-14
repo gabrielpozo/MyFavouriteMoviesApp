@@ -37,12 +37,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
-    private var ccttypeList = ArrayList<CctType>()
-    private val localPreferences: LocalPreferenceDataSource by lazy {
-        LocalPreferenceDataSourceImpl(
-            this
-        )
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +65,11 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
+        val filteredColorList =  colorList.cctList.toMutableList()
+        filteredColorList.removeAll{ it.id == 6 && it.id == 7 }
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
-            colorList.cctList)
+            filteredColorList)
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
