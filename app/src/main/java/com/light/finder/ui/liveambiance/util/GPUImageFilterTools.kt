@@ -16,10 +16,4 @@ object GPUImageFilterTools {
             (rgb.second / 255.0).toFloat(),
             (rgb.third / 255.0).toFloat())
     }
-
-    interface OnGpuImageFilterChosenListener {
-         fun onGpuImageFilterChosenListener(
-            filter: GPUImageFilter?
-        )
-    }
 }

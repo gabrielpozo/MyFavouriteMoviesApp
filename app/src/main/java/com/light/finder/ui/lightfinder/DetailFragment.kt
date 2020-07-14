@@ -499,10 +499,6 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    /***
-     *
-     *
-     */
 
     private fun initAdapters() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)

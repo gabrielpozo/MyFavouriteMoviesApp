@@ -34,8 +34,6 @@ object KelvinToRgbConverter {
             blue = 255.0
         }
 
-
-        //todo clamp()/255.0 might be needed for each
         return Triple(clamp(red, 0.0, 255.0), clamp(green, 0.0, 255.0), clamp(blue, 0.0, 255.0))
 
     }
