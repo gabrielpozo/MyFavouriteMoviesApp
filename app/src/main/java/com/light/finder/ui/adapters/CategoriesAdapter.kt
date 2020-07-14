@@ -13,6 +13,7 @@ import com.airbnb.paris.extensions.layoutMarginEndDp
 import com.airbnb.paris.extensions.style
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
+import com.light.domain.model.FinishType
 import com.light.domain.model.FormFactorType
 import com.light.finder.R
 import com.light.finder.extensions.*
@@ -23,6 +24,7 @@ class CategoriesAdapter(
     private val listener: (Category) -> Unit,
     private val filterColorList: List<CctType> = emptyList(),
     private val formFactorList: List<FormFactorType> = emptyList(),
+    private val filterFinishList: List<FinishType> = emptyList(),
     private val shapeIdentified: String
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
@@ -47,7 +49,15 @@ class CategoriesAdapter(
         holder.itemView.colorsLayout.removeAllViews()
         holder.itemView.wattageLayout.removeAllViews()
         holder.itemView.imagesLayout.removeAllViews()
-        holder.bind(category, indexes, categories.size, position, filterColorList, formFactorList)
+        holder.bind(
+            category,
+            indexes,
+            categories.size,
+            position,
+            filterColorList,
+            formFactorList,
+            filterFinishList
+        )
         holder.itemView.setOnClickListener { listener(category) }
     }
 
@@ -73,7 +83,8 @@ class CategoriesAdapter(
             categoriesSize: Int,
             position: Int,
             filterColorList: List<CctType>,
-            formFactorList: List<FormFactorType>
+            formFactorList: List<FormFactorType>,
+            finishList: List<FinishType>
         ) {
             itemView.category_name.text = category.categoryName
 
@@ -92,7 +103,7 @@ class CategoriesAdapter(
                 imageViewFinish.loadBulbThumbnail(
                     getLegendFormFactorTagPrefSmallIcon(
                         finishCode,
-                        filterTypeList = formFactorList,
+                        filterTypeList = finishList,
                         legendTag = FORM_FACTOR_LEGEND_TAG
                     )
                 )

@@ -178,7 +178,7 @@ fun getLegendFormFactorTagPrefSmallIcon(
     code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
-    filterTypeList: List<FormFactorType>,
+    filterTypeList: List<FinishType>,
     legendTag: String
 ): String {
     val productFormFactor = filterTypeList.find {

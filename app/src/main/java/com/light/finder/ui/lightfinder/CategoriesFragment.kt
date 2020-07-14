@@ -137,6 +137,7 @@ class CategoriesFragment : BaseFragment() {
             viewModel::onCategoryClick,
             localPreferences.loadLegendCctFilterNames(),
             localPreferences.loadFormFactorLegendTags(),
+            localPreferences.loadLegendFinishFilterNames(),
             message.shapeIdentified
         )
         rvCategories.adapter = adapter
