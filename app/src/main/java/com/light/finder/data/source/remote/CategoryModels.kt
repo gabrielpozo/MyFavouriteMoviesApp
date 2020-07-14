@@ -67,3 +67,19 @@ data class MessageParcelable(
     val shapeIdentified: String
 ) : Parcelable
 
+@Parcelize
+data class CctTypeParcelable(
+    val id: Int,
+    val name: String,
+    val smallIcon: String,
+    val bigIcon: String,
+    val order: Int,
+    val arType: Int,
+    val kelvinSpec: KelvinSpecParcelable
+) : Parcelable
+
+
+@Parcelize
+data class KelvinSpecParcelable(val minValue: Int, val maxValue: Int, val defaultValue: Int) :
+    Parcelable
+

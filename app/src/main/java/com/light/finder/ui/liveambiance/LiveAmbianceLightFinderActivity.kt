@@ -1,11 +1,14 @@
 package com.light.finder.ui.liveambiance
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import com.light.domain.model.CctType
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
+import com.light.finder.data.source.remote.CctTypeParcelable
 import com.light.finder.di.modules.submodules.LiveAmbianceComponent
 import com.light.finder.di.modules.submodules.LiveAmbianceModule
 import com.light.finder.extensions.app
@@ -23,6 +26,10 @@ import kotlinx.android.synthetic.main.activity_live_ambiance.*
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
+    companion object {
+        const val BUNDLE_ID = "ccttype"
+    }
+
     private lateinit var component: LiveAmbianceComponent
     private val liveAmbianceViewModel: LiveAmbianceViewModel by lazy { getViewModel { component.liveAmbianceViewModel } }
     private lateinit var filterColorAdapter: LiveAmbianceAdapter
@@ -30,6 +37,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
+    private var ccttypeList = ArrayList<CctType>()
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
             this
@@ -38,6 +46,14 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val intent = Intent()
+        val ccttypes = intent.getParcelableArrayListExtra<CctTypeParcelable>(BUNDLE_ID)
+        if (!ccttypes.isNullOrEmpty()) {
+
+        }
+
+
 
         component = app.applicationComponent.plus(LiveAmbianceModule())
 
@@ -52,17 +68,15 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         initView()
         initCamera()
         initAdapter()
-        switchFilterTo(GPUImageFilterTools.createFilterForType(localPreferences.loadLegendCctFilterNames()[0]))
-        //todo get it from intent
+        switchFilterTo(GPUImageFilterTools.createFilterForType(ccttypeList[0]))
 
     }
 
     private fun initAdapter() {
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
-            localPreferences.loadLegendCctFilterNames()
+           ccttypeList
         )
-        //todo get it from intent
         recyclerViewFilter.adapter = filterColorAdapter
     }
 

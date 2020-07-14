@@ -2,9 +2,10 @@ package com.light.finder.ui.lightfinder
 
 import android.animation.Animator
 import android.content.Context
-import android.content.Intent.getIntent
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
+import com.light.finder.data.source.remote.CctTypeParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
@@ -36,6 +38,7 @@ import com.light.finder.ui.adapters.FilterColorAdapter
 import com.light.finder.ui.adapters.FilterFinishAdapter
 import com.light.finder.ui.adapters.FilterWattageAdapter
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.BUNDLE_ID
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -49,6 +52,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.ArrayList
 
 
 class DetailFragment : BaseFragment() {
@@ -394,7 +398,6 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setLivePreviewButton(product: Product) {
-        var disabled = true
         if (getLegendArTypeTagPref(
                 product.colorCctCode,
                 localPreferences.loadLegendCctFilterNames()
@@ -405,24 +408,28 @@ class DetailFragment : BaseFragment() {
                 backgroundRes(R.drawable.button_curvy_corners_categories)
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera))
             }
-            disabled = false
             livePreviewButton.text = getString(R.string.live_preview_button_text)
+
         } else {
             livePreviewButton.style {
                 add(R.style.LiveButtonDisabled)
                 backgroundRes(R.drawable.button_disabled_live)
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
             }
-            disabled = true
             livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
         }
 
+
         livePreviewButton.setOnClickListener {
-            if (!disabled)
+            if (getLegendArTypeTagPref(
+                    product.colorCctCode,
+                    localPreferences.loadLegendCctFilterNames()
+                )
+            ) {
                 activity?.startActivity<LiveAmbianceLightFinderActivity> {
-                    //todo pass intent with colors
-                    //todo LIVE AMBIANCE pass intent back and forth with colors
+                  // putParcelableArrayListExtra(BUNDLE_ID, localPreferences.loadLegendCctFilterNames().parcelizeCctTypeList() as ArrayList<CctTypeParcelable>)
                 }
+            }
         }
     }
 
