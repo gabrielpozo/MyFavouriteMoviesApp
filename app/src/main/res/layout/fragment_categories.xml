@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/categories_gradient_bg"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/categories_gradient_bg">
 
     <!--View Header-->
     <LinearLayout
@@ -28,12 +28,11 @@
             android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-             />
+            android:gravity="center" />
 
         <View
-            android:layout_gravity="bottom"
             android:id="@+id/divider"
+            android:layout_gravity="bottom"
             android:background="@color/backgroundDarkPressed"
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -93,9 +92,9 @@
 
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textViewNoResultSubTitle"
                 style="@style/NoResultSubTitle"
+                android:visibility="gone"
                 android:gravity="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -111,9 +110,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/header" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/textViewNoResultTitle"
                 style="@style/NoResultTitle"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="32dp"

@@ -103,7 +103,8 @@ fun ImageView.loadBulbThumbnail(url: String) {
     Glide.with(context)
         .load(url)
         .circleCrop()
-        .placeholder(R.drawable.ic_holder).into(this)
+        .centerInside()
+        .placeholder(R.drawable.all_circle).into(this)
 
 }
 

@@ -8,9 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.paris.extensions.backgroundRes
-import com.airbnb.paris.extensions.layoutMarginEndDp
-import com.airbnb.paris.extensions.style
+import com.airbnb.paris.extensions.*
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
 import com.light.domain.model.FinishType
@@ -96,10 +94,17 @@ class CategoriesAdapter(
             category.finishCodes.sortSmallFinishByOrderField(finishList).forEachIndexed { index, finishType ->
                 val imageViewFinish = ImageView(itemView.context)
                 val size = itemView.resources.getDimensionPixelSize(R.dimen.icon_factor)
-                imageViewFinish.layoutParams = LinearLayout.LayoutParams(
+                val params = LinearLayout.LayoutParams(
                     size,
                     size
                 )
+                params.setMargins(0,0,12,0)
+                imageViewFinish.layoutParams = params
+
+                imageViewFinish.style {
+                    backgroundRes(R.drawable.all_circle)
+                    paddingDp(1)
+                }
                 imageViewFinish.loadBulbThumbnail(
                     getLegendFormFactorTagPrefSmallIcon(
                         finishType.finnishCode,
@@ -108,14 +113,11 @@ class CategoriesAdapter(
                     )
                 )
 
-                imageViewFinish.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
+
                 if (index < category.colors.size - 1) {
-                    imageViewFinish.setPadding(0, 0, 4, 0)
+                    imageViewFinish.setPadding(2, 2, 2, 2)
                 } else if (category.colors.size == 1) {
-                    imageViewFinish.setPadding(0, 0, 32, 0)
+                    imageViewFinish.setPadding(2, 2, 2, 2)
                 }
 
                 itemView.thumbnail.addView(imageViewFinish)
@@ -172,6 +174,7 @@ class CategoriesAdapter(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
+
                     if (index < category.colors.size - 1) {
                         imageView.setPadding(0, 0, 4, 0)
                     } else if (category.colors.size == 1) {
