@@ -110,3 +110,4 @@ data class CctType(
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
 data class ColorOrderList(val cctCode: Int, val order: Int)
+data class FinishOrderList(val finnishCode: Int, val order: Int)
