@@ -13,7 +13,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import com.airbnb.paris.extensions.*
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.drawableLeft
+import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -239,6 +241,7 @@ class DetailFragment : BaseFragment() {
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
+        viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
@@ -296,6 +299,13 @@ class DetailFragment : BaseFragment() {
             getString(R.string.ok),
             false
         )
+    }
+
+
+    private fun observeCctType(modelCctTypeEvent: Event<DetailViewModel.CctColorsSelected>) {
+        modelCctTypeEvent.getContentIfNotHandled()?.let { contentCctList ->
+            screenNavigator.navigateToLiveAmbiance(contentCctList.cctTypeList)
+        }
     }
 
     private fun showErrorDialog(
@@ -401,6 +411,7 @@ class DetailFragment : BaseFragment() {
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera))
             }
             livePreviewButton.text = getString(R.string.live_preview_button_text)
+
         } else {
             livePreviewButton.style {
                 add(R.style.LiveButtonDisabled)
@@ -408,6 +419,17 @@ class DetailFragment : BaseFragment() {
                 drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
             }
             livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+        }
+
+
+        livePreviewButton.setOnClickListener {
+            if (getLegendArTypeTagPref(
+                    product.colorCctCode,
+                    localPreferences.loadLegendCctFilterNames()
+                )
+            ) {
+                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+            }
         }
     }
 
@@ -477,10 +499,6 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    /***
-     *
-     *
-     */
 
     private fun initAdapters() {
         filterWattageAdapter = FilterWattageAdapter(::handleFilterWattagePressed)
@@ -580,6 +598,10 @@ class DetailFragment : BaseFragment() {
 
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
+    }
+
+    fun returningFromLiveAmbiance(colorCode: Int) {
+        filterColorAdapter.setColorFromAmbiance(colorCode)
     }
 
 }

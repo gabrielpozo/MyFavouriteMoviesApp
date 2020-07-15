@@ -6,5 +6,7 @@
     <dimen name="card_height">220dp</dimen>
     <dimen name="active_tab">12dp</dimen>
     <dimen name="inactive_tab">12dp</dimen>
+    <dimen name="icon">24dp</dimen>
+    <dimen name="icon_factor">32dp</dimen>
 
 </resources>

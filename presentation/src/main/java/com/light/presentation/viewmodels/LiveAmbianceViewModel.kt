@@ -18,10 +18,23 @@ class LiveAmbianceViewModel(
 
     data class Content(val filter: CctType)
 
+    private val _modelColorList = MutableLiveData<ContentColors>()
+    val modelList: LiveData<ContentColors>
+        get() {
+            return _modelColorList
+        }
+
+    data class ContentColors(val cctList: List<CctType>)
 
     fun onFilterClick(filter: CctType) {
         _model.value = Content(filter)
     }
+
+    fun onRetrieveCctList(cctList: List<CctType>) {
+        _modelColorList.value = ContentColors(cctList)
+    }
+
+    fun onRetrievingColorSelected(): Int = _model.value?.filter?.id ?: -1
 
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
+import com.light.domain.model.CctType
 import com.light.domain.model.Message
 import com.light.domain.model.Product
 import com.light.finder.CameraLightFinderActivity
@@ -18,6 +19,8 @@ import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.REQUEST_CODE_AMBIANCE
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
@@ -117,7 +120,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun popFragmentNot(): Boolean {
-       val isFragmentPopped= fragNavController.popFragment().not()
+        val isFragmentPopped = fragNavController.popFragment().not()
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
         return isFragmentPopped
@@ -142,6 +145,16 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
             putParcelableArrayListExtra(
                 ProductVariationsLightFinderActivity.PRODUCTS_OPTIONS_ID_KEY,
                 productList.parcelizeProductList()
+            )
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToLiveAmbiance(listCctType: List<CctType>) {
+        activity.startActivityForResult<LiveAmbianceLightFinderActivity>(REQUEST_CODE_AMBIANCE) {
+            putParcelableArrayListExtra(
+                LiveAmbianceLightFinderActivity.LIVE_AMBIANCE_ID_KEY,
+                listCctType.parcelizeCctList()
             )
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)

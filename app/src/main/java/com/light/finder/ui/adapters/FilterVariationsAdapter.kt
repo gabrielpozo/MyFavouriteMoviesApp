@@ -81,6 +81,14 @@ class FilterColorAdapter(
         shouldRefreshData = false
     )
 
+    fun setColorFromAmbiance(color: Int) {
+        filterListColor.forEachIndexed { index, element ->
+            if (element.codeFilter == color) {
+                listener(filterListColor[index])
+            }
+        }
+    }
+
     fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
         filterVariationList.setBackgroundLayout(viewItemsMap)
     }
@@ -112,7 +120,7 @@ class FilterColorAdapter(
                 legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.imageFilterCover.loadCircleImage(getLegendCctTagPrefIcon(
+            itemView.imageFilterCover.loadThumbnail(getLegendCctTagPrefIcon(
                 filter.codeFilter,
                 filterTypeList = filterColorList,
                 legendTag = COLOR_LEGEND_TAG
@@ -168,7 +176,7 @@ class FilterFinishAdapter(
             )
             itemView.setDrawableOnBackground(filter)
 
-            itemView.imageFilterCover.loadCircleImage(getLegendFinishTagPrefImage(
+            itemView.imageFilterCover.loadThumbnail(getLegendFinishTagPrefImage(
                 filter.codeFilter,
                 filterTypeList = filterFinishList,
                 legendTag = FINISH_LEGEND_TAG

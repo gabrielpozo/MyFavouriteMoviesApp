@@ -13,7 +13,6 @@ import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
-import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity.Companion.REQUEST_CODE_PRODUCT
 import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 
 
@@ -24,8 +23,11 @@ inline fun <reified T : Activity> Context.startActivity(body: Intent.() -> Unit)
     startActivity(intentFor<T>(body))
 }
 
-inline fun <reified T : Activity> AppCompatActivity.startActivityForResult(body: Intent.() -> Unit) {
-    startActivityForResult(intentFor<T>(body), REQUEST_CODE_PRODUCT)
+inline fun <reified T : Activity> AppCompatActivity.startActivityForResult(
+    codeRequest: Int = 0,
+    body: Intent.() -> Unit
+) {
+    startActivityForResult(intentFor<T>(body), codeRequest)
 }
 
 

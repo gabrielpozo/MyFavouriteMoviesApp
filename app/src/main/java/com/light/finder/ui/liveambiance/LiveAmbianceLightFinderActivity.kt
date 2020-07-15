@@ -3,13 +3,14 @@ package com.light.finder.ui.liveambiance
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import com.light.domain.model.CctType
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
+import com.light.finder.data.source.remote.CctTypeParcelable
 import com.light.finder.di.modules.submodules.LiveAmbianceComponent
 import com.light.finder.di.modules.submodules.LiveAmbianceModule
-import com.light.finder.extensions.app
-import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.LiveAmbianceAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
@@ -23,6 +24,12 @@ import kotlinx.android.synthetic.main.activity_live_ambiance.*
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
+    companion object {
+        const val LIVE_AMBIANCE_ID_KEY = "LiveAmbianceActivity::id"
+        const val CCT_LIST_EXTRA = "ccTListId"
+        const val REQUEST_CODE_AMBIANCE = 1
+    }
+
     private lateinit var component: LiveAmbianceComponent
     private val liveAmbianceViewModel: LiveAmbianceViewModel by lazy { getViewModel { component.liveAmbianceViewModel } }
     private lateinit var filterColorAdapter: LiveAmbianceAdapter
@@ -30,16 +37,18 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
-    private val localPreferences: LocalPreferenceDataSource by lazy {
-        LocalPreferenceDataSourceImpl(
-            this
-        )
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         component = app.applicationComponent.plus(LiveAmbianceModule())
+
+        intent.getParcelableArrayListExtra<CctTypeParcelable>(LIVE_AMBIANCE_ID_KEY)
+            ?.let { cctList ->
+                liveAmbianceViewModel.onRetrieveCctList(
+                    cctList.deparcelizeCctList()
+                )
+            }
 
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
@@ -48,18 +57,19 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         setContentView(R.layout.activity_live_ambiance)
 
         liveAmbianceViewModel.model.observe(this, Observer { uiModel -> updateUI(uiModel) })
+        liveAmbianceViewModel.modelList.observe(this, Observer(::setColorAdapter))
 
         initView()
         initCamera()
-        initAdapter()
-
     }
 
-    private fun initAdapter() {
+
+    private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
+        val filteredColorList =  colorList.cctList.toMutableList()
+        filteredColorList.removeAll{ it.id == 6 && it.id == 7 }
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
-            localPreferences.loadLegendCctFilterNames()
-        )
+            filteredColorList)
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
@@ -145,4 +155,16 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             gpuImageView?.filter = currentImageFilter
 
     }
+
+    override fun onBackPressed() {
+        setIntentForResult {
+            putExtra(
+                CCT_LIST_EXTRA,
+                liveAmbianceViewModel.onRetrievingColorSelected()
+            )
+        }
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
 }

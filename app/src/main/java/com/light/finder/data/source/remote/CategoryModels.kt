@@ -11,8 +11,7 @@ data class CategoryParcelable(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
-    val minWattage: String,
-    val maxWattage: String,
+    val minWattage: List<Int>,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,
     val colors: List<Int>,
@@ -66,4 +65,20 @@ data class MessageParcelable(
     val formfactorType: String,
     val shapeIdentified: String
 ) : Parcelable
+
+@Parcelize
+data class CctTypeParcelable(
+    val id: Int,
+    val name: String,
+    val smallIcon: String,
+    val bigIcon: String,
+    val order: Int,
+    val arType: Int,
+    val kelvinSpec: KelvinSpecParcelable
+) : Parcelable
+
+
+@Parcelize
+data class KelvinSpecParcelable(val minValue: Int, val maxValue: Int, val defaultValue: Int) :
+    Parcelable
 

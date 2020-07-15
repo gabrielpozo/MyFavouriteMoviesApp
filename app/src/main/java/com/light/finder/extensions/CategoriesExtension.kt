@@ -19,14 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
-import com.light.domain.model.Category
-import com.light.domain.model.Message
-import com.light.domain.model.Product
+import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.SignifyApp
-import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.MessageParcelable
-import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.data.source.remote.*
 import kotlin.properties.Delegates
 
 
@@ -95,6 +91,22 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_holder)
+        .into(this)
+}
+
+fun ImageView.loadBulbThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_holder).into(this)
+
+}
+
 fun ImageView.loadUrlCenterCrop(url: String) {
     Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside().placeholder(R.drawable.fallback_image)
         .into(this)
@@ -120,6 +132,7 @@ fun TextView.loadSmallColorIcon(url: String, @DrawableRes id: Int = 0) {
             override fun onLoadCleared(drawable: Drawable?) {
                 setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
             }
+
             override fun onResourceReady(
                 res: Drawable,
                 transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
@@ -137,8 +150,7 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         categoryName,
         categoryImage,
         priceRange,
-        minWattage,
-        maxWattage,
+        categoryWattReplaced,
         maxEnergySaving,
         minEnergySaving,
         colors,
@@ -156,7 +168,6 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         categoryImage,
         priceRange,
         minWattage,
-        maxWattage,
         maxEnergySaving,
         minEnergySaving,
         colors,
@@ -172,6 +183,24 @@ fun List<Product>.parcelizeProductList(): ArrayList<ProductParcelable> {
     }
     return parcelizeProducts
 }
+
+
+fun List<CctType>.parcelizeCctList(): ArrayList<CctTypeParcelable> {
+    val parcelizeCctType = ArrayList<CctTypeParcelable>()
+    forEach { cctColor ->
+        parcelizeCctType.add(mapDomainCctToParcelable(cctColor))
+    }
+    return parcelizeCctType
+}
+
+fun List<CctTypeParcelable>.deparcelizeCctList(): ArrayList<CctType> {
+    val parcelizeCct = ArrayList<CctType>()
+    forEach { cctParcelable ->
+        parcelizeCct.add(mapParcelableCctToDomain(cctParcelable))
+    }
+    return parcelizeCct
+}
+
 
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
@@ -241,6 +270,31 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
 
 }
 
+val mapDomainCctToParcelable: (CctType) -> CctTypeParcelable = { cctType ->
+    CctTypeParcelable(
+        cctType.id,
+        cctType.name,
+        cctType.smallIcon,
+        cctType.bigIcon,
+        cctType.order,
+        cctType.arType,
+        mapDomainKelvinToParcelable(cctType.kelvinSpec)
+    )
+
+}
+
+val mapParcelableCctToDomain: (CctTypeParcelable) -> CctType = { cctType ->
+    CctType(
+        cctType.id,
+        cctType.name,
+        cctType.smallIcon,
+        cctType.bigIcon,
+        cctType.order,
+        cctType.arType,
+        mapParcelableKelvinToDomain(cctType.kelvinSpec)
+    )
+}
+
 val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
     Product(
         product.name,
@@ -281,3 +335,19 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
 
 }
 
+val mapDomainKelvinToParcelable: (KelvinSpec) -> KelvinSpecParcelable = { kelvinSpec ->
+    KelvinSpecParcelable(
+        kelvinSpec.minValue,
+        kelvinSpec.maxValue,
+        kelvinSpec.defaultValue
+    )
+}
+
+
+val mapParcelableKelvinToDomain: (KelvinSpecParcelable) -> KelvinSpec = { kelvinSpecParcelable ->
+    KelvinSpec(
+        kelvinSpecParcelable.minValue,
+        kelvinSpecParcelable.maxValue,
+        kelvinSpecParcelable.defaultValue
+    )
+}

@@ -15,8 +15,7 @@ data class Category(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
-    val minWattage: String,
-    val maxWattage: String,
+    val categoryWattReplaced: List<Int>,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,
     val colors: List<Int>,
@@ -105,7 +104,8 @@ data class CctType(
     val bigIcon: String,
     val order: Int,
     val arType: Int,
-    val kelvinSpec: KelvinSpec
+    val kelvinSpec: KelvinSpec,
+    val isSelected: Boolean = false
 )
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
