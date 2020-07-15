@@ -3,6 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.common.emptyCctType
+import com.light.common.removeUnusedColors
 import com.light.domain.model.CctType
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -32,7 +33,7 @@ class LiveAmbianceViewModel(
     }
 
     fun onRetrieveCctList(cctList: List<CctType>) {
-        _modelColorList.value = ContentColors(cctList)
+        _modelColorList.value = ContentColors(cctList.removeUnusedColors())
         _model.value = Content(cctList.find { it.isSelected }?: emptyCctType)
     }
 
@@ -40,3 +41,5 @@ class LiveAmbianceViewModel(
 
 
 }
+
+
