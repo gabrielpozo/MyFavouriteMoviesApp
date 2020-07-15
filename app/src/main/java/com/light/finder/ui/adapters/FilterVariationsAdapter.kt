@@ -120,7 +120,7 @@ class FilterColorAdapter(
                 legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.imageFilterCover.loadThumbnail(getLegendCctTagPrefIcon(
+            itemView.imageFilterCover.loadThumbnailVariation(getLegendCctTagPrefIcon(
                 filter.codeFilter,
                 filterTypeList = filterColorList,
                 legendTag = COLOR_LEGEND_TAG
@@ -176,7 +176,7 @@ class FilterFinishAdapter(
             )
             itemView.setDrawableOnBackground(filter)
 
-            itemView.imageFilterCover.loadThumbnail(getLegendFinishTagPrefImage(
+            itemView.imageFilterCover.loadThumbnailVariation(getLegendFinishTagPrefImage(
                 filter.codeFilter,
                 filterTypeList = filterFinishList,
                 legendTag = FINISH_LEGEND_TAG
