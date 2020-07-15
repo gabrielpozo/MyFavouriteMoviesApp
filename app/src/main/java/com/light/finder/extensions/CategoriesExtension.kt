@@ -99,6 +99,15 @@ fun ImageView.loadThumbnail(url: String) {
         .into(this)
 }
 
+fun ImageView.loadThumbnailVariation(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_placeholder_variation)
+        .into(this)
+}
+
+
 fun ImageView.loadBulbThumbnail(url: String) {
     Glide.with(context)
         .load(url)
@@ -109,12 +118,13 @@ fun ImageView.loadBulbThumbnail(url: String) {
 }
 
 fun ImageView.loadUrlCenterCrop(url: String) {
-    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside().placeholder(R.drawable.fallback_image)
+    Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
+        .placeholder(R.drawable.fallback_image)
         .into(this)
 }
 
 fun ImageView.loadCircleImage(url: String) {
-    Glide.with(context).load(url).circleCrop()
+    Glide.with(context).load(url).circleCrop().placeholder(R.drawable.ic_placeholder_variation)
         .into(this)
 }
 
@@ -281,7 +291,7 @@ val mapDomainCctToParcelable: (CctType) -> CctTypeParcelable = { cctType ->
         cctType.arType,
         mapDomainKelvinToParcelable(cctType.kelvinSpec),
         cctType.isSelected
-        )
+    )
 
 }
 
