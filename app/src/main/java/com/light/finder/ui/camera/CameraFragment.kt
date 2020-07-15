@@ -257,6 +257,7 @@ class CameraFragment : BaseFragment() {
         // ui
         layoutPreviewGallery.visible()
         cameraUiContainer.gone()
+        browseButton.gone()
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
@@ -281,6 +282,7 @@ class CameraFragment : BaseFragment() {
         cancelPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
+            browseButton.visible()
         }
     }
 
@@ -396,6 +398,7 @@ class CameraFragment : BaseFragment() {
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.cancel_identified_event)) {}
             timer.cancel()
             layoutPreview.gone()
+            browseButton.visible()
             layoutCamera.visible()
             cameraUiContainer.visible()
             displayCameraItemsControl()
@@ -555,7 +558,7 @@ class CameraFragment : BaseFragment() {
         previewModel.getContentIfNotHandled()?.let {
             layoutCamera.gone()
             layoutPermission.gone()
-            //browseButton.gone()
+            browseButton.gone()
             cameraUiContainer.gone()//TODO change the order of this visibility
             layoutPreview.visible()
             imageViewPreview.loadImage(it.bitmap, it.rotationDegrees)
@@ -600,6 +603,7 @@ class CameraFragment : BaseFragment() {
 
     private fun revertCameraView() {
         layoutPreview.gone()
+        browseButton.visible()
         layoutCamera.visible()
         cameraUiContainer.visible()
         displayCameraItemsControl()
@@ -616,7 +620,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setPermissionView() {
         layoutCamera.gone()
-        //browseButton.visible()
+        browseButton.visible()
         layoutPermission.visible()
         enableContainer.setOnClickListener {
             viewModel.onRequestCameraViewDisplay()
@@ -722,6 +726,7 @@ class CameraFragment : BaseFragment() {
 
     private fun setCameraSpecs() {
         layoutCamera.visible()
+        browseButton.visible()
         layoutPermission.gone()
 
         //outputDirectory = CameraLightFinderActivity.getOutputDirectory(requireContext())
@@ -819,7 +824,7 @@ class CameraFragment : BaseFragment() {
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
         } catch (exc: Exception) {
-            Timber.e(TAG, "Use case binding failed", exc)
+            Timber.e("$TAG Use case binding failed $exc")
         }
 
         /**
