@@ -1,9 +1,7 @@
 package com.light.common
 
 
-import com.light.domain.model.FilterVariationCF
-import com.light.domain.model.Product
-import com.light.domain.model.TYPE
+import com.light.domain.model.*
 
 
 fun FilterVariationCF.isMatchSpecs(product: Product): Boolean = true
@@ -143,3 +141,5 @@ fun List<Product>.setSelectedProductToIncompatibleList(
     }
 
 }
+
+val emptyCctType = CctType(-1, "", "", "", -1, -1, KelvinSpec(-1, -1, -1))
