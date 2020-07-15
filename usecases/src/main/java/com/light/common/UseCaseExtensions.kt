@@ -142,4 +142,11 @@ fun List<Product>.setSelectedProductToIncompatibleList(
 
 }
 
+fun List<CctType>.removeUnusedColors(): List<CctType> {
+    val unusedColorList = toMutableList()
+    unusedColorList.removeAll { it.id == 6 || it.id == 7 }
+    return unusedColorList
+}
+
+
 val emptyCctType = CctType(-1, "", "", "", -1, -1, KelvinSpec(-1, -1, -1))
