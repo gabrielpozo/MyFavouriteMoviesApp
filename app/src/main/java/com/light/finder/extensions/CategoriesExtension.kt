@@ -278,8 +278,9 @@ val mapDomainCctToParcelable: (CctType) -> CctTypeParcelable = { cctType ->
         cctType.bigIcon,
         cctType.order,
         cctType.arType,
-        mapDomainKelvinToParcelable(cctType.kelvinSpec)
-    )
+        mapDomainKelvinToParcelable(cctType.kelvinSpec),
+        cctType.isSelected
+        )
 
 }
 
@@ -291,7 +292,8 @@ val mapParcelableCctToDomain: (CctTypeParcelable) -> CctType = { cctType ->
         cctType.bigIcon,
         cctType.order,
         cctType.arType,
-        mapParcelableKelvinToDomain(cctType.kelvinSpec)
+        mapParcelableKelvinToDomain(cctType.kelvinSpec),
+        cctType.isSelected
     )
 }
 

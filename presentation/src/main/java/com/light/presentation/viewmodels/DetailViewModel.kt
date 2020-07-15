@@ -19,7 +19,7 @@ class DetailViewModel(
     private val getFinishVariationsUseCase: GetFinishVariationsUseCase,
     private val getNewCompatibleListUseCase: GetNewCompatibleVariationListUseCase,
     private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase,
-    private val getCctCodeListUseCase: GetDisplayedCctCodes,
+    private val getCctCodeListUseCase: GetDisplayedCctCodesUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 

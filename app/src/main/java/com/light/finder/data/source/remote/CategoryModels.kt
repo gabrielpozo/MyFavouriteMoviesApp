@@ -74,7 +74,8 @@ data class CctTypeParcelable(
     val bigIcon: String,
     val order: Int,
     val arType: Int,
-    val kelvinSpec: KelvinSpecParcelable
+    val kelvinSpec: KelvinSpecParcelable,
+    var isSelected: Boolean = false
 ) : Parcelable
 
 

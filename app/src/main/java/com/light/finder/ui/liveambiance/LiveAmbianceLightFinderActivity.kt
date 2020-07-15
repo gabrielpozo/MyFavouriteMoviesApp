@@ -66,7 +66,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
         val filteredColorList =  colorList.cctList.toMutableList()
-        filteredColorList.removeAll{ it.id == 6 && it.id == 7 }
+        filteredColorList.removeAll{ it.id == 6 || it.id == 7 }
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
             filteredColorList)

@@ -105,7 +105,7 @@ data class CctType(
     val order: Int,
     val arType: Int,
     val kelvinSpec: KelvinSpec,
-    val isSelected: Boolean = false
+    var isSelected: Boolean = false
 )
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
