@@ -7,8 +7,6 @@ import com.light.domain.model.CctType
 import com.light.finder.R
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadCircleImage
-import kotlinx.android.synthetic.main.filter_background.view.*
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.frame
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.imageFilterCover
 import kotlinx.android.synthetic.main.item_card_filter_unselected.view.variation_name
@@ -18,14 +16,7 @@ class LiveAmbianceAdapter(
     private val filterListColor: List<CctType> = emptyList()
 ) :
     RecyclerView.Adapter<LiveAmbianceAdapter.ViewHolder>() {
-
-   var lastPosition = 0
-
-
-   /* fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
-        filterVariationList.setBackgroundLayout(viewItemsMap)
-    }*/
-
+    private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.filter_background, false)
         return ViewHolder(view)
@@ -39,11 +30,14 @@ class LiveAmbianceAdapter(
         holder.bind(filter)
         holder.itemView.setOnClickListener {
             listener(filter)
+            filterListColor[lastPosition].isSelected = false
+            filterListColor[position].isSelected = true
             lastPosition = position
             notifyDataSetChanged()
         }
 
-        if (lastPosition == position) {
+        if (filter.isSelected) {
+            lastPosition = position
             holder.itemView.frame.setBackgroundResource(R.drawable.circle_background_green)
         } else {
             holder.itemView.frame.setBackgroundResource(R.drawable.circle_background_grey)

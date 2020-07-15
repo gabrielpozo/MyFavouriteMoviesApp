@@ -4,17 +4,21 @@ import com.light.domain.model.CctType
 import com.light.domain.model.FilterVariationCF
 
 
-class GetDisplayedCctCodes {
+class GetDisplayedCctCodesUseCase {
     fun execute(
         cctTypeList: List<CctType>,
         filterVariationColors: List<FilterVariationCF>?
     ): List<CctType> {
         val cctList = mutableListOf<CctType>()
-        filterVariationColors?.forEach { cccType ->
+        filterVariationColors?.forEach { filterVariationCF ->
             val cctColor =
-                cctTypeList.find { it.id == cccType.codeFilter }
+                cctTypeList.find { cctType ->
+                    cctType.id == filterVariationCF.codeFilter
+                }
             if (cctColor != null) {
+                cctColor.isSelected = filterVariationCF.isSelected
                 cctList.add(cctColor)
+
             }
         }
         return cctList

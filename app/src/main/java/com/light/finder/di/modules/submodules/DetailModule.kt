@@ -43,13 +43,13 @@ class DetailModule {
 
     @Provides
     fun getCctDisplayedCctCodesList() =
-        GetDisplayedCctCodes()
+        GetDisplayedCctCodesUseCase()
 
     @Provides
     fun categoryViewModel(
         detailsUseCase: GetAddToCartUseCase,
         getItemCountUseCase: GetItemCountUseCase,
-        getDisplayedCctCodes: GetDisplayedCctCodes
+        getDisplayedCctCodes: GetDisplayedCctCodesUseCase
     ) = DetailViewModel(
         detailsUseCase,
         getItemCountUseCase,
