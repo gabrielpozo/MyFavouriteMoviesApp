@@ -329,6 +329,10 @@ class CameraFragment : BaseFragment() {
             viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
             isComingFromSettings = false
         }
+        if (isComingFromSettings && isGalleryDenied) {
+            isComingFromSettings = false
+            pickLatestFromGallery()
+        }
     }
 
     private fun pickLatestFromGallery() {
