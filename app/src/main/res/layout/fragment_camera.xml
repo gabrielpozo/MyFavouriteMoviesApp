@@ -7,6 +7,9 @@
 
     <Button
         android:id="@+id/browseButton"
+        android:visibility="visible"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:background="@drawable/button_curvy_corners_browsing"
         android:layout_width="0dp"
         android:textAllCaps="false"
