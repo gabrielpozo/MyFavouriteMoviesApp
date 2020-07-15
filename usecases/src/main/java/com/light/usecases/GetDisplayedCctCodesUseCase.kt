@@ -23,6 +23,6 @@ class GetDisplayedCctCodesUseCase {
 
             }
         }
-        return cctList
+        return cctList.sortedBy { it.order }
     }
 }
