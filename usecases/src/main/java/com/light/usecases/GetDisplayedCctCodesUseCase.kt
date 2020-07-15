@@ -17,7 +17,9 @@ class GetDisplayedCctCodesUseCase {
                 }
             if (cctColor != null) {
                 cctColor.isSelected = filterVariationCF.isSelected
-                cctList.add(cctColor)
+                if (cctColor.arType == 1) {
+                    cctList.add(cctColor)
+                }
 
             }
         }
