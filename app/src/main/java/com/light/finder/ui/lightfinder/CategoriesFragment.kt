@@ -141,6 +141,7 @@ class CategoriesFragment : BaseFragment() {
             localPreferences.loadLegendCctFilterNames(),
             localPreferences.loadFormFactorLegendTags(),
             localPreferences.loadLegendFinishFilterNames(),
+            localPreferences.loadFormFactorIdLegendTags(),
             message.shapeIdentified
         )
         rvCategories.adapter = adapter
