@@ -80,7 +80,8 @@ data class LegendParsing(val legend: LegendValue)
 data class LegendValue(
     val productFormFactorType: List<FormFactorType>,
     val finishType: List<FinishType>,
-    val cctType: List<CctType>
+    val cctType: List<CctType>,
+    val formfactorTypeId: List<FormFactorTypeId>
 )
 
 data class FormFactorType(
@@ -106,6 +107,16 @@ data class CctType(
     val arType: Int,
     val kelvinSpec: KelvinSpec,
     var isSelected: Boolean = false
+)
+
+data class FormFactorTypeId(
+    val id: Int,
+    val name: String,
+    val productFormFactorType: String,
+    val productFormFactorTypeId: String,
+    val image: String,
+    val description: String,
+    val order: Int
 )
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
