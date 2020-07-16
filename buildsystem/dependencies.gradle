@@ -30,7 +30,7 @@ ext {
     materialVersion = '1.0.0'
     recyclerViewVersion = '1.2.0-alpha01'
     recyclerViewSelectionVersion = '1.0.0'
-    roomVersion = '2.2.3'
+    roomVersion = '2.2.5'
     workVersion = '2.3.0'
     pagingVersion = '2.1.1'
     gsonVersion = '2.8.2'
@@ -106,6 +106,7 @@ ext {
             workManager          : "androidx.work:work-runtime-ktx:$workVersion",
             material             : "com.google.android.material:material:$materialVersion",
             kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
 
     ]
 
