@@ -113,8 +113,8 @@ data class FormFactorTypeId(
     val id: Int,
     val name: String,
     val productFormFactorType: String,
-    val productFormFactorTypeId: String,
-    val image: String,
+    val productFormFactorTypeId: Int,
+    val image: String?,
     val description: String,
     val order: Int
 )
