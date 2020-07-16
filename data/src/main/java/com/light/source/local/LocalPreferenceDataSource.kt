@@ -1,9 +1,6 @@
 package com.light.source.local
 
-import com.light.domain.model.CctType
-import com.light.domain.model.FinishType
-import com.light.domain.model.FormFactorType
-import com.light.domain.model.LegendParsing
+import com.light.domain.model.*
 
 
 interface LocalPreferenceDataSource {
@@ -11,5 +8,5 @@ interface LocalPreferenceDataSource {
     fun loadLegendCctFilterNames(): List<CctType>
     fun loadLegendFinishFilterNames(): List<FinishType>
     fun loadFormFactorLegendTags(): List<FormFactorType>
-
+    fun loadFormFactorIdLegendTags(): List<FormFactorTypeId>
 }

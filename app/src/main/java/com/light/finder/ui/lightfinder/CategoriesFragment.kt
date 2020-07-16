@@ -120,7 +120,10 @@ class CategoriesFragment : BaseFragment() {
             legendTag = ""
         )*/
         textViewFitting.text = getString(R.string.based_on_s_fitting).format(
-            localPreferences.loadFormFactorLegendTags()[0].name,
+            getFormFactorIdTagName(
+                message.shapeIdentified,
+                localPreferences.loadFormFactorIdLegendTags()
+            ),
             categories[0].categoryProducts[0].factorShape,
             message.baseIdentified
         )
@@ -138,6 +141,7 @@ class CategoriesFragment : BaseFragment() {
             localPreferences.loadLegendCctFilterNames(),
             localPreferences.loadFormFactorLegendTags(),
             localPreferences.loadLegendFinishFilterNames(),
+            localPreferences.loadFormFactorIdLegendTags(),
             message.shapeIdentified
         )
         rvCategories.adapter = adapter

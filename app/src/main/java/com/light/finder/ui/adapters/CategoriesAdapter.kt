@@ -9,10 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.*
-import com.light.domain.model.Category
-import com.light.domain.model.CctType
-import com.light.domain.model.FinishType
-import com.light.domain.model.FormFactorType
+import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -23,6 +20,7 @@ class CategoriesAdapter(
     private val filterColorList: List<CctType> = emptyList(),
     private val formFactorList: List<FormFactorType> = emptyList(),
     private val filterFinishList: List<FinishType> = emptyList(),
+    private val formFactorIdList: List<FormFactorTypeId> = emptyList(),
     private val shapeIdentified: String
 ) :
     RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
@@ -54,6 +52,8 @@ class CategoriesAdapter(
             position,
             filterColorList,
             formFactorList,
+            formFactorIdList,
+            shapeIdentified,
             filterFinishList
         )
         holder.itemView.setOnClickListener { listener(category) }
@@ -82,6 +82,8 @@ class CategoriesAdapter(
             position: Int,
             filterColorList: List<CctType>,
             formFactorList: List<FormFactorType>,
+            formFactorListId: List<FormFactorTypeId>,
+            shapeIdentified: String,
             finishList: List<FinishType>
         ) {
             itemView.category_name.text = category.categoryName
@@ -124,7 +126,10 @@ class CategoriesAdapter(
             }
 
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
-                .format(formFactorList[0].name, category.categoryProducts[0].factorShape)
+                .format(getFormFactorIdTagName(
+                    shapeIdentified,
+                    formFactorListId
+                ), category.categoryProducts[0].factorShape)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"

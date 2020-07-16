@@ -93,6 +93,18 @@ fun getLegendArTypeTagPref(
 }
 
 
+fun getFormFactorIdTagName(
+    shapeIdentified: String,
+    formFactoridTypeList: List<FormFactorTypeId>
+
+): String {
+    val formFactorTypeId = formFactoridTypeList.find {
+        it.name == shapeIdentified
+    }
+    return formFactorTypeId?.productFormFactorType ?: ""
+}
+
+
 fun getLegendFormFactorTag(
     code: Int,
     logError: Boolean = false,
