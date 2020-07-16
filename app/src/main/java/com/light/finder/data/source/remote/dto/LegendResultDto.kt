@@ -46,8 +46,8 @@ data class FormFactorTypeIdDto(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("product_formfactor_type") val productFormFactorType: String,
-    @SerializedName("product_formfactor_type_id") val productFormFactorTypeId: String,
-    @SerializedName("image") val image: String,
+    @SerializedName("product_formfactor_type_id") val productFormFactorTypeId: Int,
+    @SerializedName("image") val image: String?,
     @SerializedName("description") val description: String,
     @SerializedName("order") val order: Int
 )

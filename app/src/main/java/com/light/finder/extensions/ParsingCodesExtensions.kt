@@ -1,6 +1,7 @@
 package com.light.finder.extensions
 
 import android.content.Context
+import android.util.Log
 import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -98,6 +99,7 @@ fun getFormFactorIdTagName(
     formFactoridTypeList: List<FormFactorTypeId>
 
 ): String {
+    Log.d("Gabriel","FormFactor List : $formFactoridTypeList")
     val formFactorTypeId = formFactoridTypeList.find {
         it.name == shapeIdentified
     }
