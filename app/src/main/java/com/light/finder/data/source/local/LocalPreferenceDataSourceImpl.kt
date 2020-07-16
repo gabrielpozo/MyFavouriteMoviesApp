@@ -48,7 +48,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     )
 
     override fun loadFormFactorIdLegendTags(): List<FormFactorTypeId> = Gson().fromJson(
-        pref.getString(FORM_FACTOR_LEGEND, null) ?: emptyList<FormFactorTypeId>().toString()
+        pref.getString(FORM_FACTOR_LEGEND_ID, null) ?: emptyList<FormFactorTypeId>().toString()
     )
 }
 
