@@ -2,7 +2,6 @@ package com.light.repository
 
 import com.light.data.repositoryLightFinderBusinessModel
 import com.light.domain.BrowseLightBulbsRepository
-import com.light.domain.model.Product
 import com.light.domain.model.ProductBrowsing
 import com.light.domain.state.DataState
 import com.light.source.local.LocalDbDataSource
