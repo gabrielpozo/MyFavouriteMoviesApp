@@ -129,5 +129,10 @@
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
-
+    <string name="error_browse">Oops…</string>
+    <string name="something_went_wrong">Something went wrong.\nPlease refresh or try again later.</string>
+    <string name="refresh">Refresh</string>
+    <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>
+    <string name="which_shape_do_you_need">Which shape\ndo you need?</string>
+    <string name="fitting">Fitting</string>
 </resources>
