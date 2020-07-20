@@ -1,4 +1,4 @@
-package com.light.finder.data.source.local
+package com.light.finder.data.source.local.db
 
 import androidx.room.Entity
 
