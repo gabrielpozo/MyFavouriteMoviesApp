@@ -102,14 +102,14 @@ class CategoriesFragment : BaseFragment() {
                 textViewNoResultTitle.visible()
                 rvCategories.gone()
             }
-            categories.size == 1 -> {
-                textViewResults.text =
-                    getString(R.string.text_result).getIntFormatter(categories.size)
-            }
-            else -> {
-                textViewResults.text =
-                    getString(R.string.text_results).getIntFormatter(categories.size)
-            }
+//            categories.size == 1 -> {
+//                textViewResults.text =
+//                    getString(R.string.text_result).getIntFormatter(categories.size)
+//            }
+//            else -> {
+//                textViewResults.text =
+//                    getString(R.string.text_results).getIntFormatter(categories.size)
+//            }
         }
         /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
         textViewBulbType.text =
@@ -119,14 +119,14 @@ class CategoriesFragment : BaseFragment() {
             filterTypeList = localPreferences.loadFormFactorLegendTags(),
             legendTag = ""
         )*/
-        textViewFitting.text = getString(R.string.based_on_s_fitting).format(
-            getFormFactorIdTagName(
-                message.shapeIdentified,
-                localPreferences.loadFormFactorIdLegendTags()
-            ),
-            categories[0].categoryProducts[0].factorShape,
-            message.baseIdentified
-        )
+//        textViewFitting.text = getString(R.string.based_on_s_fitting).format(
+//            getFormFactorIdTagName(
+//                message.shapeIdentified,
+//                localPreferences.loadFormFactorIdLegendTags()
+//            ),
+//            categories[0].categoryProducts[0].factorShape,
+//            message.baseIdentified
+//        )
 
         setAdapter(message)
         //TODO(move it to a standalone method)
