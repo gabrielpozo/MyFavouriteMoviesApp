@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-object LegendRemoteUtil {
+object LightFinderOpenRemoteUtil {
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -20,7 +20,7 @@ object LegendRemoteUtil {
     private val gsonBuilder: GsonBuilder = GsonBuilder().setLenient()
 
     val service: SignifyApiService = Retrofit.Builder()
-        .baseUrl(BuildConfig.LEGEND_URL)
+        .baseUrl(BuildConfig.LIGHT_FINDER_OPEN_URL)
         .client(okHttpClient)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))

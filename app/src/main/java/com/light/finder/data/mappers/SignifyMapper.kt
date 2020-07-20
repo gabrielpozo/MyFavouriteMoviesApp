@@ -141,7 +141,19 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.arType,
                 MAP_KELVIN_DTO_TO_DOMAIN(it.kelvinSpec)
             )
+        },
+        formfactorTypeId = legendValueDto.productFormFactorId.map {
+            FormFactorTypeId(
+                it.id,
+                it.name,
+                it.productFormFactorType,
+                it.productFormFactorTypeId,
+                it.image,
+                it.description,
+                it.order
+            )
         }
+
     )
 }
 
