@@ -18,7 +18,7 @@ class BrowseLightBulbsRepositoryImpl(
     private val legendRemoteDataSource: RemoteFetchLegendDataSource
 
 ) : BrowseLightBulbsRepository {
-    override suspend fun getBrowsingProducts(base64: String?): DataState<List<ProductBrowsing>> =
+    override suspend fun getBrowsingProducts(): DataState<List<ProductBrowsing>> =
         repositoryLightFinderBusinessModel(
             shouldDoFetchLegendRequest = localPreferenceDataSource.loadFormFactorLegendTags()
                 .isEmpty(),
