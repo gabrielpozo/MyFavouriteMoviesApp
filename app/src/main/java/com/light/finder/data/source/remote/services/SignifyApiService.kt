@@ -1,10 +1,8 @@
 package com.light.finder.data.source.remote.services
 
 import com.light.finder.data.source.remote.CartItemCountResultDto
-import com.light.finder.data.source.remote.dto.CartResultDto
-import com.light.finder.data.source.remote.dto.CategoryResultDto
 import com.light.finder.data.source.remote.Image
-import com.light.finder.data.source.remote.dto.LegendParsingDto
+import com.light.finder.data.source.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -32,5 +30,10 @@ interface SignifyApiService {
     @GET("legend")
     suspend fun fetchLegendTagsAsync(
     ): Response<LegendParsingDto>
+
+    @Headers("Content-Type: application/json")
+    @GET("browse")
+    suspend fun fetchBrowsingProductsAsync(
+    ): Response<List<ProductBrowsingDto>>
 }
 
