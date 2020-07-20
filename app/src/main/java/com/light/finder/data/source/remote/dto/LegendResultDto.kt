@@ -11,7 +11,8 @@ data class LegendParsingDto(
 data class LegendValueDto(
     @SerializedName("product_formfactor_type") val productFormFactorType: List<FormFactorTypeDto>,
     @SerializedName("product_finish") val productFinish: List<FinishTypeDto>,
-    @SerializedName("product_cct_name") val productCctName: List<CctTypeDto>
+    @SerializedName("product_cct_name") val productCctName: List<CctTypeDto>,
+    @SerializedName("product_formfactor_shape_id") val productFormFactorId: List<FormFactorTypeIdDto>
 
 )
 
@@ -38,6 +39,17 @@ data class CctTypeDto(
     @SerializedName("order") val order: Int,
     @SerializedName("AR_type") val arType: Int,
     @SerializedName("kelvin_spec") val kelvinSpec: KelvinSpecDto
+)
+
+
+data class FormFactorTypeIdDto(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("product_formfactor_type") val productFormFactorType: String,
+    @SerializedName("product_formfactor_type_id") val productFormFactorTypeId: Int,
+    @SerializedName("image") val image: String?,
+    @SerializedName("description") val description: String,
+    @SerializedName("order") val order: Int
 )
 
 
