@@ -14,16 +14,16 @@ class FittingBrowsingViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
-    sealed class LoadingBrowsingState {
+    sealed class UiBrowsingModel {
         data class SuccessRequestStatus(private val productBrowsingList: List<ProductBrowsing>) :
-            LoadingBrowsingState()
-
-        data class ErrorRequestStatus(private val message: String) : LoadingBrowsingState()
+            UiBrowsingModel()
+        data class ErrorRequestStatus(private val message: String) : UiBrowsingModel()
+        object LoadingStatus : UiBrowsingModel()
     }
 
-    val loadingBrowsingLiveData: LiveData<LoadingBrowsingState>
-        get() = _loadingBrowsingLiveData
-    private val _loadingBrowsingLiveData = MutableLiveData<LoadingBrowsingState>()
+    val modelBrowsingLiveData: LiveData<UiBrowsingModel>
+        get() = _modelBrowsingLiveData
+    private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingModel>()
 
     init {
         onRequestBrowsingProducts()
@@ -31,17 +31,18 @@ class FittingBrowsingViewModel(
 
     private fun onRequestBrowsingProducts() {
         launch {
+            _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
             requestBrowsingProductsUseCase.execute(::onSuccessRequest, ::onErrorRequest)
         }
     }
 
     private fun onSuccessRequest(productBrowsingList: List<ProductBrowsing>) {
-        _loadingBrowsingLiveData.value =
-            LoadingBrowsingState.SuccessRequestStatus(productBrowsingList)
+        _modelBrowsingLiveData.value =
+            UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
     }
 
     private fun onErrorRequest(exception: Exception, message: String) {
-        _loadingBrowsingLiveData.value = LoadingBrowsingState.ErrorRequestStatus(message)
+        _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 
 }
