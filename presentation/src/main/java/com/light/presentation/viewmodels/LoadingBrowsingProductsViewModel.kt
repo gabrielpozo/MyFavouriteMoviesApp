@@ -6,7 +6,6 @@ import com.light.domain.model.ProductBrowsing
 import com.light.usecases.RequestBrowsingProductsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 
 class BrowseFittingViewModel(
@@ -44,6 +43,10 @@ class BrowseFittingViewModel(
 
     private fun handleErrorRequest(exception: Exception, message: String) {
         _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
+    }
+
+    fun onFittingClick(product: ProductBrowsing) {
+       //todo
     }
 
 }

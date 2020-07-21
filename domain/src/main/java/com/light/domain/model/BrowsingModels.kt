@@ -44,5 +44,6 @@ data class ProductBrowsing(
     val productImage: List<String>,
     val productSpec1: Double,
     val productSpec2: String,
-    val productSpec3: List<Int>
+    val productSpec3: List<Int>,
+    var isSelected: Boolean = false
 )
