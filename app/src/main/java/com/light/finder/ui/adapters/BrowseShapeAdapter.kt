@@ -6,17 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.ProductBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.inflate
-import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
-class BrowseFittingAdapter(
+class BrowseShapeAdapter(
     private val listener: (ProductBrowsing) -> Unit,
     private val productsList: List<ProductBrowsing> = emptyList()
 ) :
-    RecyclerView.Adapter<BrowseFittingAdapter.ViewHolder>() {
+    RecyclerView.Adapter<BrowseShapeAdapter.ViewHolder>() {
     private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_browse_fitting, false)
+        val view = parent.inflate(R.layout.item_browse_shape, false)
         return ViewHolder(view)
     }
 
@@ -45,9 +44,8 @@ class BrowseFittingAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(product: ProductBrowsing) {
-            itemView.textBrowseResults.text = product.productFormfactorBaseId.toString()
+            //itemView.textBrowseResults.text =
             //itemView.imageViewFinishIcon.loadUrl()
-            //todo wtf am i supposed to display here?
         }
     }
 }

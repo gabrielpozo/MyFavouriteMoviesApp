@@ -11,7 +11,7 @@
     <FrameLayout
         android:id="@+id/fragment_container_browse"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/seperator"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -27,13 +27,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/seperator"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_browse"
-        android:background="@color/backgroundDarkPressed"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/backgroundDark"
@@ -45,6 +39,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/backgroundDarkPressed"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_browse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
 
         <TextView

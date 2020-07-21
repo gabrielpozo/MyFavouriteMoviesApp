@@ -9,5 +9,6 @@
     <dimen name="icon">24dp</dimen>
     <dimen name="icon_factor">32dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="spacing">8dp</dimen>
 
 </resources>

@@ -6,7 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ProductBrowsing
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
@@ -15,15 +21,18 @@ import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
+import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
 import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
+
 class BrowseFittingFragment : BaseFilteringFragment() {
 
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
@@ -41,16 +50,41 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseFittingModule())
         }
 
-        setAdapter()
+
+        setBottomSheetBehaviour()
         setObservers()
     }
 
-    private fun setAdapter() {
-        /*adapter = BrowseFittingAdapter(
+    private fun setBottomSheetBehaviour() {
+        val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayoutBrowse)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+        // avoid unwanted scroll when bottom sheet collapsed
+        ViewCompat.setNestedScrollingEnabled(recyclerViewFitting, false)
+
+        context?.let {
+            val displayMetrics = it.resources.displayMetrics
+            val dpHeight = displayMetrics.heightPixels
+            fittingLayout.updateLayoutParams<ViewGroup.LayoutParams> {
+                height = dpHeight
+            }
+            bottomSheetBehavior.peekHeight = (dpHeight / 2).toInt()
+
+        }
+    }
+
+    private fun setAdapter(productBrowsingList: List<ProductBrowsing>) {
+        adapter = BrowseFittingAdapter(
             viewModel::onFittingClick,
-            //todo pass browsing product list
+            productBrowsingList
         )
-        recyclerViewFitting.adapter = adapter*/
+        val layoutManager = GridLayoutManager(context, 3)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        //todo fix this
+        /*val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        recyclerViewFitting.addItemDecoration(FittingItemDecoration(spacingInPixels))*/
+        recyclerViewFitting.layoutManager = layoutManager
+        recyclerViewFitting.adapter = adapter
     }
 
     private fun setObservers() {
@@ -95,6 +129,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
+        setAdapter(productBrowsingList)
         //TODO add the list here to the adapter (productBrowsingList)
     }
 }
