@@ -3,16 +3,10 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.CctType
 import com.light.domain.model.ProductBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.inflate
-import com.light.finder.extensions.loadCircleImage
-import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.frame
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.imageFilterCover
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.variation_name
 
 class BrowseFittingAdapter(
     private val listener: (ProductBrowsing) -> Unit,
