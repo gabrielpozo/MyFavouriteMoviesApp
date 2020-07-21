@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.light.domain.model.ProductBrowsing
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
@@ -62,7 +63,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
         when (modelBrowse) {
             is UiBrowsingModel.SuccessRequestStatus -> {
-                showFittings()
+                showFittings(modelBrowse.productBrowsingList)
             }
             is UiBrowsingModel.ErrorRequestStatus -> {
                 showError()
@@ -90,9 +91,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseLoading.gone()
     }
 
-    private fun showFittings() {
+    private fun showFittings(productBrowsingList: List<ProductBrowsing>) {
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
+        //TODO add the list here to the adapter (productBrowsingList)
     }
 }
