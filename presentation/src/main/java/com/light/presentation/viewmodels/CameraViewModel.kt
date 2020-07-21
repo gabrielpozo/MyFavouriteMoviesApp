@@ -110,14 +110,14 @@ class CameraViewModel(
         get() = _modelItemCountRequest
 
 
+    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
+
+
     object NavigationToBrowsingFiltering
 
     private val _modelNavigationFiltering = MutableLiveData<Event<NavigationToBrowsingFiltering>>()
     val modelNavigationFiltering: LiveData<Event<NavigationToBrowsingFiltering>>
         get() = _modelNavigationFiltering
-
-
-    data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
 
     fun onRequestGetItemCount() {
