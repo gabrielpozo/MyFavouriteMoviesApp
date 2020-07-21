@@ -3,15 +3,14 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.ProductBrowsing
+import com.light.domain.model.FittingBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.inflate
-import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseFittingAdapter(
-    private val listener: (ProductBrowsing) -> Unit,
-    private val productsList: List<ProductBrowsing> = emptyList()
+    private val listener: (FittingBrowsing) -> Unit,
+    private val productsList: List<FittingBrowsing> = emptyList()
 ) :
     RecyclerView.Adapter<BrowseFittingAdapter.ViewHolder>() {
     private var lastPosition = 0
@@ -44,8 +43,8 @@ class BrowseFittingAdapter(
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(product: ProductBrowsing) {
-            itemView.textBrowseResults.text = product.productFormfactorBaseId.toString()
+        fun bind(product: FittingBrowsing) {
+            itemView.textBrowseResults.text = product.name
             //itemView.imageViewFinishIcon.loadUrl()
             //todo wtf am i supposed to display here?
         }

@@ -85,16 +85,14 @@ suspend fun <T, A> repositoryLightFinderBusinessModel(
     shouldDoFetchLegendRequest: Boolean,
     legendTagsRemoteRequest: suspend () -> Result<A>,
     mainRemoteRequest: suspend () -> Result<T>,
-    saveLegendRequestOnLocal: suspend (A) -> Unit,
-    shouldSaveOnLocalDb: Boolean = false,
-    saveOnDB: suspend (T) -> Unit = {}
+    saveLegendRequestOnLocal: suspend (A) -> Unit
 ): DataState<T> {
     if (shouldDoFetchLegendRequest) {
         legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
             return when (resultInitialRequest.status) {
                 Result.Status.SUCCESS -> {
                     saveLegendRequestOnLocal.invoke(resultInitialRequest.data!!)
-                    sendMainRequest(mainRemoteRequest, shouldSaveOnLocalDb, saveOnDB)
+                    sendMainRequest(mainRemoteRequest)
                 }
 
                 Result.Status.ERROR -> {
@@ -113,7 +111,7 @@ suspend fun <T, A> repositoryLightFinderBusinessModel(
         }
 
     } else {
-        return sendMainRequest(mainRemoteRequest, shouldSaveOnLocalDb, saveOnDB)
+        return sendMainRequest(mainRemoteRequest)
     }
 
 }
@@ -121,8 +119,7 @@ suspend fun <T, A> repositoryLightFinderBusinessModel(
 
 private suspend fun <T> sendMainRequest(
     mainRemoteRequest: suspend () -> Result<T>,
-    shouldSaveOnLocalDb: Boolean,
-    saveOnDB: suspend (T) -> Unit
+    saveOnDB: suspend (T) -> Unit = {}
 ): DataState<T> {
 
     mainRemoteRequest.invoke().also { resultRequest ->
@@ -132,7 +129,7 @@ private suspend fun <T> sendMainRequest(
                     SUCCESSFUL_CODE -> {
                         resultRequest.let { result ->
                             result.data?.run {
-                                if (shouldSaveOnLocalDb) {
+                                if (saveOnDB != {}) {
                                     saveOnDB.invoke(this)
                                 }
                                 DataState.Success(data = this)
@@ -148,6 +145,100 @@ private suspend fun <T> sendMainRequest(
                             ProductsNotAvailable(data = this)
                         } ?: DataState.Error(NULLABLE_ERROR)
 
+                    }
+
+                    else -> {
+                        DataState.Error(NULLABLE_ERROR)
+                    }
+                }
+            }
+
+
+            Result.Status.TIME_OUT_ERROR -> {
+                DataState.TimeOut(resultRequest.message ?: CANCEL_ERROR)
+            }
+
+            Result.Status.PARSE_ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    cause = ParsingError,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+            Result.Status.ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+        }
+    }
+
+}
+
+
+suspend fun <T, A, U> repositoryBrowsingBusinessModel(
+    shouldDoFetchLegendRequest: Boolean,
+    legendTagsRemoteRequest: suspend () -> Result<A>,
+    mainRemoteRequest: suspend () -> Result<T>,
+    saveLegendRequestOnLocal: suspend (A) -> Unit,
+    saveOnDB: suspend (T) -> Unit,
+    legendParsing: (T) ->U
+): DataState<U> {
+    if (shouldDoFetchLegendRequest) {
+        legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
+            return when (resultInitialRequest.status) {
+                Result.Status.SUCCESS -> {
+                    saveLegendRequestOnLocal.invoke(resultInitialRequest.data!!)
+                    sendMainRequestBrowsing(mainRemoteRequest, saveOnDB, legendParsing)
+                }
+
+                Result.Status.ERROR -> {
+                    DataState.Error(
+                        resultInitialRequest.message ?: GENERAL_ERROR,
+                        isCanceled = resultInitialRequest.isCancelRequest
+                    )
+                }
+                else -> {
+                    DataState.Error(
+                        resultInitialRequest.message ?: GENERAL_ERROR,
+                        isCanceled = resultInitialRequest.isCancelRequest
+                    )
+                }
+            }
+        }
+
+    } else {
+        return sendMainRequestBrowsing(mainRemoteRequest, saveOnDB, legendParsing)
+    }
+
+}
+
+//TODO(make this method general for lightfinder and browsing
+private suspend fun <T, U> sendMainRequestBrowsing(
+    mainRemoteRequest: suspend () -> Result<T>,
+    saveOnDB: suspend (T) -> Unit = {},
+    legendParsing: (T) -> U
+): DataState<U> {
+
+    mainRemoteRequest.invoke().also { resultRequest ->
+        return when (resultRequest.status) {
+            Result.Status.SUCCESS -> {
+                when (resultRequest.code) {
+                    SUCCESSFUL_CODE -> {
+                        resultRequest.let { result ->
+                            result.data?.run {
+                                if (saveOnDB != {}) {
+                                    saveOnDB.invoke(this)
+                                }
+                                DataState.Success(legendParsing(DataState.Success(data = this).data))
+                            } ?: DataState.Error(NULLABLE_ERROR)
+                        }
+                    }
+                    NO_CONTENT_CODE -> {
+                        DataState.Empty(resultRequest.message ?: EMPTY_RESPONSE)
                     }
 
                     else -> {

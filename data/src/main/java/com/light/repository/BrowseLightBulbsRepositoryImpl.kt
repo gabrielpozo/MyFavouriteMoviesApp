@@ -1,8 +1,8 @@
 package com.light.repository
 
-import com.light.data.repositoryLightFinderBusinessModel
+import com.light.data.repositoryBrowsingBusinessModel
 import com.light.domain.BrowseLightBulbsRepository
-import com.light.domain.model.ProductBrowsing
+import com.light.domain.model.FittingBrowsing
 import com.light.domain.state.DataState
 import com.light.source.local.LocalDbDataSource
 import com.light.source.local.LocalPreferenceDataSource
@@ -17,13 +17,13 @@ class BrowseLightBulbsRepositoryImpl(
     private val legendRemoteDataSource: RemoteFetchLegendDataSource
 
 ) : BrowseLightBulbsRepository {
-    override suspend fun getBrowsingProducts(): DataState<List<ProductBrowsing>> =
-        repositoryLightFinderBusinessModel(
+    override suspend fun getBrowsingProducts(): DataState<List<FittingBrowsing>> =
+        repositoryBrowsingBusinessModel(
             shouldDoFetchLegendRequest = localPreferenceDataSource.loadFormFactorLegendTags()
                 .isEmpty(),
             legendTagsRemoteRequest = { legendRemoteDataSource.fetchLegendTags() },
             saveLegendRequestOnLocal = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
             mainRemoteRequest = { remoteFetchBrowsingSource.fetchBrowsingProducts() },
-            shouldSaveOnLocalDb = true,
-            saveOnDB = { localDbDataSource.saveBrowsingProduct(it) })
+            saveOnDB = { localDbDataSource.saveBrowsingProduct(it) },
+            legendParsing = { localPreferenceDataSource.getFittingProduct(it) })
 }

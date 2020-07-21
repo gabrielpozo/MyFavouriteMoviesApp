@@ -3,6 +3,7 @@ package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.light.domain.model.ProductBrowsing
+import com.light.domain.model.FittingBrowsing
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
@@ -21,7 +22,6 @@ import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
-import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
@@ -76,7 +76,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun setAdapter(productBrowsingList: List<ProductBrowsing>) {
+    private fun setAdapter(productBrowsingList: List<FittingBrowsing>) {
         adapter = BrowseFittingAdapter(
             viewModel::onFittingClick,
             productBrowsingList
@@ -99,9 +99,9 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun setFittingListeners() {
-        buttonSearch.setOnClickListener {
+  /*      buttonSearch.setOnClickListener {
             viewModel.onSearchButtonPressed()
-        }
+        }*/
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
@@ -141,11 +141,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseLoading.gone()
     }
 
-    private fun showFittings(productBrowsingList: List<ProductBrowsing>) {
+    private fun showFittings(producFittingList: List<FittingBrowsing>) {
+        Log.d("Gabriel","Browse Fitting Fragnment: $producFittingList")
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
-        setAdapter(productBrowsingList)
+        setAdapter(producFittingList)
         //TODO add the list here to the adapter (productBrowsingList)
     }
 }

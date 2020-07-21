@@ -81,7 +81,8 @@ data class LegendValue(
     val productFormFactorType: List<FormFactorType>,
     val finishType: List<FinishType>,
     val cctType: List<CctType>,
-    val formfactorTypeId: List<FormFactorTypeId>
+    val formfactorTypeId: List<FormFactorTypeId>,
+    val formfactorTypeBaseId: List<FormFactorTypeBaseId>
 )
 
 data class FormFactorType(
@@ -119,6 +120,37 @@ data class FormFactorTypeId(
     val order: Int
 )
 
+data class FormFactorTypeBaseId(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val description: String,
+    val order: Int
+)
+
+
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
 data class ColorOrderList(val cctCode: Int, val order: Int)
 data class FinishOrderList(val finnishCode: Int, val order: Int)
+
+/**
+ * Browsing
+ */
+data class FittingBrowsing(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    var isSelected: Boolean = false
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as FittingBrowsing
+
+        return other.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+}

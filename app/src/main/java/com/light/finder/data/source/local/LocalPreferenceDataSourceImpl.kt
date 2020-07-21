@@ -2,6 +2,7 @@ package com.light.finder.data.source.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.light.domain.model.*
@@ -18,6 +19,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_FINISH_LEGEND = "productFinishLegend"
         private const val FORM_FACTOR_LEGEND = "productFormFactorLegend"
         private const val FORM_FACTOR_LEGEND_ID = "productFormFactorIdLegend"
+        private const val FORM_FACTOR_LEGEND_BASE_ID = "productFormFactorBaseIdLegend"
 
 
     }
@@ -35,6 +37,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             .commit()
         editor.putString(FORM_FACTOR_LEGEND_ID, Gson().toJson(legend.legend.formfactorTypeId))
             .commit()
+        editor.putString(
+            FORM_FACTOR_LEGEND_BASE_ID,
+            Gson().toJson(legend.legend.formfactorTypeBaseId)
+        ).commit()
     }
 
     override fun loadLegendCctFilterNames(): List<CctType> =
@@ -50,6 +56,31 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun loadFormFactorIdLegendTags(): List<FormFactorTypeId> = Gson().fromJson(
         pref.getString(FORM_FACTOR_LEGEND_ID, null) ?: emptyList<FormFactorTypeId>().toString()
     )
+
+    override fun getFittingProduct(productsBrowsing: List<ProductBrowsing>): List<FittingBrowsing> {
+        val fittingList = hashSetOf<FittingBrowsing>()
+        val formFactorBaseIdList = Gson().fromJson<List<FormFactorTypeBaseId>>(
+            pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
+                ?: emptyList<FormFactorTypeBaseId>().toString()
+        )
+        productsBrowsing.map { productsBrowsing ->
+            val formFactorTypeBase =
+                formFactorBaseIdList.find { productsBrowsing.productFormfactorBaseId == it.id }
+            if (formFactorTypeBase != null) {
+                fittingList.add(
+                    FittingBrowsing(
+                        id = formFactorTypeBase.id,
+                        name = formFactorTypeBase.name,
+                        image = formFactorTypeBase.image
+                    )
+                )
+
+            }
+        }
+        Log.d("Gabriel","fitting List: $fittingList")
+        return fittingList.toList()
+    }
+
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T =

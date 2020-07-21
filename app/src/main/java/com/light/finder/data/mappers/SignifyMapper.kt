@@ -152,6 +152,15 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.description,
                 it.order
             )
+        },
+        formfactorTypeBaseId = legendValueDto.productFormFactorBaseId.map {
+            FormFactorTypeBaseId(
+                it.id,
+                it.name,
+                it.image,
+                it.description,
+                it.order
+            )
         }
 
     )
