@@ -34,7 +34,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseFittingModule())
         }
 
+        setAdapter()
         setObservers()
+    }
+
+    private fun setAdapter() {
+        //TODO("initialize the adapter here")
     }
 
     private fun setObservers() {
@@ -47,13 +52,16 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
         when (modelBrowse) {
             is UiBrowsingModel.SuccessRequestStatus -> {
+                //TODO("Not yet implemented")
 
             }
             is UiBrowsingModel.ErrorRequestStatus -> {
+                //TODO("Not yet implemented")
 
             }
 
             is UiBrowsingModel.LoadingStatus -> {
+                //TODO("Not yet implemented")
 
             }
         }
