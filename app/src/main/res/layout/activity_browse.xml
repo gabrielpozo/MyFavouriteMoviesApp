@@ -50,7 +50,6 @@
         <TextView
             android:id="@+id/textResetSkip"
             android:textSize="18sp"
-            android:letterSpacing="0.5sp"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/bold"
             android:text="@string/reset"

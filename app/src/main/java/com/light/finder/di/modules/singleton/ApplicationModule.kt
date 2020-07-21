@@ -7,6 +7,7 @@ import com.light.finder.data.source.local.db.BrowseRoomDataBase
 import com.light.finder.data.source.local.db.BrowseRoomDataSource
 import com.light.finder.data.source.local.db.dao.BrowseDao
 import com.light.finder.data.source.remote.*
+import com.light.source.local.LocalDbDataSource
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.*
@@ -39,7 +40,7 @@ class ApplicationModule {
     fun getMoviesDao(app: Application): BrowseDao = BrowseRoomDataBase.getDatabase(app).browseDao()
 
     @Provides
-    fun getLocalBrowsingDataBase(browseDao: BrowseDao): BrowseRoomDataSource =
+    fun getLocalBrowsingDataBase(browseDao: BrowseDao): LocalDbDataSource =
         BrowseRoomDataSource(browseDao)
 
     @Provides
