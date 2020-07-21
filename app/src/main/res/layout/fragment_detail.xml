@@ -38,13 +38,11 @@
 
     <Button
         android:id="@+id/livePreviewButton"
-        style="@style/BlueButton"
+        style="@style/LiveButton"
         android:background="@drawable/button_curvy_corners_categories"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_camera"
-        android:paddingStart="80dp"
-        android:paddingEnd="80dp"
         android:layout_marginBottom="12dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="27dp"

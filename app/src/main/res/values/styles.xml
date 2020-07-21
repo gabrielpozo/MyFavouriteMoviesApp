@@ -76,15 +76,14 @@
     </style>
 
     <style name="LiveButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:minHeight">50dp</item>
-        <item name="android:height">50dp</item>
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingStart">80dp</item>
         <item name="android:paddingEnd">20dp</item>
+        <item name="android:drawablePadding">-60dp</item>
         <item name="android:textColor">@color/textLight</item>
     </style>
 
