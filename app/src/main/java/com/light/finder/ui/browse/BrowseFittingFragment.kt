@@ -99,7 +99,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun setFittingListeners() {
-  /*      buttonSearch.setOnClickListener {
+      /* buttonSearch.setOnClickListener {
             viewModel.onSearchButtonPressed()
         }*/
     }

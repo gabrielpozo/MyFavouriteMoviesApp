@@ -2,7 +2,6 @@ package com.light.finder.data.source.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.light.domain.model.*
@@ -71,14 +70,14 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                     FittingBrowsing(
                         id = formFactorTypeBase.id,
                         name = formFactorTypeBase.name,
-                        image = formFactorTypeBase.image
+                        image = formFactorTypeBase.image,
+                        order = formFactorTypeBase.order
                     )
                 )
 
             }
         }
-        Log.d("Gabriel","fitting List: $fittingList")
-        return fittingList.toList()
+        return fittingList.toList().sortedBy { it.order }
     }
 
 }

@@ -140,6 +140,7 @@ data class FittingBrowsing(
     val id: Int,
     val name: String,
     val image: String?,
+    val order: Int,
     var isSelected: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
