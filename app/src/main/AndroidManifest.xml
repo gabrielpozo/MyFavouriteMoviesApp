@@ -32,7 +32,6 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.browse.BrowseActivity"
-            android:label="@string/title_activity_browse"
             android:configChanges="orientation|keyboardHidden"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
