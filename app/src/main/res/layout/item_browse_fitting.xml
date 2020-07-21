@@ -6,7 +6,8 @@
     android:layout_height="98dp"
     android:layout_margin="24dp"
     android:padding="3dp"
-    android:background="@drawable/browse_rounded_edge">
+    android:id="@+id/fittingBg"
+    android:background="@drawable/browse_rounded_edge_unselected">
 
 
     <androidx.cardview.widget.CardView app:cardCornerRadius="4dp"

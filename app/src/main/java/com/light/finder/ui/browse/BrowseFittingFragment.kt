@@ -1,8 +1,8 @@
 package com.light.finder.ui.browse
 
+
+import android.animation.ValueAnimator
 import android.os.Bundle
-
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +11,18 @@ import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.gone
+import com.light.finder.extensions.visible
+import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.presentation.viewmodels.BrowseFittingViewModel
-import com.light.presentation.viewmodels.BrowseFittingViewModel.*
+import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
+import kotlinx.android.synthetic.main.fragment_browse_fitting.*
+import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseFittingFragment : BaseFilteringFragment() {
 
     private lateinit var component: BrowsingFittingComponent
+    private lateinit var adapter: BrowseFittingAdapter
 
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
@@ -39,7 +45,11 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun setAdapter() {
-        //TODO("initialize the adapter here")
+        /*adapter = BrowseFittingAdapter(
+            viewModel::onFittingClick,
+            //todo pass browsing product list
+        )
+        recyclerViewFitting.adapter = adapter*/
     }
 
     private fun setObservers() {
@@ -52,18 +62,37 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
         when (modelBrowse) {
             is UiBrowsingModel.SuccessRequestStatus -> {
-                //TODO("Not yet implemented")
-
+                showFittings()
             }
             is UiBrowsingModel.ErrorRequestStatus -> {
-                //TODO("Not yet implemented")
-
+                showError()
             }
 
             is UiBrowsingModel.LoadingStatus -> {
-                //TODO("Not yet implemented")
-
+               showLoading()
             }
         }
+    }
+
+    private fun showLoading() {
+        recyclerViewFitting.gone()
+        browseError.gone()
+        browseLoading.visible()
+        with(browseLoadingAnimation){
+            playAnimation()
+            repeatCount = ValueAnimator.INFINITE
+        }
+    }
+
+    private fun showError() {
+        recyclerViewFitting.gone()
+        browseError.visible()
+        browseLoading.gone()
+    }
+
+    private fun showFittings() {
+        recyclerViewFitting.visible()
+        browseError.gone()
+        browseLoading.gone()
     }
 }
