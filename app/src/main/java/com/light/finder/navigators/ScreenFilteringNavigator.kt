@@ -16,7 +16,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
     fun navigateToBrowsingShapeScreen() {
-
+        //TODO
     }
 
     private fun setFragmentTransaction(fragmentFiltering: BaseFilteringFragment){

@@ -22,8 +22,10 @@ import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.itemdecoration.FittingItemDecoration
+import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
+import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
@@ -53,6 +55,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
         setBottomSheetBehaviour()
         setObservers()
+        setFittingListeners()
     }
 
     private fun setBottomSheetBehaviour() {
@@ -92,6 +95,13 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             viewLifecycleOwner,
             Observer(::updateBrowsingFittingUI)
         )
+        viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
+    }
+
+    private fun setFittingListeners() {
+        buttonSearch.setOnClickListener {
+            viewModel.onSearchButtonPressed()
+        }
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
@@ -104,8 +114,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             }
 
             is UiBrowsingModel.LoadingStatus -> {
-               showLoading()
+                showLoading()
             }
+        }
+    }
+
+    private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
+        modelNavigation.getContentIfNotHandled()?.let {
+            screenFilteringNavigator.navigateToBrowsingShapeScreen()
         }
     }
 
@@ -113,7 +129,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.gone()
         browseError.gone()
         browseLoading.visible()
-        with(browseLoadingAnimation){
+        with(browseLoadingAnimation) {
             playAnimation()
             repeatCount = ValueAnimator.INFINITE
         }

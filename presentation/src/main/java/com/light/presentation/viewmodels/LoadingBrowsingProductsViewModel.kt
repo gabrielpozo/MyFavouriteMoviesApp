@@ -3,6 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ProductBrowsing
+import com.light.presentation.common.Event
 import com.light.usecases.RequestBrowsingProductsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -25,6 +26,12 @@ class BrowseFittingViewModel(
         get() = _modelBrowsingLiveData
     private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingModel>()
 
+    object NavigationToShapeFiltering
+
+    private val _modelNavigationShape = MutableLiveData<Event<NavigationToShapeFiltering>>()
+    val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
+        get() = _modelNavigationShape
+
     init {
         onRequestBrowsingProducts()
     }
@@ -46,8 +53,11 @@ class BrowseFittingViewModel(
     }
 
     fun onFittingClick(product: ProductBrowsing) {
-       //todo
+        //todo
     }
 
+    fun onSearchButtonPressed() {
+        _modelNavigationShape.value = Event(NavigationToShapeFiltering)
+    }
 }
 
