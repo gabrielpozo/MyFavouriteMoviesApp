@@ -135,4 +135,7 @@
     <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>
     <string name="which_shape_do_you_need">Which shape\ndo you need?</string>
     <string name="fitting">Fitting</string>
+    <string name="reset"><u>Reset</u></string>
+    <string name="next">Next</string>
+    <string name="search">Search</string>
 </resources>
