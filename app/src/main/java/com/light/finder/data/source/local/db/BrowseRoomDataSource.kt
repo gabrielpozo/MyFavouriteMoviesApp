@@ -5,7 +5,7 @@ import com.light.finder.data.source.local.db.dao.BrowseDao
 import com.light.source.local.LocalDbDataSource
 
 
-class RoomDataSource(private val browseDao: BrowseDao) : LocalDbDataSource {
+class BrowseRoomDataSource(private val browseDao: BrowseDao) : LocalDbDataSource {
     override suspend fun getFittingOptions() {
         TODO("Not yet implemented")
     }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 
-class FittingBrowsingViewModel(
+class BrowseFittingViewModel(
     private val requestBrowsingProductsUseCase: RequestBrowsingProductsUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {

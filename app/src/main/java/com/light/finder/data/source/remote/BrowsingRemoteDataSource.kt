@@ -6,9 +6,9 @@ import com.light.finder.data.mappers.mapProductsBrowsingToDomain
 import com.light.finder.data.source.BaseDataSource
 import com.light.finder.data.source.remote.dto.ProductBrowsingDto
 import com.light.finder.data.source.remote.services.LightFinderOpenRemoteUtil
-import com.light.source.remote.RemoteFetchBrowsingSource
+import com.light.source.remote.RemoteFetchBrowsingDataSource
 
-class BrowsingRemoteDataSource : BaseDataSource(), RemoteFetchBrowsingSource {
+class BrowsingRemoteDataSource : BaseDataSource(), RemoteFetchBrowsingDataSource {
     override suspend fun fetchBrowsingProducts(): Result<List<ProductBrowsing>> =
         getResult(::mapLegendResultToDomainModel) {
             LightFinderOpenRemoteUtil.service.fetchBrowsingProductsAsync()

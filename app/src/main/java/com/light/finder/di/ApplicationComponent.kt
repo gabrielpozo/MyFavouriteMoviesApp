@@ -3,6 +3,8 @@ package com.light.finder.di
 import android.app.Application
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
+import com.light.finder.di.modules.filter.BrowseFilteringComponent
+import com.light.finder.di.modules.filter.BrowseFilteringModule
 import com.light.finder.di.modules.global.HardwareInstanceComponents
 import com.light.finder.di.modules.global.HardwareModule
 import com.light.finder.di.modules.singleton.ApplicationModule
@@ -23,6 +25,8 @@ interface ApplicationComponent {
     fun plus(module: TermsModule): TermsComponent
     fun plus(module: HardwareModule): HardwareInstanceComponents
     fun plus(module: LiveAmbianceModule): LiveAmbianceComponent
+    fun plus(module: BrowseFilteringModule): BrowseFilteringComponent
+
 
     @Component.Factory
     interface Factory {

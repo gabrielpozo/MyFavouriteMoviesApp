@@ -6,12 +6,12 @@ import com.light.domain.model.ProductBrowsing
 import com.light.domain.state.DataState
 import com.light.source.local.LocalDbDataSource
 import com.light.source.local.LocalPreferenceDataSource
-import com.light.source.remote.RemoteFetchBrowsingSource
+import com.light.source.remote.RemoteFetchBrowsingDataSource
 import com.light.source.remote.RemoteFetchLegendDataSource
 
 
 class BrowseLightBulbsRepositoryImpl(
-    private val remoteFetchBrowsingSource: RemoteFetchBrowsingSource,
+    private val remoteFetchBrowsingSource: RemoteFetchBrowsingDataSource,
     private val localDbDataSource: LocalDbDataSource,
     private val localPreferenceDataSource: LocalPreferenceDataSource,
     private val legendRemoteDataSource: RemoteFetchLegendDataSource

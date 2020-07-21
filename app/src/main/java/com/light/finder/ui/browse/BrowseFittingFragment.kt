@@ -1,16 +1,21 @@
 package com.light.finder.ui.browse
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import com.light.finder.R
-import com.light.finder.ui.BaseFragment
+import com.light.finder.di.modules.submodules.BrowseFittingModule
+import com.light.finder.di.modules.submodules.BrowsingFittingComponent
+import com.light.finder.extensions.getViewModel
+import com.light.presentation.viewmodels.BrowseFittingViewModel
 
-class BrowseFittingFragment : BaseFragment() {
+class BrowseFittingFragment : BaseFilteringFragment() {
+
+    private lateinit var component: BrowsingFittingComponent
+
+    private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,7 +27,8 @@ class BrowseFittingFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        activity?.run {
+            component = browseComponent.plus(BrowseFittingModule())
+        }
     }
 }

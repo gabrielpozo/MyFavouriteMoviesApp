@@ -12,6 +12,7 @@ import com.light.finder.data.source.local.db.typeconverter.ProductListConverter
 @TypeConverters(ProductListConverter::class)
 abstract class BrowseRoomDataBase : RoomDatabase() {
     abstract fun browseDao(): BrowseDao
+
     companion object {
         @Volatile
         private var INSTANCE: BrowseRoomDataBase? = null
