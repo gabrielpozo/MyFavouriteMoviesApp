@@ -10,6 +10,7 @@ import com.light.finder.R
 import com.light.finder.di.modules.filter.BrowseFilteringComponent
 import com.light.finder.di.modules.filter.BrowseFilteringModule
 import com.light.finder.extensions.app
+import com.light.finder.navigators.ScreenFilteringNavigator
 import kotlinx.android.synthetic.main.activity_browse.*
 
 
@@ -18,7 +19,7 @@ class BrowseActivity : BaseLightFinderActivity(){
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var container: FrameLayout
-
+    private val screenFilteringNavigator: ScreenFilteringNavigator by lazy { browsingFilteringComponent.screenFilteringNavigator }
     val browsingFilteringComponent: BrowseFilteringComponent by lazy {
         app.applicationComponent.plus(
             BrowseFilteringModule(
@@ -39,8 +40,15 @@ class BrowseActivity : BaseLightFinderActivity(){
         setContentView(R.layout.activity_browse)
         container = findViewById(R.id.fragment_container_browse)
 
-
         textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        screenFilteringNavigator.navigateToBrowsingFittingScreen()
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 
 

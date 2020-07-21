@@ -5,6 +5,7 @@ import com.light.domain.model.ProductBrowsing
 import com.light.finder.data.mappers.mapProductsBrowsingToDomain
 import com.light.finder.data.source.BaseDataSource
 import com.light.finder.data.source.remote.dto.ProductBrowsingDto
+import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
 import com.light.finder.data.source.remote.services.LightFinderOpenRemoteUtil
 import com.light.source.remote.RemoteFetchBrowsingDataSource
 
@@ -15,7 +16,7 @@ class BrowsingRemoteDataSource : BaseDataSource(), RemoteFetchBrowsingDataSource
         }
 
 
-    private fun mapLegendResultToDomainModel(productBrowsingDto: List<ProductBrowsingDto>): List<ProductBrowsing> {
+    private fun mapLegendResultToDomainModel(productBrowsingDto: ProductBrowsingListDto): List<ProductBrowsing> {
         return mapProductsBrowsingToDomain(productBrowsingDto)
     }
 }

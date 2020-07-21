@@ -1,4 +1,4 @@
-package com.light.finder.common
+package com.light.finder.navigators
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,7 @@ import com.light.finder.R
 import com.light.finder.UsabillaActivity
 import com.light.finder.extensions.*
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -67,7 +68,8 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         fragNavController.initialize(INDEX_LIGHT_FINDER, savedInstanceState)
         val initial = savedInstanceState == null
         if (initial) {
-            activity.bottom_navigation_view.currentItem = INDEX_CART
+            activity.bottom_navigation_view.currentItem =
+                INDEX_CART
         }
 
 
@@ -211,5 +213,10 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         activity.startActivity<UsabillaActivity> {
             this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
+    }
+
+    fun navigateToBrowsingFiltering() {
+        activity.startActivity<BrowseActivity> {  }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }

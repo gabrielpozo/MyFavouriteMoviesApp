@@ -15,9 +15,10 @@ class BrowseFittingViewModel(
 ) : BaseViewModel(uiDispatcher) {
 
     sealed class UiBrowsingModel {
-        data class SuccessRequestStatus(private val productBrowsingList: List<ProductBrowsing>) :
+        data class SuccessRequestStatus(val productBrowsingList: List<ProductBrowsing>) :
             UiBrowsingModel()
-        data class ErrorRequestStatus(private val message: String) : UiBrowsingModel()
+
+        data class ErrorRequestStatus(val message: String) : UiBrowsingModel()
         object LoadingStatus : UiBrowsingModel()
     }
 
@@ -32,16 +33,16 @@ class BrowseFittingViewModel(
     private fun onRequestBrowsingProducts() {
         launch {
             _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
-            requestBrowsingProductsUseCase.execute(::onSuccessRequest, ::onErrorRequest)
+            requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
         }
     }
 
-    private fun onSuccessRequest(productBrowsingList: List<ProductBrowsing>) {
+    private fun handleSuccessRequest(productBrowsingList: List<ProductBrowsing>) {
         _modelBrowsingLiveData.value =
             UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
     }
 
-    private fun onErrorRequest(exception: Exception, message: String) {
+    private fun handleErrorRequest(exception: Exception, message: String) {
         _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 

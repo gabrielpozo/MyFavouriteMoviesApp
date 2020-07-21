@@ -110,6 +110,13 @@ class CameraViewModel(
         get() = _modelItemCountRequest
 
 
+    object NavigationToBrowsingFiltering
+
+    private val _modelNavigationFiltering = MutableLiveData<Event<NavigationToBrowsingFiltering>>()
+    val modelNavigationFiltering: LiveData<Event<NavigationToBrowsingFiltering>>
+        get() = _modelNavigationFiltering
+
+
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
 
@@ -237,6 +244,10 @@ class CameraViewModel(
 
     private fun handleTimeOutResponse(message: String) {
         _modelDialog.value = Event(DialogModel.TimeOutError)
+    }
+
+    fun onBrowsingButtonClicked() {
+        _modelNavigationFiltering.value = Event(NavigationToBrowsingFiltering)
     }
 }
 

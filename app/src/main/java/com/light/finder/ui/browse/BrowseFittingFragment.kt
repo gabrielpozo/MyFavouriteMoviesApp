@@ -1,8 +1,7 @@
 package com.light.finder.ui.browse
 
 import android.os.Bundle
-
-
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,15 +51,18 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
         when (modelBrowse) {
             is UiBrowsingModel.SuccessRequestStatus -> {
-                //TODO("Not yet implemented")
+                Log.d("Gabriel","Getting here!! SUCCESS: ${modelBrowse.productBrowsingList}")
 
             }
             is UiBrowsingModel.ErrorRequestStatus -> {
                 //TODO("Not yet implemented")
+                Log.d("Gabriel","Getting here!! ERROR: ${modelBrowse.message}")
+
 
             }
 
             is UiBrowsingModel.LoadingStatus -> {
+                Log.d("Gabriel","Getting here!! LOADING")
                 //TODO("Not yet implemented")
 
             }

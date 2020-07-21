@@ -34,6 +34,6 @@ interface SignifyApiService {
     @Headers("Content-Type: application/json")
     @GET("browse")
     suspend fun fetchBrowsingProductsAsync(
-    ): Response<List<ProductBrowsingDto>>
+    ): Response<ProductBrowsingListDto>
 }
 

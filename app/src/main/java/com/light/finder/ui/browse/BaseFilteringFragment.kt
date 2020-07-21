@@ -3,10 +3,11 @@ package com.light.finder.ui.browse
 import android.content.Context
 import androidx.fragment.app.Fragment
 import com.light.finder.di.modules.filter.BrowseFilteringComponent
+import com.light.finder.navigators.ScreenFilteringNavigator
 
 
 abstract class BaseFilteringFragment : Fragment() {
-   // protected lateinit var screenNavigator: ScreenNavigator
+    protected lateinit var screenFilteringNavigator: ScreenFilteringNavigator
     protected lateinit var browseComponent: BrowseFilteringComponent
 
 
@@ -14,7 +15,7 @@ abstract class BaseFilteringFragment : Fragment() {
         super.onAttach(context)
         if (context is BrowseActivity) {
             browseComponent = context.browsingFilteringComponent
-          //  screenNavigator = lightFinderComponent.screenNavigator
+            screenFilteringNavigator = browseComponent.screenFilteringNavigator
         }
     }
 

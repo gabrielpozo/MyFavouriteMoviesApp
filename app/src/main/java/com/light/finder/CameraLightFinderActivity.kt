@@ -15,12 +15,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
+import com.light.finder.navigators.ScreenNavigator
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.camera.ModelStatus
@@ -192,7 +193,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             if (current.getStatusView() == ModelStatus.GALLERY) {
                 // go back to gallery
                 current.pickImageFromGallery()
-
                 return
             }
         }

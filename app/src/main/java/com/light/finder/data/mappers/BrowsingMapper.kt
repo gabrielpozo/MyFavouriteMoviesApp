@@ -2,12 +2,13 @@ package com.light.finder.data.mappers
 
 import com.light.domain.model.ProductBrowsing
 import com.light.finder.data.source.remote.dto.ProductBrowsingDto
+import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
 
 
-val mapProductsBrowsingToDomain: (List<ProductBrowsingDto>) -> List<ProductBrowsing> =
-    { productsBrowsingDto ->
+val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsing> =
+    { productsBrowsingListDto ->
         val productBrowsingList: ArrayList<ProductBrowsing> = ArrayList()
-        productsBrowsingDto.map {
+        productsBrowsingListDto.product_list.map {
             productBrowsingList.add(
                 ProductBrowsing(
                     productCountry = it.product_country,
