@@ -159,7 +159,5 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseError.gone()
         browseLoading.gone()
         adapter.productsList = producFittingList
-       // setAdapter(producFittingList)
-        //TODO add the list here to the adapter (productBrowsingList)
     }
 }
