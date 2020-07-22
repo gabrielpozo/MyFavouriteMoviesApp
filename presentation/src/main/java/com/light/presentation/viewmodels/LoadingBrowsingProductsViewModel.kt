@@ -3,6 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FittingBrowsing
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ProductBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.RequestBrowsingProductsUseCase
@@ -16,7 +17,7 @@ class BrowseFittingViewModel(
 ) : BaseViewModel(uiDispatcher) {
 
     sealed class UiBrowsingModel {
-        data class SuccessRequestStatus(val productBrowsingList: List<FittingBrowsing>) :
+        data class SuccessRequestStatus(val productBrowsingList: List<FormFactorTypeBaseId>) :
             UiBrowsingModel()
 
         data class ErrorRequestStatus(val message: String) : UiBrowsingModel()
@@ -44,7 +45,7 @@ class BrowseFittingViewModel(
         }
     }
 
-    private fun handleSuccessRequest(productBrowsingList: List<FittingBrowsing>) {
+    private fun handleSuccessRequest(productBrowsingList: List<FormFactorTypeBaseId>) {
         _modelBrowsingLiveData.value =
             UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
     }
@@ -53,7 +54,7 @@ class BrowseFittingViewModel(
         _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 
-    fun onFittingClick(product: FittingBrowsing) {
+    fun onFittingClick(product: FormFactorTypeBaseId) {
         //todo
     }
 

@@ -19,8 +19,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val FORM_FACTOR_LEGEND = "productFormFactorLegend"
         private const val FORM_FACTOR_LEGEND_ID = "productFormFactorIdLegend"
         private const val FORM_FACTOR_LEGEND_BASE_ID = "productFormFactorBaseIdLegend"
-
-
+        private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
     }
 
     private val PRIVATE_MODE = 0
@@ -42,6 +41,13 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         ).commit()
     }
 
+    override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
+        editor.putString(
+            PRODUCTS_BROWSING_BASE,
+            Gson().toJson(productsBrowsing)
+        ).commit()
+    }
+
     override fun loadLegendCctFilterNames(): List<CctType> =
         Gson().fromJson(pref.getString(CCT_LEGEND, null) ?: "")
 
@@ -56,12 +62,13 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         pref.getString(FORM_FACTOR_LEGEND_ID, null) ?: emptyList<FormFactorTypeId>().toString()
     )
 
-    override fun getFittingProduct(productsBrowsing: List<ProductBrowsing>): List<FittingBrowsing> {
+    override fun loadFormFactorIBaseIdLegendTags(): List<FormFactorTypeBaseId> = Gson().fromJson(
+        pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null) ?: emptyList<FormFactorTypeBaseId>().toString()
+    )
+
+    override fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<FittingBrowsing> {
         val fittingList = hashSetOf<FittingBrowsing>()
-        val formFactorBaseIdList = Gson().fromJson<List<FormFactorTypeBaseId>>(
-            pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
-                ?: emptyList<FormFactorTypeBaseId>().toString()
-        )
+        val formFactorBaseIdList = loadFormFactorIBaseIdLegendTags()
         productsBrowsing.map { productsBrowsing ->
             val formFactorTypeBase =
                 formFactorBaseIdList.find { productsBrowsing.productFormfactorBaseId == it.id }
@@ -74,12 +81,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                         order = formFactorTypeBase.order
                     )
                 )
-
             }
         }
         return fittingList.toList().sortedBy { it.order }
     }
-
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T =

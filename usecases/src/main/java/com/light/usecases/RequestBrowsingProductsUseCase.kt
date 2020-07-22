@@ -1,16 +1,16 @@
 package com.light.usecases
 
 import com.light.domain.BrowseLightBulbsRepository
-import com.light.domain.model.FittingBrowsing
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.state.DataState
 
 
 class RequestBrowsingProductsUseCase(private val browseLightBulbsRepository: BrowseLightBulbsRepository) {
     suspend fun execute(
-        onSuccess: (List<FittingBrowsing>) -> Unit = {},
+        onSuccess: (List<FormFactorTypeBaseId>) -> Unit = {},
         onError: (e: Exception, message: String) -> Unit = { _, _ -> }
     ) {
-        when (val dataState = browseLightBulbsRepository.getBrowsingProducts()) {
+        when (val dataState = browseLightBulbsRepository.getFittingBrowsingProducts()) {
             is DataState.Success -> {
                 onSuccess.invoke(dataState.data)
             }

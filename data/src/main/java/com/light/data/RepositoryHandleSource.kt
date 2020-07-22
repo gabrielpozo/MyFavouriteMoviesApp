@@ -184,15 +184,15 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
     legendTagsRemoteRequest: suspend () -> Result<A>,
     mainRemoteRequest: suspend () -> Result<T>,
     saveLegendRequestOnLocal: suspend (A) -> Unit,
-    saveOnDB: suspend (T) -> Unit,
-    legendParsing: (T) ->U
+    saveBrowsingonLocal: suspend (T) -> Unit,
+    legendParsing: () ->U
 ): DataState<U> {
     if (shouldDoFetchLegendRequest) {
         legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
             return when (resultInitialRequest.status) {
                 Result.Status.SUCCESS -> {
                     saveLegendRequestOnLocal.invoke(resultInitialRequest.data!!)
-                    sendMainRequestBrowsing(mainRemoteRequest, saveOnDB, legendParsing)
+                    sendMainRequestBrowsing(mainRemoteRequest, saveBrowsingonLocal, legendParsing)
                 }
 
                 Result.Status.ERROR -> {
@@ -211,7 +211,7 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
         }
 
     } else {
-        return sendMainRequestBrowsing(mainRemoteRequest, saveOnDB, legendParsing)
+        return sendMainRequestBrowsing(mainRemoteRequest, saveBrowsingonLocal, legendParsing)
     }
 
 }
@@ -220,7 +220,7 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
 private suspend fun <T, U> sendMainRequestBrowsing(
     mainRemoteRequest: suspend () -> Result<T>,
     saveOnDB: suspend (T) -> Unit = {},
-    legendParsing: (T) -> U
+    legendParsing: () -> U
 ): DataState<U> {
 
     mainRemoteRequest.invoke().also { resultRequest ->
@@ -233,7 +233,7 @@ private suspend fun <T, U> sendMainRequestBrowsing(
                                 if (saveOnDB != {}) {
                                     saveOnDB.invoke(this)
                                 }
-                                DataState.Success(legendParsing(DataState.Success(data = this).data))
+                                DataState.Success(legendParsing())
                             } ?: DataState.Error(NULLABLE_ERROR)
                         }
                     }

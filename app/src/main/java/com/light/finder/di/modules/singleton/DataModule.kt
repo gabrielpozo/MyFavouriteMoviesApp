@@ -49,13 +49,11 @@ class DataModule {
     @Provides
     fun getBrowsingProductsRepository(
         remoteFetchBrowsingSource: RemoteFetchBrowsingDataSource,
-        localDbDataSource: LocalDbDataSource,
         localPreferenceDataSource: LocalPreferenceDataSource,
         remoteFetchLegendDataSource: RemoteFetchLegendDataSource
     ): BrowseLightBulbsRepository =
         BrowseLightBulbsRepositoryImpl(
             remoteFetchBrowsingSource,
-            localDbDataSource,
             localPreferenceDataSource,
             remoteFetchLegendDataSource
         )
