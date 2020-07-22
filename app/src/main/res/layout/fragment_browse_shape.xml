@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/browse_background_gradient">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/browse_background_gradient"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fittingLayout"
+        >
+
+        <TextView
+            android:id="@+id/textBrowseShapeTitle"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/backgroundLight"
+            android:textSize="40sp"
+            android:text="@string/which_shape_do_you_need"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:fontFamily="@font/bold"
-        android:textColor="@color/backgroundLight"
-        android:textSize="40sp"
-        android:id="@+id/textBrowseShapeTitle"
-        android:text="@string/which_shape_do_you_need"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/bottomSheetLayoutBrowseShape"
-        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_nav_bar_height"
+        android:id="@+id/bottomSheetLayoutBrowse"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
@@ -35,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
+            android:layout_marginBottom="@dimen/bottom_nav_bar_height"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -51,13 +60,15 @@
                 android:text="@string/shape" />
 
 
+            <!-- should have 3 items per rows -->
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="visible"
                 android:id="@+id/recyclerViewShape"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="12dp"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/item_browse_shape"/>
 
             <include
@@ -73,4 +84,70 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/backgroundDark"
+        android:id="@+id/bottom_navigation_browse"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_bar_height"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/backgroundDarkPressed"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_browse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <TextView
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:id="@+id/textSkip"
+            android:textSize="18sp"
+            android:textColor="@color/backgroundLight"
+            android:fontFamily="@font/bold"
+            android:text="@string/skip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonSearch"
+            style="@style/TitleTextGray"
+            android:text="@string/search"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:stateListAnimator="@null"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_icon_small_search"
+            android:background="@drawable/button_curvy_corners"
+            android:textAllCaps="false"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
