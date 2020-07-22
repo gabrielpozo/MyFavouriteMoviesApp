@@ -1,6 +1,5 @@
 package com.light.finder.ui.browse
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -11,7 +10,6 @@ import com.light.finder.di.modules.filter.BrowseFilteringComponent
 import com.light.finder.di.modules.filter.BrowseFilteringModule
 import com.light.finder.extensions.app
 import com.light.finder.navigators.ScreenFilteringNavigator
-import kotlinx.android.synthetic.main.activity_browse.*
 
 
 class BrowseActivity : BaseLightFinderActivity(){

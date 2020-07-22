@@ -2,7 +2,6 @@ package com.light.finder.di.modules.singleton
 
 import com.light.domain.*
 import com.light.repository.*
-import com.light.source.local.LocalDbDataSource
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.*
@@ -57,4 +56,8 @@ class DataModule {
             localPreferenceDataSource,
             remoteFetchLegendDataSource
         )
+
+    @Provides
+    fun getShapeBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ShapeLightBulbRepository =
+        ShapeLightBulbsRepositoryImpl(localPreferenceDataSource)
 }

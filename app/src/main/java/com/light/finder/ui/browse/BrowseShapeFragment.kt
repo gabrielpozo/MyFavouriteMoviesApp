@@ -9,11 +9,22 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import com.light.finder.R
-import com.light.finder.ui.BaseFragment
+import com.light.finder.di.modules.submodules.BrowseShapeComponent
+import com.light.finder.di.modules.submodules.BrowseShapeModule
+import com.light.finder.extensions.getViewModel
 import com.light.finder.ui.adapters.BrowseShapeDetailsLookup
+import com.light.finder.ui.lightfinder.DetailFragment
+import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 
-class BrowseShapeFragment : BaseFragment() {
+class BrowseShapeFragment : BaseFilteringFragment() {
+
+    companion object {
+        const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
+    }
+
+    private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
+    private lateinit var component: BrowseShapeComponent
 
     var tracker: SelectionTracker<Long>? = null
 
@@ -26,10 +37,17 @@ class BrowseShapeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.run {
+            component = browseComponent.plus(BrowseShapeModule())
+        }
+
+        arguments?.let { bundle ->
+            bundle.getInt(DetailFragment.PRODUCTS_ID_KEY).let { productBaseId ->
+                viewModel.onRequestFilteringShapes(productBaseId)
+            }
+        }
 
         setAdapter()
-
-
     }
 
     private fun setAdapter() {

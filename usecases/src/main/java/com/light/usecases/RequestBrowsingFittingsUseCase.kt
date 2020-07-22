@@ -5,7 +5,7 @@ import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.state.DataState
 
 
-class RequestBrowsingProductsUseCase(private val browseLightBulbsRepository: BrowseLightBulbsRepository) {
+class RequestBrowsingFittingsUseCase(private val browseLightBulbsRepository: BrowseLightBulbsRepository) {
     suspend fun execute(
         onSuccess: (List<FormFactorTypeBaseId>) -> Unit = {},
         onError: (e: Exception, message: String) -> Unit = { _, _ -> }

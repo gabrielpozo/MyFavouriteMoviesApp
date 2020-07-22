@@ -1,8 +1,7 @@
 package com.light.domain
 
-import com.light.domain.model.FormFactorTypeBaseId
-import com.light.domain.state.DataState
+import com.light.domain.model.ShapeBrowsing
 
 interface ShapeLightBulbRepository {
-    suspend fun getFittingBrowsingProducts(): DataState<List<FormFactorTypeBaseId>>
+    suspend fun getShapeBrowsingProducts(productBaseId: Int): List<ShapeBrowsing>
 }

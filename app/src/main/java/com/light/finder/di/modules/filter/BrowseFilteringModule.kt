@@ -20,5 +20,5 @@ class BrowseFilteringModule(private val context: BrowseActivity) {
 interface BrowseFilteringComponent {
     val screenFilteringNavigator: ScreenFilteringNavigator
     fun plus(module: BrowseFittingModule): BrowsingFittingComponent
-
+    fun plus(module: BrowseShapeModule): BrowseShapeComponent
 }

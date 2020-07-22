@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.presentation.common.Event
-import com.light.usecases.RequestBrowsingProductsUseCase
+import com.light.usecases.RequestBrowsingFittingsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
 class BrowseFittingViewModel(
-    private val requestBrowsingProductsUseCase: RequestBrowsingProductsUseCase,
+    private val requestBrowsingProductsUseCase: RequestBrowsingFittingsUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 

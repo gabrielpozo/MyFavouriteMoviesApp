@@ -63,27 +63,31 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     )
 
     override fun loadFormFactorIBaseIdLegendTags(): List<FormFactorTypeBaseId> = Gson().fromJson(
-        pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null) ?: emptyList<FormFactorTypeBaseId>().toString()
+        pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
+            ?: emptyList<FormFactorTypeBaseId>().toString()
     )
 
-    override fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<ShapeBrowsing> {
-        val fittingList = hashSetOf<ShapeBrowsing>()
-        val formFactorBaseIdList = loadFormFactorIBaseIdLegendTags()
-        productsBrowsing.map { productsBrowsing ->
-            val formFactorTypeBase =
-                formFactorBaseIdList.find { productsBrowsing.productFormfactorBaseId == it.id }
-            if (formFactorTypeBase != null) {
-                fittingList.add(
-                    ShapeBrowsing(
-                        id = formFactorTypeBase.id,
-                        name = formFactorTypeBase.name,
-                        image = formFactorTypeBase.image,
-                        order = formFactorTypeBase.order
-                    )
+    override fun loadProductBrowsingTags(): List<ProductBrowsing> = Gson().fromJson(
+        pref.getString(PRODUCTS_BROWSING_BASE, null) ?: emptyList<ProductBrowsing>().toString()
+    )
+
+
+    override fun fittingFilteringProducts(productFitingId: Int): List<ShapeBrowsing> {
+        val shapesToDisplay = arrayListOf<ShapeBrowsing>()
+        val allShapes = loadFormFactorLegendTags()
+        val productFilteredBrowseList = loadProductBrowsingTags().filter { it.productFormfactorBaseId == productFitingId }
+        allShapes.forEach { formFactor ->
+            shapesToDisplay.add(
+                ShapeBrowsing(
+                    formFactor.id,
+                    formFactor.name,
+                    formFactor.image,
+                    formFactor.order.toInt(),
+                    productFilteredBrowseList.count { formFactor.id == it.productFormfactorTypeCode }
                 )
-            }
+            )
         }
-        return fittingList.toList().sortedBy { it.order }
+        return shapesToDisplay
     }
 }
 

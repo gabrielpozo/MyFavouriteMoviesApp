@@ -142,6 +142,7 @@ data class ShapeBrowsing(
     val name: String,
     val image: String?,
     val order: Int,
+    val subtitleCount:Int,
     var isSelected: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
