@@ -55,11 +55,18 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
 
         textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        textResetSkip.setOnClickListener {
+            resetSelection()
+        }
 
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
         setFittingListeners()
+    }
+
+    private fun resetSelection() {
+        //todo run foreach and change each isselected to false and change background color to inactive
     }
 
     private fun setBottomSheetBehaviour() {
