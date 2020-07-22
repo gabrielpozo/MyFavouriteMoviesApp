@@ -40,7 +40,6 @@ class BrowseActivity : BaseLightFinderActivity(){
         setContentView(R.layout.activity_browse)
         container = findViewById(R.id.fragment_container_browse)
 
-        textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         screenFilteringNavigator.navigateToBrowsingFittingScreen()
 

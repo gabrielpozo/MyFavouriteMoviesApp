@@ -2,6 +2,7 @@ package com.light.finder.ui.browse
 
 
 import android.animation.ValueAnimator
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +52,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseFittingModule())
         }
 
+        textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         setAdapter()
         setBottomSheetBehaviour()
@@ -71,7 +73,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             fittingLayout.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = dpHeight
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2).toInt()
+            bottomSheetBehavior.peekHeight = (dpHeight / 1.5).toInt()
 
         }
     }
