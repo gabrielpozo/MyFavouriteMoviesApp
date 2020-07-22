@@ -131,12 +131,12 @@
 
         <Button
             android:id="@+id/buttonNext"
-            style="@style/TitleTextGray"
+            style="@style/BrowseNextDisable"
             android:text="@string/next"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:stateListAnimator="@null"
-            android:background="@drawable/button_curvy_corners"
+            android:background="@drawable/browse_next_disable"
             android:textAllCaps="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

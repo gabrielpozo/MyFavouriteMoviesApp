@@ -1,6 +1,5 @@
 package com.light.finder.ui.adapters
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,8 @@ import com.light.finder.extensions.loadFitting
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseFittingAdapter(
-    private val listener: (FormFactorTypeBaseId) -> Unit
+    private val listener: (FormFactorTypeBaseId) -> Unit,
+    private val callback: (Boolean) -> Unit
 ) : RecyclerView.Adapter<BrowseFittingAdapter.ViewHolder>() {
     var productsList: List<FormFactorTypeBaseId> by basicDiffUtil(
         emptyList(),
@@ -32,6 +32,7 @@ class BrowseFittingAdapter(
 
         holder.bind(product)
         holder.itemView.setOnClickListener {
+            callback(true)
             listener(product)
             productsList[lastPosition].isSelected = false
             productsList[position].isSelected = true

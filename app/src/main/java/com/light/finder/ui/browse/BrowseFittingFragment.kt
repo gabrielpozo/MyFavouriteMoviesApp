@@ -13,6 +13,8 @@ import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
@@ -80,7 +82,8 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun setAdapter() {
         adapter = BrowseFittingAdapter(
-            viewModel::onFittingClick
+            viewModel::onFittingClick,
+            ::onClick
         )
         adapter.setHasStableIds(true)
         val layoutManager = GridLayoutManager(context, 3)
@@ -89,6 +92,15 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
+    }
+
+    private fun onClick(isClicked: Boolean) {
+        if (isClicked)
+        textResetSkip.visible()
+        buttonNext.style {
+            add(R.style.TitleTextGray)
+            backgroundRes(R.drawable.button_curvy_corners)
+        }
     }
 
     private fun setObservers() {
