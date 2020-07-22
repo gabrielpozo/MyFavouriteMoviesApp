@@ -66,15 +66,15 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null) ?: emptyList<FormFactorTypeBaseId>().toString()
     )
 
-    override fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<FittingBrowsing> {
-        val fittingList = hashSetOf<FittingBrowsing>()
+    override fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<ShapeBrowsing> {
+        val fittingList = hashSetOf<ShapeBrowsing>()
         val formFactorBaseIdList = loadFormFactorIBaseIdLegendTags()
         productsBrowsing.map { productsBrowsing ->
             val formFactorTypeBase =
                 formFactorBaseIdList.find { productsBrowsing.productFormfactorBaseId == it.id }
             if (formFactorTypeBase != null) {
                 fittingList.add(
-                    FittingBrowsing(
+                    ShapeBrowsing(
                         id = formFactorTypeBase.id,
                         name = formFactorTypeBase.name,
                         image = formFactorTypeBase.image,

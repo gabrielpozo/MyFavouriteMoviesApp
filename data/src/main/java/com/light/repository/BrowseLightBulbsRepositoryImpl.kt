@@ -2,7 +2,6 @@ package com.light.repository
 
 import com.light.data.repositoryBrowsingBusinessModel
 import com.light.domain.BrowseLightBulbsRepository
-import com.light.domain.model.FittingBrowsing
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.state.DataState
 import com.light.source.local.LocalPreferenceDataSource

@@ -137,7 +137,7 @@ data class FinishOrderList(val finnishCode: Int, val order: Int)
 /**
  * Browsing
  */
-data class FittingBrowsing(
+data class ShapeBrowsing(
     val id: Int,
     val name: String,
     val image: String?,
@@ -147,7 +147,7 @@ data class FittingBrowsing(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
-        other as FittingBrowsing
+        other as ShapeBrowsing
 
         return other.id == this.id
     }

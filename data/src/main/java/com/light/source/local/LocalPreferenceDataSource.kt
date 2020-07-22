@@ -10,6 +10,6 @@ interface LocalPreferenceDataSource {
     fun loadFormFactorLegendTags(): List<FormFactorType>
     fun loadFormFactorIdLegendTags(): List<FormFactorTypeId>
     fun loadFormFactorIBaseIdLegendTags():List<FormFactorTypeBaseId>
-    fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<FittingBrowsing>
+    fun getFittingProducts(productsBrowsing: List<ProductBrowsing>): List<ShapeBrowsing>
     fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>)
 }
