@@ -125,7 +125,8 @@ data class FormFactorTypeBaseId(
     val name: String,
     val image: String?,
     val description: String,
-    val order: Int
+    val order: Int,
+    var isSelected: Boolean = false
 )
 
 

@@ -1,20 +1,24 @@
 package com.light.finder.ui.adapters
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.FittingBrowsing
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
+import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
-import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseFittingAdapter(
-    private val listener: (FittingBrowsing) -> Unit,
-    private val productsList: List<FittingBrowsing> = emptyList()
-) :
-    RecyclerView.Adapter<BrowseFittingAdapter.ViewHolder>() {
+    private val listener: (FormFactorTypeBaseId) -> Unit
+) : RecyclerView.Adapter<BrowseFittingAdapter.ViewHolder>() {
+    var productsList: List<FormFactorTypeBaseId> by basicDiffUtil(
+        emptyList(),
+        areItemsTheSame = { old, new -> old.id == new.id }
+    )
+
     private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_browse_fitting, false)
@@ -45,9 +49,10 @@ class BrowseFittingAdapter(
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(product: FittingBrowsing) {
+        fun bind(product: FormFactorTypeBaseId) {
             itemView.textBrowseResults.text = product.name
-            itemView.imageViewFinishIcon.loadFitting(product.image!!)
+            Log.d("Gabriel","product name: ${product.name} and productImage ${product.image}")
+            product.image?.let { itemView.imageViewFinishIcon.loadFitting(it) }
         }
     }
 }

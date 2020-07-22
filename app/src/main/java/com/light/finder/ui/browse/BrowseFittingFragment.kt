@@ -4,7 +4,6 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.light.domain.model.FittingBrowsing
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
@@ -27,7 +26,6 @@ import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
-import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
@@ -56,6 +54,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
         textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
+        setAdapter()
         setBottomSheetBehaviour()
         setObservers()
         setFittingListeners()
@@ -79,10 +78,9 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun setAdapter(productBrowsingList: List<FittingBrowsing>) {
+    private fun setAdapter() {
         adapter = BrowseFittingAdapter(
-            viewModel::onFittingClick,
-            productBrowsingList
+            viewModel::onFittingClick
         )
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -144,12 +142,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseLoading.gone()
     }
 
-    private fun showFittings(producFittingList: List<FittingBrowsing>) {
-        Log.d("Gabriel","Browse Fitting Fragnment: $producFittingList")
+    private fun showFittings(producFittingList: List<FormFactorTypeBaseId>) {
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
-        setAdapter(producFittingList)
+        adapter.productsList = producFittingList
+       // setAdapter(producFittingList)
         //TODO add the list here to the adapter (productBrowsingList)
     }
 }
