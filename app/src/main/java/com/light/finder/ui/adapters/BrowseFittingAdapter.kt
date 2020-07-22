@@ -51,8 +51,14 @@ class BrowseFittingAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(product: FormFactorTypeBaseId) {
             itemView.textBrowseResults.text = product.name
-            Log.d("Gabriel","product name: ${product.name} and productImage ${product.image}")
-            product.image?.let { itemView.imageViewFinishIcon.loadFitting(it) }
+            when (product.image) {
+                null -> {
+                    itemView.imageViewFinishIcon.setBackgroundResource(R.color.backgroundLight)
+                }
+                else -> {
+                    itemView.imageViewFinishIcon.loadFitting(product.image!!)
+                }
+            }
         }
     }
 }
