@@ -2,6 +2,7 @@ package com.light.finder.ui.browse
 
 
 import android.animation.ValueAnimator
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,6 +54,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseFittingModule())
         }
 
+        textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         setBottomSheetBehaviour()
         setObservers()
