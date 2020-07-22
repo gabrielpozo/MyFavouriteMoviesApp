@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="98dp"
     android:layout_height="98dp"
+    android:padding="3dp"
     android:id="@+id/fittingBg"
     android:background="@drawable/browse_rounded_edge_unselected">
 
