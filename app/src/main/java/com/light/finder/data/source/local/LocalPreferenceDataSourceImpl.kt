@@ -2,6 +2,7 @@ package com.light.finder.data.source.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.light.domain.model.*
@@ -76,6 +77,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         val shapesToDisplay = arrayListOf<ShapeBrowsing>()
         val allShapes = loadFormFactorLegendTags()
         val productFilteredBrowseList = loadProductBrowsingTags().filter { it.productFormfactorBaseId == productFitingId }
+        Log.d("Gabriel","Base Id: $productFitingId")
         allShapes.forEach { formFactor ->
             shapesToDisplay.add(
                 ShapeBrowsing(

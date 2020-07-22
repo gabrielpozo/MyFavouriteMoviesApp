@@ -4,18 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.selection.SelectionPredicates
+import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
-import androidx.recyclerview.selection.StorageStrategy
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseShapeComponent
 import com.light.finder.di.modules.submodules.BrowseShapeModule
 import com.light.finder.extensions.getViewModel
-import com.light.finder.ui.adapters.BrowseShapeDetailsLookup
-import com.light.finder.ui.lightfinder.DetailFragment
 import com.light.presentation.viewmodels.BrowseShapeViewModel
-import kotlinx.android.synthetic.main.fragment_browse_shape.*
 
 class BrowseShapeFragment : BaseFilteringFragment() {
 
@@ -42,16 +37,37 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         }
 
         arguments?.let { bundle ->
-            bundle.getInt(DetailFragment.PRODUCTS_ID_KEY).let { productBaseId ->
+            bundle.getInt(SHAPE_ID_KEY).let { productBaseId ->
                 viewModel.onRequestFilteringShapes(productBaseId)
             }
         }
 
+        setObservers()
         setAdapter()
     }
 
+    private fun setObservers() {
+        viewModel.modelBrowsingLiveData.observe(
+            viewLifecycleOwner, Observer(::updateBrowsingFittingUI)
+        )
+        //viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
+    }
+
+
+    private fun updateBrowsingFittingUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
+        when (modelBrowse) {
+            is BrowseShapeViewModel.UiBrowsingShapeModel.SuccessRequestStatus -> {
+
+            }
+
+            is BrowseShapeViewModel.UiBrowsingShapeModel.LoadingStatus -> {
+                //showLoading()
+            }
+        }
+    }
+
     private fun setAdapter() {
-        tracker = SelectionTracker.Builder<Long>(
+/*        tracker = SelectionTracker.Builder<Long>(
             "shapeSelection",
             recyclerViewShape,
             StableIdKeyProvider(recyclerViewShape),
@@ -59,7 +75,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
-        ).build()
+        ).build()*/
         //adapter.tracker = tracker
     }
 }

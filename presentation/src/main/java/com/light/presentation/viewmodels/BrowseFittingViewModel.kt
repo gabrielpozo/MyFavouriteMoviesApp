@@ -14,6 +14,12 @@ class BrowseFittingViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    companion object {
+        private const val NO_ITEM_SELECTED = -1
+    }
+
+    private var productBaseId: Int = NO_ITEM_SELECTED
+
     sealed class UiBrowsingModel {
         data class SuccessRequestStatus(val productBrowsingList: List<FormFactorTypeBaseId>) :
             UiBrowsingModel()
@@ -26,7 +32,7 @@ class BrowseFittingViewModel(
         get() = _modelBrowsingLiveData
     private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingModel>()
 
-    object NavigationToShapeFiltering
+    data class NavigationToShapeFiltering(val productBaseId: Int)
 
     private val _modelNavigationShape = MutableLiveData<Event<NavigationToShapeFiltering>>()
     val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
@@ -53,11 +59,12 @@ class BrowseFittingViewModel(
     }
 
     fun onFittingClick(product: FormFactorTypeBaseId) {
-        //todo
+        productBaseId = product.id
     }
 
-    fun onSearchButtonPressed() {
-        _modelNavigationShape.value = Event(NavigationToShapeFiltering)
+    fun onNextButtonPressed() {
+        if (productBaseId > NO_ITEM_SELECTED)
+            _modelNavigationShape.value = Event(NavigationToShapeFiltering(productBaseId))
     }
 }
 

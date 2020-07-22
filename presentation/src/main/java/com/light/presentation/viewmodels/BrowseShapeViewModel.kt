@@ -16,6 +16,7 @@ class BrowseShapeViewModel(
     sealed class UiBrowsingShapeModel {
         data class SuccessRequestStatus(val productBrowsingList: List<ShapeBrowsing>) :
             UiBrowsingShapeModel()
+
         object LoadingStatus : UiBrowsingShapeModel()
     }
 
@@ -35,13 +36,14 @@ class BrowseShapeViewModel(
             _modelBrowsingLiveData.value = UiBrowsingShapeModel.LoadingStatus
             requestBrowsingShapeUseCase.execute(
                 ::handleSuccessRequest,
-                arrayOf(productBaseId)
+                productBaseId
             )
         }
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {
-         _modelBrowsingLiveData.value = UiBrowsingShapeModel.SuccessRequestStatus(productBrowsingList)
+        _modelBrowsingLiveData.value =
+            UiBrowsingShapeModel.SuccessRequestStatus(productBrowsingList)
     }
 
 

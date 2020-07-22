@@ -60,7 +60,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
 
         buttonNext.setOnClickListener {
-            
+            viewModel.onNextButtonPressed()
         }
 
         setAdapter()
@@ -144,8 +144,8 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
-        modelNavigation.getContentIfNotHandled()?.let {
-            screenFilteringNavigator.navigateToBrowsingShapeScreen()
+        modelNavigation.getContentIfNotHandled()?.let { model ->
+            screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseId)
         }
     }
 
