@@ -74,7 +74,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             fittingLayout.updateLayoutParams<ViewGroup.LayoutParams> {
                 height = dpHeight
             }
-            bottomSheetBehavior.peekHeight = (dpHeight / 2).toInt()
+            bottomSheetBehavior.peekHeight = (dpHeight / 1.5).toInt()
 
         }
     }
