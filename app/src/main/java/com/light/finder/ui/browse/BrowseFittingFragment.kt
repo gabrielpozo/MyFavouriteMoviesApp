@@ -1,7 +1,6 @@
 package com.light.finder.ui.browse
 
 
-import ItemOffsetDecoration
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
+import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
@@ -86,7 +86,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 
-        recyclerViewFitting.addItemDecoration(ItemOffsetDecoration(context!!, R.dimen.spacing))
+        recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
     }

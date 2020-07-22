@@ -1,4 +1,4 @@
-
+package com.light.finder.ui.itemdecoration
 import android.content.Context
 import android.graphics.Rect
 import android.view.View
@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
 
-class ItemOffsetDecoration(private val mItemOffset: Int) : ItemDecoration() {
+class FittingItemDecoration(private val itemOffset: Int) : ItemDecoration() {
 
     constructor(
         @NonNull context: Context,
         @DimenRes itemOffsetId: Int
-    ) : this(context.getResources().getDimensionPixelSize(itemOffsetId))
+    ) : this(context.resources.getDimensionPixelSize(itemOffsetId))
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -22,7 +22,7 @@ class ItemOffsetDecoration(private val mItemOffset: Int) : ItemDecoration() {
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.set(mItemOffset / 2, 0, 0, mItemOffset);
+        outRect.set(itemOffset / 2, 0, 0, itemOffset);
     }
 
 
