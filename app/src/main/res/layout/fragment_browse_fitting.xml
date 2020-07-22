@@ -67,7 +67,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="12dp"
-                android:orientation="vertical"
+                android:clipToPadding="false"
+                android:padding="@dimen/spacing"
+                android:layout_gravity="center_horizontal"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/item_browse_fitting"/>
 
