@@ -59,6 +59,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             resetSelection()
         }
 
+        buttonNext.setOnClickListener {
+            
+        }
+
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
