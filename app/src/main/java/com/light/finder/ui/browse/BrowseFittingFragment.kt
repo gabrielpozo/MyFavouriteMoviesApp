@@ -82,6 +82,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         adapter = BrowseFittingAdapter(
             viewModel::onFittingClick
         )
+        adapter.setHasStableIds(true)
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 

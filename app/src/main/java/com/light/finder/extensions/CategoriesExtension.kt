@@ -93,8 +93,6 @@ fun ImageView.loadUrl(url: String) {
 
 fun ImageView.loadFitting(url: String) {
     Glide.with(context).load(url)
-        .override(70, 70)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(R.color.backgroundLight).into(this)
 }
 
