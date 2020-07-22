@@ -91,6 +91,13 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadFitting(url: String) {
+    Glide.with(context).load(url)
+        .override(70, 70)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .placeholder(R.color.backgroundLight).into(this)
+}
+
 fun ImageView.loadThumbnail(url: String) {
     Glide.with(context)
         .load(url)

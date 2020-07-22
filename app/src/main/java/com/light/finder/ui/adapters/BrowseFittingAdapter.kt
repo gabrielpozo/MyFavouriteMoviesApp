@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.FittingBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.inflate
+import com.light.finder.extensions.loadFitting
+import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseFittingAdapter(
@@ -45,8 +47,7 @@ class BrowseFittingAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(product: FittingBrowsing) {
             itemView.textBrowseResults.text = product.name
-            //itemView.imageViewFinishIcon.loadUrl()
-            //todo wtf am i supposed to display here?
+            itemView.imageViewFinishIcon.loadFitting(product.image!!)
         }
     }
 }
