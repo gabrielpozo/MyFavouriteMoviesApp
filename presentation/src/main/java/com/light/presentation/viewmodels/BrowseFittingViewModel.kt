@@ -48,7 +48,6 @@ class BrowseFittingViewModel(
     sealed class StatusBottomBar {
         object ResetFitting : StatusBottomBar()
         object FittingClicked : StatusBottomBar()
-
     }
 
     init {

@@ -114,7 +114,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             Observer(::updateBrowsingFittingUI)
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
-        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::resetFittingScreen))
+        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
@@ -132,7 +132,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun resetFittingScreen(model: BrowseFittingViewModel.StatusBottomBar) {
+    private fun updateStatusBottomBar(model: BrowseFittingViewModel.StatusBottomBar) {
         when (model) {
             is BrowseFittingViewModel.StatusBottomBar.ResetFitting -> {
                 resetFittingSelection()
