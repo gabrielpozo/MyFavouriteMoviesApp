@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fittingLayout"
+        android:id="@+id/fittingLayoutShape"
         >
 
         <TextView
@@ -72,12 +72,7 @@
                 tools:listitem="@layout/item_browse_shape"/>
 
             <include
-                android:id="@+id/browseError"
-                layout="@layout/layout_browse_error"
-                android:visibility="gone" />
-
-            <include
-                android:id="@+id/browseLoading"
+                android:id="@+id/browseLoadingShape"
                 layout="@layout/layout_browse_loading"
                 android:visibility="gone" />
 
@@ -112,6 +107,26 @@
             android:focusable="true"
             android:visibility="gone"
             android:id="@+id/textSkip"
+            android:textSize="18sp"
+            android:textColor="@color/backgroundLight"
+            android:fontFamily="@font/bold"
+            android:text="@string/skip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:id="@+id/textReset"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/bold"

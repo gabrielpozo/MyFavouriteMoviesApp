@@ -1,77 +1,88 @@
 package com.light.finder.ui.adapters
 
-import android.view.MotionEvent
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.ProductBrowsing
+import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
+import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
-import kotlinx.android.synthetic.main.item_browse_fitting.view.*
+import com.light.finder.extensions.loadFitting
+import kotlinx.android.synthetic.main.item_browse_shape.view.*
 
 class BrowseShapeAdapter(
-    private val listener: (ProductBrowsing) -> Unit,
-    private val productsList: List<ProductBrowsing> = emptyList()
-) :
-    RecyclerView.Adapter<BrowseShapeAdapter.ViewHolder>() {
+    private val listener: (ShapeBrowsing) -> Unit
+) : RecyclerView.Adapter<BrowseShapeAdapter.ViewHolder>() {
+    var productsList: List<ShapeBrowsing> by basicDiffUtil(
+        emptyList(),
+        areItemsTheSame = { old, new -> old.id == new.id }
+    )
 
-    init {
-        setHasStableIds(true)
+    fun setShapeProductList(formFactorBaseIdList: List<ShapeBrowsing>) {
+        productsList = formFactorBaseIdList.map { it.copy() }
     }
 
-    private var tracker: SelectionTracker<Long>? = null
-
-    fun setTracker(tracker: SelectionTracker<Long>?) {
-        this.tracker = tracker
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-
+    private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_browse_shape, false)
         return ViewHolder(view)
     }
+
 
     override fun getItemCount(): Int = productsList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productsList[position]
 
-        tracker?.let {
-            holder.bind(product, it.isSelected(position.toLong()))
+        holder.bind(product)
+        holder.itemView.setOnClickListener {
+            //callback(true)
+            listener(product)
+            productsList[lastPosition].isSelected = false
+            productsList[position].isSelected = true
+            lastPosition = position
+            notifyDataSetChanged()
         }
+
 
     }
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
-            object : ItemDetailsLookup.ItemDetails<Long>() {
-                override fun getPosition(): Int = adapterPosition
-                override fun getSelectionKey(): Long? = itemId
+        @SuppressLint("SetTextI18n")
+        fun bind(product: ShapeBrowsing) {
+            itemView.textBrowseBulbName.text = product.name
+            when (product.image) {
+                null -> {
+                    itemView.imageViewBrowseIcon.setBackgroundResource(R.color.backgroundLight)
+                }
+                else -> {
+                    itemView.imageViewBrowseIcon.loadFitting(product.image!!)
+                }
             }
 
-        fun bind(product: ProductBrowsing, isActivated: Boolean = false) {
-            itemView.isActivated = isActivated
+            when {
+                product.subtitleCount > 1 -> {
+                    itemView.textBrowseResultsCount.text = String.format(
+                        itemView.context.getString(R.string.text_results),
+                        product.subtitleCount
+                    )
+                }
+                product.subtitleCount == 1 -> {
+                    itemView.textBrowseResultsCount.text = String.format(
+                        itemView.context.getString(R.string.text_result),
+                        product.subtitleCount
+                    )
+                }
+                else -> {
+                    itemView.textBrowseResultsCount.text =
+                        itemView.context.getString(R.string.not_available)
+                }
+            }
+
 
         }
-    }
-}
-
-class BrowseShapeDetailsLookup(private val recyclerView: RecyclerView) :
-    ItemDetailsLookup<Long>() {
-    override fun getItemDetails(event: MotionEvent): ItemDetails<Long>? {
-        val view = recyclerView.findChildViewUnder(event.x, event.y)
-        if (view != null) {
-            return (recyclerView.getChildViewHolder(view) as BrowseShapeAdapter.ViewHolder)
-                .getItemDetails()
-        }
-        return null
     }
 }
 

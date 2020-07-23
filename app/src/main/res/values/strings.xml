@@ -105,7 +105,7 @@
     <string name="api_server_error_event">api_server_error</string>
     <string name="no_internet_connection_event">no_internet_connection</string>
     <string name="base">base</string>
-    <string name="shape">shape</string>
+    <string name="shape">Shape</string>
     <string name="finish">finish</string>
     <string name="give_us_feedback">Give us feedback</string>
     <string name="open_terms_of_use">open_terms_of_use</string>
@@ -140,4 +140,5 @@
     <string name="next">Next</string>
     <string name="search">Search</string>
     <string name="skip">Skip</string>
+    <string name="not_available">Not available for this fitting</string>
 </resources>

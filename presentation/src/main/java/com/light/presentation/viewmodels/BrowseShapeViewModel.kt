@@ -2,6 +2,7 @@ package com.light.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.RequestBrowsingShapeUseCase
@@ -46,5 +47,8 @@ class BrowseShapeViewModel(
             UiBrowsingShapeModel.SuccessRequestStatus(productBrowsingList)
     }
 
+    fun onShapeClick(product: ShapeBrowsing) {
+
+    }
 
 }
