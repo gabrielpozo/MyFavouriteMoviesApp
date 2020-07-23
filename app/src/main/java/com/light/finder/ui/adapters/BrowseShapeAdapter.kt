@@ -9,6 +9,7 @@ import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
+import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 import kotlinx.android.synthetic.main.item_browse_shape.view.*
 
 class BrowseShapeAdapter(
@@ -48,9 +49,9 @@ class BrowseShapeAdapter(
         }
 
         if (product.isSelected) {
-            //Todo
+            holder.itemView.shapeBg.setBackgroundResource(R.drawable.browse_rounded_edge)
         } else {
-            //Todo
+            holder.itemView.shapeBg.setBackgroundResource(R.drawable.browse_rounded_edge_unselected)
         }
     }
 

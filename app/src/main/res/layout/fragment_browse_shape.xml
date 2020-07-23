@@ -6,11 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/browse_background_gradient"
     android:orientation="vertical">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fittingLayoutShape"
-        >
+
+
 
         <TextView
             android:id="@+id/textBrowseShapeTitle"
@@ -18,18 +15,19 @@
             android:textColor="@color/backgroundLight"
             android:textSize="40sp"
             android:text="@string/which_shape_do_you_need"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="64dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:layout_editor_absoluteY="64dp" />
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_marginBottom="@dimen/bottom_nav_bar_height"
