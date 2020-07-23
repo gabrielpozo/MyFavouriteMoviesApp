@@ -43,7 +43,6 @@ class BrowseFittingAdapter(
 
         holder.bind(product)
         holder.itemView.setOnClickListener {
-            //callback(true)
             listener(product)
             productsList[lastPosition].isSelected = false
             productsList[position].isSelected = true

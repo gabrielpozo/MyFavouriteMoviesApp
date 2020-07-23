@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_browse_shape.view.*
 class BrowseShapeAdapter(
     private val listener: (ShapeBrowsing) -> Unit
 ) : RecyclerView.Adapter<BrowseShapeAdapter.ViewHolder>() {
-    var productsList: List<ShapeBrowsing> by basicDiffUtil(
+    private var productsList: List<ShapeBrowsing> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.id == new.id }
     )
@@ -37,15 +37,16 @@ class BrowseShapeAdapter(
 
         holder.bind(product)
         holder.itemView.setOnClickListener {
-            //callback(true)
+            productsList[position].isSelected = !productsList[position].isSelected
             listener(product)
-            productsList[lastPosition].isSelected = false
-            productsList[position].isSelected = true
-            lastPosition = position
             notifyDataSetChanged()
         }
 
-
+        if (product.isSelected) {
+            //Todo
+        } else {
+            //Todo
+        }
     }
 
 
@@ -80,8 +81,6 @@ class BrowseShapeAdapter(
                         itemView.context.getString(R.string.not_available)
                 }
             }
-
-
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
@@ -48,6 +49,7 @@ class BrowseShapeViewModel(
     }
 
     fun onShapeClick(product: ShapeBrowsing) {
+        Log.d("Gabriel","SHAPE: onFittingClick: ${product.isSelected}")
 
     }
 
