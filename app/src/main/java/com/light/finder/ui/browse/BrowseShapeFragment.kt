@@ -26,6 +26,7 @@ import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.adapters.BrowseShapeAdapter
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseShapeViewModel
+import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
@@ -64,10 +65,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textReset.setOnClickListener {
-
+            viewModel.onResetButtonPressed()
         }
         textSkip.setOnClickListener {
-
         }
 
         setAdapter()
@@ -96,7 +96,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         )
 
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
-
         //viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
     }
 
@@ -120,13 +119,18 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 resetFittingSelection()
             }
             is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
-               // settingFilterSelected()
+                settingFilterSelected()
             }
         }
 
     }
 
+    private fun settingFilterSelected() {
+        textReset.visible()
+    }
+
     private fun resetFittingSelection() {
+        textReset.gone()
         adapter.clearSelection()
     }
 

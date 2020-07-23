@@ -128,7 +128,7 @@
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/bold"
-            android:text="@string/skip"
+            android:text="@string/reset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
