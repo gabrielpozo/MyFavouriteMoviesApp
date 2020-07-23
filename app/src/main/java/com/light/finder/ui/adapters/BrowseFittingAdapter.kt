@@ -25,6 +25,14 @@ class BrowseFittingAdapter(
         return ViewHolder(view)
     }
 
+    fun clearSelection() {
+        for (i in productsList.indices) {
+            productsList[i].isSelected = false
+        }
+        lastPosition = 0
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = productsList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

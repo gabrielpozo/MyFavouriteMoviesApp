@@ -29,6 +29,7 @@ import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
 import kotlinx.android.synthetic.main.fragment_browse_fitting.*
+import kotlinx.android.synthetic.main.layout_browse_error.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 
@@ -63,6 +64,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             viewModel.onNextButtonPressed()
         }
 
+        buttonRefresh.setOnClickListener {
+            //todo request browse again
+        }
+
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
@@ -70,6 +75,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun resetSelection() {
+        textResetSkip.gone()
+        buttonNext.style {
+            add(R.style.BrowseNextDisable)
+            backgroundRes(R.drawable.browse_next_disable)
+        }
+
         //todo run foreach and change each isselected to false and change background color to inactive
     }
 
