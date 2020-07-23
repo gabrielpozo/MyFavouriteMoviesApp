@@ -132,13 +132,15 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun updateStatusBottomBar(model: BrowseFittingViewModel.StatusBottomBar) {
-        when (model) {
-            is BrowseFittingViewModel.StatusBottomBar.ResetFitting -> {
-                resetFittingSelection()
-            }
-            is BrowseFittingViewModel.StatusBottomBar.FittingClicked -> {
-                settingFilterSelected()
+    private fun updateStatusBottomBar(modelEvent: Event<BrowseFittingViewModel.StatusBottomBar>) {
+        modelEvent.getContentIfNotHandled()?.let { model ->
+            when (model) {
+                is BrowseFittingViewModel.StatusBottomBar.ResetFitting -> {
+                    resetFittingSelection()
+                }
+                is BrowseFittingViewModel.StatusBottomBar.FittingClicked -> {
+                    settingFilterSelected()
+                }
             }
         }
     }

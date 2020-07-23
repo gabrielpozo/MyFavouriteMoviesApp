@@ -41,9 +41,9 @@ class BrowseFittingViewModel(
         get() = _modelNavigationShape
 
 
-    val modelBottomStatus: LiveData<StatusBottomBar>
+    val modelBottomStatus: LiveData<Event<StatusBottomBar>>
         get() = _modelBottomStatus
-    private val _modelBottomStatus = MutableLiveData<StatusBottomBar>()
+    private val _modelBottomStatus = MutableLiveData<Event<StatusBottomBar>>()
 
     sealed class StatusBottomBar {
         object ResetFitting : StatusBottomBar()
@@ -73,7 +73,7 @@ class BrowseFittingViewModel(
     fun onFittingClick(product: FormFactorTypeBaseId) {
         isNextDisabled = false
         productBaseId = product.id
-        _modelBottomStatus.value = StatusBottomBar.FittingClicked
+        _modelBottomStatus.value = Event(StatusBottomBar.FittingClicked)
     }
 
     fun onNextButtonPressed() {
@@ -83,7 +83,7 @@ class BrowseFittingViewModel(
 
     fun onResetButtonPressed() {
         isNextDisabled = true
-        _modelBottomStatus.value = StatusBottomBar.ResetFitting
+        _modelBottomStatus.value = Event(StatusBottomBar.ResetFitting)
     }
 }
 
