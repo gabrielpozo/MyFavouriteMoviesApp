@@ -38,7 +38,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var isNextDisabled = true
 
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
@@ -63,11 +62,8 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
 
         buttonNext.setOnClickListener {
-            if (!isNextDisabled) {
-                viewModel.onNextButtonPressed()
-            }
+            viewModel.onNextButtonPressed()
         }
-
 
 
         buttonRefresh.setOnClickListener {
@@ -100,8 +96,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun setAdapter() {
         adapter = BrowseFittingAdapter(
-            viewModel::onFittingClick,
-            ::onClick
+            viewModel::onFittingClick
         )
         adapter.setHasStableIds(true)
         val layoutManager = GridLayoutManager(context, 3)
@@ -112,14 +107,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.adapter = adapter
     }
 
-    private fun onClick(isClicked: Boolean) {
-        if (isClicked)
-            textResetSkip.visible()
+    private fun onFittingClick() {
+        textResetSkip.visible()
         buttonNext.style {
             add(R.style.TitleTextGray)
             backgroundRes(R.drawable.button_curvy_corners)
         }
-        isNextDisabled = false
     }
 
     private fun setObservers() {
@@ -128,17 +121,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             Observer(::updateBrowsingFittingUI)
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
-        viewModel.modelReset.observe(viewLifecycleOwner, Observer {  resetFittingScreen() })
-    }
-
-    private fun resetFittingScreen() {
-        textResetSkip.gone()
-        buttonNext.style {
-            add(R.style.BrowseNextDisable)
-            backgroundRes(R.drawable.browse_next_disable)
-        }
-        adapter.clearSelection()
-        isNextDisabled = true
+        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::resetFittingScreen))
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
@@ -156,10 +139,30 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
+    private fun resetFittingScreen(model: BrowseFittingViewModel.StatusBottomBar) {
+        when (model) {
+            is BrowseFittingViewModel.StatusBottomBar.ResetFitting -> {
+                resetFittingSelection()
+            }
+            is BrowseFittingViewModel.StatusBottomBar.FittingClicked -> {
+                onFittingClick()
+            }
+        }
+    }
+
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
         modelNavigation.getContentIfNotHandled()?.let { model ->
             screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseId)
         }
+    }
+
+    private fun resetFittingSelection() {
+        textResetSkip.gone()
+        buttonNext.style {
+            add(R.style.BrowseNextDisable)
+            backgroundRes(R.drawable.browse_next_disable)
+        }
+        adapter.clearSelection()
     }
 
     private fun showLoading() {
