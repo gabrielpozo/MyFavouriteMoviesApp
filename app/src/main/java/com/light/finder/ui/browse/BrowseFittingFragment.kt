@@ -107,13 +107,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.adapter = adapter
     }
 
-    private fun onFittingClick() {
-        textResetSkip.visible()
-        buttonNext.style {
-            add(R.style.TitleTextGray)
-            backgroundRes(R.drawable.button_curvy_corners)
-        }
-    }
 
     private fun setObservers() {
         viewModel.modelBrowsingLiveData.observe(
@@ -145,7 +138,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
                 resetFittingSelection()
             }
             is BrowseFittingViewModel.StatusBottomBar.FittingClicked -> {
-                onFittingClick()
+                settingFilterSelected()
             }
         }
     }
@@ -154,15 +147,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         modelNavigation.getContentIfNotHandled()?.let { model ->
             screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseId)
         }
-    }
-
-    private fun resetFittingSelection() {
-        textResetSkip.gone()
-        buttonNext.style {
-            add(R.style.BrowseNextDisable)
-            backgroundRes(R.drawable.browse_next_disable)
-        }
-        adapter.clearSelection()
     }
 
     private fun showLoading() {
@@ -186,5 +170,22 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseError.gone()
         browseLoading.gone()
         adapter.setFittingProductList(productFittingList)
+    }
+
+    private fun resetFittingSelection() {
+        textResetSkip.gone()
+        buttonNext.style {
+            add(R.style.BrowseNextDisable)
+            backgroundRes(R.drawable.browse_next_disable)
+        }
+        adapter.clearSelection()
+    }
+
+    private fun settingFilterSelected() {
+        textResetSkip.visible()
+        buttonNext.style {
+            add(R.style.TitleTextGray)
+            backgroundRes(R.drawable.button_curvy_corners)
+        }
     }
 }
