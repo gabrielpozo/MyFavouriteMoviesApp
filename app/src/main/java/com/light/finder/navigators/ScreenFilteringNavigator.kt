@@ -9,12 +9,16 @@ import com.light.finder.ui.browse.BrowseFittingFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
 
 
-class ScreenFilteringNavigator(private val activity: BrowseActivity) {
+class ScreenFilteringNavigator(activity: BrowseActivity) {
 
-    private val fragmentManager: FragmentManager = activity.supportFragmentManager
+    companion object {
+        private const val FILTERING_BACKSTAGE = "filtering_backstage"
+    }
+
+    val fragmentManager: FragmentManager = activity.supportFragmentManager
 
     fun navigateToBrowsingFittingScreen() {
-        setFragmentTransaction(BrowseFittingFragment())
+        addFragmentTransaction(BrowseFittingFragment())
     }
 
     fun navigateToBrowsingShapeScreen(productBaseId: Int) {
@@ -22,12 +26,34 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         bundle.putInt(BrowseShapeFragment.SHAPE_ID_KEY, productBaseId)
         val browseShapeFragment = BrowseShapeFragment()
         browseShapeFragment.arguments = bundle
-        setFragmentTransaction(browseShapeFragment)
+        replaceFragmentTransaction(browseShapeFragment)
     }
 
-    private fun setFragmentTransaction(fragmentFiltering: BaseFilteringFragment) {
-        fragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_browse, fragmentFiltering).commit()
+    private fun addFragmentTransaction(fragmentFiltering: BaseFilteringFragment) {
+        fragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.slide_in_from_right,
+            R.anim.slide_out_to_left,
+            R.anim.slide_in_from_left,
+            R.anim.slide_out_to_right
+        ).add(R.id.fragment_container_browse, fragmentFiltering)
+            .commit()
+    }
+
+    private fun replaceFragmentTransaction(fragmentFiltering: BaseFilteringFragment) {
+        fragmentManager.beginTransaction().setCustomAnimations(
+            R.anim.slide_in_from_right,
+            R.anim.slide_out_to_left,
+            R.anim.slide_in_from_left,
+            R.anim.slide_out_to_right
+        )
+            .addToBackStack(null)
+            .replace(R.id.fragment_container_browse, fragmentFiltering)
+            .commit()
+    }
+
+
+    fun popFragment() {
+        fragmentManager.popBackStack()
     }
 
 
