@@ -19,6 +19,10 @@ class BrowseFittingAdapter(
         areItemsTheSame = { old, new -> old.id == new.id }
     )
 
+    fun setFittingProductList(formFactorBaseIdList: List<FormFactorTypeBaseId>){
+        productsList = formFactorBaseIdList.map { it.copy() }
+    }
+
     private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_browse_fitting, false)

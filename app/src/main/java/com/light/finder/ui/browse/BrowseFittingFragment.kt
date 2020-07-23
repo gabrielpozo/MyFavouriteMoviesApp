@@ -128,10 +128,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             Observer(::updateBrowsingFittingUI)
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
-        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::resetFittingScreen))
+        viewModel.modelReset.observe(viewLifecycleOwner, Observer {  resetFittingScreen() })
     }
 
-    private fun resetFittingScreen(modelReset: BrowseFittingViewModel.ResetFitting) {
+    private fun resetFittingScreen() {
         textResetSkip.gone()
         buttonNext.style {
             add(R.style.BrowseNextDisable)
@@ -182,6 +182,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
-        adapter.productsList = productFittingList.map { it.copy() }
+        adapter.setFittingProductList(productFittingList)
     }
 }
