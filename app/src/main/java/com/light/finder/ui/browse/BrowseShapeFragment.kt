@@ -68,6 +68,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             viewModel.onResetButtonPressed()
         }
         textSkip.setOnClickListener {
+            //todo navigate with all shapes
         }
 
         setAdapter()
@@ -127,9 +128,11 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
     private fun settingFilterSelected() {
         textReset.visible()
+        textSkip.gone()
     }
 
     private fun resetFittingSelection() {
+        textSkip.visible()
         textReset.gone()
         adapter.clearSelection()
     }
