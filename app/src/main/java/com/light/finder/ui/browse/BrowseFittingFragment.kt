@@ -38,6 +38,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var isNextDisabled = true
 
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
@@ -60,9 +61,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             viewModel.onResetButtonPressed()
         }
 
+
         buttonNext.setOnClickListener {
-            viewModel.onNextButtonPressed()
+            if (!isNextDisabled) {
+                viewModel.onNextButtonPressed()
+            }
         }
+
+
 
         buttonRefresh.setOnClickListener {
             viewModel.onRequestBrowsingProducts()
@@ -108,11 +114,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun onClick(isClicked: Boolean) {
         if (isClicked)
-        textResetSkip.visible()
+            textResetSkip.visible()
         buttonNext.style {
             add(R.style.TitleTextGray)
             backgroundRes(R.drawable.button_curvy_corners)
         }
+        isNextDisabled = false
     }
 
     private fun setObservers() {
@@ -131,6 +138,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             backgroundRes(R.drawable.browse_next_disable)
         }
         adapter.clearSelection()
+        isNextDisabled = true
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
