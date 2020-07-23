@@ -178,10 +178,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         browseLoading.gone()
     }
 
-    private fun showFittings(producFittingList: List<FormFactorTypeBaseId>) {
+    private fun showFittings(productFittingList: List<FormFactorTypeBaseId>) {
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
-        adapter.productsList = producFittingList
+        adapter.productsList = productFittingList.map { it.copy() }
     }
 }
