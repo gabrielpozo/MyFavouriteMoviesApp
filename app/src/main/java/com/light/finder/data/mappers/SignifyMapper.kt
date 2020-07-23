@@ -17,15 +17,15 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     categoryIndex = categoryDto.categoryIndex,
                     categoryImage = categoryDto.categoryImage,
                     priceRange = getMinMaxPriceTag(
-                        categoryDto.categoryPrice?.minPrice,
-                        categoryDto.categoryPrice?.maxPrice
+                        categoryDto.categoryPrice?.minPrice
                     ),
                     categoryWattReplaced = categoryDto.categoryWattReplace,
                     maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
                     colors = categoryDto.categoryCctCode.map { it },
                     finishCodes = categoryDto.categoryFilterFinishCode.map { it },
-                    categoryShape = categoryDto.categoryProductShape
+                    categoryShape = categoryDto.categoryProductShape,
+                    categoryDescription = categoryDto.categoryDescription
                 )
             )
         }
@@ -37,7 +37,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         version = messageDto.version,
         baseIdentified = messageDto.baseIdentified,
         formfactorType = messageDto.formfactorType,
-        shapeIdentified = messageDto.shape_identified
+        shapeIdentified = messageDto.shape_identified,
+        textIdentified = messageDto.textIdentified
     )
 }
 
@@ -166,13 +167,11 @@ private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
         )
     }
 
-fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
-    if (minPrice == null || maxPrice == null) {
+fun getMinMaxPriceTag(minPrice: Float?): String =
+    if (minPrice == null) {
         "-"
-    } else if (minPrice == maxPrice && minPrice != 0.0f) {
+    } else  {
         priceTransform(minPrice)
-    } else {
-        "${priceTransform(minPrice)}-${priceTransform(maxPrice)}"
     }
 
 fun priceTransform(value: Float): String {
