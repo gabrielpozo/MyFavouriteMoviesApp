@@ -57,7 +57,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
         textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textResetSkip.setOnClickListener {
-            resetSelection()
+            viewModel.onResetButtonPressed()
         }
 
         buttonNext.setOnClickListener {
@@ -65,24 +65,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
 
         buttonRefresh.setOnClickListener {
-            //todo request browse again
+            viewModel.onRequestBrowsingProducts()
         }
 
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
-        setFittingListeners()
     }
 
-    private fun resetSelection() {
-        textResetSkip.gone()
-        buttonNext.style {
-            add(R.style.BrowseNextDisable)
-            backgroundRes(R.drawable.browse_next_disable)
-        }
-
-        //todo run foreach and change each isselected to false and change background color to inactive
-    }
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayoutBrowse)
@@ -131,12 +121,16 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             Observer(::updateBrowsingFittingUI)
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
+        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::resetFittingScreen))
     }
 
-    private fun setFittingListeners() {
-      /* buttonSearch.setOnClickListener {
-            viewModel.onSearchButtonPressed()
-        }*/
+    private fun resetFittingScreen(modelReset: BrowseFittingViewModel.ResetFitting) {
+        textResetSkip.gone()
+        buttonNext.style {
+            add(R.style.BrowseNextDisable)
+            backgroundRes(R.drawable.browse_next_disable)
+        }
+        adapter.clearSelection()
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {

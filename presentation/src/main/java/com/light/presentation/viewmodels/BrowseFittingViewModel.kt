@@ -38,11 +38,18 @@ class BrowseFittingViewModel(
     val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
         get() = _modelNavigationShape
 
+
+    val modelReset: LiveData<ResetFitting>
+        get() = _modelReset
+    private val _modelReset = MutableLiveData<ResetFitting>()
+
+    object ResetFitting
+
     init {
         onRequestBrowsingProducts()
     }
 
-    private fun onRequestBrowsingProducts() {
+    fun onRequestBrowsingProducts() {
         launch {
             _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
             requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
@@ -65,6 +72,10 @@ class BrowseFittingViewModel(
     fun onNextButtonPressed() {
         if (productBaseId > NO_ITEM_SELECTED)
             _modelNavigationShape.value = Event(NavigationToShapeFiltering(productBaseId))
+    }
+
+    fun onResetButtonPressed() {
+        _modelReset.value = ResetFitting
     }
 }
 

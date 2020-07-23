@@ -26,8 +26,8 @@ class BrowseFittingAdapter(
     }
 
     fun clearSelection() {
-        for (i in productsList.indices) {
-            productsList[i].isSelected = false
+        productsList.forEach {
+            it.isSelected = false
         }
         lastPosition = 0
         notifyDataSetChanged()

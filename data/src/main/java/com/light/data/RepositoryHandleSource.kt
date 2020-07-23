@@ -201,6 +201,11 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
                         isCanceled = resultInitialRequest.isCancelRequest
                     )
                 }
+
+                Result.Status.TIME_OUT_ERROR -> {
+                    DataState.TimeOut(resultInitialRequest.message ?: CANCEL_ERROR)
+                }
+
                 else -> {
                     DataState.Error(
                         resultInitialRequest.message ?: GENERAL_ERROR,

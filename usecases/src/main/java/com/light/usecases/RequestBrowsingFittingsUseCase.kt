@@ -17,6 +17,9 @@ class RequestBrowsingFittingsUseCase(private val browseLightBulbsRepository: Bro
             is DataState.Error -> {
                 onError.invoke(dataState.cause ?: Exception(""), dataState.errorMessage)
             }
+            is DataState.TimeOut -> {
+                onError.invoke(dataState.cause ?: Exception(""), dataState.errorMessage)
+            }
         }
     }
 
