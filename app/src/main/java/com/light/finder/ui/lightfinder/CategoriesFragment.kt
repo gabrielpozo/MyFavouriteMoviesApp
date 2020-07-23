@@ -21,6 +21,7 @@ import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.fragment_categories.*
+import kotlinx.android.synthetic.main.item_category.*
 
 class CategoriesFragment : BaseFragment() {
 
@@ -101,7 +102,9 @@ class CategoriesFragment : BaseFragment() {
                 textViewNoResultSubTitle.visible()
                 textViewNoResultTitle.visible()
                 rvCategories.gone()
-            }
+            } else -> {
+            text_identified.text = message.textIdentified
+        }
 //            categories.size == 1 -> {
 //                textViewResults.text =
 //                    getString(R.string.text_result).getIntFormatter(categories.size)

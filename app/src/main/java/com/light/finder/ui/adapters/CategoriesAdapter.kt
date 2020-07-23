@@ -42,9 +42,9 @@ class CategoriesAdapter(
 
         val indexes = getMaxIndices(categories)
 
-        holder.itemView.colorsLayout.removeAllViews()
-        holder.itemView.wattageLayout.removeAllViews()
-        holder.itemView.imagesLayout.removeAllViews()
+//        holder.itemView.colorsLayout.removeAllViews()
+//        holder.itemView.wattageLayout.removeAllViews()
+//        holder.itemView.imagesLayout.removeAllViews()
         holder.bind(
             category,
             indexes,
@@ -86,12 +86,12 @@ class CategoriesAdapter(
             shapeIdentified: String,
             finishList: List<FinishType>
         ) {
-            itemView.category_name.text = category.categoryName
+            itemView.category_title.text = category.categoryName
 
-            val sourceString = "<b>" + category.priceRange + "</b> " + "each"
+            val sourceString = "<b>" + "from " + category.priceRange + "</b> " + "each"
             itemView.priceButton.text = Html.fromHtml(sourceString)
-
-            itemView.bulbCover.loadUrl(category.categoryImage)
+            itemView.category_description.text = category.categoryDescription
+            itemView.category_image.loadUrl(category.categoryImage)
 
             category.finishCodes.sortSmallFinishByOrderField(finishList).forEachIndexed { index, finishType ->
                 val imageViewFinish = ImageView(itemView.context)
@@ -122,29 +122,24 @@ class CategoriesAdapter(
                     imageViewFinish.setPadding(2, 2, 2, 2)
                 }
 
-                itemView.thumbnail.addView(imageViewFinish)
             }
 
-            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
-                .format(getFormFactorIdTagName(
-                    shapeIdentified,
-                    formFactorListId
-                ), category.categoryProducts[0].factorShape)
+//            itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
+//                .format(getFormFactorIdTagName(
+//                    shapeIdentified,
+//                    formFactorListId
+//                ), category.categoryProducts[0].factorShape)
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
-                itemView.energyButton.text = "Most energy efficient"
-                itemView.energyButton.visible()
+
             } else if (indexes.size in 2 until categoriesSize) {
                 for (i in indexes) {
                     if (i == position) {
-                        itemView.energyButton.text = "More energy efficient"
-                        itemView.energyButton.visible()
+
                     }
                 }
             } else if (indexes.size == categoriesSize) {
-                itemView.energyButton.gone()
             } else {
-                itemView.energyButton.gone()
             }
 
             category.categoryWattReplaced.forEachIndexed { index, watt ->
@@ -155,7 +150,6 @@ class CategoriesAdapter(
                     backgroundRes(R.drawable.button_wattage)
                     layoutMarginEndDp(8)
                 }
-                itemView.wattageLayout.addView(wattButton)
 
             }
 
@@ -185,7 +179,6 @@ class CategoriesAdapter(
                     } else if (category.colors.size == 1) {
                         imageView.setPadding(0, 0, 32, 0)
                     }
-                    itemView.colorsLayout.addView(imageView)
                 }
         }
     }
