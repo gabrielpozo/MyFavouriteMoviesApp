@@ -12,5 +12,5 @@ interface LocalPreferenceDataSource {
     fun loadFormFactorIBaseIdLegendTags():List<FormFactorTypeBaseId>
     fun loadProductBrowsingTags(): List<ProductBrowsing>
     fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>)
-    fun fittingFilteringProducts(productFittingId: Int): List<ShapeBrowsing>
+    fun fittingFilteringProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing>
 }

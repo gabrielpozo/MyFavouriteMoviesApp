@@ -114,7 +114,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             Observer(::updateBrowsingFittingUI)
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
-        viewModel.modelReset.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
+        viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {

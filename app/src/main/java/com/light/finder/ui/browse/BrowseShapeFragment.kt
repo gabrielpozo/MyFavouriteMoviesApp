@@ -24,6 +24,7 @@ import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.adapters.BrowseShapeAdapter
+import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
@@ -96,8 +97,12 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         viewModel.modelBrowsingLiveData.observe(
             viewLifecycleOwner, Observer(::updateBrowsingShapeUI)
         )
+
+        viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
+
         //viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
     }
+
 
 
     private fun updateBrowsingShapeUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
@@ -110,6 +115,22 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 showLoading()
             }
         }
+    }
+
+    private fun updateStatusBottomBar(statusBottomBar: BrowseShapeViewModel.StatusBottomBar?) {
+        when (statusBottomBar) {
+            is BrowseShapeViewModel.StatusBottomBar.ResetFitting -> {
+                resetFittingSelection()
+            }
+            is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
+               // settingFilterSelected()
+            }
+        }
+
+    }
+
+    private fun resetFittingSelection() {
+        adapter.clearSelection()
     }
 
     private fun showLoading(){

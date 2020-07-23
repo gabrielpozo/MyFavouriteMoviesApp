@@ -15,6 +15,10 @@ class BrowseShapeViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    companion object {
+        private const val RESET_BASE_ID = -1
+    }
+
     sealed class UiBrowsingShapeModel {
         data class SuccessRequestStatus(val productBrowsingList: List<ShapeBrowsing>) :
             UiBrowsingShapeModel()
@@ -32,6 +36,15 @@ class BrowseShapeViewModel(
     val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
         get() = _modelNavigationShape
 
+    val modelBottomStatus: LiveData<StatusBottomBar>
+        get() = _modelBottomStatus
+    private val _modelBottomStatus = MutableLiveData<StatusBottomBar>()
+
+    sealed class StatusBottomBar {
+        object ResetFitting : StatusBottomBar()
+        object ShapeClicked : StatusBottomBar()
+    }
+
 
     fun onRequestFilteringShapes(productBaseId: Int) {
         launch {
@@ -43,14 +56,18 @@ class BrowseShapeViewModel(
         }
     }
 
+    fun onResetButtonPressed() {
+        _modelBottomStatus.value = StatusBottomBar.ResetFitting
+    }
+
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {
         _modelBrowsingLiveData.value =
             UiBrowsingShapeModel.SuccessRequestStatus(productBrowsingList)
     }
 
     fun onShapeClick(product: ShapeBrowsing) {
-        Log.d("Gabriel","SHAPE: onFittingClick: ${product.isSelected}")
-
+        Log.d("Gabriel", "SHAPE: onFittingClick: ${product.isSelected}")
+        _modelBottomStatus.value = StatusBottomBar.ShapeClicked
     }
 
 }

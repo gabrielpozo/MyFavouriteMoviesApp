@@ -23,10 +23,16 @@ class BrowseShapeAdapter(
         productsList = formFactorBaseIdList.map { it.copy() }
     }
 
-    private var lastPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.item_browse_shape, false)
         return ViewHolder(view)
+    }
+
+    fun clearSelection() {
+        productsList.forEach {
+            it.isSelected = false
+        }
+        notifyDataSetChanged()
     }
 
 
@@ -34,7 +40,6 @@ class BrowseShapeAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productsList[position]
-
         holder.bind(product)
         holder.itemView.setOnClickListener {
             productsList[position].isSelected = !productsList[position].isSelected
