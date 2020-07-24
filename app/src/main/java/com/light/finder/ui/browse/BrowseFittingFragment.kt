@@ -86,9 +86,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
-            fittingLayout.updateLayoutParams<ViewGroup.LayoutParams> {
-                height = dpHeight
-            }
+
             bottomSheetBehavior.peekHeight = (dpHeight / 1.5).toInt()
 
         }
