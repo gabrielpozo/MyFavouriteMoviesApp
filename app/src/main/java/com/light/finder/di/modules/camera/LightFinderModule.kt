@@ -22,6 +22,7 @@ interface LightFinderComponent {
     val screenNavigator: ScreenNavigator
 
     fun plus(module: CategoriesModule): CategoriesComponent
+    fun plus(module: BrowseResultModule): BrowseResultComponent
     fun plus(module: CameraModule): CameraComponent
     fun plus(module: DetailModule): DetailComponent
     fun plus(module: CartModule): CartComponent
