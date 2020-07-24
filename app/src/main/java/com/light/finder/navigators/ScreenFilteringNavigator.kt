@@ -2,6 +2,7 @@ package com.light.finder.navigators
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
 import com.light.finder.ui.browse.BaseFilteringFragment
 import com.light.finder.ui.browse.BrowseActivity
@@ -54,6 +55,10 @@ class ScreenFilteringNavigator(activity: BrowseActivity) {
 
     fun popFragment() {
         fragmentManager.popBackStack()
+    }
+
+    fun navigateToResultCategories(productsShapeSelected: List<ShapeBrowsing>) {
+        //TODO()
     }
 
 
