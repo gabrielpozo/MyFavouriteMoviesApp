@@ -81,8 +81,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
-        // avoid unwanted scroll when bottom sheet collapsed
-        ViewCompat.setNestedScrollingEnabled(recyclerViewFitting, false)
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics

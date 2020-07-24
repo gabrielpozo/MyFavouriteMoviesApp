@@ -90,9 +90,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-
-        // avoid unwanted scroll when bottom sheet collapsed
-
+        
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
