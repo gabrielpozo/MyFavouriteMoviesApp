@@ -45,6 +45,7 @@ class BrowseShapeViewModel(
     sealed class StatusBottomBar {
         object ResetShape : StatusBottomBar()
         object ShapeClicked : StatusBottomBar()
+        object NoButtonsClicked: StatusBottomBar()
     }
 
 
@@ -70,7 +71,7 @@ class BrowseShapeViewModel(
     }
 
     fun onSearchButtonClicked() {
-        if (!isShapeDisabled) {
+        if (productsShapeSelected.find { it.isSelected } != null) {
             _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
         }
     }
@@ -80,7 +81,11 @@ class BrowseShapeViewModel(
         productsShapeSelected.find { it.id == productShape.id }?.let {
             it.isSelected = productShape.isSelected
         }
-        _modelBottomStatus.value = StatusBottomBar.ShapeClicked
+        if(productsShapeSelected.find { it.isSelected } != null){
+            _modelBottomStatus.value = StatusBottomBar.ShapeClicked
+        } else {
+            _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
+        }
     }
 
 }

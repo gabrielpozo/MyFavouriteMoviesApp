@@ -103,7 +103,7 @@
         <TextView
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/textSkip"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"

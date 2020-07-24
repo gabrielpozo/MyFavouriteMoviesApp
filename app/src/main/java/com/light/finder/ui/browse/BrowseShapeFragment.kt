@@ -133,6 +133,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
                 settingFilterShapeSelected()
             }
+            is BrowseShapeViewModel.StatusBottomBar.NoButtonsClicked ->{
+                resetShapeSelection()
+            }
         }
 
     }
