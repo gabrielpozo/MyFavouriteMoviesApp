@@ -90,7 +90,7 @@
             android:fontFamily="@font/bold"
             android:gravity="center"
             android:background="@drawable/category_outline"
-            android:text="Select"
+            android:text="@string/select_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_image" />
