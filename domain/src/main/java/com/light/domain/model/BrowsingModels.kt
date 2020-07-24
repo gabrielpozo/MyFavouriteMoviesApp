@@ -12,7 +12,6 @@ data class ProductBrowsing(
     val productCctCode: Int,
     val productDimming_code: Int,
     val productFinish: String,
-    val productImageNoExten: Long,
     val productName: String,
     val productPrio: Int,
     val productCategoryName: String,

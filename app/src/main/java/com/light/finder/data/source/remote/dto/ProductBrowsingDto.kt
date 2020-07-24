@@ -17,7 +17,6 @@ data class ProductBrowsingDto(
     @SerializedName("product_cct_code") val product_cct_code: Int,
     @SerializedName("product_dimming_code") val product_dimming_code: Int,
     @SerializedName("product_finish") val product_finish: String,
-    @SerializedName("product_image_no_exten") val product_image_no_exten: Long,
     @SerializedName("product_name") val product_name: String,
     @SerializedName("product_prio") val product_prio: Int,
     @SerializedName("product_category_name") val product_category_name: String,

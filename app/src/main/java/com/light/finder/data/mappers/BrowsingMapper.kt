@@ -21,7 +21,6 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
                     productCctCode = it.product_cct_code,
                     productDimming_code = it.product_dimming_code,
                     productFinish = it.product_finish,
-                    productImageNoExten = it.product_image_no_exten,
                     productName = it.product_name,
                     productPrio = it.product_prio,
                     productCategoryName = it.product_category_name,
