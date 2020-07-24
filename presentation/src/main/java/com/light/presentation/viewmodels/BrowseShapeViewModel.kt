@@ -2,9 +2,10 @@ package com.light.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.light.domain.model.ProductBrowsing
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
+import com.light.presentation.common.isProductsShapeSelected
+import com.light.presentation.common.setSelectedProductShape
 import com.light.usecases.RequestBrowsingShapeUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -45,7 +46,7 @@ class BrowseShapeViewModel(
     sealed class StatusBottomBar {
         object ResetShape : StatusBottomBar()
         object ShapeClicked : StatusBottomBar()
-        object NoButtonsClicked: StatusBottomBar()
+        object NoButtonsClicked : StatusBottomBar()
     }
 
 
@@ -71,21 +72,18 @@ class BrowseShapeViewModel(
     }
 
     fun onSearchButtonClicked() {
-        if (productsShapeSelected.find { it.isSelected } != null) {
+        if (productsShapeSelected.isProductsShapeSelected()) {
             _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
         }
     }
 
     fun onShapeClick(productShape: ShapeBrowsing) {
         isShapeDisabled = false
-        productsShapeSelected.find { it.id == productShape.id }?.let {
-            it.isSelected = productShape.isSelected
-        }
-        if(productsShapeSelected.find { it.isSelected } != null){
+        productsShapeSelected.setSelectedProductShape(productShape)
+        if (productsShapeSelected.isProductsShapeSelected()) {
             _modelBottomStatus.value = StatusBottomBar.ShapeClicked
         } else {
             _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
         }
     }
-
 }
