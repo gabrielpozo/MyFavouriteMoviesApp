@@ -56,12 +56,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseFittingModule())
         }
 
-        textResetSkip.paintFlags = textResetSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        textResetSkip.setOnClickListener {
-            viewModel.onResetButtonPressed()
-        }
-
-
         buttonNext.setOnClickListener {
             viewModel.onNextButtonPressed()
         }
@@ -172,7 +166,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun resetFittingSelection() {
-        textResetSkip.gone()
         buttonNext.style {
             add(R.style.BrowseNextDisable)
             backgroundRes(R.drawable.browse_next_disable)
@@ -181,7 +174,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun settingFilterSelected() {
-        textResetSkip.visible()
         buttonNext.style {
             add(R.style.TitleTextGray)
             backgroundRes(R.drawable.button_curvy_corners)
