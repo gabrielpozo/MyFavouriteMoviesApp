@@ -1,8 +1,8 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.light.domain.model.ProductBrowsing
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.RequestBrowsingShapeUseCase
@@ -13,6 +13,9 @@ class BrowseShapeViewModel(
     private val requestBrowsingShapeUseCase: RequestBrowsingShapeUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
+    private var isShapeDisabled = true
+    private lateinit var productsShapeSelected: MutableList<ShapeBrowsing>
+
 
     companion object {
         private const val RESET_BASE_ID = -1
@@ -29,18 +32,18 @@ class BrowseShapeViewModel(
         get() = _modelBrowsingLiveData
     private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingShapeModel>()
 
-    object NavigationToShapeFiltering
+    data class NavigationToResults(val productsShapeSelected: List<ShapeBrowsing>)
 
-    private val _modelNavigationShape = MutableLiveData<Event<NavigationToShapeFiltering>>()
-    val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
-        get() = _modelNavigationShape
+    private val _modelNavigationToResult = MutableLiveData<Event<NavigationToResults>>()
+    val modelNavigationToResult: LiveData<Event<NavigationToResults>>
+        get() = _modelNavigationToResult
 
     val modelBottomStatus: LiveData<StatusBottomBar>
         get() = _modelBottomStatus
     private val _modelBottomStatus = MutableLiveData<StatusBottomBar>()
 
     sealed class StatusBottomBar {
-        object ResetFitting : StatusBottomBar()
+        object ResetShape : StatusBottomBar()
         object ShapeClicked : StatusBottomBar()
     }
 
@@ -56,16 +59,27 @@ class BrowseShapeViewModel(
     }
 
     fun onResetButtonPressed() {
-        _modelBottomStatus.value = StatusBottomBar.ResetFitting
+        isShapeDisabled = true
+        _modelBottomStatus.value = StatusBottomBar.ResetShape
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {
+        productsShapeSelected = productBrowsingList.toMutableList()
         _modelBrowsingLiveData.value =
             UiBrowsingShapeModel.SuccessRequestStatus(productBrowsingList)
     }
 
-    fun onShapeClick(product: ShapeBrowsing) {
-        Log.d("Gabriel", "SHAPE: onFittingClick: ${product.isSelected}")
+    fun onSearchButtonClicked() {
+        if (!isShapeDisabled) {
+            _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
+        }
+    }
+
+    fun onShapeClick(productShape: ShapeBrowsing) {
+        isShapeDisabled = false
+        productsShapeSelected.find { it.id == productShape.id }?.let {
+            it.isSelected = productShape.isSelected
+        }
         _modelBottomStatus.value = StatusBottomBar.ShapeClicked
     }
 

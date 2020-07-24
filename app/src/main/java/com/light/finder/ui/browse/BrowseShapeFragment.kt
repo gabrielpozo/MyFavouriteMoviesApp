@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
@@ -19,6 +21,7 @@ import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseShapeAdapter
+import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
@@ -63,10 +66,24 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         textSkip.setOnClickListener {
             //todo navigate with all shapes
         }
+        buttonSearch.setOnClickListener {
+            viewModel.onSearchButtonClicked()
+        }
 
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+    }
+
+    private fun setAdapter() {
+        adapter = BrowseShapeAdapter(
+            viewModel::onShapeClick
+        )
+        adapter.setHasStableIds(true)
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerViewShape.layoutManager = layoutManager
+        recyclerViewShape.adapter = adapter
     }
 
     private fun setBottomSheetBehaviour() {
@@ -88,11 +105,12 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         viewModel.modelBrowsingLiveData.observe(
             viewLifecycleOwner, Observer(::updateBrowsingShapeUI)
         )
-
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
-        //viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
+        viewModel.modelNavigationToResult.observe(
+            viewLifecycleOwner,
+            Observer(::navigatesToCategoriesResult)
+        )
     }
-
 
 
     private fun updateBrowsingShapeUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
@@ -109,28 +127,37 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
     private fun updateStatusBottomBar(statusBottomBar: BrowseShapeViewModel.StatusBottomBar?) {
         when (statusBottomBar) {
-            is BrowseShapeViewModel.StatusBottomBar.ResetFitting -> {
-                resetFittingSelection()
+            is BrowseShapeViewModel.StatusBottomBar.ResetShape -> {
+                resetShapeSelection()
             }
             is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
-                settingFilterSelected()
+                settingFilterShapeSelected()
             }
         }
 
     }
 
-    private fun settingFilterSelected() {
+    private fun settingFilterShapeSelected() {
+        buttonSearch.style {
+            add(R.style.TitleTextGray)
+            backgroundRes(R.drawable.button_curvy_corners)
+        }
         textReset.visible()
         textSkip.gone()
     }
 
-    private fun resetFittingSelection() {
+    private fun resetShapeSelection() {
         textSkip.visible()
         textReset.gone()
+        buttonSearch.style {
+            add(R.style.BrowseNextDisable)
+            backgroundRes(R.drawable.browse_next_disable)
+        }
+
         adapter.clearSelection()
     }
 
-    private fun showLoading(){
+    private fun showLoading() {
         recyclerViewShape.gone()
         browseLoadingShape.visible()
         with(browseLoadingAnimation) {
@@ -145,14 +172,10 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         adapter.setShapeProductList(productFittingList)
     }
 
-    private fun setAdapter() {
-        adapter = BrowseShapeAdapter(
-            viewModel::onShapeClick
-        )
-        adapter.setHasStableIds(true)
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerViewShape.layoutManager = layoutManager
-        recyclerViewShape.adapter = adapter
+    private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
+        modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
+            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
+        }
     }
+
 }
