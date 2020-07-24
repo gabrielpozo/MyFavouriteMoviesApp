@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -87,11 +88,11 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     }
 
     private fun setBottomSheetBehaviour() {
-        val bottomSheetLayout = view?.findViewById<NestedScrollView>(R.id.bottomSheetLayoutBrowse)
+        val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
         // avoid unwanted scroll when bottom sheet collapsed
-        ViewCompat.setNestedScrollingEnabled(recyclerViewShape, false)
+
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
