@@ -7,14 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
-import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseShapeComponent
@@ -22,11 +18,8 @@ import com.light.finder.di.modules.submodules.BrowseShapeModule
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.extensions.visible
-import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.adapters.BrowseShapeAdapter
-import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseShapeViewModel
-import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
