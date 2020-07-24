@@ -16,7 +16,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     categoryName = categoryDto.categoryName,
                     categoryIndex = categoryDto.categoryIndex,
                     categoryImage = categoryDto.categoryImage,
-                    priceRange = getMinMaxPriceTag(
+                    priceRange = getMinPriceTag(
                         categoryDto.categoryPrice?.minPrice
                     ),
                     categoryWattReplaced = categoryDto.categoryWattReplace,
@@ -167,7 +167,7 @@ private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
         )
     }
 
-fun getMinMaxPriceTag(minPrice: Float?): String =
+fun getMinPriceTag(minPrice: Float?): String =
     if (minPrice == null) {
         "-"
     } else  {
