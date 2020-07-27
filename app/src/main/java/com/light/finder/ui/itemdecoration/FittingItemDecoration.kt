@@ -22,7 +22,7 @@ class FittingItemDecoration(private val itemOffset: Int) : ItemDecoration() {
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.set(itemOffset / 2, 0, 0, itemOffset);
+        outRect.set(itemOffset, itemOffset, itemOffset, itemOffset);
     }
 
 
