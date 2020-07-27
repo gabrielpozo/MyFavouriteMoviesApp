@@ -13,9 +13,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import com.airbnb.paris.extensions.backgroundRes
-import com.airbnb.paris.extensions.drawableLeft
-import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -405,20 +402,9 @@ class DetailFragment : BaseFragment() {
                 localPreferences.loadLegendCctFilterNames()
             )
         ) {
-            livePreviewButton.style {
-                add(R.style.LiveButton)
-                backgroundRes(R.drawable.button_curvy_corners_categories)
-                drawableLeft(context?.getDrawable(R.drawable.ic_camera))
-            }
-            livePreviewButton.text = getString(R.string.live_preview_button_text)
-
+            livePreviewButton.visible()
         } else {
-            livePreviewButton.style {
-                add(R.style.LiveButtonDisabled)
-                backgroundRes(R.drawable.button_disabled_live)
-                drawableLeft(context?.getDrawable(R.drawable.ic_camera_disable))
-            }
-            livePreviewButton.text = getString(R.string.live_preview_disabled_button_text)
+            livePreviewButtonDisabled.visible()
         }
 
 
