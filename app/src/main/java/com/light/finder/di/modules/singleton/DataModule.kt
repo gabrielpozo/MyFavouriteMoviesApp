@@ -60,4 +60,9 @@ class DataModule {
     @Provides
     fun getShapeBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ShapeLightBulbRepository =
         ShapeLightBulbsRepositoryImpl(localPreferenceDataSource)
+
+    @Provides
+    fun getProductsBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ProductBrowsingRepository =
+        ProductBrowsingRepositoryImpl(localPreferenceDataSource)
+
 }

@@ -187,3 +187,4 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
 fun priceTransform(value: Float): String {
     return "$%.2f".format(value)
 }
+

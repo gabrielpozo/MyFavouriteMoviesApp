@@ -3,8 +3,9 @@ package com.light.finder.data.source.local
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.light.domain.model.*
+import com.light.finder.data.mappers.mapBrowsingProductToDomain
+import com.light.finder.extensions.*
 
 import com.light.source.local.LocalPreferenceDataSource
 
@@ -20,6 +21,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val FORM_FACTOR_LEGEND_ID = "productFormFactorIdLegend"
         private const val FORM_FACTOR_LEGEND_BASE_ID = "productFormFactorBaseIdLegend"
         private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
+        private const val PRODUCTS_FILTERED_PRODUCT_BROWSING = "filteredProductsBrowsing"
+
     }
 
     private val PRIVATE_MODE = 0
@@ -71,6 +74,18 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         pref.getString(PRODUCTS_BROWSING_BASE, null) ?: emptyList<ProductBrowsing>().toString()
     )
 
+    override fun loadProductBrowsingFiltered(): List<ProductBrowsing> = Gson().fromJson(
+        pref.getString(PRODUCTS_FILTERED_PRODUCT_BROWSING, null)
+            ?: emptyList<ProductBrowsing>().toString()
+    )
+
+    override fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>) {
+        editor.putString(
+            PRODUCTS_FILTERED_PRODUCT_BROWSING,
+            Gson().toJson(productsFilteredBrowsing)
+        ).commit()
+    }
+
 
     override fun fittingFilteringProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing> {
         val shapesToDisplay = arrayListOf<ShapeBrowsing>()
@@ -88,7 +103,23 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         }
         return shapesToDisplay
     }
+
+
+    override fun getProductsBrowsing(shapeBrowsingList: List<ShapeBrowsing>): Message {
+        //TODO move this logic to the repository
+        val browsedFilteredList = loadProductBrowsingFiltered()
+        val browsedShapeFilteredList= mutableListOf<ProductBrowsing>()
+        shapeBrowsingList.forEach { shapeBrowse ->
+            if (shapeBrowse.isSelected) {
+                browsedShapeFilteredList.addAll(browsedFilteredList.filter { productBrowse ->
+                    shapeBrowse.id == productBrowse.productFormfactorTypeCode
+                })
+            }
+        }
+
+        return mapBrowsingProductToDomain(browsedShapeFilteredList.groupBy { it.toKey() })
+    }
+
+
 }
 
-inline fun <reified T> Gson.fromJson(json: String): T =
-    fromJson(json, object : TypeToken<T>() {}.type)

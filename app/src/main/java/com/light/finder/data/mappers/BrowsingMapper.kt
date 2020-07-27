@@ -1,10 +1,10 @@
 package com.light.finder.data.mappers
 
-import com.light.domain.model.ProductBrowsing
-import com.light.finder.data.source.remote.dto.ProductBrowsingDto
+import com.light.domain.model.*
 import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
 
 
+private const val EMPTY_STRING = ""
 val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsing> =
     { productsBrowsingListDto ->
         val productBrowsingList: ArrayList<ProductBrowsing> = ArrayList()
@@ -58,4 +58,81 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
         }
 
         productBrowsingList
+    }
+
+val mapBrowsingProductToDomain: (Map<Key, List<ProductBrowsing>>) -> Message =
+    { productBrowsingHashMap ->
+        Message(
+            categories = productBrowsingHashMap.map {
+                mapBrowsingCategoryToDomain(it.value)
+            },
+            version = EMPTY_STRING,
+            baseIdentified = EMPTY_STRING,
+            formfactorType = EMPTY_STRING,
+            shapeIdentified = EMPTY_STRING
+
+        )
+    }
+
+
+val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
+    { productBrowsingList ->
+
+        Category(
+            categoryProductBase = if (productBrowsingList.isNotEmpty()) {
+                productBrowsingList[0].productFormfactorBase
+            } else {
+                ""
+            },
+            categoryProducts = productBrowsingList.map(mapBrowsingProductToProductDomain),
+            categoryIndex = productBrowsingList[0].productCategoryCode,
+            categoryName = EMPTY_STRING,
+            categoryImage = EMPTY_STRING,
+            priceRange = getMinMaxPriceTag(
+                productBrowsingList.minBy { it.productPriceLamp }?.productPriceLamp,
+                productBrowsingList.maxBy { it.productPriceLamp }?.productPriceLamp
+            ),
+            categoryWattReplaced = emptyList(),
+            maxEnergySaving = 0.0f,
+            minEnergySaving = 0.0f,
+
+            colors = productBrowsingList.map {
+                it.productCctCode
+            },
+            finishCodes = productBrowsingList.map {
+                it.productFinishCode
+            },
+
+            categoryShape = if (productBrowsingList.isNotEmpty()) {
+                productBrowsingList[0].productFormfactorShape
+            } else {
+                EMPTY_STRING
+            }
+        )
+
+    }
+
+val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
+    { productBrowse ->
+        Product(
+            categoryName = productBrowse.productCategoryName,
+            factorShape = productBrowse.productFormfactorShape,
+            factorBase = productBrowse.productFormfactorBase,
+            colorCctCode = productBrowse.productCctCode,
+            wattageReplaced = productBrowse.productWattageReplaced,
+            formfactorType = productBrowse.productFormfactorTypeCode,
+            description = productBrowse.productDescription,
+            pricePack = productBrowse.productPricePack,
+            sapID10NC = productBrowse.productSAPid10NC,
+            sapID12NC =productBrowse.productSAPid12NC,
+            priceLamp = productBrowse.productPriceLamp,
+            qtySkuCase = productBrowse.productQtySkucase,
+            qtyLampscase = productBrowse.productQtyLampscase ,
+            imageUrls = productBrowse.productImage,
+            productFinishCode = productBrowse.productFinishCode,
+            factorTypeCode = productBrowse.productFormfactorTypeCode,
+            priceSku = productBrowse.productPriceSku,
+            qtyLampSku = productBrowse.productQtyLampsku
+
+        )
     }

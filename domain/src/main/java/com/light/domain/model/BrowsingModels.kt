@@ -17,9 +17,9 @@ data class ProductBrowsing(
     val productCategoryName: String,
     val productWattageClaim: Double,
     val productWattageReplaced: Int,
-    val productPricePack: Double,
-    val productPriceSku: Double,
-    val productPriceLamp: Double,
+    val productPricePack: Float,
+    val productPriceSku: Float,
+    val productPriceLamp: Float,
     val productSAPid10NC: Long,
     val productSAPid12NC: Long,
     val productQtyLampsku: Int,
@@ -46,3 +46,5 @@ data class ProductBrowsing(
     val productSpec3: List<Int>,
     var isSelected: Boolean = false
 )
+
+data class Key(val productCategoryCode: Int, val productFormFactorShapeId: Int)

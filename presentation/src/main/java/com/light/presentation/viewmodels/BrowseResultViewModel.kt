@@ -5,11 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.Message
+import com.light.domain.model.Product
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
+import com.light.usecases.GetBrowseProductsResultUseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 
 class BrowseResultViewModel(
+    private val getBrowseProductsResultUseCase: GetBrowseProductsResultUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -34,9 +38,14 @@ class BrowseResultViewModel(
         )
     }
 
-    fun onRetrieveShapeProducts(products: ArrayList<ShapeBrowsing>) {
-        Log.d("Gabriel","Shape Products: $products")
+    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
+        Log.d("Gabriel", "Shape Products: $shapeBrowsingList")
+        launch {
+            getBrowseProductsResultUseCase.execute(::handleResultProducts, shapeBrowsingList)
+        }
+    }
 
+    private fun handleResultProducts(message: Message) {
         //_model.value = Content(message.categories, message)
     }
 }

@@ -22,5 +22,4 @@ class RequestBrowsingFittingsUseCase(private val browseLightBulbsRepository: Bro
             }
         }
     }
-
 }
