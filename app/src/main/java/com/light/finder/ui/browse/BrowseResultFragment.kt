@@ -9,7 +9,7 @@ import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
-import com.light.finder.data.source.remote.MessageParcelable
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseResultComponent
 import com.light.finder.di.modules.submodules.BrowseResultModule
 import com.light.finder.extensions.*
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_browse_result.*
 class BrowseResultFragment : BaseFragment() {
 
     companion object {
-        const val CATEGORIES_ID_KEY = "BrowseResultFragment::id"
+        const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
     }
 
     private lateinit var component: BrowseResultComponent
@@ -53,9 +53,9 @@ class BrowseResultFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->
-            bundle.getParcelable<MessageParcelable>(CATEGORIES_ID_KEY)
-                ?.let { messageParcelable ->
-                    viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CATEGORIES_BROWSE_ID_KEY)
+                ?.let { shapeBrowsingProducts ->
+                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
 
             viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })

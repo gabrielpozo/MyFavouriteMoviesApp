@@ -1,9 +1,11 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.Message
+import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -32,7 +34,9 @@ class BrowseResultViewModel(
         )
     }
 
-    fun onRetrieveCategories(message: Message) {
-        _model.value = Content(message.categories, message)
+    fun onRetrieveShapeProducts(products: ArrayList<ShapeBrowsing>) {
+        Log.d("Gabriel","Shape Products: $products")
+
+        //_model.value = Content(message.categories, message)
     }
 }

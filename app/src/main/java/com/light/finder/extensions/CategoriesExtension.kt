@@ -218,6 +218,24 @@ fun List<CctTypeParcelable>.deparcelizeCctList(): ArrayList<CctType> {
 }
 
 
+fun List<ShapeBrowsing>.parcelizeBrowsingList(): ArrayList<ShapeBrowsingParcelable> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsingParcelable>()
+    forEach { cctColor ->
+        parcelizeBrowsing.add(mapDomainShapeBrowsingToParcelable(cctColor))
+    }
+    return parcelizeBrowsing
+}
+
+
+fun List<ShapeBrowsingParcelable>.deParcelizeBrowsingList(): ArrayList<ShapeBrowsing> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsing>()
+    forEach { shapeParcelable ->
+        parcelizeBrowsing.add(mapParcelizeShapeBrowsingToDomain(shapeParcelable))
+    }
+    return parcelizeBrowsing
+}
+
+
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
     forEach { productParcelable ->
@@ -369,3 +387,30 @@ val mapParcelableKelvinToDomain: (KelvinSpecParcelable) -> KelvinSpec = { kelvin
         kelvinSpecParcelable.defaultValue
     )
 }
+
+
+val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelable =
+    { shapeBrowsing ->
+        ShapeBrowsingParcelable(
+            shapeBrowsing.id,
+            shapeBrowsing.name,
+            shapeBrowsing.image,
+            shapeBrowsing.order,
+            shapeBrowsing.subtitleCount,
+            shapeBrowsing.isSelected
+        )
+
+    }
+
+val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsing =
+    { shapeBrowsingParcelable ->
+        ShapeBrowsing(
+            shapeBrowsingParcelable.id,
+            shapeBrowsingParcelable.name,
+            shapeBrowsingParcelable.image,
+            shapeBrowsingParcelable.order,
+            shapeBrowsingParcelable.subtitleCount,
+            shapeBrowsingParcelable.isSelected
+        )
+
+    }

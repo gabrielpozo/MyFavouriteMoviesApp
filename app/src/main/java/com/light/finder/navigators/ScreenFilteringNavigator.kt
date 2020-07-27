@@ -3,14 +3,21 @@ package com.light.finder.navigators
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import com.light.domain.model.ShapeBrowsing
+import com.light.finder.CameraLightFinderActivity
+import com.light.finder.CameraLightFinderActivity.Companion.BROWSING_ACTIVITY
+import com.light.finder.CameraLightFinderActivity.Companion.CAMERA_LIGHT_FINDER_ACTIVITY_ID
 import com.light.finder.R
+import com.light.finder.extensions.parcelizeBrowsingList
+import com.light.finder.extensions.parcelizeCctList
+import com.light.finder.extensions.startActivity
 import com.light.finder.ui.browse.BaseFilteringFragment
 import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.browse.BrowseFittingFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 
 
-class ScreenFilteringNavigator(activity: BrowseActivity) {
+class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     companion object {
         private const val FILTERING_BACKSTAGE = "filtering_backstage"
@@ -58,7 +65,14 @@ class ScreenFilteringNavigator(activity: BrowseActivity) {
     }
 
     fun navigateToResultCategories(productsShapeSelected: List<ShapeBrowsing>) {
-        //TODO()
+        activity.startActivity<CameraLightFinderActivity> {
+            putExtra(CAMERA_LIGHT_FINDER_ACTIVITY_ID, BROWSING_ACTIVITY)
+            putParcelableArrayListExtra(
+                CameraLightFinderActivity.BROWSING_SHAPE_VALUES_ID,
+                productsShapeSelected.parcelizeBrowsingList()
+            )
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
 

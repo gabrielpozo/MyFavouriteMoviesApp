@@ -12,6 +12,7 @@ import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.UsabillaActivity
 import com.light.finder.extensions.*
+import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.camera.CameraFragment
@@ -39,6 +40,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     private val fragNavController: FragNavController =
         FragNavController(activity.supportFragmentManager, R.id.fragment_container)
     private val firebaseAnalytics = FirebaseAnalytics.getInstance(activity)
+    private lateinit var rootFragment: BaseFragment
 
 
     fun setupNavController(savedInstanceState: Bundle?) {
@@ -120,6 +122,13 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     fun onSaveInstanceState(outState: Bundle) {
         fragNavController.onSaveInstanceState(outState)
     }
+
+    fun setInitialRootFragment(fragment: BaseFragment) {
+        rootFragment = fragment
+    }
+
+    fun getInitialRootFragment(): BaseFragment = rootFragment
+
 
     fun popFragmentNot(): Boolean {
         val isFragmentPopped = fragNavController.popFragment().not()
@@ -216,7 +225,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun navigateToBrowsingFiltering() {
-        activity.startActivity<BrowseActivity> {  }
+        activity.startActivity<BrowseActivity> { }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }
