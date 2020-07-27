@@ -8,23 +8,23 @@
     android:id="@+id/layout_browse_error">
 
     <TextView
+        android:id="@+id/textBrowseErrorTitle"
         android:textColor="@color/textLight"
         android:textSize="24sp"
         android:fontFamily="@font/bold"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:id="@+id/textBrowseErrorTitle"
         android:text="@string/error_browse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/textBrowseErrorSubTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:textColor="@color/backgroundLight"
@@ -46,18 +46,18 @@
 
 
     <Button
+        android:id="@+id/buttonRefresh"
+        style="@style/TitleTextGray"
         android:stateListAnimator="@null"
         android:background="@drawable/button_curvy_corners"
-        style="@style/TitleTextGray"
         android:textAllCaps="false"
-        android:id="@+id/buttonRefresh"
         android:text="@string/refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
