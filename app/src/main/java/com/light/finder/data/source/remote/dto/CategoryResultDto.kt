@@ -29,7 +29,8 @@ data class CategoriesDto(
     @SerializedName("category_filter_cct_code") val categoryCctCode: List<Int>,
     @SerializedName("category_energysave") val categoryEnergySave: EnergySaving,
     @SerializedName("category_filter_finish_code") val categoryFilterFinishCode: List<Int>,
-    @SerializedName("category_filter_product_shape") val categoryProductShape: String
+    @SerializedName("category_filter_product_shape") val categoryProductShape: String,
+    @SerializedName("category_filter_connectivity_code") val categoryConnectivityCode: List<Int>
 )
 
 data class ProductDto(
@@ -63,7 +64,8 @@ data class ProductDto(
     @SerializedName("product_qty_skucase") var qtySkuCase: Int,
     @SerializedName("product_formfactor_type_code") var factorTypeCode: Int,
     @SerializedName("product_cct_code") var productCctCode: Int,
-    @SerializedName("product_finish_code") var productFinishCode: Int
+    @SerializedName("product_finish_code") var productFinishCode: Int,
+    @SerializedName("product_connection_code") val productConnectionCode:Int
 )
 
 

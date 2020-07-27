@@ -166,7 +166,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryConnectivityCode
     )
 
 
@@ -183,7 +184,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryConnectivityCode
     )
 
 
@@ -275,6 +277,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
         product.isSelected,
         product.isAvailable
     )
@@ -342,6 +345,7 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
         product.isSelected,
         product.isAvailable
     )

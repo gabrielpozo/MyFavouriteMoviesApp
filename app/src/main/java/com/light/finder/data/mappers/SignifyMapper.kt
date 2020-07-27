@@ -25,7 +25,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
                     colors = categoryDto.categoryCctCode.map { it },
                     finishCodes = categoryDto.categoryFilterFinishCode.map { it },
-                    categoryShape = categoryDto.categoryProductShape
+                    categoryShape = categoryDto.categoryProductShape,
+                    categoryConnectivityCode = categoryDto.categoryConnectivityCode.map { it }
                 )
             )
         }
@@ -74,7 +75,9 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         factorTypeCode = productDto.factorTypeCode,
         colorCctCode = productDto.productCctCode,
         formfactorType = productDto.factorTypeCode,
-        productFinishCode = productDto.productFinishCode
+        productFinishCode = productDto.productFinishCode,
+        productConnectionCode = productDto.productConnectionCode
+
     )
 }
 
@@ -152,8 +155,15 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.description,
                 it.order
             )
+        },
+        productConnectivity = legendValueDto.productConnectivity.map {
+            ProductConnectivity(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
         }
-
     )
 }
 

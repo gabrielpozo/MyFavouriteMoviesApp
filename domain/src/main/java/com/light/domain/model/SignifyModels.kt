@@ -20,7 +20,8 @@ data class Category(
     val minEnergySaving: Float,
     val colors: List<Int>,
     val finishCodes: List<Int>,
-    val categoryShape: String
+    val categoryShape: String,
+    val categoryConnectivityCode: List<Int>
 )
 
 data class Product(
@@ -56,6 +57,7 @@ data class Product(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var productConnectionCode: Int,
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
     var filtered: Boolean = false
@@ -81,7 +83,15 @@ data class LegendValue(
     val productFormFactorType: List<FormFactorType>,
     val finishType: List<FinishType>,
     val cctType: List<CctType>,
-    val formfactorTypeId: List<FormFactorTypeId>
+    val formfactorTypeId: List<FormFactorTypeId>,
+    val productConnectivity: List<ProductConnectivity>
+)
+
+data class ProductConnectivity(
+    val id: Int,
+    val name: String,
+    val image: String,
+    val order: String
 )
 
 data class FormFactorType(
