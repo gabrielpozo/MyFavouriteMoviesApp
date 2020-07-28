@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.presentation.common.isProductsShapeSelected
+import com.light.presentation.common.resetShapeProductList
 import com.light.presentation.common.setSelectedProductShape
 import com.light.usecases.RequestBrowsingShapeUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,9 +15,7 @@ class BrowseShapeViewModel(
     private val requestBrowsingShapeUseCase: RequestBrowsingShapeUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
-    private var isShapeDisabled = true
     private lateinit var productsShapeSelected: MutableList<ShapeBrowsing>
-
 
     companion object {
         private const val RESET_BASE_ID = -1
@@ -61,7 +60,7 @@ class BrowseShapeViewModel(
     }
 
     fun onResetButtonPressed() {
-        isShapeDisabled = true
+        productsShapeSelected.resetShapeProductList()
         _modelBottomStatus.value = StatusBottomBar.ResetShape
     }
 
@@ -78,7 +77,6 @@ class BrowseShapeViewModel(
     }
 
     fun onShapeClick(productShape: ShapeBrowsing) {
-        isShapeDisabled = false
         productsShapeSelected.setSelectedProductShape(productShape)
         if (productsShapeSelected.isProductsShapeSelected()) {
             _modelBottomStatus.value = StatusBottomBar.ShapeClicked

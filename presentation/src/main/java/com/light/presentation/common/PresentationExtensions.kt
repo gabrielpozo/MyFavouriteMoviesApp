@@ -47,3 +47,10 @@ fun List<ShapeBrowsing>.setSelectedProductShape(productShape: ShapeBrowsing) {
         it.isSelected = productShape.isSelected
     }
 }
+
+fun List<ShapeBrowsing>.resetShapeProductList(){
+    forEach {
+        it.isSelected = false
+    }
+
+}
