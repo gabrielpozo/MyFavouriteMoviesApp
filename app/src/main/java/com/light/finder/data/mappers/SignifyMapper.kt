@@ -76,7 +76,9 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         colorCctCode = productDto.productCctCode,
         formfactorType = productDto.factorTypeCode,
         productFinishCode = productDto.productFinishCode,
-        produtCategoryCode = productDto.productCategoryCode
+        produtCategoryCode = productDto.productCategoryCode,
+        wattageReplacedExtra = productDto.wattageReplacedExtra
+
     )
 }
 

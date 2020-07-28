@@ -133,6 +133,8 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             factorTypeCode = productBrowse.productFormfactorTypeCode,
             priceSku = productBrowse.productPriceSku,
             qtyLampSku = productBrowse.productQtyLampsku,
-            produtCategoryCode = productBrowse.productCategoryCode
+            produtCategoryCode = productBrowse.productCategoryCode,
+            wattageReplacedExtra = ""//TODO
+
         )
     }

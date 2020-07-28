@@ -56,7 +56,8 @@ data class ProductParcelable(
     var productFinishCode: Int,
     var productCategoryCode: Int,
     var isSelected: Boolean,
-    var isAvailable: Boolean
+    var isAvailable: Boolean,
+    var wattageReplacedExtra: String
 ) : Parcelable
 
 @Parcelize

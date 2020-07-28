@@ -558,10 +558,11 @@ class DetailFragment : BaseFragment() {
         populateProductData(productSelectedModel.productSelected)
         populateStickyHeaderData(productSelectedModel.productSelected)
 
-        textViewWattage.text = String.format(
-            getString(R.string.wattage_variation),
-            productSelectedModel.productSelected.wattageReplaced.toString()
+        textViewWattage.text = getString(R.string.wattage_detail,
+            productSelectedModel.productSelected.wattageReplaced.toString(),
+            productSelectedModel.productSelected.wattageReplacedExtra
         )
+
         textViewColor.text = getLegendCctTagPref(
             productSelectedModel.productSelected.colorCctCode,
             filterTypeList = localPreferences.loadLegendCctFilterNames(),
