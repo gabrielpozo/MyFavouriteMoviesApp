@@ -14,6 +14,7 @@ interface LocalPreferenceDataSource {
     fun loadProductBrowsingFiltered():List<ProductBrowsing>
     fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>)
     fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
-    fun fittingFilteringProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing>
-    fun getProductsBrowsing(shapeBrowsingList: List<ShapeBrowsing>): Message
+    fun getFilteringShapeProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing>
+    fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message
+    fun getAllProductsMessage(): Message
 }

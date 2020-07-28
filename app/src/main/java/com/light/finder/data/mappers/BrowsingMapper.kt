@@ -60,7 +60,7 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
         productBrowsingList
     }
 
-val mapBrowsingProductToDomain: (Map<Key, List<ProductBrowsing>>) -> Message =
+val mapBrowsingProductToMessageDomain: (Map<Key, List<ProductBrowsing>>) -> Message =
     { productBrowsingHashMap ->
         Message(
             categories = productBrowsingHashMap.map {

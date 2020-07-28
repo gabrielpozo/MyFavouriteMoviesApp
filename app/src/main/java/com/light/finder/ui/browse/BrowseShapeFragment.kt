@@ -63,7 +63,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             viewModel.onResetButtonPressed()
         }
         textSkip.setOnClickListener {
-            //todo navigate with all shapes
+            viewModel.onSkipButtonClicked()
         }
         buttonSearch.setOnClickListener {
             viewModel.onSearchButtonClicked()

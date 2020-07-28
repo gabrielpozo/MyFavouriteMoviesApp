@@ -86,4 +86,8 @@ class BrowseShapeViewModel(
             _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
         }
     }
+
+    fun onSkipButtonClicked() {
+        _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
+    }
 }

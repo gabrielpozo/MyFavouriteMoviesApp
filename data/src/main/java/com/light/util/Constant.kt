@@ -18,6 +18,7 @@ const val SUCCESSFUL_CODE = 200
 
 
 const val FILE_NAME = "gallery_file_name"
+const val EMPTY_MESSAGE = "gallery_file_name"
 
 const val BASE64_PREFIX = "data:image/jpeg;base64,"
 

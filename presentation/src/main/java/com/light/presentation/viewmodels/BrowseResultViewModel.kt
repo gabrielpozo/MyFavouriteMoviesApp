@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.Message
-import com.light.domain.model.Product
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.GetBrowseProductsResultUseCase
@@ -41,11 +40,22 @@ class BrowseResultViewModel(
     fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
         Log.d("Gabriel", "Shape Products: $shapeBrowsingList")
         launch {
-            getBrowseProductsResultUseCase.execute(::handleResultProducts, shapeBrowsingList)
+            getBrowseProductsResultUseCase.execute(
+                ::handleResultProducts,
+                ::handleNoResultProducts,
+                shapeBrowsingList
+            )
         }
     }
 
     private fun handleResultProducts(message: Message) {
+        //_model.value = Content(message.categories, message)
+        Log.d("Gabriel","Getting the Message Result!!")
+
+    }
+
+    private fun handleNoResultProducts() {
+        Log.d("Gabriel","No Result!!")
         //_model.value = Content(message.categories, message)
     }
 }

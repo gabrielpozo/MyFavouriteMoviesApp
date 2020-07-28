@@ -80,10 +80,5 @@ class BrowseFittingViewModel(
         if (productBaseId > NO_ITEM_SELECTED && !isNextDisabled)
             _modelNavigationShape.value = Event(NavigationToShapeFiltering(productBaseId))
     }
-
-    fun onResetButtonPressed() {
-        isNextDisabled = true
-        _modelBottomStatus.value = Event(StatusBottomBar.ResetFitting)
-    }
 }
 
