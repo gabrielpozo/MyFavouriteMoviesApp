@@ -56,6 +56,7 @@ data class Product(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var produtCategoryCode: Int,
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
     var filtered: Boolean = false

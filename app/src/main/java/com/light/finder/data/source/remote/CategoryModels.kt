@@ -54,6 +54,7 @@ data class ProductParcelable(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var productCategoryCode: Int,
     var isSelected: Boolean,
     var isAvailable: Boolean
 ) : Parcelable

@@ -132,7 +132,7 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             productFinishCode = productBrowse.productFinishCode,
             factorTypeCode = productBrowse.productFormfactorTypeCode,
             priceSku = productBrowse.productPriceSku,
-            qtyLampSku = productBrowse.productQtyLampsku
-
+            qtyLampSku = productBrowse.productQtyLampsku,
+            produtCategoryCode = productBrowse.productCategoryCode
         )
     }

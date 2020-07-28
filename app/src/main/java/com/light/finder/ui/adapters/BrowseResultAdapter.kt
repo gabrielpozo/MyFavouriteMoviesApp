@@ -21,7 +21,7 @@ class BrowseResultAdapter(
     private val formFactorList: List<FormFactorType> = emptyList(),
     private val filterFinishList: List<FinishType> = emptyList(),
     private val formFactorIdList: List<FormFactorTypeId> = emptyList(),
-    private val productCategoryName: List<ProductCategoryName> = emptyList(),
+    private val productCategoryNameList: List<ProductCategoryName> = emptyList(),
     private val shapeIdentified: String
 ) :
     RecyclerView.Adapter<BrowseResultAdapter.ViewHolder>() {
@@ -55,7 +55,8 @@ class BrowseResultAdapter(
             formFactorList,
             formFactorIdList,
             shapeIdentified,
-            filterFinishList
+            filterFinishList,
+            productCategoryNameList
         )
         holder.itemView.setOnClickListener { listener(category) }
     }
@@ -85,14 +86,23 @@ class BrowseResultAdapter(
             formFactorList: List<FormFactorType>,
             formFactorListId: List<FormFactorTypeId>,
             shapeIdentified: String,
-            finishList: List<FinishType>
+            finishList: List<FinishType>,
+            productNameCategoryList: List<ProductCategoryName>
         ) {
-            itemView.category_name.text = category.categoryName
+            itemView.category_name.text = getLegendCategoryName(
+                category.categoryProducts[0].produtCategoryCode,
+                productNameCategoryList
+            )
 
             val sourceString = "<b>" + category.priceRange + "</b> " + "each"
             itemView.priceButton.text = Html.fromHtml(sourceString)
 
-            itemView.bulbCover.loadUrl(category.categoryImage)
+            itemView.bulbCover.loadUrl(
+                getLegendCategoryImage(
+                    category.categoryProducts[0].produtCategoryCode,
+                    productNameCategoryList
+                )
+            )
 
             category.finishCodes.sortSmallFinishByOrderField(finishList)
                 .forEachIndexed { index, finishType ->
