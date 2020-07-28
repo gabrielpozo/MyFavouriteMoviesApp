@@ -188,6 +188,28 @@ fun getLegendCctTagPrefSmallIcon(
     }
 }
 
+fun getLegendCategoryName(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.name ?: ""
+}
+
+fun getLegendCategoryImage(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.image ?: ""
+}
+
+
+
 fun getLegendFormFactorTagPrefSmallIcon(
     code: Int,
     logError: Boolean = false,

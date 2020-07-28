@@ -21,6 +21,7 @@ class BrowseResultAdapter(
     private val formFactorList: List<FormFactorType> = emptyList(),
     private val filterFinishList: List<FinishType> = emptyList(),
     private val formFactorIdList: List<FormFactorTypeId> = emptyList(),
+    private val productCategoryName: List<ProductCategoryName> = emptyList(),
     private val shapeIdentified: String
 ) :
     RecyclerView.Adapter<BrowseResultAdapter.ViewHolder>() {
@@ -93,43 +94,46 @@ class BrowseResultAdapter(
 
             itemView.bulbCover.loadUrl(category.categoryImage)
 
-            category.finishCodes.sortSmallFinishByOrderField(finishList).forEachIndexed { index, finishType ->
-                val imageViewFinish = ImageView(itemView.context)
-                val size = itemView.resources.getDimensionPixelSize(R.dimen.icon_factor)
-                val params = LinearLayout.LayoutParams(
-                    size,
-                    size
-                )
-                params.setMargins(0,0,12,0)
-                imageViewFinish.layoutParams = params
-
-                imageViewFinish.style {
-                    backgroundRes(R.drawable.all_circle)
-                    paddingDp(1)
-                }
-                imageViewFinish.loadBulbThumbnail(
-                    getLegendFormFactorTagPrefSmallIcon(
-                        finishType.finnishCode,
-                        filterTypeList = finishList,
-                        legendTag = FORM_FACTOR_LEGEND_TAG
+            category.finishCodes.sortSmallFinishByOrderField(finishList)
+                .forEachIndexed { index, finishType ->
+                    val imageViewFinish = ImageView(itemView.context)
+                    val size = itemView.resources.getDimensionPixelSize(R.dimen.icon_factor)
+                    val params = LinearLayout.LayoutParams(
+                        size,
+                        size
                     )
-                )
+                    params.setMargins(0, 0, 12, 0)
+                    imageViewFinish.layoutParams = params
+
+                    imageViewFinish.style {
+                        backgroundRes(R.drawable.all_circle)
+                        paddingDp(1)
+                    }
+                    imageViewFinish.loadBulbThumbnail(
+                        getLegendFormFactorTagPrefSmallIcon(
+                            finishType.finnishCode,
+                            filterTypeList = finishList,
+                            legendTag = FORM_FACTOR_LEGEND_TAG
+                        )
+                    )
 
 
-                if (index < category.colors.size - 1) {
-                    imageViewFinish.setPadding(2, 2, 2, 2)
-                } else if (category.colors.size == 1) {
-                    imageViewFinish.setPadding(2, 2, 2, 2)
+                    if (index < category.colors.size - 1) {
+                        imageViewFinish.setPadding(2, 2, 2, 2)
+                    } else if (category.colors.size == 1) {
+                        imageViewFinish.setPadding(2, 2, 2, 2)
+                    }
+
+                    itemView.thumbnail.addView(imageViewFinish)
                 }
-
-                itemView.thumbnail.addView(imageViewFinish)
-            }
 
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
-                .format(getFormFactorIdTagName(
-                    shapeIdentified,
-                    formFactorListId
-                ), category.categoryProducts[0].factorShape)
+                .format(
+                    getFormFactorIdTagName(
+                        shapeIdentified,
+                        formFactorListId
+                    ), category.categoryProducts[0].factorShape
+                )
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {
                 itemView.energyButton.text = "Most energy efficient"
@@ -158,6 +162,8 @@ class BrowseResultAdapter(
                 itemView.wattageLayout.addView(wattButton)
 
             }
+
+            //TODO here we get all the differenct numbers
 
             category.colors.sortSmallColorByOrderField(filterColorList)
                 .forEachIndexed { index, colorCode ->

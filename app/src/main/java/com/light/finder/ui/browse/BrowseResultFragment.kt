@@ -119,6 +119,7 @@ class BrowseResultFragment : BaseFragment() {
             localPreferences.loadFormFactorLegendTags(),
             localPreferences.loadLegendFinishFilterNames(),
             localPreferences.loadFormFactorIdLegendTags(),
+            localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )
         rvCategories.adapter = adapter

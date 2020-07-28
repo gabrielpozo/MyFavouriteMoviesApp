@@ -10,6 +10,5 @@ class RequestBrowsingShapeUseCase(private val shapeLightBulbRepository: ShapeLig
         productBaseId: Int
     ) {
         onSuccess.invoke(shapeLightBulbRepository.getShapeBrowsingProducts(productBaseId))
-
     }
 }

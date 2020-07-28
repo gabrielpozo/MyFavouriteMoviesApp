@@ -92,16 +92,16 @@ val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
                 productBrowsingList.minBy { it.productPriceLamp }?.productPriceLamp,
                 productBrowsingList.maxBy { it.productPriceLamp }?.productPriceLamp
             ),
-            categoryWattReplaced = emptyList(),
+            categoryWattReplaced = productBrowsingList.map { it.productWattageReplaced }.distinct(),
             maxEnergySaving = 0.0f,
             minEnergySaving = 0.0f,
 
             colors = productBrowsingList.map {
                 it.productCctCode
-            },
+            }.distinct(),
             finishCodes = productBrowsingList.map {
                 it.productFinishCode
-            },
+            }.distinct(),
 
             categoryShape = if (productBrowsingList.isNotEmpty()) {
                 productBrowsingList[0].productFormfactorShape
@@ -124,10 +124,10 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             description = productBrowse.productDescription,
             pricePack = productBrowse.productPricePack,
             sapID10NC = productBrowse.productSAPid10NC,
-            sapID12NC =productBrowse.productSAPid12NC,
+            sapID12NC = productBrowse.productSAPid12NC,
             priceLamp = productBrowse.productPriceLamp,
             qtySkuCase = productBrowse.productQtySkucase,
-            qtyLampscase = productBrowse.productQtyLampscase ,
+            qtyLampscase = productBrowse.productQtyLampscase,
             imageUrls = productBrowse.productImage,
             productFinishCode = productBrowse.productFinishCode,
             factorTypeCode = productBrowse.productFormfactorTypeCode,

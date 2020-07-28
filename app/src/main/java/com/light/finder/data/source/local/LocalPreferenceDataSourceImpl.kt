@@ -106,14 +106,17 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun getFilteringShapeProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing> {
         val shapesToDisplay = arrayListOf<ShapeBrowsing>()
         val allShapes = loadFormFactorLegendTags()
-        allShapes.forEach { formFactor ->
+
+        allShapes.forEach { shape ->
             shapesToDisplay.add(
                 ShapeBrowsing(
-                    formFactor.id,
-                    formFactor.name,
-                    formFactor.image,
-                    formFactor.order.toInt(),
-                    productFilteredBrowseList.count { formFactor.id == it.productFormfactorTypeCode }
+                    shape.id,
+                    shape.name,
+                    shape.image,
+                    shape.order.toInt(),
+                    productFilteredBrowseList.filter { productBrowse ->
+                        shape.id == productBrowse.productFormfactorTypeCode
+                    }.groupBy { it.toKey() }.size
                 )
             )
         }

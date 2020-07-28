@@ -9,9 +9,9 @@ class ShapeLightBulbsRepositoryImpl(
     private val localPreferenceDataSource: LocalPreferenceDataSource
 ) : ShapeLightBulbRepository {
     override suspend fun getShapeBrowsingProducts(productBaseId: Int): List<ShapeBrowsing> {
-        val filterProducts = localPreferenceDataSource.loadProductBrowsingTags()
+        val filteredProducts = localPreferenceDataSource.loadProductBrowsingTags()
             .filter { it.productFormfactorBaseId == productBaseId }
-        localPreferenceDataSource.saveFittingFilteredList(filterProducts)
-        return localPreferenceDataSource.getFilteringShapeProducts(filterProducts)
+        localPreferenceDataSource.saveFittingFilteredList(filteredProducts)
+        return localPreferenceDataSource.getFilteringShapeProducts(filteredProducts)
     }
 }
