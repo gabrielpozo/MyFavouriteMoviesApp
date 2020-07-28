@@ -38,7 +38,6 @@ class BrowseResultViewModel(
     }
 
     fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
-        Log.d("Gabriel", "Shape Products: $shapeBrowsingList")
         launch {
             getBrowseProductsResultUseCase.execute(
                 ::handleResultProducts,
@@ -49,7 +48,7 @@ class BrowseResultViewModel(
     }
 
     private fun handleResultProducts(message: Message) {
-        //_model.value = Content(message.categories, message)
+        _model.value = Content(message.categories, message)
         Log.d("Gabriel","Getting the Message Result!!")
 
     }
