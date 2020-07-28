@@ -1,6 +1,7 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
+import com.light.domain.model.ProductCategoryName
 import com.light.finder.data.source.remote.*
 import com.light.finder.data.source.remote.dto.*
 
@@ -153,6 +154,7 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.order
             )
         },
+
         formfactorTypeBaseId = legendValueDto.productFormFactorBaseId.map {
             FormFactorTypeBaseId(
                 it.id,
@@ -161,8 +163,16 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.description,
                 it.order
             )
+        },
+        productCategoryName = legendValueDto.productCategoryName.map {
+            ProductCategoryName(
+                it.id,
+                it.name,
+                it.order,
+                it.image,
+                it.description
+            )
         }
-
     )
 }
 

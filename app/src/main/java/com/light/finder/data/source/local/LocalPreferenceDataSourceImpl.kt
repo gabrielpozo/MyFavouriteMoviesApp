@@ -22,6 +22,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val FORM_FACTOR_LEGEND_BASE_ID = "productFormFactorBaseIdLegend"
         private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
         private const val PRODUCTS_FILTERED_PRODUCT_BROWSING = "filteredProductsBrowsing"
+        private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
+
 
     }
 
@@ -41,6 +43,11 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         editor.putString(
             FORM_FACTOR_LEGEND_BASE_ID,
             Gson().toJson(legend.legend.formfactorTypeBaseId)
+        ).commit()
+
+        editor.putString(
+            PRODUCT_CATEGORY_NAME,
+            Gson().toJson(legend.legend.productCategoryName)
         ).commit()
     }
 
@@ -68,6 +75,11 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun loadFormFactorIBaseIdLegendTags(): List<FormFactorTypeBaseId> = Gson().fromJson(
         pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
             ?: emptyList<FormFactorTypeBaseId>().toString()
+    )
+
+    override fun loadProductCategoryName(): List<ProductCategoryName> = Gson().fromJson(
+        pref.getString(PRODUCT_CATEGORY_NAME, null)
+            ?: emptyList<ProductBrowsing>().toString()
     )
 
     override fun loadProductBrowsingTags(): List<ProductBrowsing> = Gson().fromJson(

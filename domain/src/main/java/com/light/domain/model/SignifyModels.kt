@@ -24,7 +24,7 @@ data class Category(
 )
 
 data class Product(
-    var name: String="",
+    var name: String = "",
     var index: Int = 0,
     var spec1: Float = 0.0f,
     var spec3: List<Int> = emptyList(),
@@ -32,7 +32,7 @@ data class Product(
     var imageUrls: List<String>,
     var description: String,
     var scene: String = "",
-    var categoryName: String ="",
+    var categoryName: String = "",
     var sapID12NC: Long,
     var qtyLampscase: Int,
     var wattageReplaced: Int,
@@ -41,9 +41,9 @@ data class Product(
     var wattageClaim: Float = 0.0f,
     var factorBase: String,
     var discountProc: Int = -1,
-    var sapID10NC: Long= 0,
-    var dimmingCode: Int= 0,
-    var finish: String="",
+    var sapID10NC: Long = 0,
+    var dimmingCode: Int = 0,
+    var finish: String = "",
     var promoted: Int = -1,
     var priceSku: Float,
     var priceLamp: Float,
@@ -82,7 +82,9 @@ data class LegendValue(
     val finishType: List<FinishType>,
     val cctType: List<CctType>,
     val formfactorTypeId: List<FormFactorTypeId>,
-    val formfactorTypeBaseId: List<FormFactorTypeBaseId>
+    val formfactorTypeBaseId: List<FormFactorTypeBaseId>,
+    val productCategoryName: List<ProductCategoryName>
+
 )
 
 data class FormFactorType(
@@ -129,6 +131,14 @@ data class FormFactorTypeBaseId(
     var isSelected: Boolean = false
 )
 
+data class ProductCategoryName(
+    val id: Int,
+    val name: String,
+    val order: Int,
+    val image: String?,
+    val description: String
+)
+
 
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
 data class ColorOrderList(val cctCode: Int, val order: Int)
@@ -142,7 +152,7 @@ data class ShapeBrowsing(
     val name: String,
     val image: String?,
     val order: Int,
-    val subtitleCount:Int,
+    val subtitleCount: Int,
     var isSelected: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
