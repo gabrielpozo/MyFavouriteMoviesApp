@@ -28,7 +28,7 @@ class GetColorVariationsUseCase : BaseUseCase<List<FilterVariationCF>>() {
         }
 
         productList.forEach {
-            if (it.wattageReplaced == productSelected?.wattageReplaced && it.finish == productSelected.finish) {
+            if (it.wattageReplaced == productSelected?.wattageReplaced && it.productFinishCode == productSelected.productFinishCode) {
                 it.isAvailable = true
                 filterHashSet.add(
                     FilterVariationCF(

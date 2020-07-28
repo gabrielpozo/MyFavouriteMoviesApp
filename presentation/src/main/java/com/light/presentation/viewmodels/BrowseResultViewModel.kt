@@ -55,6 +55,5 @@ class BrowseResultViewModel(
 
     private fun handleNoResultProducts() {
         Log.d("Gabriel","No Result!!")
-        //_model.value = Content(message.categories, message)
     }
 }
