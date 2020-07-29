@@ -280,7 +280,8 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.formfactorType,
         product.productFinishCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        product.wattageReplacedExtra
     )
 
 }
@@ -347,7 +348,8 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.formfactorType,
         product.productFinishCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        wattageReplacedExtra = product.wattageReplacedExtra
     )
 
 }

@@ -39,7 +39,7 @@
     <string name="scan_completed">Scan completed!</string>
     <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
     <string name="select_button">Select</string>
-
+    <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
     <string name="live_preview_disabled_button_text">Preview not available</string>
     <string name="try_again">Try again</string>

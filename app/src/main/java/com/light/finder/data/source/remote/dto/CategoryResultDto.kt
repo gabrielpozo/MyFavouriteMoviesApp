@@ -68,7 +68,9 @@ data class ProductDto(
     @SerializedName("product_qty_skucase") var qtySkuCase: Int,
     @SerializedName("product_formfactor_type_code") var factorTypeCode: Int,
     @SerializedName("product_cct_code") var productCctCode: Int,
-    @SerializedName("product_finish_code") var productFinishCode: Int
+    @SerializedName("product_finish_code") var productFinishCode: Int,
+    @SerializedName("product_wattage_replaced_extra") var wattageReplacedExtra: String
+
 )
 
 
