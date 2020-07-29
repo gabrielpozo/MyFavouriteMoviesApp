@@ -17,7 +17,11 @@ import com.light.finder.ui.adapters.BrowseResultAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
+import kotlinx.android.synthetic.main.fragment_browse_result.*
 import kotlinx.android.synthetic.main.fragment_category_result.*
+import kotlinx.android.synthetic.main.fragment_category_result.rvCategories
+import kotlinx.android.synthetic.main.fragment_category_result.textViewNoResultSubTitle
+import kotlinx.android.synthetic.main.fragment_category_result.textViewNoResultTitle
 
 class BrowseResultFragment : BaseFragment() {
 

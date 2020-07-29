@@ -10,6 +10,8 @@ import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_category.view.*
+import kotlinx.android.synthetic.main.item_category.view.priceButton
+import kotlinx.android.synthetic.main.item_results.view.*
 
 
 class CategoriesAdapter(
@@ -23,7 +25,7 @@ class CategoriesAdapter(
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_category, false)
+        val view = parent.inflate(R.layout.item_results, false)
         return ViewHolder(view)
     }
 
