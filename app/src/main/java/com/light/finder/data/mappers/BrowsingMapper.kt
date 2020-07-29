@@ -1,6 +1,7 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
+import com.light.domain.state.DataState
 import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
 
 
@@ -64,18 +65,29 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
 val mapBrowsingProductToMessageDomain: (String, Map<Key, List<ProductBrowsing>>) -> Message =
     { fittingString, productBrowsingHashMap ->
         //we get the first value
-        val entry = productBrowsingHashMap.entries.iterator().next()
-        val listBrowsing = entry.value
-        Message(
-            categories = productBrowsingHashMap.map {
-                mapBrowsingCategoryToDomain(it.value)
-            },
-            version = EMPTY_STRING,
-            baseIdentified = fittingString,
-            formfactorType = EMPTY_STRING,
-            shapeIdentified = listBrowsing[0].productFormfactorShape,
-            textIdentified = EMPTY_STRING
-        )
+        if (productBrowsingHashMap.isNotEmpty()) {
+            val entry = productBrowsingHashMap.entries.iterator().next()
+            val listBrowsing = entry.value
+            Message(
+                categories = productBrowsingHashMap.map {
+                    mapBrowsingCategoryToDomain(it.value)
+                },
+                version = EMPTY_STRING,
+                baseIdentified = fittingString,
+                formfactorType = EMPTY_STRING,
+                shapeIdentified = listBrowsing[0].productFormfactorShape,
+                textIdentified = EMPTY_STRING
+            )
+        } else {
+            Message(
+                categories = emptyList(),
+                version = EMPTY_STRING,
+                formfactorType = EMPTY_STRING,
+                baseIdentified = fittingString,
+                shapeIdentified = EMPTY_STRING,
+                textIdentified = EMPTY_STRING
+            )
+        }
     }
 
 
