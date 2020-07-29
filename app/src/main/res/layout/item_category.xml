@@ -1,99 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin_big"
     android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
     android:focusableInTouchMode="false"
-    app:cardBackgroundColor="@color/backgroundLight"
     app:cardCornerRadius="4dp"
-    app:cardElevation="4dp">
-
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/backgroundLight">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="?android:attr/selectableItemBackground">
 
-
-        <Button
-            android:id="@+id/priceButton"
-            style="@style/PriceButton"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:background="@drawable/button_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:text="@string/_0_00_0_00_each"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/category_title"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/bold"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/textDark"
-            android:lineSpacingExtra="2sp"
-            android:text="LED Non-Dimmable"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceButton" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:focusableInTouchMode="false"
+                android:id="@+id/bulbCover"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@color/backgroundLight"
+                android:contentDescription="@string/lightbulb_cd"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:id="@+id/energyButton"
+                style="@style/EnergyButton"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_curvy_corners_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/most_efficient_option"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="top|left" />
+
+
+
+            <View
+                android:id="@+id/cover_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/primaryDisabled"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom" />
+
+            <Button
+                android:id="@+id/priceButton"
+                style="@style/PriceButton"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/button_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/_0_00_0_00_each"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|right" />
+
+            <LinearLayout
+                android:id="@+id/thumbnail"
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|left" />
+
+
+            <LinearLayout
+                android:id="@+id/imagesLayout"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/cover_line"
+                app:layout_anchorGravity="bottom|left" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <TextView
-            android:id="@+id/category_description"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:id="@+id/category_name"
+            style="@style/TitleCategory"
+            android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/book"
+            android:lineSpacingExtra="2sp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout"
+            tools:text="Category Name" />
+
+        <TextView
+            android:id="@+id/bulbName"
+            style="@style/BulbCategory"
+            android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="16dp"
+            android:lineSpacingExtra="2sp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/category_name"
+            android:text="@string/bulb_s" />
+
+        <TextView
+            android:id="@+id/textOptions"
+            style="@style/BulbCategory"
+            android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="16dp"
+            android:lineSpacingExtra="2sp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bulbName"
+            android:text="@string/available_options" />
+
+        <LinearLayout
+            android:id="@+id/colorsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:ellipsize="end"
-            android:textSize="12sp"
-            android:textColor="@color/textDark"
-            android:lineSpacingExtra="6sp"
-            android:layout_marginEnd="8dp"
-            android:text="Everyday value everywhere in your home. These Philips LED light bulbs provide a Soft White or Daylight."
-            app:layout_constraintEnd_toStartOf="@+id/category_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_title" />
-
-        <ImageView
-            android:id="@+id/category_image"
-            android:layout_width="96dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/category_placeholder"
-            android:layout_height="96dp"
+            android:gravity="fill"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_title" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textOptions" />
 
-        <Button
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_width="134dp"
-            android:layout_height="32dp"
-            android:textSize="12sp"
-            android:textColor="@color/gallerySelected"
-            android:letterSpacing="0.03"
-            android:lineSpacingExtra="18sp"
-            android:fontFamily="@font/bold"
-            android:gravity="center"
-            android:background="@drawable/category_outline"
-            android:text="@string/select_button"
+        <LinearLayout
+            android:id="@+id/wattageLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="fill"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_image" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/colorsLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

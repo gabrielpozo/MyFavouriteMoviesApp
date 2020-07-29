@@ -10,7 +10,6 @@ import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
-import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
@@ -22,8 +21,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
-import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.fragment_browse_result.*
+import kotlinx.android.synthetic.main.fragment_category_result.*
 
 class CategoriesFragment : BaseFragment() {
 
@@ -42,7 +40,7 @@ class CategoriesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_browse_result, container, false)
+        return inflater.inflate(R.layout.fragment_category_result, container, false)
     }
 
     override fun onAttach(context: Context) {

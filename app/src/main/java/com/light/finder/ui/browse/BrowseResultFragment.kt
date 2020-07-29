@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -18,7 +17,7 @@ import com.light.finder.ui.adapters.BrowseResultAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.fragment_browse_result.*
+import kotlinx.android.synthetic.main.fragment_category_result.*
 
 class BrowseResultFragment : BaseFragment() {
 
