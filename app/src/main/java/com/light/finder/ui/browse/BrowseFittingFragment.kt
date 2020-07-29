@@ -8,16 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.updateLayoutParams
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
@@ -45,7 +41,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private val BROWSE_SCREEN_TAG ="BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
 
     override fun onCreateView(
@@ -60,7 +56,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = browseComponent.plus(BrowseFittingModule())
-            firebaseAnalytics = FirebaseAnalytics.getInstance(this)
             firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
