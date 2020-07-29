@@ -160,9 +160,11 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.gone()
         browseError.visible()
         browseLoading.gone()
+        buttonNext.gone()
     }
 
     private fun showFittings(productFittingList: List<FormFactorTypeBaseId>) {
+        buttonNext.visible()
         recyclerViewFitting.visible()
         browseError.gone()
         browseLoading.gone()
