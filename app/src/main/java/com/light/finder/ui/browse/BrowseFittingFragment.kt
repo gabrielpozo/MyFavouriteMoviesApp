@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
+import com.light.finder.extensions.trackScreen
 import com.light.finder.extensions.visible
 import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.itemdecoration.FittingItemDecoration
@@ -40,7 +42,11 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
+    private val BROWSE_SCREEN_TAG ="BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,11 +60,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = browseComponent.plus(BrowseFittingModule())
+            firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+            firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
         buttonNext.setOnClickListener {
             viewModel.onNextButtonPressed()
         }
+
 
 
         buttonRefresh.setOnClickListener {
