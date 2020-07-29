@@ -70,13 +70,20 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
-        when (model){
-            is BrowseResultViewModel.ResultBrowse.Content ->{
-                updateData(model.messages, model.message)
+        when (model) {
+            is BrowseResultViewModel.ResultBrowse.Content -> {
+                updateData(model.message)
+                updateAdapter(model.message)
+
 
             }
-            else -> {
-                //TODO show no results layout
+            is BrowseResultViewModel.ResultBrowse.NoResult -> {
+                rvCategories.gone()
+                textViewNoResultSubTitle.visible()
+                textViewNoResultTitle.visible()
+                textViewNoResultSubTitle.visible()
+
+                updateData(model.message)
             }
         }
     }
@@ -87,36 +94,32 @@ class BrowseResultFragment : BaseFragment() {
         }
     }
 
-    private fun updateData(categories: List<Category>, message: Message) {
-        when {
-            categories.isEmpty() -> {
-                textViewNoResultSubTitle.visible()
-                textViewNoResultTitle.visible()
-                rvCategories.gone()
-            }
-            categories.size == 1 -> {
+    private fun updateData(message: Message) {
+        when (message.categories.size) {
+            1 -> {
                 textViewResults.text =
-                    getString(R.string.text_result).getIntFormatter(categories.size)
+                    getString(R.string.text_result).getIntFormatter(message.categories.size)
             }
             else -> {
                 textViewResults.text =
-                    getString(R.string.text_results).getIntFormatter(categories.size)
+                    getString(R.string.text_results).getIntFormatter(message.categories.size)
             }
         }
 
-        textViewFitting.text = getString(R.string.based_on_s_fitting).format(
-            getFormFactorIdTagName(
-                message.shapeIdentified,
-                localPreferences.loadFormFactorIdLegendTags()
-            ),
-            categories[0].categoryProducts[0].factorShape,
-            message.baseIdentified
+        textViewBulbType.invisible()
+        textViewFitting.text = getString(R.string.based_on_result_fitting).format(
+            getFormFactorBaseIdTagName(
+                message.baseIdentified.toInt(),
+                localPreferences.loadFormFactorIBaseIdLegendTags()
+            )
         )
 
-        setAdapter(message)
-        //TODO(move it to a standalone method)
-        adapter.categories = categories
 
+    }
+
+    private fun updateAdapter(message: Message) {
+        setAdapter(message)
+        adapter.categories = message.categories
     }
 
 

@@ -29,8 +29,8 @@ class BrowseResultViewModel(
 
 
     sealed class ResultBrowse {
-        data class Content(val messages: List<Category>, val message: Message) : ResultBrowse()
-        data class NoResult(val fitting: String) : ResultBrowse()
+        data class Content(val categories: List<Category>, val message: Message) : ResultBrowse()
+        data class NoResult(val message: Message) : ResultBrowse()
 
 
     }
@@ -59,6 +59,6 @@ class BrowseResultViewModel(
     }
 
     private fun handleNoResultProducts(message: Message) {
-        _model.value = ResultBrowse.NoResult(message.baseIdentified)
+        _model.value = ResultBrowse.NoResult(message)
     }
 }

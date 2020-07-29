@@ -128,6 +128,8 @@
     <string name="no_results">No Results</string>
     <string name="no_result_sub">We couldn\'t find any matches with your search. Adjust your search by changing the fitting, shape or by removing filters.</string>
     <string name="based_on_s_fitting">Identified as: %s (%s) with %s fitting</string>
+    <string name="based_on_result_fitting">Based on: %s fitting</string>
+
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
