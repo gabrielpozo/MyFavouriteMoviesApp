@@ -218,7 +218,6 @@ fun getLegendCategoryImage(
 }
 
 
-
 fun getLegendFormFactorTagPrefSmallIcon(
     code: Int,
     logError: Boolean = false,
@@ -315,6 +314,16 @@ fun List<Int>.sortSmallFinishByOrderField(filterFinishList: List<FinishType>): L
     return orderedFinish
 }
 
+
+//Loop the category list from outside
+fun Category.addOrderField(
+    productCategoryNameList: List<ProductCategoryName>
+) {
+    val productCategoryName = productCategoryNameList.find {
+        categoryIndex == it.id
+    }
+    order = productCategoryName?.order ?: -1
+}
 
 fun getOrderColor(
     code: Int,

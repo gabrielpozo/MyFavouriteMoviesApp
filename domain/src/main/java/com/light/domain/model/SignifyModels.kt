@@ -22,7 +22,8 @@ data class Category(
     val colors: List<Int>,
     val finishCodes: List<Int>,
     val categoryShape: String,
-    val categoryDescription: String
+    val categoryDescription: String,
+    var order: Int = -1
 )
 
 data class Product(
@@ -147,6 +148,8 @@ data class ProductCategoryName(
 data class KelvinSpec(val minValue: Int, val maxValue: Int, val defaultValue: Int)
 data class ColorOrderList(val cctCode: Int, val order: Int)
 data class FinishOrderList(val finnishCode: Int, val order: Int)
+data class CategoryOrderList(val category: Category, val order: Int)
+
 
 /**
  * Browsing

@@ -21,5 +21,5 @@ interface LocalPreferenceDataSource {
     ): List<ShapeBrowsing>
 
     fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message
-    fun getAllProductsMessage(): Message
+    fun getAllProductsMessage(baseIdFitting: Int): Message
 }

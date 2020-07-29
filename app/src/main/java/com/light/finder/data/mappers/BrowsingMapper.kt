@@ -3,6 +3,7 @@ package com.light.finder.data.mappers
 import com.light.domain.model.*
 import com.light.domain.state.DataState
 import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
+import com.light.finder.extensions.addOrderField
 
 
 private const val EMPTY_STRING = ""
@@ -62,16 +63,23 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
         productBrowsingList
     }
 
-val mapBrowsingProductToMessageDomain: (String, Map<Key, List<ProductBrowsing>>) -> Message =
-    { fittingString, productBrowsingHashMap ->
+val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<Key, List<ProductBrowsing>>) -> Message =
+    { fittingString, productCategoryNameList, productBrowsingHashMap ->
         //we get the first value
         if (productBrowsingHashMap.isNotEmpty()) {
             val entry = productBrowsingHashMap.entries.iterator().next()
             val listBrowsing = entry.value
+
+            val categories = productBrowsingHashMap.map {
+                mapBrowsingCategoryToDomain(it.value)
+            }.also { categoryList ->
+                categoryList.forEach { category ->
+                    category.addOrderField(productCategoryNameList)
+                }
+            }
+
             Message(
-                categories = productBrowsingHashMap.map {
-                    mapBrowsingCategoryToDomain(it.value)
-                },
+                categories = categories.sortedBy { it.order },
                 version = EMPTY_STRING,
                 baseIdentified = fittingString,
                 formfactorType = EMPTY_STRING,

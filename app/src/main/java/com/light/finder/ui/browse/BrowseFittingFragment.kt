@@ -147,6 +147,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun showLoading() {
+        buttonNext.gone()
         recyclerViewFitting.gone()
         browseError.gone()
         browseLoading.visible()

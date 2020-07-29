@@ -116,12 +116,11 @@ class BrowseResultFragment : BaseFragment() {
                 localPreferences.loadFormFactorIBaseIdLegendTags()
             )
         )
-
-
     }
 
     private fun updateAdapter(message: Message) {
         setAdapter(message)
+        //TODO sor the categories here
         adapter.categories = message.categories
     }
 
