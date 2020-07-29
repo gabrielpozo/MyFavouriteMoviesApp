@@ -94,6 +94,7 @@ data class ShapeBrowsingParcelable(
     val image: String?,
     val order: Int,
     val subtitleCount:Int,
+    var baseFittingId:Int = -1,
     var isSelected: Boolean = false
-) : Parcelable
+    ) : Parcelable
 

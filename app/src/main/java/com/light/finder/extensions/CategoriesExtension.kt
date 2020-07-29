@@ -401,6 +401,7 @@ val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelab
             shapeBrowsing.image,
             shapeBrowsing.order,
             shapeBrowsing.subtitleCount,
+            shapeBrowsing.baseIdFitting,
             shapeBrowsing.isSelected
         )
 
@@ -414,7 +415,8 @@ val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsin
             shapeBrowsingParcelable.image,
             shapeBrowsingParcelable.order,
             shapeBrowsingParcelable.subtitleCount,
+            shapeBrowsingParcelable.baseFittingId,
             shapeBrowsingParcelable.isSelected
-        )
+            )
 
     }

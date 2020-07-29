@@ -11,15 +11,16 @@ class GetBrowseProductsResultUseCase(private val productBrowsingRepository: Prod
 
     suspend fun execute(
         onSuccess: (Message) -> Unit = {},
-        onEmpty: () -> Unit = {},
+        onNoResult: (Message) -> Unit = {},
         shapeBrowsingList: List<ShapeBrowsing>
     ) {
-        when(val result = productBrowsingRepository.getProductBrowsingRepository(shapeBrowsingList)){
-            is DataState.Success ->{
+        when (val result =
+            productBrowsingRepository.getProductBrowsingRepository(shapeBrowsingList)) {
+            is DataState.Success -> {
                 onSuccess.invoke(result.data)
             }
-            else -> {
-                onEmpty.invoke()
+            is DataState.NoResult -> {
+                onNoResult.invoke(result.data)
             }
         }
 

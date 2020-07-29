@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
@@ -16,8 +15,8 @@ class BrowseResultViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
-    private val _model = MutableLiveData<Content>()
-    val model: LiveData<Content>
+    private val _model = MutableLiveData<ResultBrowse>()
+    val model: LiveData<ResultBrowse>
         get() {
             return _model
         }
@@ -27,6 +26,14 @@ class BrowseResultViewModel(
         get() = _modelNavigation
 
     class NavigationModel(val category: Category)
+
+
+    sealed class ResultBrowse {
+        data class Content(val messages: List<Category>, val message: Message) : ResultBrowse()
+        data class NoResult(val fitting: String) : ResultBrowse()
+
+
+    }
 
     data class Content(val messages: List<Category>, val message: Message)
 
@@ -48,12 +55,10 @@ class BrowseResultViewModel(
     }
 
     private fun handleResultProducts(message: Message) {
-        _model.value = Content(message.categories, message)
-        Log.d("Gabriel","Getting the Message Result!!")
-
+        _model.value = ResultBrowse.Content(message.categories, message)
     }
 
-    private fun handleNoResultProducts() {
-        Log.d("Gabriel","No Result!!")
+    private fun handleNoResultProducts(message: Message) {
+        _model.value = ResultBrowse.NoResult(message.baseIdentified)
     }
 }

@@ -91,8 +91,12 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<ProductBrowsing>().toString()
     )
 
-    override fun getAllProductsMessage(): Message =
-        mapBrowsingProductToMessageDomain(loadProductBrowsingFiltered().groupBy { it.toKey() })
+    override fun getAllProductsMessage(): Message {
+        val productsFiltered = loadProductBrowsingFiltered()
+        return mapBrowsingProductToMessageDomain(
+            productsFiltered[0].productFormfactorBaseId.toString(),
+            productsFiltered.groupBy { it.toKey() })
+    }
 
 
     override fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>) {
@@ -106,7 +110,6 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun getFilteringShapeProducts(productFilteredBrowseList: List<ProductBrowsing>): List<ShapeBrowsing> {
         val shapesToDisplay = arrayListOf<ShapeBrowsing>()
         val allShapes = loadFormFactorLegendTags()
-
         allShapes.forEach { shape ->
             shapesToDisplay.add(
                 ShapeBrowsing(
@@ -116,7 +119,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                     shape.order.toInt(),
                     productFilteredBrowseList.filter { productBrowse ->
                         shape.id == productBrowse.productFormfactorTypeCode
-                    }.groupBy { it.toKey() }.size
+                    }.groupBy { it.toKey() }.size,
+                    baseIdFitting = productFilteredBrowseList[0].productFormfactorBaseId
                 )
             )
         }
@@ -134,7 +138,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 })
             }
         }
-        return mapBrowsingProductToMessageDomain(browsedShapeFilteredList.groupBy { it.toKey() })
+
+        return mapBrowsingProductToMessageDomain(
+            shapeBrowsingList[0].baseIdFitting.toString(),
+            browsedShapeFilteredList.groupBy { it.toKey() })
     }
 
 

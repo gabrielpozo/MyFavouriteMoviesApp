@@ -69,8 +69,16 @@ class BrowseResultFragment : BaseFragment() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
 
-    private fun updateUI(model: BrowseResultViewModel.Content) {
-        updateData(model.messages, model.message)
+    private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
+        when (model){
+            is BrowseResultViewModel.ResultBrowse.Content ->{
+                updateData(model.messages, model.message)
+
+            }
+            else -> {
+                //TODO show no results layout
+            }
+        }
     }
 
     private fun navigateToProductList(navigationModel: Event<BrowseResultViewModel.NavigationModel>) {

@@ -5,7 +5,6 @@ import com.light.domain.model.Message
 import com.light.domain.model.ShapeBrowsing
 import com.light.domain.state.DataState
 import com.light.source.local.LocalPreferenceDataSource
-import com.light.util.EMPTY_MESSAGE
 
 
 class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
@@ -17,7 +16,7 @@ class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: Local
             val messageFiltered =
                 localPreferenceDataSource.getFilteredProductsMessage(shapeBrowsingList)
             if (messageFiltered.categories.isEmpty()) {
-                DataState.Empty(EMPTY_MESSAGE)
+                DataState.NoResult(messageFiltered)
             } else {
                 DataState.Success(messageFiltered)
             }

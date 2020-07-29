@@ -60,14 +60,14 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
         productBrowsingList
     }
 
-val mapBrowsingProductToMessageDomain: (Map<Key, List<ProductBrowsing>>) -> Message =
-    { productBrowsingHashMap ->
+val mapBrowsingProductToMessageDomain: (String, Map<Key, List<ProductBrowsing>>) -> Message =
+    { fittingString, productBrowsingHashMap ->
         Message(
             categories = productBrowsingHashMap.map {
                 mapBrowsingCategoryToDomain(it.value)
             },
             version = EMPTY_STRING,
-            baseIdentified = EMPTY_STRING,
+            baseIdentified = fittingString,
             formfactorType = EMPTY_STRING,
             shapeIdentified = EMPTY_STRING
 
@@ -135,6 +135,5 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             qtyLampSku = productBrowse.productQtyLampsku,
             produtCategoryCode = productBrowse.productCategoryCode,
             wattageReplacedExtra = ""//TODO
-
         )
     }

@@ -3,7 +3,7 @@ package com.light.domain.model
 data class Message(
     val categories: List<Category>,
     val version: String,
-    val baseIdentified: String,
+    var baseIdentified: String,
     val formfactorType: String,
     val shapeIdentified: String
 )
@@ -155,6 +155,7 @@ data class ShapeBrowsing(
     val image: String?,
     val order: Int,
     val subtitleCount: Int,
+    var baseIdFitting: Int = -1,
     var isSelected: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
