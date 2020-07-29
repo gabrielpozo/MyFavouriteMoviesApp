@@ -22,6 +22,7 @@ data class ProductBrowsingDto(
     @SerializedName("product_category_name") val product_category_name: String,
     @SerializedName("product_wattage_claim") val product_wattage_claim: Double,
     @SerializedName("product_wattage_replaced") val product_wattage_replaced: Int,
+    @SerializedName("product_wattage_replaced_extra") val productWattageReplacedExtra: String,
     @SerializedName("product_price_pack") val product_price_pack: Float,
     @SerializedName("product_price_sku") val product_price_sku: Float,
     @SerializedName("product_price_lamp") val product_price_lamp: Float,

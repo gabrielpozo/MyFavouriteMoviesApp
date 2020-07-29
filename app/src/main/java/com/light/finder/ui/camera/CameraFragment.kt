@@ -241,7 +241,12 @@ class CameraFragment : BaseFragment() {
 
     private fun setBrowsingClickable() {
         browseButton.setOnClickListener {
-            viewModel.onBrowsingButtonClicked()
+            if (InternetUtil.isInternetOn()) {
+                viewModel.onBrowsingButtonClicked()
+            } else {
+                activityCallback.onInternetConnectionLost()
+            }
+
         }
 
     }
