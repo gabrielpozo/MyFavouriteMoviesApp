@@ -166,7 +166,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryDescription
     )
 
 
@@ -183,7 +184,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryDescription
     )
 
 
@@ -227,7 +229,8 @@ fun Message.parcelizeMessage(): MessageParcelable =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified
     )
 
 
@@ -237,7 +240,8 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified
     )
 
 

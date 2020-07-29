@@ -23,6 +23,8 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
+    <string name="category_price">from %s each</string>
+
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
     <string name="light_bulb_recognised_as">Scan results</string>
     <string name="description_wattage">%sW-%sW %s</string>
@@ -34,6 +36,9 @@
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
+    <string name="scan_completed">Scan completed!</string>
+    <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
+    <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
     <string name="live_preview_disabled_button_text">Preview not available</string>

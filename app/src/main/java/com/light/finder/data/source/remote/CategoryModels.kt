@@ -16,7 +16,8 @@ data class CategoryParcelable(
     val minEnergySaving: Float,
     val colors: List<Int>,
     val finishCodes: List<Int>,
-    val categoryShape: String
+    val categoryShape: String,
+    val categoryDescription: String
 ) : Parcelable
 
 @Parcelize
@@ -64,7 +65,8 @@ data class MessageParcelable(
     val version: String,
     val baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String
+    val shapeIdentified: String,
+    val textIdentified: String
 ) : Parcelable
 
 @Parcelize
