@@ -12,7 +12,7 @@ class ShapeLightBulbsRepositoryImpl(
         val filteredProducts = localPreferenceDataSource.loadProductBrowsingTags()
             .filter { it.productFormfactorBaseId == productBaseId }
         localPreferenceDataSource.saveFittingFilteredList(filteredProducts)
-        return localPreferenceDataSource.getFilteringShapeProducts(filteredProducts)
+        return localPreferenceDataSource.getFilteringShapeProducts(filteredProducts, productBaseId)
             .sortedBy { it.order }
     }
 }
