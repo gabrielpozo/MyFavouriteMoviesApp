@@ -5,7 +5,8 @@ data class Message(
     val version: String,
     var baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String
+    val shapeIdentified: String,
+    val textIdentified: String
 )
 
 data class Category(
@@ -20,7 +21,8 @@ data class Category(
     val minEnergySaving: Float,
     val colors: List<Int>,
     val finishCodes: List<Int>,
-    val categoryShape: String
+    val categoryShape: String,
+    val categoryDescription: String
 )
 
 data class Product(
