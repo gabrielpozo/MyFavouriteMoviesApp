@@ -2,6 +2,7 @@ package com.light.finder.ui.adapters
 
 import android.annotation.SuppressLint
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -137,6 +138,7 @@ class BrowseResultAdapter(
                     itemView.thumbnail.addView(imageViewFinish)
                 }
 
+            Log.d("Gabriel","ShapeIdentified: $shapeIdentified")
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
                 .format(
                     getFormFactorIdTagName(
