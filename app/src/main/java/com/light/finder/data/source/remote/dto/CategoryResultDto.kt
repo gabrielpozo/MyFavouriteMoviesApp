@@ -40,6 +40,7 @@ data class CategoriesDto(
 data class ProductDto(
     @SerializedName("product_name") var name: String,
     @SerializedName("product_index") var index: Int,
+    @SerializedName("product_category_code") var productCategoryCode: Int,
     @SerializedName("product_spec1") var spec1: Float,
     @SerializedName("product_spec3") var spec3: List<Int>,
     @SerializedName("product_spec2") var spec2: String,

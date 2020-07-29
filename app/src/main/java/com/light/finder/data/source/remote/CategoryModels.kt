@@ -1,6 +1,7 @@
 package com.light.finder.data.source.remote
 
 import android.os.Parcelable
+import com.light.domain.model.ShapeBrowsing
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -54,6 +55,7 @@ data class ProductParcelable(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var productCategoryCode: Int,
     var isSelected: Boolean,
     var isAvailable: Boolean,
     var wattageReplacedExtra: String
@@ -85,4 +87,16 @@ data class CctTypeParcelable(
 @Parcelize
 data class KelvinSpecParcelable(val minValue: Int, val maxValue: Int, val defaultValue: Int) :
     Parcelable
+
+
+@Parcelize
+data class ShapeBrowsingParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val order: Int,
+    val subtitleCount:Int,
+    var baseFittingId:Int = -1,
+    var isSelected: Boolean = false
+    ) : Parcelable
 

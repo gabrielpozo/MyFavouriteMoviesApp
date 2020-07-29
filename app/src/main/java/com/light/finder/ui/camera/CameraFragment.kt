@@ -200,7 +200,8 @@ class CameraFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(CameraModule())
             cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
-            galleryPermissionRequester = PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            galleryPermissionRequester =
+                PermissionRequester(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             connectivityRequester = ConnectivityRequester(this)
         } ?: throw Exception("Invalid Activity")
 
@@ -220,9 +221,14 @@ class CameraFragment : BaseFragment() {
 
         )
         viewModel.modelGallery.observe(viewLifecycleOwner, Observer(::observeModelGallery))
+        viewModel.modelNavigationFiltering.observe(
+            viewLifecycleOwner,
+            Observer(::observeNavigationFiltering)
+        )
 
 
         requestItemCount()
+        setBrowsingClickable()
 
         displayManager.registerDisplayListener(displayListener, null)
         broadcastManager = LocalBroadcastManager.getInstance(view.context)
@@ -230,6 +236,13 @@ class CameraFragment : BaseFragment() {
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+
+    }
+
+    private fun setBrowsingClickable() {
+        browseButton.setOnClickListener {
+            viewModel.onBrowsingButtonClicked()
+        }
 
     }
 
@@ -268,7 +281,8 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-                val bitmapImage = BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
+                val bitmapImage =
+                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
                 modelUiState = ModelStatus.FEED
@@ -283,6 +297,10 @@ class CameraFragment : BaseFragment() {
             screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
             browseButton.visible()
+        }
+
+        browseButton.setOnClickListener {
+
         }
     }
 
@@ -362,12 +380,12 @@ class CameraFragment : BaseFragment() {
                 val imageUri = Uri.parse(Uri.decode(imageLocation))
                 if (imageFile.exists()) {
                     if (imageUri != null)
-                    imageGalleryButton.setPadding(4, 4, 4 ,4)
+                        imageGalleryButton.setPadding(4, 4, 4, 4)
                     Glide.with(this).load(imageUri.path)
-                            .override(100, 100)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(imageGalleryButton)
+                        .override(100, 100)
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(imageGalleryButton)
                     cursor.close()
                 }
             }
@@ -599,6 +617,12 @@ class CameraFragment : BaseFragment() {
 
     private fun observeGalleryDenyPermission(isPermanentlyDenied: Boolean) {
         viewModel.onPermissionDenied(isPermanentlyDenied, true)
+    }
+
+    private fun observeNavigationFiltering(nav: Event<NavigationToBrowsingFiltering>) {
+        nav.getContentIfNotHandled()?.let {
+            screenNavigator.navigateToBrowsingFiltering()
+        }
     }
 
     private fun handleResultBase64(base64: String) {

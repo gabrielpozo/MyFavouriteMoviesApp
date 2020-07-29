@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.Category
 import com.light.domain.model.Message
+import com.light.domain.model.ShapeBrowsing
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseResultFragment
+import com.light.finder.ui.browse.BrowseShapeFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -41,6 +44,14 @@ fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
 fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()
 
 fun AboutFragment.Companion.newInstance(): AboutFragment = AboutFragment()
+
+fun BrowseResultFragment.Companion.newInstance(shapeBrowsingProducts: List<ShapeBrowsing>): BrowseResultFragment {
+    val args = android.os.Bundle()
+    args.putParcelableArrayList(BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY, shapeBrowsingProducts.parcelizeBrowsingList())
+    val fragment = BrowseResultFragment()
+    fragment.arguments = args
+    return fragment
+}
 
 fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragment {
     val args = android.os.Bundle()

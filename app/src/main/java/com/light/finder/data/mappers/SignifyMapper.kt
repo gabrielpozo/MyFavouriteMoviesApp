@@ -1,6 +1,7 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
+import com.light.domain.model.ProductCategoryName
 import com.light.finder.data.source.remote.*
 import com.light.finder.data.source.remote.dto.*
 
@@ -76,7 +77,9 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         colorCctCode = productDto.productCctCode,
         formfactorType = productDto.factorTypeCode,
         productFinishCode = productDto.productFinishCode,
+        produtCategoryCode = productDto.productCategoryCode,
         wattageReplacedExtra = productDto.wattageReplacedExtra
+
     )
 }
 
@@ -154,8 +157,26 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.description,
                 it.order
             )
-        }
+        },
 
+        formfactorTypeBaseId = legendValueDto.productFormFactorBaseId.map {
+            FormFactorTypeBaseId(
+                it.id,
+                it.name,
+                it.image,
+                it.description,
+                it.order
+            )
+        },
+        productCategoryName = legendValueDto.productCategoryName.map {
+            ProductCategoryName(
+                it.id,
+                it.name,
+                it.order,
+                it.image,
+                it.description
+            )
+        }
     )
 }
 
@@ -178,3 +199,4 @@ fun getMinPriceTag(minPrice: Float?): String =
 fun priceTransform(value: Float): String {
     return "$%.2f".format(value)
 }
+

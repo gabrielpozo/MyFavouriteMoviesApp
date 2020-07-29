@@ -23,7 +23,7 @@ import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
 import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.fragment_categories.*
+import kotlinx.android.synthetic.main.fragment_browse_result.*
 
 class CategoriesFragment : BaseFragment() {
 
@@ -42,7 +42,7 @@ class CategoriesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        return inflater.inflate(R.layout.fragment_browse_result, container, false)
     }
 
     override fun onAttach(context: Context) {

@@ -15,13 +15,16 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
+import com.light.finder.navigators.ScreenNavigator
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.camera.ModelStatus
 import com.light.finder.ui.cart.CartFragment
@@ -37,7 +40,6 @@ import java.io.File
 
 class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.RootFragmentListener,
     ActivityCallback, ReloadingCallback {
-
 
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
@@ -56,6 +58,9 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     companion object {
         const val LIMITED_NUMBER_BADGE = 100
+        const val CAMERA_LIGHT_FINDER_ACTIVITY_ID: String = "CAMERA_LIGHT_FINDER_ACTIVITY_ID"
+        const val BROWSING_SHAPE_VALUES_ID: String = "BrowseShapeValues::id"
+        const val BROWSING_ACTIVITY:String = "BrowsingActivity"
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
             val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
@@ -68,9 +73,21 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+
+        if (intent != null) {
+            val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
+            if (dataId.equals(BROWSING_ACTIVITY)) {
+                val shapeResult = intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(BROWSING_SHAPE_VALUES_ID)
+                shapeResult?.let {
+                    screenNavigator.setInitialRootFragment(BrowseResultFragment.newInstance(shapeResult.deParcelizeBrowsingList()))
+                }
+
+            } else {
+                screenNavigator.setInitialRootFragment(CameraFragment.newInstance())
+            }
+        }
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -109,7 +126,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onCartCleared() {
         bottom_navigation_view.setNotification(AHNotification(), INDEX_CART)
-
     }
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
@@ -192,7 +208,6 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             if (current.getStatusView() == ModelStatus.GALLERY) {
                 // go back to gallery
                 current.pickImageFromGallery()
-
                 return
             }
         }
@@ -200,6 +215,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
         if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
             super.onBackPressed()
+            overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
         }
     }
 
@@ -234,10 +250,11 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
     }
 
+
     override fun getRootFragment(index: Int): Fragment {
         when (index) {
             INDEX_LIGHT_FINDER -> {
-                return CameraFragment.newInstance()
+                return screenNavigator.getInitialRootFragment()
             }
             INDEX_CART -> return CartFragment.newInstance()
             INDEX_ABOUT -> return AboutFragment.newInstance()
