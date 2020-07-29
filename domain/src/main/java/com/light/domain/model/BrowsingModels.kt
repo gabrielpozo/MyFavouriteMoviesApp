@@ -17,6 +17,7 @@ data class ProductBrowsing(
     val productCategoryName: String,
     val productWattageClaim: Double,
     val productWattageReplaced: Int,
+    val productWattageReplacedExtra: String,
     val productPricePack: Float,
     val productPriceSku: Float,
     val productPriceLamp: Float,

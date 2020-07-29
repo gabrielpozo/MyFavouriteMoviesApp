@@ -26,6 +26,7 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
                     productCategoryName = it.product_category_name,
                     productWattageClaim = it.product_wattage_claim,
                     productWattageReplaced = it.product_wattage_replaced,
+                    productWattageReplacedExtra = it.productWattageReplacedExtra,
                     productPricePack = it.product_price_pack,
                     productPriceSku = it.product_price_sku,
                     productPriceLamp = it.product_price_lamp,
@@ -136,6 +137,6 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             priceSku = productBrowse.productPriceSku,
             qtyLampSku = productBrowse.productQtyLampsku,
             produtCategoryCode = productBrowse.productCategoryCode,
-            wattageReplacedExtra = ""//TODO
+            wattageReplacedExtra = productBrowse.productWattageReplacedExtra
         )
     }
