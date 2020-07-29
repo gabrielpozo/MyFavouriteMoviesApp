@@ -116,6 +116,7 @@ val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
 val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
     { productBrowse ->
         Product(
+            name = productBrowse.productName,
             categoryName = productBrowse.productCategoryName,
             factorShape = productBrowse.productFormfactorShape,
             factorBase = productBrowse.productFormfactorBase,
