@@ -200,3 +200,13 @@ fun priceTransform(value: Float): String {
     return "$%.2f".format(value)
 }
 
+fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
+    if (minPrice == null || maxPrice == null) {
+        "-"
+    } else if (minPrice == maxPrice && minPrice != 0.0f) {
+        priceTransform(minPrice)
+    } else {
+        "${priceTransform(minPrice)}-${priceTransform(maxPrice)}"
+    }
+
+

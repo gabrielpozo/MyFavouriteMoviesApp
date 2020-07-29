@@ -69,8 +69,8 @@ val mapBrowsingProductToMessageDomain: (String, Map<Key, List<ProductBrowsing>>)
             version = EMPTY_STRING,
             baseIdentified = fittingString,
             formfactorType = EMPTY_STRING,
-            shapeIdentified = EMPTY_STRING
-
+            shapeIdentified = EMPTY_STRING,
+            textIdentified = EMPTY_STRING
         )
     }
 
@@ -108,6 +108,7 @@ val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
             } else {
                 EMPTY_STRING
             }
+            , categoryDescription = EMPTY_STRING
         )
 
     }
