@@ -13,5 +13,6 @@ class ShapeLightBulbsRepositoryImpl(
             .filter { it.productFormfactorBaseId == productBaseId }
         localPreferenceDataSource.saveFittingFilteredList(filteredProducts)
         return localPreferenceDataSource.getFilteringShapeProducts(filteredProducts)
+            .sortedBy { it.order }
     }
 }
