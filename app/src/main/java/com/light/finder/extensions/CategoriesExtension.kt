@@ -91,6 +91,11 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadIdentified(url: String) {
+    Glide.with(context).load(url)
+        .placeholder(R.drawable.ic_illustration_scancomplete).into(this)
+}
+
 fun ImageView.loadUrWithoutPlaceholderl(url: String) {
     Glide.with(context).load(url)
         .override(460, 460)
@@ -260,7 +265,8 @@ fun Message.parcelizeMessage(): MessageParcelable =
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
         shapeIdentified = shapeIdentified,
-        textIdentified = textIdentified
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
     )
 
 fun FormFactorTypeBaseId.parcelizeFormFactor(): FormFactorTypeBaseIdParcelable =
@@ -281,7 +287,8 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
         shapeIdentified = shapeIdentified,
-        textIdentified = textIdentified
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
     )
 fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
     FormFactorTypeBaseId(

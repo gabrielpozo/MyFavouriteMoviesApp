@@ -6,7 +6,8 @@ data class Message(
     var baseIdentified: String,
     val formfactorType: String,
     val shapeIdentified: String,
-    val textIdentified: String
+    val textIdentified: String,
+    val imageIdentified: String
 )
 
 data class Category(
