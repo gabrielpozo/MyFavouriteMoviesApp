@@ -2,6 +2,7 @@ package com.light.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.presentation.common.isProductsShapeSelected
@@ -49,12 +50,13 @@ class BrowseShapeViewModel(
     }
 
 
-    fun onRequestFilteringShapes(productBaseId: Int) {
+    fun onRequestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
         launch {
             _modelBrowsingLiveData.value = UiBrowsingShapeModel.LoadingStatus
             requestBrowsingShapeUseCase.execute(
                 ::handleSuccessRequest,
-                productBaseId
+                productBaseId.id,
+                productBaseId.name
             )
         }
     }

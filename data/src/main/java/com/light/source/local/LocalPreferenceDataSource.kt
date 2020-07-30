@@ -17,9 +17,10 @@ interface LocalPreferenceDataSource {
     fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
     fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,
-        productBaseId: Int
+        productBaseId: Int,
+        productBaseName: String
     ): List<ShapeBrowsing>
 
     fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message
-    fun getAllProductsMessage(baseIdFitting: Int): Message
+    fun getAllProductsMessage(baseIdFitting: String): Message
 }

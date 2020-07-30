@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.Category
+import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.Message
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.ui.about.AboutFragment
@@ -47,7 +48,10 @@ fun AboutFragment.Companion.newInstance(): AboutFragment = AboutFragment()
 
 fun BrowseResultFragment.Companion.newInstance(shapeBrowsingProducts: List<ShapeBrowsing>): BrowseResultFragment {
     val args = android.os.Bundle()
-    args.putParcelableArrayList(BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY, shapeBrowsingProducts.parcelizeBrowsingList())
+    args.putParcelableArrayList(
+        BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY,
+        shapeBrowsingProducts.parcelizeBrowsingList()
+    )
     val fragment = BrowseResultFragment()
     fragment.arguments = args
     return fragment
@@ -59,6 +63,15 @@ fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragme
     val fragment = CategoriesFragment()
     fragment.arguments = args
     return fragment
+}
+
+
+fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorTypeBaseId): BrowseShapeFragment {
+    val args = android.os.Bundle()
+    args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
+    val fragment = BrowseShapeFragment()
+    fragment.arguments = args
+    return  fragment
 }
 
 fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {

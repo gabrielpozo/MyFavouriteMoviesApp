@@ -263,6 +263,16 @@ fun Message.parcelizeMessage(): MessageParcelable =
         textIdentified = textIdentified
     )
 
+fun FormFactorTypeBaseId.parcelizeFormFactor(): FormFactorTypeBaseIdParcelable =
+    FormFactorTypeBaseIdParcelable(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
+    )
+
 
 fun MessageParcelable.deparcelizeMessage(): Message =
     Message(
@@ -273,7 +283,15 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         shapeIdentified = shapeIdentified,
         textIdentified = textIdentified
     )
-
+fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
+    FormFactorTypeBaseId(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
+    )
 
 val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
@@ -413,6 +431,7 @@ val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelab
             shapeBrowsing.order,
             shapeBrowsing.subtitleCount,
             shapeBrowsing.baseIdFitting,
+            shapeBrowsing.baseNameFitting,
             shapeBrowsing.isSelected
         )
 
@@ -427,7 +446,8 @@ val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsin
             shapeBrowsingParcelable.order,
             shapeBrowsingParcelable.subtitleCount,
             shapeBrowsingParcelable.baseFittingId,
+            shapeBrowsingParcelable.baseNameFitting,
             shapeBrowsingParcelable.isSelected
-            )
+        )
 
     }

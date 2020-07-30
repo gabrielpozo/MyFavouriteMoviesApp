@@ -3,6 +3,7 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,10 @@ import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
+import com.light.finder.data.source.remote.FormFactorTypeBaseIdParcelable
 import com.light.finder.di.modules.submodules.BrowseShapeComponent
 import com.light.finder.di.modules.submodules.BrowseShapeModule
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.visible
+import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseShapeAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
@@ -52,8 +52,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         }
 
         arguments?.let { bundle ->
-            bundle.getInt(SHAPE_ID_KEY).let { productBaseId ->
-                viewModel.onRequestFilteringShapes(productBaseId)
+            bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)?.let { productBaseId ->
+                //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
+                viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
             }
         }
 
