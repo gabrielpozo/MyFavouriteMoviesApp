@@ -24,7 +24,7 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
-    <string name="category_price">from %s each</string>
+    <string name="category_price">From %s each</string>
 
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
     <string name="light_bulb_recognised_as">Scan results</string>

@@ -8,6 +8,7 @@ import com.light.domain.model.Category
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
+import com.light.finder.extensions.loadUrWithoutPlaceholderl
 import com.light.finder.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_category.view.*
 import kotlinx.android.synthetic.main.item_category.view.priceButton
@@ -49,7 +50,7 @@ class CategoriesAdapter(
             itemView.category_title.text = category.categoryName
             itemView.priceButton.text = itemView.context.getString(R.string.category_price, category.priceRange)
             itemView.category_description.text = category.categoryDescription
-            itemView.category_image.loadUrl(category.categoryImage)
+            itemView.category_image.loadUrWithoutPlaceholderl(category.categoryImage)
         }
     }
 }

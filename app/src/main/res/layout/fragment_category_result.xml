@@ -48,7 +48,6 @@
                     android:textSize="14sp"
                     android:textColor="@color/backgroundLight"
                     android:gravity="center_horizontal"
-                    android:maxLines="2"
                     android:fontFamily="@font/bold"
                     android:text="We’ve identified your bulb (A19)with a xxx (E26) fitting" />
 
