@@ -93,7 +93,7 @@ fun ImageView.loadUrl(url: String) {
 
 fun ImageView.loadIdentified(url: String) {
     Glide.with(context).load(url)
-        .placeholder(R.drawable.ic_illustration_scancomplete).into(this)
+        .placeholder(R.drawable.ic_group).into(this)
 }
 
 fun ImageView.loadUrWithoutPlaceholderl(url: String) {
