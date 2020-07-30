@@ -13,10 +13,7 @@ import com.light.finder.common.ActivityCallback
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
-import com.light.finder.extensions.deparcelizeMessage
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.visible
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
@@ -100,6 +97,7 @@ class CategoriesFragment : BaseFragment() {
             }
             else -> {
                 text_identified.text = message.textIdentified
+                identifiedBulb.loadIdentified(message.imageIdentified)
             }
         }
 

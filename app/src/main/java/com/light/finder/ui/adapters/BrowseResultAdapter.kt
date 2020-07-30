@@ -139,7 +139,7 @@ class BrowseResultAdapter(
 
             itemView.bulbName.text = itemView.context.getString(R.string.bulb_s)
                 .format(
-                    shapeIdentified, category.categoryProducts[0].factorShape
+                    category.categoryShape, category.categoryProducts[0].factorShape
                 )
 
             if (indexes.size == 1 && position == indexes[0] && categoriesSize > 1) {

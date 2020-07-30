@@ -39,7 +39,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         baseIdentified = messageDto.baseIdentified,
         formfactorType = messageDto.formfactorType,
         shapeIdentified = messageDto.shape_identified,
-        textIdentified = messageDto.textIdentified
+        textIdentified = messageDto.textIdentified,
+        imageIdentified = messageDto.imageIdentified
     )
 }
 

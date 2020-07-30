@@ -26,7 +26,6 @@ class BrowseFittingViewModel(
     sealed class UiBrowsingModel {
         data class SuccessRequestStatus(val productBrowsingList: List<FormFactorTypeBaseId>) :
             UiBrowsingModel()
-
         data class ErrorRequestStatus(val message: String) : UiBrowsingModel()
         object LoadingStatus : UiBrowsingModel()
     }
@@ -42,14 +41,16 @@ class BrowseFittingViewModel(
         get() = _modelNavigationShape
 
 
-    val modelBottomStatus: LiveData<Event<StatusBottomBar>>
+    val modelBottomStatus: LiveData<Event<ResetFitting>>
         get() = _modelBottomStatus
-    private val _modelBottomStatus = MutableLiveData<Event<StatusBottomBar>>()
+    private val _modelBottomStatus = MutableLiveData<Event<ResetFitting>>()
 
-    sealed class StatusBottomBar {
-        object ResetFitting : StatusBottomBar()
-        object FittingClicked : StatusBottomBar()
-    }
+    object ResetFitting
+
+    val modelFittingClickStatus: LiveData<FittingClicked>
+        get() = _modelFittingClickStatus
+    private val _modelFittingClickStatus = MutableLiveData<FittingClicked>()
+    object FittingClicked
 
     init {
         onRequestBrowsingProducts()
@@ -75,7 +76,7 @@ class BrowseFittingViewModel(
         isNextDisabled = false
         productFormFactorBaseId = product
         productBaseId = product.id
-        _modelBottomStatus.value = Event(StatusBottomBar.FittingClicked)
+        _modelFittingClickStatus.value = FittingClicked
     }
 
     fun onNextButtonPressed() {
