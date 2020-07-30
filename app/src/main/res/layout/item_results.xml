@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            android:text="@string/_0_00_0_00_each"
+            android:text="@string/category_price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
@@ -67,7 +67,6 @@
             android:id="@+id/category_image"
             android:layout_width="96dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/category_placeholder"
             android:layout_height="96dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_title" />
