@@ -2,7 +2,6 @@ package com.light.finder.ui.browse
 
 
 import android.animation.ValueAnimator
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -142,7 +141,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
         modelNavigation.getContentIfNotHandled()?.let { model ->
-            screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseId)
+            screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseFormFactor)
         }
     }
 

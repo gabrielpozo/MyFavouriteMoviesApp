@@ -91,14 +91,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<ProductBrowsing>().toString()
     )
 
-    override fun getAllProductsMessage(baseIdFitting: Int): Message {
+    override fun getAllProductsMessage(baseNameFitting: String): Message {
         val productsFiltered = loadProductBrowsingFiltered()
         return mapBrowsingProductToMessageDomain(
-            if (productsFiltered.isNotEmpty()) {
-                productsFiltered[0].productFormfactorBaseId.toString()
-            } else {
-                baseIdFitting.toString()
-            },
+            baseNameFitting,
             loadProductCategoryName(),
             productsFiltered.groupBy { it.toKey() })
     }
@@ -114,7 +110,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,
-        baseFittingId: Int
+        baseFittingId: Int,
+        productBaseName: String
     ): List<ShapeBrowsing> {
         val shapesToDisplay = arrayListOf<ShapeBrowsing>()
         val allShapes = loadFormFactorLegendTags()
@@ -128,7 +125,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                     productFilteredBrowseList.filter { productBrowse ->
                         shape.id == productBrowse.productFormfactorTypeCode
                     }.groupBy { it.toKey() }.size,
-                    baseIdFitting = baseFittingId //TODO map to
+                    baseNameFitting = productBaseName,
+                    baseIdFitting = baseFittingId
                 )
             )
         }
@@ -148,7 +146,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         }
 
         return mapBrowsingProductToMessageDomain(
-            shapeBrowsingList[0].baseIdFitting.toString(), loadProductCategoryName(),
+            shapeBrowsingList[0].baseNameFitting, loadProductCategoryName(),
             browsedShapeFilteredList.groupBy { it.toKey() })
     }
 

@@ -111,10 +111,7 @@ class BrowseResultFragment : BaseFragment() {
 
         textViewBulbType.invisible()
         textViewFitting.text = getString(R.string.based_on_result_fitting).format(
-            getFormFactorBaseIdTagName(
-                message.baseIdentified.toInt(),
-                localPreferences.loadFormFactorIBaseIdLegendTags()
-            )
+         message.shapeIdentified
         )
     }
 

@@ -72,6 +72,16 @@ data class MessageParcelable(
 ) : Parcelable
 
 @Parcelize
+data class FormFactorTypeBaseIdParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val description: String,
+    val order: Int,
+    var isSelected: Boolean = false
+):Parcelable
+
+@Parcelize
 data class CctTypeParcelable(
     val id: Int,
     val name: String,
@@ -97,6 +107,7 @@ data class ShapeBrowsingParcelable(
     val order: Int,
     val subtitleCount:Int,
     var baseFittingId:Int = -1,
+    var baseNameFitting: String,
     var isSelected: Boolean = false
     ) : Parcelable
 

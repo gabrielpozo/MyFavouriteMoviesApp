@@ -81,9 +81,9 @@ val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<K
             Message(
                 categories = categories.sortedBy { it.order },
                 version = EMPTY_STRING,
-                baseIdentified = fittingString,
+                baseIdentified = EMPTY_STRING,
                 formfactorType = EMPTY_STRING,
-                shapeIdentified = listBrowsing[0].productFormfactorShape,
+                shapeIdentified = fittingString,
                 textIdentified = EMPTY_STRING
             )
         } else {
@@ -91,8 +91,8 @@ val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<K
                 categories = emptyList(),
                 version = EMPTY_STRING,
                 formfactorType = EMPTY_STRING,
-                baseIdentified = fittingString,
-                shapeIdentified = EMPTY_STRING,
+                baseIdentified = EMPTY_STRING,
+                shapeIdentified = fittingString,
                 textIdentified = EMPTY_STRING
             )
         }
@@ -134,7 +134,6 @@ val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
             }
             , categoryDescription = EMPTY_STRING
         )
-
     }
 
 val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =

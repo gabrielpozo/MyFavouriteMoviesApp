@@ -19,6 +19,7 @@ class BrowseFittingViewModel(
     }
 
     private var productBaseId: Int = NO_ITEM_SELECTED
+    private lateinit var productFormFactorBaseId: FormFactorTypeBaseId
     private var isNextDisabled = true
 
 
@@ -34,7 +35,7 @@ class BrowseFittingViewModel(
         get() = _modelBrowsingLiveData
     private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingModel>()
 
-    data class NavigationToShapeFiltering(val productBaseId: Int)
+    data class NavigationToShapeFiltering(val productBaseFormFactor: FormFactorTypeBaseId)
 
     private val _modelNavigationShape = MutableLiveData<Event<NavigationToShapeFiltering>>()
     val modelNavigationShape: LiveData<Event<NavigationToShapeFiltering>>
@@ -72,13 +73,14 @@ class BrowseFittingViewModel(
 
     fun onFittingClick(product: FormFactorTypeBaseId) {
         isNextDisabled = false
+        productFormFactorBaseId = product
         productBaseId = product.id
         _modelBottomStatus.value = Event(StatusBottomBar.FittingClicked)
     }
 
     fun onNextButtonPressed() {
         if (productBaseId > NO_ITEM_SELECTED && !isNextDisabled)
-            _modelNavigationShape.value = Event(NavigationToShapeFiltering(productBaseId))
+            _modelNavigationShape.value = Event(NavigationToShapeFiltering(productFormFactorBaseId))
     }
 }
 

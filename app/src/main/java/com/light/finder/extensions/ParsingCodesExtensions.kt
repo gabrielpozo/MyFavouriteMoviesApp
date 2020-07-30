@@ -320,6 +320,7 @@ fun Category.addOrderField(
     productCategoryNameList: List<ProductCategoryName>
 ) {
     val productCategoryName = productCategoryNameList.find {
+        //TODO by w
         categoryIndex == it.id
     }
     order = productCategoryName?.order ?: -1
