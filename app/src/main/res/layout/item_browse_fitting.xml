@@ -21,14 +21,16 @@
 
     <TextView
         android:id="@+id/textBrowseResults"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:fontFamily="@font/bold"
         android:textColor="@color/backgroundDark"
         android:lineSpacingExtra="10sp"
         android:gravity="center_horizontal"
-        android:text="GU4"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="GU4 "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
