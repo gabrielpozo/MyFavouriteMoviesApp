@@ -19,7 +19,7 @@ class BrowseFittingAdapter(
     )
 
     fun setFittingProductList(formFactorBaseIdList: List<FormFactorTypeBaseId>){
-        productsList = formFactorBaseIdList.map { it.copy() }
+        productsList = formFactorBaseIdList
     }
 
     private var lastPosition = 0

@@ -37,10 +37,8 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
-    private val BROWSE_SCREEN_TAG ="BrowseChooseFitting"
+    private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
-
-
 
 
     override fun onCreateView(
@@ -109,6 +107,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         )
         viewModel.modelNavigationShape.observe(viewLifecycleOwner, Observer(::navigatesToShape))
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
+        viewModel.modelFittingClickStatus.observe(
+            viewLifecycleOwner,
+            Observer { updateClickStatus() })
+
     }
 
     private fun updateBrowsingFittingUI(modelBrowse: UiBrowsingModel) {
@@ -126,17 +128,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun updateStatusBottomBar(modelEvent: Event<BrowseFittingViewModel.StatusBottomBar>) {
-        modelEvent.getContentIfNotHandled()?.let { model ->
-            when (model) {
-                is BrowseFittingViewModel.StatusBottomBar.ResetFitting -> {
-                    resetFittingSelection()
-                }
-                is BrowseFittingViewModel.StatusBottomBar.FittingClicked -> {
-                    settingFilterSelected()
-                }
-            }
+    private fun updateStatusBottomBar(modelEvent: Event<BrowseFittingViewModel.ResetFitting>) {
+        modelEvent.getContentIfNotHandled()?.let { _ ->
+            resetFittingSelection()
         }
+    }
+
+    private fun updateClickStatus() {
+        settingFilterSelected()
     }
 
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {

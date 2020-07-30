@@ -18,7 +18,6 @@ class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: Local
 
             } else {
                 DataState.NoResult(message)
-
             }
         } else {
             val messageFiltered =
