@@ -84,7 +84,8 @@ val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<K
                 baseIdentified = EMPTY_STRING,
                 formfactorType = EMPTY_STRING,
                 shapeIdentified = fittingString,
-                textIdentified = EMPTY_STRING
+                textIdentified = EMPTY_STRING,
+                imageIdentified = EMPTY_STRING
             )
         } else {
             Message(
@@ -93,7 +94,8 @@ val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<K
                 formfactorType = EMPTY_STRING,
                 baseIdentified = EMPTY_STRING,
                 shapeIdentified = fittingString,
-                textIdentified = EMPTY_STRING
+                textIdentified = EMPTY_STRING,
+                imageIdentified = EMPTY_STRING
             )
         }
     }

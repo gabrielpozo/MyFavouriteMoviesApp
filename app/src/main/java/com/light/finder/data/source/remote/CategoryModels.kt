@@ -68,7 +68,8 @@ data class MessageParcelable(
     val baseIdentified: String,
     val formfactorType: String,
     val shapeIdentified: String,
-    val textIdentified: String
+    val textIdentified: String,
+    val imageIdentified: String
 ) : Parcelable
 
 @Parcelize

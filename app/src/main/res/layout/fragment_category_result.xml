@@ -51,13 +51,27 @@
                     android:fontFamily="@font/bold"
                     android:text="We’ve identified your bulb (A19)with a xxx (E26) fitting" />
 
-                <ImageView
+                <LinearLayout
                     android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:scaleType="center"
+                    android:orientation="vertical"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_illustration_scancomplete"
-                    android:layout_height="wrap_content" />
+                    android:background="@drawable/ic_illustration_scancomplete"
+                    android:layout_height="150dp">
+                    <ImageView
+                        android:padding="10dp"
+                        android:layout_marginTop="30dp"
+                        android:id="@+id/identifiedBulb"
+                        android:layout_width="52dp"
+                        android:scaleType="center"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="83dp" />
+
+                </LinearLayout>
+
+
+
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -17,7 +17,9 @@ data class MessageDto(
     @SerializedName("shape_identified")
     val shape_identified: String,
     @SerializedName("text_identified")
-    val textIdentified: String
+    val textIdentified: String,
+    @SerializedName("image_identified")
+    val imageIdentified: String
 
 )
 
