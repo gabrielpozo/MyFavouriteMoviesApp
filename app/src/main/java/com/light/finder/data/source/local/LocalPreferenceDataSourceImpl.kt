@@ -96,6 +96,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         return mapBrowsingProductToMessageDomain(
             baseNameFitting,
             loadProductCategoryName(),
+            loadFormFactorLegendTags(),
             productsFiltered.groupBy { it.toKey() })
     }
 
@@ -146,7 +147,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         }
 
         return mapBrowsingProductToMessageDomain(
-            shapeBrowsingList[0].baseNameFitting, loadProductCategoryName(),
+            shapeBrowsingList[0].baseNameFitting, loadProductCategoryName(),loadFormFactorLegendTags(),
             browsedShapeFilteredList.groupBy { it.toKey() })
     }
 
