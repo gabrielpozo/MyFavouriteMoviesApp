@@ -11,7 +11,15 @@ class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: Local
     ProductBrowsingRepository {
     override suspend fun getProductBrowsingRepository(shapeBrowsingList: List<ShapeBrowsing>): DataState<Message> =
         if (shapeBrowsingList.find { it.isSelected } == null) {
-            DataState.Success(localPreferenceDataSource.getAllProductsMessage(shapeBrowsingList[0].baseNameFitting))
+            val message =
+                localPreferenceDataSource.getAllProductsMessage(shapeBrowsingList[0].baseNameFitting)
+            if (message.categories.isNotEmpty()) {
+                DataState.Success(message)
+
+            } else {
+                DataState.NoResult(message)
+
+            }
         } else {
             val messageFiltered =
                 localPreferenceDataSource.getFilteredProductsMessage(shapeBrowsingList)
