@@ -63,15 +63,12 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
         productBrowsingList
     }
 
-val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<Key, List<ProductBrowsing>>) -> Message =
-    { fittingString, productCategoryNameList, productBrowsingHashMap ->
+val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, List<FormFactorType>, Map<Key, List<ProductBrowsing>>) -> Message =
+    { fittingString, productCategoryNameList, formFactorType, productBrowsingHashMap ->
         //we get the first value
         if (productBrowsingHashMap.isNotEmpty()) {
-            val entry = productBrowsingHashMap.entries.iterator().next()
-            val listBrowsing = entry.value
-
             val categories = productBrowsingHashMap.map {
-                mapBrowsingCategoryToDomain(it.value)
+                mapBrowsingCategoryToDomain(formFactorType, it.value)
             }.also { categoryList ->
                 categoryList.forEach { category ->
                     category.addOrderField(productCategoryNameList)
@@ -101,8 +98,8 @@ val mapBrowsingProductToMessageDomain: (String, List<ProductCategoryName>, Map<K
     }
 
 
-val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
-    { productBrowsingList ->
+val mapBrowsingCategoryToDomain: (List<FormFactorType>, List<ProductBrowsing>) -> Category =
+    { productFormFactorType, productBrowsingList ->
 
         Category(
             categoryProductBase = if (productBrowsingList.isNotEmpty()) {
@@ -129,12 +126,11 @@ val mapBrowsingCategoryToDomain: (List<ProductBrowsing>) -> Category =
                 it.productFinishCode
             }.distinct(),
 
-            categoryShape = if (productBrowsingList.isNotEmpty()) {
-                productBrowsingList[0].productFormfactorShape
-            } else {
-                EMPTY_STRING
-            }
-            , categoryDescription = EMPTY_STRING
+            categoryShape =
+            productFormFactorType.find {
+                productBrowsingList[0].productFormfactorTypeCode == it.id
+            }?.name ?: EMPTY_STRING,
+            categoryDescription = EMPTY_STRING
         )
     }
 
