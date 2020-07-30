@@ -1,7 +1,11 @@
 package com.light.finder.ui.liveambiance
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.light.domain.model.CctType
 import com.light.finder.BaseLightFinderActivity
@@ -60,7 +64,24 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         liveAmbianceViewModel.modelList.observe(this, Observer(::setColorAdapter))
 
         initView()
-        initCamera()
+
+        if (!hasCameraPermission()) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                1
+            )
+        } else {
+            initCamera()
+        }
+
+    }
+
+    private fun hasCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
 
