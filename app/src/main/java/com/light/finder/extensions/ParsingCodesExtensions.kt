@@ -308,6 +308,17 @@ fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<Finish
     return orderedList.sortedBy { it.order }
 }
 
+fun List<FilterVariationCF>.sortConnectivityByOrderField(filterConnectivityList: List<ProductConnectivity>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderConnectivity(it.codeFilter, filterConnectivityList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+
+
 fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>): List<FilterVariationCF> {
     val orderedList = map {
         it.order = getOrderColor(it.codeFilter, filterColorList)
@@ -352,6 +363,15 @@ fun getOrderFinish(
     return productFinish?.order?.toInt() ?: -1
 }
 
+fun getOrderConnectivity(
+    code: Int,
+    filterTypeList: List<ProductConnectivity>
+): Int {
+    val productConnectivity= filterTypeList.find {
+        it.id == code
+    }
+    return productConnectivity?.order?.toInt() ?: -1
+}
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {

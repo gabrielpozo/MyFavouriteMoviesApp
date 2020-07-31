@@ -526,6 +526,11 @@ class DetailFragment : BaseFragment() {
             Observer(::observeFilteringFinish)
         )
 
+        viewModel.dataFilterConnectivityButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringConnectivity)
+        )
+
         viewModel.productSelected.observe(
             viewLifecycleOwner,
             Observer(::observeProductSelectedResult)
@@ -556,6 +561,15 @@ class DetailFragment : BaseFragment() {
             filterFinish.filteredFinishButtons.sortFinishByOrderField(localPreferences.loadLegendFinishFilterNames())
     }
 
+    private fun observeFilteringConnectivity(filterConnectivity: DetailViewModel.FilteringConnectivity) {
+        if (filterConnectivity.isUpdated) {
+            filterConnectivityAdapter.updateBackgroundAppearance(filterConnectivity.filterConnectivityButtons)
+        }
+
+        filterConnectivityAdapter.filterListConnectivity =
+            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(localPreferences.loadLegendConnectivityNames())
+    }
+
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
         //TODO(improve this logic) working along with the viewModel
         productSapId = productSelectedModel.productSelected.sapID12NC.toString()
@@ -578,6 +592,12 @@ class DetailFragment : BaseFragment() {
             filterTypeList = localPreferences.loadLegendFinishFilterNames(),
             legendTag = FINISH_LEGEND_TAG
         )
+        textViewConnectivity.text = getLegendConnectivityTagPref(
+            productSelectedModel.productSelected.productConnectionCode,
+            filterTypeList = localPreferences.loadLegendConnectivityNames(),
+            legendTag = CONNECTIVITY_LEGEND_TAG
+        )
+
     }
 
     private fun handleFilterWattagePressed(filter: FilterVariationCF) {
@@ -593,6 +613,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun handleFilterConnectivityPressed(filter: FilterVariationCF) {
+        viewModel.onFilterConnectivityTap(filter)
 
     }
 

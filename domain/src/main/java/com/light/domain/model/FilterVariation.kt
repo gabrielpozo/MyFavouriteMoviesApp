@@ -21,5 +21,5 @@ data class FilterVariationCF(
 }
 
 enum class TYPE {
-    WATTAGE, COLOR, FINISH
+    WATTAGE, COLOR, FINISH, CONNECTIVITY
 }
