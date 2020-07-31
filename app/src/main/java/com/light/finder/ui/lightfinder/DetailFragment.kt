@@ -27,10 +27,7 @@ import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.FilterColorAdapter
-import com.light.finder.ui.adapters.FilterFinishAdapter
-import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.adapters.*
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -60,6 +57,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterWattageAdapter: FilterWattageAdapter
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
+    private lateinit var filterConnectivityAdapter: FilterConnectivityAdapter
+
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
@@ -501,6 +500,13 @@ class DetailFragment : BaseFragment() {
             localPreferences.loadLegendFinishFilterNames()
         )
         recyclerViewFinish.adapter = filterFinishAdapter
+
+        filterConnectivityAdapter = FilterConnectivityAdapter(
+            ::handleFilterConnectivityPressed,
+            localPreferences.loadLegendConnectivityNames()
+        )
+        recyclerViewConnectivity.adapter = filterConnectivityAdapter
+
     }
 
 
@@ -584,6 +590,10 @@ class DetailFragment : BaseFragment() {
 
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
+    }
+
+    private fun handleFilterConnectivityPressed(filter: FilterVariationCF) {
+
     }
 
     fun returningFromLiveAmbiance(colorCode: Int) {
