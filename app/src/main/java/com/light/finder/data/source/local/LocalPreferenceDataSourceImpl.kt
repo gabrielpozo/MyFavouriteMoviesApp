@@ -18,6 +18,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_FINISH_LEGEND = "productFinishLegend"
         private const val FORM_FACTOR_LEGEND = "productFormFactorLegend"
         private const val FORM_FACTOR_LEGEND_ID = "productFormFactorIdLegend"
+        private const val PRODUCT_CONNECTIVITY_LEGEND = "productConnectivityLegend"
 
 
     }
@@ -35,6 +36,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             .commit()
         editor.putString(FORM_FACTOR_LEGEND_ID, Gson().toJson(legend.legend.formfactorTypeId))
             .commit()
+        editor.putString(PRODUCT_CONNECTIVITY_LEGEND, Gson().toJson(legend.legend.productConnectivity))
+            .commit()
     }
 
     override fun loadLegendCctFilterNames(): List<CctType> =
@@ -50,6 +53,9 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun loadFormFactorIdLegendTags(): List<FormFactorTypeId> = Gson().fromJson(
         pref.getString(FORM_FACTOR_LEGEND_ID, null) ?: emptyList<FormFactorTypeId>().toString()
     )
+
+    override fun loadLegendConnectivityNames(): List<ProductConnectivity> =
+        Gson().fromJson(pref.getString(PRODUCT_CONNECTIVITY_LEGEND, null) ?: "")
 }
 
 inline fun <reified T> Gson.fromJson(json: String): T =

@@ -9,4 +9,6 @@ interface LocalPreferenceDataSource {
     fun loadLegendFinishFilterNames(): List<FinishType>
     fun loadFormFactorLegendTags(): List<FormFactorType>
     fun loadFormFactorIdLegendTags(): List<FormFactorTypeId>
+    fun loadLegendConnectivityNames(): List<ProductConnectivity>
+
 }
