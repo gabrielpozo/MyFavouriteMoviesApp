@@ -20,6 +20,7 @@ class DetailViewModel(
     private val getNewCompatibleListUseCase: GetNewCompatibleVariationListUseCase,
     private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase,
     private val getCctCodeListUseCase: GetDisplayedCctCodesUseCase,
+    private val getconnectivityVariationsUseCase: GetConnectivityVariationsUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -77,6 +78,12 @@ class DetailViewModel(
             return _dataFilterFinishButtons
         }
 
+    private val _dataFilterConnectivityButtons = MutableLiveData<FilteringConnectivity>()
+    val dataFilterConnectivityButtons: LiveData<FilteringConnectivity>
+        get() {
+            return _dataFilterConnectivityButtons
+        }
+
     private val _productSelected = MutableLiveData<ProductSelectedModel>()
     val productSelected: LiveData<ProductSelectedModel>
         get() {
@@ -115,6 +122,11 @@ class DetailViewModel(
 
     data class FilteringFinish(
         val filteredFinishButtons: List<FilterVariationCF> = emptyList(),
+        val isUpdated: Boolean = false
+    )
+
+    data class FilteringConnectivity(
+        val filterConnectivityButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
     )
 
@@ -257,6 +269,27 @@ class DetailViewModel(
         }
     }
 
+    fun onFilterConnectivityTap(filter: FilterVariationCF) {
+        if (!filter.isSelected) {
+            if (filter.isAvailable) {
+                launch {
+                    getNewCompatibleListUseCase.execute(
+                        { productList -> handleCompatibleResult(filter, productList) },
+                        params = *arrayOf(dataProductsVariation, filter)
+                    )
+                }
+
+            } else {
+                launch {
+                    getNewIncompatibleListUseCase.execute(
+                        { productList -> handleIncompatibleResult(filter, productList) },
+                        params = *arrayOf(dataProductsVariation, filter)
+                    )
+                }
+            }
+        }
+    }
+
     private fun getFilterVariationList(isAnUpdate: Boolean = false) {
         launch {
             getWattageVariationsUseCase.execute(
@@ -283,6 +316,16 @@ class DetailViewModel(
                 { filterFinishButtons ->
                     handleFinishUseCaseResult(
                         filterFinishButtons,
+                        isAnUpdate
+                    )
+                },
+                params = *arrayOf(dataProductsVariation)
+            )
+
+            getconnectivityVariationsUseCase.execute(
+                { filterConnectivityButtons ->
+                    handleConnectivityUseCaseResult(
+                        filterConnectivityButtons,
                         isAnUpdate
                     )
                 },
@@ -330,6 +373,15 @@ class DetailViewModel(
     ) {
         _dataFilterFinishButtons.value = FilteringFinish(
             filteredFinishButtons = filterFinishButtons,
+            isUpdated = isAnUpdate
+        )
+    }
+
+    private fun handleConnectivityUseCaseResult(
+        filterConnectivityButtons: List<FilterVariationCF>, isAnUpdate: Boolean = false
+    ) {
+        _dataFilterConnectivityButtons.value = FilteringConnectivity(
+            filterConnectivityButtons = filterConnectivityButtons,
             isUpdated = isAnUpdate
         )
     }

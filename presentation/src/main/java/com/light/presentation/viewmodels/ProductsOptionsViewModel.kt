@@ -18,8 +18,10 @@ class ProductsOptionsViewModel(
     private val getColorVariationsUseCase: GetColorVariationsUseCase,
     private val getFinishVariationsUseCase: GetFinishVariationsUseCase,
     private val getNewCompatibleListUseCase: GetNewCompatibleVariationListUseCase,
-    private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase
-) :
+    private val getNewIncompatibleListUseCase: GetNewIncompatibleVariationListUseCase,
+    private val getconnectivityVariationsUseCase: GetConnectivityVariationsUseCase
+
+    ) :
     BaseViewModel(uiDispatcher) {
 
     private lateinit var dataProducts: List<Product>
@@ -43,6 +45,12 @@ class ProductsOptionsViewModel(
             return _dataFilterFinishButtons
         }
 
+    private val _dataFilterConnectivityButtons = MutableLiveData<FilteringConnectivity>()
+    val dataFilterConnectivityButtons: LiveData<FilteringConnectivity>
+        get() {
+            return _dataFilterConnectivityButtons
+        }
+
     private val _productSelected = MutableLiveData<ProductSelectedModel>()
     val productSelected: LiveData<ProductSelectedModel>
         get() {
@@ -61,6 +69,11 @@ class ProductsOptionsViewModel(
 
     data class FilteringFinish(
         val filteredFinishButtons: List<FilterVariationCF> = emptyList(),
+        val isUpdated: Boolean = false
+    )
+
+    data class FilteringConnectivity(
+        val filteredConnectivityButtons: List<FilterVariationCF> = emptyList(),
         val isUpdated: Boolean = false
     )
 
@@ -192,6 +205,16 @@ class ProductsOptionsViewModel(
                 },
                 params = *arrayOf(dataProducts)
             )
+
+            getconnectivityVariationsUseCase.execute(
+                { filterConnectivityButtons ->
+                    handleConnectivityUseCaseResult(
+                        filterConnectivityButtons,
+                        isAnUpdate
+                    )
+                },
+                params = *arrayOf(dataProducts)
+            )
         }
     }
 
@@ -235,6 +258,15 @@ class ProductsOptionsViewModel(
     ) {
         _dataFilterFinishButtons.value = FilteringFinish(
             filteredFinishButtons = filterFinishButtons,
+            isUpdated = isAnUpdate
+        )
+    }
+
+    private fun handleConnectivityUseCaseResult(
+        filterConnectivityButtons: List<FilterVariationCF>, isAnUpdate: Boolean = false
+    ) {
+        _dataFilterConnectivityButtons.value = FilteringConnectivity(
+            filteredConnectivityButtons = filterConnectivityButtons,
             isUpdated = isAnUpdate
         )
     }
