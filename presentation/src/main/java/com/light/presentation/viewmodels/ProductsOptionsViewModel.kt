@@ -92,7 +92,7 @@ class ProductsOptionsViewModel(
         categoryProducts.forEach {
             Log.d(
                 "GabrielDebugGuide",
-                "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish}"
+                "WATTAGE AND COLOR: ${it.wattageReplaced} -- ${it.colorCctCode} -- ${it.finish} -- ${it.productConnectionCode} "
             )
         }
         dataProducts = categoryProducts
