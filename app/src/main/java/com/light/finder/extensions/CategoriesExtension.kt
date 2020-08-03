@@ -93,7 +93,7 @@ fun ImageView.loadUrl(url: String) {
 
 fun ImageView.loadIdentified(url: String) {
     Glide.with(context).load(url)
-        .placeholder(R.drawable.ic_group).into(this)
+        .placeholder(R.drawable.ic_app_icon_front_white).into(this)
 }
 
 fun ImageView.loadUrWithoutPlaceholderl(url: String) {
@@ -317,7 +317,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.qtyLampscase,
         product.wattageReplaced,
         product.country,
-        product.priority,
+        product.productPrio,
         product.wattageClaim,
         product.factorBase,
         product.discountProc,

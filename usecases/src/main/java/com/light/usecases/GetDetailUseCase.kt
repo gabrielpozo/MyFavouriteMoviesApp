@@ -10,6 +10,6 @@ class GetDetailUseCase : BaseUseCase<List<Product>>() {
         val product = params[1] as Product
 
 
-        return DataState.Success(productDataList.sortedBy { it.priority }.take(0))
+        return DataState.Success(productDataList.sortedBy { it.productPrio }.take(0))
     }
 }

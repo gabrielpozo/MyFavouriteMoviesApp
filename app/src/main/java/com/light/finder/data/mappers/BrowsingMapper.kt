@@ -159,6 +159,7 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             qtyLampSku = productBrowse.productQtyLampsku,
             produtCategoryCode = productBrowse.productCategoryCode,
             wattageReplacedExtra = productBrowse.productWattageReplacedExtra,
-            productConnectionCode = productBrowse.productConnectionCode
+            productConnectionCode = productBrowse.productConnectionCode,
+            productPrio = productBrowse.productPrio
         )
     }
