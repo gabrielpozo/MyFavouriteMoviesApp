@@ -317,7 +317,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.qtyLampscase,
         product.wattageReplaced,
         product.country,
-        product.priority,
+        product.productPrio,
         product.wattageClaim,
         product.factorBase,
         product.discountProc,

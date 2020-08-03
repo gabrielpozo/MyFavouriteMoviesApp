@@ -42,7 +42,7 @@ data class Product(
     var qtyLampscase: Int,
     var wattageReplaced: Int,
     var country: String = "",
-    var priority: Int = -1,
+    var productPrio: Int = -1,
     var wattageClaim: Float = 0.0f,
     var factorBase: String,
     var discountProc: Int = -1,
