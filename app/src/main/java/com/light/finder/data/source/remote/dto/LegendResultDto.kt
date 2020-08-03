@@ -13,10 +13,17 @@ data class LegendValueDto(
     @SerializedName("product_finish") val productFinish: List<FinishTypeDto>,
     @SerializedName("product_cct_name") val productCctName: List<CctTypeDto>,
     @SerializedName("product_formfactor_shape_id") val productFormFactorId: List<FormFactorTypeIdDto>,
+    @SerializedName("product_connectivity") val productConnectivity: List<ProductConnectivityDto>,
     @SerializedName("product_formfactor_base_id") val productFormFactorBaseId: List<FormFactorTypeBaseIdDto>,
     @SerializedName("product_category_name") val productCategoryName: List<ProductCategoryName>
 
+)
 
+data class ProductConnectivityDto(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("image") val image: String,
+    @SerializedName("order") val order: String
 )
 
 data class FormFactorTypeDto(

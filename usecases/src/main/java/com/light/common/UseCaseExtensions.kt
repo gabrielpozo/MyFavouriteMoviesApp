@@ -65,6 +65,19 @@ fun HashSet<FilterVariationCF>.checkThereIsPreviousActiveStateF(product: Product
     return false
 }
 
+fun HashSet<FilterVariationCF>.checkThereIsPreviousActiveStateCon(product: Product): Boolean {
+    if (!product.isAvailable) {
+        forEach {
+            if (it.codeFilter == product.productConnectionCode) {
+                if (it.isAvailable || it.isSelected) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
 fun List<Product>.setSelectedProductToCompatibleList(
     productSelected: Product,
     filter: FilterVariationCF
@@ -74,7 +87,8 @@ fun List<Product>.setSelectedProductToCompatibleList(
         when (filter.type) {
             TYPE.WATTAGE -> {
                 if (product.wattageReplaced == filter.codeFilter) {
-                    if (productSelected.colorCctCode == product.colorCctCode && productSelected.productFinishCode == product.productFinishCode) {
+                    if (productSelected.colorCctCode == product.colorCctCode && productSelected.productFinishCode == product.productFinishCode
+                        && productSelected.productConnectionCode == product.productConnectionCode) {
                         product.isSelected = true
                         return
                     }
@@ -84,7 +98,8 @@ fun List<Product>.setSelectedProductToCompatibleList(
             TYPE.COLOR -> {
                 if (product.colorCctCode == filter.codeFilter) {
 
-                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.productFinishCode == product.productFinishCode) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.productFinishCode == product.productFinishCode
+                        && productSelected.productConnectionCode == product.productConnectionCode) {
                         product.isSelected = true
                         return
                     }
@@ -92,7 +107,17 @@ fun List<Product>.setSelectedProductToCompatibleList(
             }
             TYPE.FINISH -> {
                 if (product.productFinishCode == filter.codeFilter) {
-                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode
+                        && productSelected.productConnectionCode == product.productConnectionCode) {
+                        product.isSelected = true
+                        return
+                    }
+                }
+            }
+            TYPE.CONNECTIVITY -> {
+                if (product.productConnectionCode == filter.codeFilter) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced && productSelected.colorCctCode == product.colorCctCode
+                        && productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                         return
                     }
@@ -113,7 +138,8 @@ fun List<Product>.setSelectedProductToIncompatibleList(
         when (filter.type) {
             TYPE.WATTAGE -> {
                 if (product.wattageReplaced == filter.codeFilter) {
-                    if (productSelected.colorCctCode == product.colorCctCode || productSelected.productFinishCode == product.productFinishCode) {
+                    if (productSelected.colorCctCode == product.colorCctCode || productSelected.productFinishCode == product.productFinishCode
+                        || productSelected.productConnectionCode == product.productConnectionCode) {
                         product.isSelected = true
                         return
                     }
@@ -123,7 +149,8 @@ fun List<Product>.setSelectedProductToIncompatibleList(
             TYPE.COLOR -> {
                 if (product.colorCctCode == filter.codeFilter) {
 
-                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.productFinishCode == product.productFinishCode) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.productFinishCode == product.productFinishCode
+                        || productSelected.productConnectionCode == product.productConnectionCode) {
                         product.isSelected = true
                         return
                     }
@@ -131,7 +158,17 @@ fun List<Product>.setSelectedProductToIncompatibleList(
             }
             TYPE.FINISH -> {
                 if (product.productFinishCode == filter.codeFilter) {
-                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode
+                        || productSelected.productConnectionCode == product.productConnectionCode) {
+                        product.isSelected = true
+                        return
+                    }
+                }
+            }
+            TYPE.CONNECTIVITY -> {
+                if (product.productConnectionCode == filter.codeFilter) {
+                    if (productSelected.wattageReplaced == product.wattageReplaced || productSelected.colorCctCode == product.colorCctCode
+                        || productSelected.productFinishCode == product.productFinishCode) {
                         product.isSelected = true
                         return
                     }

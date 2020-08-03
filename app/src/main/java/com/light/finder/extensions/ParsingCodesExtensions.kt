@@ -9,6 +9,7 @@ import com.light.finder.data.source.remote.reports.CrashlyticsException
 const val COLOR_LEGEND_TAG = "product_cct_code"
 const val FINISH_LEGEND_TAG = "product_finish_code"
 const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
+const val CONNECTIVITY_LEGEND_TAG = "product_connection_code"
 
 //TODO("this method will be removed at some point")
 fun getLegendCctTagPref(
@@ -63,6 +64,29 @@ fun getLegendFinishTagPref(
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
     filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendConnectivityTagPref(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<ProductConnectivity>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
@@ -156,6 +180,29 @@ fun getLegendFinishTagPrefImage(
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
     filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.image
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendConnectivityTagPrefImage(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<ProductConnectivity>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
@@ -291,6 +338,17 @@ fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<Finish
     return orderedList.sortedBy { it.order }
 }
 
+fun List<FilterVariationCF>.sortConnectivityByOrderField(filterConnectivityList: List<ProductConnectivity>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderConnectivity(it.codeFilter, filterConnectivityList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+
+
 fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>): List<FilterVariationCF> {
     val orderedList = map {
         it.order = getOrderColor(it.codeFilter, filterColorList)
@@ -346,6 +404,15 @@ fun getOrderFinish(
     return productFinish?.order?.toInt() ?: -1
 }
 
+fun getOrderConnectivity(
+    code: Int,
+    filterTypeList: List<ProductConnectivity>
+): Int {
+    val productConnectivity= filterTypeList.find {
+        it.id == code
+    }
+    return productConnectivity?.order?.toInt() ?: -1
+}
 
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {

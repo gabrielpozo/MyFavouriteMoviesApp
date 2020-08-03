@@ -18,6 +18,7 @@ data class CategoryParcelable(
     val colors: List<Int>,
     val finishCodes: List<Int>,
     val categoryShape: String,
+    val categoryConnectivityCode: List<Int>,
     val categoryDescription: String
 ) : Parcelable
 
@@ -55,6 +56,7 @@ data class ProductParcelable(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var productConnectionCode: Int,
     var productCategoryCode: Int,
     var isSelected: Boolean,
     var isAvailable: Boolean,

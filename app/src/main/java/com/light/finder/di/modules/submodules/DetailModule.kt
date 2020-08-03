@@ -34,6 +34,11 @@ class DetailModule {
         GetFinishVariationsUseCase()
 
     @Provides
+    fun getConnectivityVariationsUseCase() =
+        GetConnectivityVariationsUseCase()
+
+
+    @Provides
     fun getAvailableSelectedFilterUseCase() =
         GetNewCompatibleVariationListUseCase()
 
@@ -59,6 +64,7 @@ class DetailModule {
         getAvailableSelectedFilterUseCase(),
         getNewSelectedProduct(),
         getDisplayedCctCodes,
+        getConnectivityVariationsUseCase(),
         Dispatchers.Main
     )
 

@@ -27,10 +27,7 @@ import com.light.finder.di.modules.submodules.DetailComponent
 import com.light.finder.di.modules.submodules.DetailModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.adapters.DetailImageAdapter
-import com.light.finder.ui.adapters.FilterColorAdapter
-import com.light.finder.ui.adapters.FilterFinishAdapter
-import com.light.finder.ui.adapters.FilterWattageAdapter
+import com.light.finder.ui.adapters.*
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.DetailViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -60,6 +57,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterWattageAdapter: FilterWattageAdapter
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
+    private lateinit var filterConnectivityAdapter: FilterConnectivityAdapter
+
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
@@ -501,6 +500,13 @@ class DetailFragment : BaseFragment() {
             localPreferences.loadLegendFinishFilterNames()
         )
         recyclerViewFinish.adapter = filterFinishAdapter
+
+        filterConnectivityAdapter = FilterConnectivityAdapter(
+            ::handleFilterConnectivityPressed,
+            localPreferences.loadLegendConnectivityNames()
+        )
+        recyclerViewConnectivity.adapter = filterConnectivityAdapter
+
     }
 
 
@@ -518,6 +524,11 @@ class DetailFragment : BaseFragment() {
         viewModel.dataFilterFinishButtons.observe(
             viewLifecycleOwner,
             Observer(::observeFilteringFinish)
+        )
+
+        viewModel.dataFilterConnectivityButtons.observe(
+            viewLifecycleOwner,
+            Observer(::observeFilteringConnectivity)
         )
 
         viewModel.productSelected.observe(
@@ -550,6 +561,15 @@ class DetailFragment : BaseFragment() {
             filterFinish.filteredFinishButtons.sortFinishByOrderField(localPreferences.loadLegendFinishFilterNames())
     }
 
+    private fun observeFilteringConnectivity(filterConnectivity: DetailViewModel.FilteringConnectivity) {
+        if (filterConnectivity.isUpdated) {
+            filterConnectivityAdapter.updateBackgroundAppearance(filterConnectivity.filterConnectivityButtons)
+        }
+
+        filterConnectivityAdapter.filterListConnectivity =
+            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(localPreferences.loadLegendConnectivityNames())
+    }
+
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
         //TODO(improve this logic) working along with the viewModel
         productSapId = productSelectedModel.productSelected.sapID12NC.toString()
@@ -573,6 +593,12 @@ class DetailFragment : BaseFragment() {
             filterTypeList = localPreferences.loadLegendFinishFilterNames(),
             legendTag = FINISH_LEGEND_TAG
         )
+        textViewConnectivity.text = getLegendConnectivityTagPref(
+            productSelectedModel.productSelected.productConnectionCode,
+            filterTypeList = localPreferences.loadLegendConnectivityNames(),
+            legendTag = CONNECTIVITY_LEGEND_TAG
+        )
+
     }
 
     private fun handleFilterWattagePressed(filter: FilterVariationCF) {
@@ -585,6 +611,11 @@ class DetailFragment : BaseFragment() {
 
     private fun handleFilterFinishPressed(filter: FilterVariationCF) {
         viewModel.onFilterFinishTap(filter)
+    }
+
+    private fun handleFilterConnectivityPressed(filter: FilterVariationCF) {
+        viewModel.onFilterConnectivityTap(filter)
+
     }
 
     fun returningFromLiveAmbiance(colorCode: Int) {

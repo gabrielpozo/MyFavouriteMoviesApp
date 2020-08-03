@@ -184,6 +184,7 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         colors,
         finishCodes,
         categoryShape,
+        categoryConnectivityCode,
         categoryDescription
     )
 
@@ -202,6 +203,7 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         colors,
         finishCodes,
         categoryShape,
+        categoryConnectivityCode,
         categoryDescription
     )
 
@@ -334,6 +336,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
         product.produtCategoryCode,
         product.isSelected,
         product.isAvailable,
@@ -403,6 +406,7 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
         product.productCategoryCode,
         product.isSelected,
         product.isAvailable,

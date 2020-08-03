@@ -22,6 +22,9 @@ fun FilterVariationCF.setSelectedProduct(dataProducts: List<Product>): Product? 
                 TYPE.FINISH -> {
                     product.productFinishCode == codeFilter
                 }
+                TYPE.CONNECTIVITY -> {
+                    product.productConnectionCode == codeFilter
+                }
             }
         }.also { product ->
             product?.let {

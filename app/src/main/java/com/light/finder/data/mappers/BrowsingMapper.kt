@@ -130,7 +130,8 @@ val mapBrowsingCategoryToDomain: (List<FormFactorType>, List<ProductBrowsing>) -
             productFormFactorType.find {
                 productBrowsingList[0].productFormfactorTypeCode == it.id
             }?.name ?: EMPTY_STRING,
-            categoryDescription = EMPTY_STRING
+            categoryDescription = EMPTY_STRING,
+            categoryConnectivityCode = emptyList()
         )
     }
 
@@ -157,6 +158,7 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             priceSku = productBrowse.productPriceSku,
             qtyLampSku = productBrowse.productQtyLampsku,
             produtCategoryCode = productBrowse.productCategoryCode,
-            wattageReplacedExtra = productBrowse.productWattageReplacedExtra
+            wattageReplacedExtra = productBrowse.productWattageReplacedExtra,
+            productConnectionCode = productBrowse.productConnectionCode
         )
     }

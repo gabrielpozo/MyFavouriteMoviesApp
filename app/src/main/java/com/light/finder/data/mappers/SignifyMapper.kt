@@ -26,6 +26,7 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     colors = categoryDto.categoryCctCode.map { it },
                     finishCodes = categoryDto.categoryFilterFinishCode.map { it },
                     categoryShape = categoryDto.categoryProductShape,
+                    categoryConnectivityCode = categoryDto.categoryConnectivityCode.map { it },
                     categoryDescription = categoryDto.categoryDescription
                 )
             )
@@ -78,6 +79,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         colorCctCode = productDto.productCctCode,
         formfactorType = productDto.factorTypeCode,
         productFinishCode = productDto.productFinishCode,
+        productConnectionCode = productDto.productConnectionCode,
         produtCategoryCode = productDto.productCategoryCode,
         wattageReplacedExtra = productDto.wattageReplacedExtra
 
@@ -136,8 +138,8 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.image,
                 it.order
             )
-        }
-        , cctType = legendValueDto.productCctName.map {
+        },
+         cctType = legendValueDto.productCctName.map {
             CctType(
                 it.id,
                 it.name,
@@ -159,7 +161,14 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.order
             )
         },
-
+        productConnectivity = legendValueDto.productConnectivity.map {
+            ProductConnectivity(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
+        },
         formfactorTypeBaseId = legendValueDto.productFormFactorBaseId.map {
             FormFactorTypeBaseId(
                 it.id,
