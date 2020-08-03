@@ -246,6 +246,13 @@ class CartFragment : BaseFragment() {
         progressBar?.progress = newProgress
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        //we do extra call to check if something has been added in browsing flow or scanning flow
+        viewModel.onRequestGetItemCount()
+    }
+
     fun onCheckIfOffline() {
         if (!InternetUtil.isInternetOn()) {
             webView.invisible()
