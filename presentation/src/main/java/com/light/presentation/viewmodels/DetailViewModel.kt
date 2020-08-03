@@ -388,8 +388,13 @@ class DetailViewModel(
 
     private fun setProductSelected(products: List<Product>) {
         if (::dataProductsVariation.isInitialized) {
-            val product = products[0].also { it.isSelected = true }
-            _modelSapId.value = ContentProductId(product.sapID12NC.toString())
+            val product = products.minBy { it.productPrio }.also {
+                it?.isSelected = true
+            }
+            if (product != null) {
+                _modelSapId.value = ContentProductId(product.sapID12NC.toString())
+            }
+
         }
     }
 
