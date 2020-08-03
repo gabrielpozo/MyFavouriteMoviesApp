@@ -26,12 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -49,8 +47,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_browse"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fittingLayout">
+        app:layout_constraintTop_toBottomOf="@id/fittingLayout"
+        app:layout_constraintVertical_bias="0.791">
 
 
         <LinearLayout
@@ -91,8 +91,8 @@
                     android:clipToPadding="false"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    app:spanCount="3"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
                     tools:listitem="@layout/item_browse_fitting" />
 
                 <include
@@ -111,6 +111,7 @@
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom_navigation_browse"
         android:background="@color/backgroundDark"
