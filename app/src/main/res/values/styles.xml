@@ -41,11 +41,30 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="TitleTextBrowse" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="TitleTextGray" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/bottomNavBarColor</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
+
+    <style name="BrowseNext" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="BrowseNextDisable" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
 
     <style name="SubTitleTextGray" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/bottomNavBarColor</item>
@@ -101,7 +120,7 @@
     <style name="PriceButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:minHeight">30dp</item>
         <item name="android:height">30dp</item>
-        <item name="android:fontFamily">@font/book</item>
+        <item name="android:fontFamily">@font/bold</item>
         <item name="android:textColor">@color/backgroundLight</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">false</item>

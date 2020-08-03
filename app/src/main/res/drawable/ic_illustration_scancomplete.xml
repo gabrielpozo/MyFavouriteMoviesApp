@@ -1,0 +1,57 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="182dp"
+    android:height="182dp"
+    android:viewportWidth="182"
+    android:viewportHeight="182">
+  <path
+      android:pathData="M91,91m-90,0a90,90 0,1 1,180 0a90,90 0,1 1,-180 0"
+      android:strokeAlpha="0.102608815"
+      android:strokeWidth="1"
+      android:fillColor="#00000000"
+      android:strokeColor="#01E487"
+      android:fillType="evenOdd"
+      android:fillAlpha="0.102608815"/>
+  <path
+      android:pathData="M91,91m-74,0a74,74 0,1 1,148 0a74,74 0,1 1,-148 0"
+      android:strokeAlpha="0.09860956"
+      android:strokeWidth="1"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000"
+      android:fillAlpha="0.09860956">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startY="110.693535"
+          android:startX="62.34244"
+          android:endY="54.27854"
+          android:endX="147.47557"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF01E488"/>
+        <item android:offset="1" android:color="#FF10D6AF"/>
+        <item android:offset="1" android:color="#FF10D6AF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M91,91m-63,0a63,63 0,1 1,126 0a63,63 0,1 1,-126 0"
+      android:strokeWidth="1"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startY="107.76612"
+          android:startX="66.60235"
+          android:endY="59.737137"
+          android:endX="139.08055"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF01E488"/>
+        <item android:offset="1" android:color="#FF10D6AF"/>
+        <item android:offset="1" android:color="#FF10D6AF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <group>
+    <clip-path
+        android:pathData="M65,48l52,0l0,83l-52,0z"/>
+  </group>
+</vector>

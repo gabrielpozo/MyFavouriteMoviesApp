@@ -4,6 +4,7 @@
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>
     <string name="cart">My Cart</string>
+    <string name="title_activity_browse">BrowseActivity</string>
 
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch flash</string>
@@ -23,6 +24,8 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_results">%d results</string>
     <string name="text_result">%d result</string>
+    <string name="category_price">From %s each</string>
+
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
     <string name="light_bulb_recognised_as">Scan results</string>
     <string name="description_wattage">%sW-%sW %s</string>
@@ -35,6 +38,10 @@
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
+    <string name="scan_completed">Scan completed!</string>
+    <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
+    <string name="select_button">Select</string>
+    <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
     <string name="live_preview_disabled_button_text">Preview not available</string>
     <string name="try_again">Try again</string>
@@ -105,7 +112,7 @@
     <string name="api_server_error_event">api_server_error</string>
     <string name="no_internet_connection_event">no_internet_connection</string>
     <string name="base">base</string>
-    <string name="shape">shape</string>
+    <string name="shape">Shape</string>
     <string name="finish">finish</string>
     <string name="give_us_feedback">Give us feedback</string>
     <string name="open_terms_of_use">open_terms_of_use</string>
@@ -127,8 +134,20 @@
     <string name="no_results">No Results</string>
     <string name="no_result_sub">We couldn\'t find any matches with your search. Adjust your search by changing the fitting, shape or by removing filters.</string>
     <string name="based_on_s_fitting">Identified as: %s (%s) with %s fitting</string>
+    <string name="based_on_result_fitting">Based on: %s fitting</string>
+
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
-
+    <string name="error_browse">Oops…</string>
+    <string name="something_went_wrong">Something went wrong.\nPlease refresh or try again later.</string>
+    <string name="refresh">Refresh</string>
+    <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>
+    <string name="which_shape_do_you_need">Which shape\ndo you need?</string>
+    <string name="fitting">Fitting</string>
+    <string name="reset"><u>Reset</u></string>
+    <string name="next">Next</string>
+    <string name="search">Search</string>
+    <string name="skip">Skip</string>
+    <string name="not_available">Not available for this fitting</string>
 </resources>

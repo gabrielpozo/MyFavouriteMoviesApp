@@ -1,7 +1,7 @@
 package com.light.repository
 
 
-import com.light.data.repositoryScanningRequest
+import com.light.data.repositoryLightFinderBusinessModel
 import com.light.domain.CategoryRepository
 import com.light.domain.model.Message
 import com.light.domain.state.DataState
@@ -19,11 +19,11 @@ class CategoryRepositoryImpl(
 ) : CategoryRepository {
 
     override suspend fun getMessage(base64: String?): DataState<List<Message>> =
-        repositoryScanningRequest(
+        repositoryLightFinderBusinessModel(
+            shouldDoFetchLegendRequest = localPreferenceDataSource.loadFormFactorLegendTags().isEmpty(),
             legendTagsRemoteRequest = { legendRemoteDataSource.fetchLegendTags() },
-            mainRemoteRequest = { remoteDataSource.fetchMessages(base64!!) },
-            saveOnLocalDataSourceInitRequest = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
-            shouldDoInitialRequest = localPreferenceDataSource.loadFormFactorLegendTags().isEmpty()
+            saveLegendRequestOnLocal = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
+            mainRemoteRequest = { remoteDataSource.fetchMessages(base64!!) }
         )
 
     //TODO(is this this method needed?)

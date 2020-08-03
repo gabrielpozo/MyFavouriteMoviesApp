@@ -10,7 +10,6 @@ import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
-import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
@@ -19,8 +18,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
-import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.fragment_categories.*
+import kotlinx.android.synthetic.main.fragment_category_result.*
 
 class CategoriesFragment : BaseFragment() {
 
@@ -32,11 +30,6 @@ class CategoriesFragment : BaseFragment() {
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
     private lateinit var activityCallback: ActivityCallback
-    private val localPreferences: LocalPreferenceDataSource by lazy {
-        LocalPreferenceDataSourceImpl(
-            requireContext()
-        )
-    }
 
 
     override fun onCreateView(
@@ -44,7 +37,7 @@ class CategoriesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        return inflater.inflate(R.layout.fragment_category_result, container, false)
     }
 
     override fun onAttach(context: Context) {
@@ -102,47 +95,23 @@ class CategoriesFragment : BaseFragment() {
                 textViewNoResultTitle.visible()
                 rvCategories.gone()
             }
-            categories.size == 1 -> {
-                textViewResults.text =
-                    getString(R.string.text_result).getIntFormatter(categories.size)
-            }
             else -> {
-                textViewResults.text =
-                    getString(R.string.text_results).getIntFormatter(categories.size)
+                text_identified.text = message.textIdentified
+                identifiedBulb.loadIdentified(message.imageIdentified)
             }
         }
-        /*textViewBulbType.ellipsize = TextUtils.TruncateAt.END
-        textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(message.baseIdentified + " " + message.shapeIdentified)*/
-/*        getLegendFormFactorTag(
-            code = message.shapeIdentified.toInt(),
-            filterTypeList = localPreferences.loadFormFactorLegendTags(),
-            legendTag = ""
-        )*/
-        textViewFitting.text = getString(R.string.based_on_s_fitting).format(
-            getFormFactorIdTagName(
-                message.shapeIdentified,
-                localPreferences.loadFormFactorIdLegendTags()
-            ),
-            categories[0].categoryProducts[0].factorShape,
-            message.baseIdentified
-        )
 
-        setAdapter(message)
+        setAdapter()
         //TODO(move it to a standalone method)
+
         adapter.categories = categories
 
     }
 
 
-    private fun setAdapter(message: Message) {
+    private fun setAdapter() {
         adapter = CategoriesAdapter(
-            viewModel::onCategoryClick,
-            localPreferences.loadLegendCctFilterNames(),
-            localPreferences.loadFormFactorLegendTags(),
-            localPreferences.loadLegendFinishFilterNames(),
-            localPreferences.loadFormFactorIdLegendTags(),
-            message.shapeIdentified
+            viewModel::onCategoryClick
         )
         rvCategories.adapter = adapter
 

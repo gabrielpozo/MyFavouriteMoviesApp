@@ -15,7 +15,12 @@ data class MessageDto(
     @SerializedName("formfactor")
     val formfactorType: String,
     @SerializedName("shape_identified")
-    val shape_identified: String
+    val shape_identified: String,
+    @SerializedName("text_identified")
+    val textIdentified: String,
+    @SerializedName("image_identified")
+    val imageIdentified: String
+
 )
 
 data class CategoriesDto(
@@ -30,12 +35,14 @@ data class CategoriesDto(
     @SerializedName("category_energysave") val categoryEnergySave: EnergySaving,
     @SerializedName("category_filter_finish_code") val categoryFilterFinishCode: List<Int>,
     @SerializedName("category_filter_product_shape") val categoryProductShape: String,
-    @SerializedName("category_filter_connectivity_code") val categoryConnectivityCode: List<Int>
+    @SerializedName("category_filter_connectivity_code") val categoryConnectivityCode: List<Int>,
+    @SerializedName("category_description") val categoryDescription: String
 )
 
 data class ProductDto(
     @SerializedName("product_name") var name: String,
     @SerializedName("product_index") var index: Int,
+    @SerializedName("product_category_code") var productCategoryCode: Int,
     @SerializedName("product_spec1") var spec1: Float,
     @SerializedName("product_spec3") var spec3: List<Int>,
     @SerializedName("product_spec2") var spec2: String,
@@ -65,7 +72,8 @@ data class ProductDto(
     @SerializedName("product_formfactor_type_code") var factorTypeCode: Int,
     @SerializedName("product_cct_code") var productCctCode: Int,
     @SerializedName("product_finish_code") var productFinishCode: Int,
-    @SerializedName("product_connection_code") val productConnectionCode:Int
+    @SerializedName("product_connection_code") val productConnectionCode:Int,
+    @SerializedName("product_wattage_replaced_extra") var wattageReplacedExtra: String
 )
 
 

@@ -1,7 +1,6 @@
 package com.light.finder.extensions
 
 import android.content.Context
-import android.util.Log
 import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
@@ -123,11 +122,21 @@ fun getFormFactorIdTagName(
     formFactoridTypeList: List<FormFactorTypeId>
 
 ): String {
-    Log.d("Gabriel","FormFactor List : $formFactoridTypeList")
     val formFactorTypeId = formFactoridTypeList.find {
         it.name == shapeIdentified
     }
     return formFactorTypeId?.productFormFactorType ?: ""
+}
+
+fun getFormFactorBaseIdTagName(
+    baseIdentified: Int,
+    formFactoridTypeList: List<FormFactorTypeBaseId>
+
+): String {
+    val formFactorTypeId = formFactoridTypeList.find {
+        it.id == baseIdentified
+    }
+    return formFactorTypeId?.name ?: ""
 }
 
 
@@ -234,6 +243,27 @@ fun getLegendCctTagPrefSmallIcon(
         }
     }
 }
+
+fun getLegendCategoryName(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.name ?: ""
+}
+
+fun getLegendCategoryImage(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.image ?: ""
+}
+
 
 fun getLegendFormFactorTagPrefSmallIcon(
     code: Int,
@@ -342,6 +372,17 @@ fun List<Int>.sortSmallFinishByOrderField(filterFinishList: List<FinishType>): L
     return orderedFinish
 }
 
+
+//Loop the category list from outside
+fun Category.addOrderField(
+    productCategoryNameList: List<ProductCategoryName>
+) {
+    val productCategoryName = productCategoryNameList.find {
+        //TODO by w
+        categoryIndex == it.id
+    }
+    order = productCategoryName?.order ?: -1
+}
 
 fun getOrderColor(
     code: Int,

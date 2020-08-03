@@ -1,19 +1,10 @@
 package com.light.finder.di.modules.singleton
 
-import com.light.domain.CartItemCountRepository
-import com.light.domain.CartRepository
-import com.light.domain.CategoryRepository
-import com.light.domain.LegendRepository
-import com.light.repository.CartItemCountRepositoryImpl
-import com.light.repository.CartRepositoryImpl
-import com.light.repository.CategoryRepositoryImpl
-import com.light.repository.LegendRepositoryImpl
+import com.light.domain.*
+import com.light.repository.*
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
-import com.light.source.remote.CartRemoteDataSource
-import com.light.source.remote.ItemRemoteDataSource
-import com.light.source.remote.RemoteDataSource
-import com.light.source.remote.RemoteFetchLegendDataSource
+import com.light.source.remote.*
 import dagger.Module
 import dagger.Provides
 
@@ -53,4 +44,25 @@ class DataModule {
         localPreferenceDataSource: LocalPreferenceDataSource
     ): LegendRepository =
         LegendRepositoryImpl(legendRemoteDataSource, localPreferenceDataSource)
+
+    @Provides
+    fun getBrowsingProductsRepository(
+        remoteFetchBrowsingSource: RemoteFetchBrowsingDataSource,
+        localPreferenceDataSource: LocalPreferenceDataSource,
+        remoteFetchLegendDataSource: RemoteFetchLegendDataSource
+    ): BrowseLightBulbsRepository =
+        BrowseLightBulbsRepositoryImpl(
+            remoteFetchBrowsingSource,
+            localPreferenceDataSource,
+            remoteFetchLegendDataSource
+        )
+
+    @Provides
+    fun getShapeBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ShapeLightBulbRepository =
+        ShapeLightBulbsRepositoryImpl(localPreferenceDataSource)
+
+    @Provides
+    fun getProductsBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ProductBrowsingRepository =
+        ProductBrowsingRepositoryImpl(localPreferenceDataSource)
+
 }

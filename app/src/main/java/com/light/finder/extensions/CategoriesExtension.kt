@@ -91,6 +91,23 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadIdentified(url: String) {
+    Glide.with(context).load(url)
+        .placeholder(R.drawable.ic_group).into(this)
+}
+
+fun ImageView.loadUrWithoutPlaceholderl(url: String) {
+    Glide.with(context).load(url)
+        .override(460, 460)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(this)
+}
+
+fun ImageView.loadFitting(url: String) {
+    Glide.with(context).load(url)
+        .placeholder(R.color.backgroundLight).into(this)
+}
+
 fun ImageView.loadThumbnail(url: String) {
     Glide.with(context)
         .load(url)
@@ -167,7 +184,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         colors,
         finishCodes,
         categoryShape,
-        categoryConnectivityCode
+        categoryConnectivityCode,
+        categoryDescription
     )
 
 
@@ -185,7 +203,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         colors,
         finishCodes,
         categoryShape,
-        categoryConnectivityCode
+        categoryConnectivityCode,
+        categoryDescription
     )
 
 
@@ -215,6 +234,24 @@ fun List<CctTypeParcelable>.deparcelizeCctList(): ArrayList<CctType> {
 }
 
 
+fun List<ShapeBrowsing>.parcelizeBrowsingList(): ArrayList<ShapeBrowsingParcelable> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsingParcelable>()
+    forEach { cctColor ->
+        parcelizeBrowsing.add(mapDomainShapeBrowsingToParcelable(cctColor))
+    }
+    return parcelizeBrowsing
+}
+
+
+fun List<ShapeBrowsingParcelable>.deParcelizeBrowsingList(): ArrayList<ShapeBrowsing> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsing>()
+    forEach { shapeParcelable ->
+        parcelizeBrowsing.add(mapParcelizeShapeBrowsingToDomain(shapeParcelable))
+    }
+    return parcelizeBrowsing
+}
+
+
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
     forEach { productParcelable ->
@@ -229,7 +266,19 @@ fun Message.parcelizeMessage(): MessageParcelable =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
+    )
+
+fun FormFactorTypeBaseId.parcelizeFormFactor(): FormFactorTypeBaseIdParcelable =
+    FormFactorTypeBaseIdParcelable(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
     )
 
 
@@ -239,9 +288,19 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
     )
-
+fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
+    FormFactorTypeBaseId(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
+    )
 
 val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
@@ -278,8 +337,10 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.formfactorType,
         product.productFinishCode,
         product.productConnectionCode,
+        product.produtCategoryCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        product.wattageReplacedExtra
     )
 
 }
@@ -346,8 +407,10 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.formfactorType,
         product.productFinishCode,
         product.productConnectionCode,
+        product.productCategoryCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        wattageReplacedExtra = product.wattageReplacedExtra
     )
 
 }
@@ -368,3 +431,34 @@ val mapParcelableKelvinToDomain: (KelvinSpecParcelable) -> KelvinSpec = { kelvin
         kelvinSpecParcelable.defaultValue
     )
 }
+
+
+val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelable =
+    { shapeBrowsing ->
+        ShapeBrowsingParcelable(
+            shapeBrowsing.id,
+            shapeBrowsing.name,
+            shapeBrowsing.image,
+            shapeBrowsing.order,
+            shapeBrowsing.subtitleCount,
+            shapeBrowsing.baseIdFitting,
+            shapeBrowsing.baseNameFitting,
+            shapeBrowsing.isSelected
+        )
+
+    }
+
+val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsing =
+    { shapeBrowsingParcelable ->
+        ShapeBrowsing(
+            shapeBrowsingParcelable.id,
+            shapeBrowsingParcelable.name,
+            shapeBrowsingParcelable.image,
+            shapeBrowsingParcelable.order,
+            shapeBrowsingParcelable.subtitleCount,
+            shapeBrowsingParcelable.baseFittingId,
+            shapeBrowsingParcelable.baseNameFitting,
+            shapeBrowsingParcelable.isSelected
+        )
+
+    }
