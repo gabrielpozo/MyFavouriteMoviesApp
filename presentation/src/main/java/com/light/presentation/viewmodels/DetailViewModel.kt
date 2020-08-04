@@ -189,7 +189,7 @@ class DetailViewModel(
      */
 
     fun onRetrieveProductsVariation(categoryProducts: List<Product>) {
-        dataProductsVariation = categoryProducts
+        dataProductsVariation = categoryProducts.sortedBy { it.productPrio }
         setProductSelected(dataProductsVariation)
         val productSelected = dataProductsVariation.find {
             it.isSelected
@@ -388,13 +388,8 @@ class DetailViewModel(
 
     private fun setProductSelected(products: List<Product>) {
         if (::dataProductsVariation.isInitialized) {
-            val product = products.minBy { it.productPrio }.also {
-                it?.isSelected = true
-            }
-            if (product != null) {
-                _modelSapId.value = ContentProductId(product.sapID12NC.toString())
-            }
-
+            val product = products[0].also { it.isSelected = true }
+            _modelSapId.value = ContentProductId(product.sapID12NC.toString())
         }
     }
 
