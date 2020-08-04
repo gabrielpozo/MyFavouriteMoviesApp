@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -67,7 +68,6 @@
                     android:id="@+id/textViewResults"
                     style="@style/Result"
                     android:layout_marginTop="24dp"
-                    android:text="@string/text_results"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -80,7 +80,6 @@
                     android:id="@+id/textViewFitting"
                     style="@style/Fitting"
                     android:layout_marginTop="@dimen/stroke_small"
-                    android:text="@string/based_on_s_fitting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
