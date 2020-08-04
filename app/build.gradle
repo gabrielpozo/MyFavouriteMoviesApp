@@ -62,7 +62,7 @@ android {
             applicationId "com.light.finder"
             buildConfigField "String", "BASE_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
-            buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api\""
+            buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
 
         }
     }
