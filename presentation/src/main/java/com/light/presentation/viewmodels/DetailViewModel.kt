@@ -336,14 +336,14 @@ class DetailViewModel(
 
 
     private fun handleIncompatibleResult(filter: FilterVariationCF, newListProduct: List<Product>) {
-        dataProductsVariation = newListProduct
+        dataProductsVariation = newListProduct.sortedBy { it.productPrio }
         setProductSelectedOnView(filter.setSelectedProduct(dataProductsVariation))
         getFilterVariationList(true)
     }
 
 
     private fun handleCompatibleResult(filter: FilterVariationCF, newListProduct: List<Product>) {
-        dataProductsVariation = newListProduct
+        dataProductsVariation = newListProduct.sortedBy { it.productPrio }
         setProductSelectedOnView(getSelectedProduct(dataProductsVariation))
         getFilterVariationList(true)
     }
