@@ -261,5 +261,4 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
         throw IllegalStateException("Need to send an index that we know")
     }
-
 }
