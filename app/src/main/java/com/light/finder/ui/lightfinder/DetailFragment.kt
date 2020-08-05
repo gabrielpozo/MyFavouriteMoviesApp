@@ -402,7 +402,9 @@ class DetailFragment : BaseFragment() {
             )
         ) {
             livePreviewButton.visible()
+            livePreviewButtonDisabled.gone()
         } else {
+            livePreviewButton.gone()
             livePreviewButtonDisabled.visible()
         }
 
