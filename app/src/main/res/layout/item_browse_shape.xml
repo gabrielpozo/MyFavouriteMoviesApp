@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
-    android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
     android:layout_marginBottom="6dp"
     android:padding="3dp"
     android:id="@+id/shapeBg"
@@ -16,7 +14,6 @@
 <androidx.cardview.widget.CardView app:cardCornerRadius="4dp"
     android:layout_width="match_parent"
     android:layout_height="96dp"
-
    >
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +28,7 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
