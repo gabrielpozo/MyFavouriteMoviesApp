@@ -969,7 +969,7 @@ class CameraFragment : BaseFragment() {
     }
 
     fun setCameraView() {
-        viewModel.onPermissionsViewRequested(true)
+        viewModel.onCameraPermissionRequested(true)
     }
 }
 
