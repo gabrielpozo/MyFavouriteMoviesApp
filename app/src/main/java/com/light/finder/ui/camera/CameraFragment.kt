@@ -969,7 +969,13 @@ class CameraFragment : BaseFragment() {
     }
 
     fun setCameraView() {
-        viewModel.onCameraPermissionRequested(true)
+        timer.cancel()
+        layoutPreview.gone()
+        browseButton.visible()
+        layoutCamera.visible()
+        cameraUiContainer.visible()
+        displayCameraItemsControl()
+        initializeLottieAnimation()
     }
 }
 
