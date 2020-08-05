@@ -967,6 +967,10 @@ class CameraFragment : BaseFragment() {
     fun enableCameraCaptureButton() {
         controls?.cameraCaptureButton?.isEnabled = true
     }
+
+    fun setCameraView() {
+        viewModel.onRequestCameraViewDisplay()
+    }
 }
 
 enum class ModelStatus { FEED, LOADING, PERMISSION, GALLERY }

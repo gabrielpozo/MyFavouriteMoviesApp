@@ -58,7 +58,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                 R.anim.slide_in_from_left,
                 R.anim.slide_out_to_right
             ).build()
-            fragmentHideStrategy = FragNavController.DETACH_ON_NAVIGATE_HIDE_ON_SWITCH
+            fragmentHideStrategy = FragNavController.HIDE
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
@@ -132,6 +132,10 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     fun popFragmentNot(): Boolean {
         val isFragmentPopped = fragNavController.popFragment().not()
+        val current = getCurrentFragment()
+        if(current is CameraFragment){
+            current.setCameraView()
+        }
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
         return isFragmentPopped
