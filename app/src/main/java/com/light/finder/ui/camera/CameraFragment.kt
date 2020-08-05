@@ -212,7 +212,7 @@ class CameraFragment : BaseFragment() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeUpdateUI))
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
-        viewModel.modelRequestCancel.observe(viewLifecycleOwner, Observer(::observeCancelRequest))
+        viewModel.modelRequestCancelOrRestore.observe(viewLifecycleOwner, Observer(::observeCancelRestoreRequest))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelResponseDialog.observe(
@@ -420,16 +420,9 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    private fun observeCancelRequest(cancelModelEvent: Event<CancelModel>) {
+    private fun observeCancelRestoreRequest(cancelModelEvent: Event<CancelModel>) {
         cancelModelEvent.getContentIfNotHandled()?.let {
-            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.cancel_identified_event)) {}
-            timer.cancel()
-            layoutPreview.gone()
-            browseButton.visible()
-            layoutCamera.visible()
-            cameraUiContainer.visible()
-            displayCameraItemsControl()
-            initializeLottieAnimation()
+            restoreCameraView()
         }
     }
 
@@ -595,6 +588,7 @@ class CameraFragment : BaseFragment() {
             screenNavigator.toCameraLoading(this)
             cancelButton.setOnClickListener {
                 viewModel.onCancelRequest()
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.cancel_identified_event)) {}
             }
         }
     }
@@ -966,6 +960,21 @@ class CameraFragment : BaseFragment() {
 
     fun enableCameraCaptureButton() {
         controls?.cameraCaptureButton?.isEnabled = true
+    }
+
+    fun restoreCamera() {
+        viewModel.onRestoreCameraView()
+    }
+
+    private fun restoreCameraView() {
+        timer.cancel()
+        layoutPreview.gone()
+        layoutCamera.visible()
+        browseButton.visible()
+        setBrowsingClickable()
+        cameraUiContainer.visible()
+        displayCameraItemsControl()
+        initializeLottieAnimation()
     }
 }
 
