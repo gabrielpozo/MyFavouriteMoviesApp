@@ -22,8 +22,7 @@ class CameraViewModel(
         const val MODE_ON = 1
         const val MODE_OFF = 2
     }
-
-
+    
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
@@ -64,9 +63,9 @@ class CameraViewModel(
     }
 
 
-    private val _modelRequestCancel = MutableLiveData<Event<CancelModel>>()
-    val modelRequestCancel: LiveData<Event<CancelModel>>
-        get() = _modelRequestCancel
+    private val _modelRequestCancelOrRestore = MutableLiveData<Event<CancelModel>>()
+    val modelRequestCancelOrRestore: LiveData<Event<CancelModel>>
+        get() = _modelRequestCancelOrRestore
 
     class CancelModel
 
@@ -227,9 +226,13 @@ class CameraViewModel(
             )
 
         } else {
-            _modelRequestCancel.value = Event(CancelModel())
+            _modelRequestCancelOrRestore.value = Event(CancelModel())
 
         }
+    }
+
+    fun onRestoreCameraView(){
+        _modelRequestCancelOrRestore.value = Event(CancelModel())
     }
 
     private fun handleEmptyResponse() {

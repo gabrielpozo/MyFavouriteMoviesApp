@@ -134,7 +134,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         val isFragmentPopped = fragNavController.popFragment().not()
         val current = getCurrentFragment()
         if(current is CameraFragment){
-            current.setCameraView()
+            current.restoreCamera()
         }
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
