@@ -158,7 +158,7 @@ class BrowseResultAdapter(
                 itemView.energyButton.gone()
             }
 
-            category.categoryWattReplaced.forEachIndexed { index, watt ->
+            category.categoryWattReplaced.sortedBy { it }.forEachIndexed { index, watt ->
                 val wattButton = Button(itemView.context)
                 wattButton.text = "$watt W"
                 wattButton.style {
