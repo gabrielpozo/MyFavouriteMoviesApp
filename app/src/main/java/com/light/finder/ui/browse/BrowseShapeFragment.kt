@@ -94,7 +94,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
-            bottomSheetBehavior.peekHeight = (dpHeight / 1.5).toInt()
+            bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
 
         }
     }
