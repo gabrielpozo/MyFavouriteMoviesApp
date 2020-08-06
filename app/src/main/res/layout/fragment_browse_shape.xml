@@ -6,42 +6,27 @@
     android:layout_height="match_parent"
     android:background="@drawable/browse_background_gradient">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fittingLayout"
+    <TextView
+        android:id="@+id/textBrowseShapeTitle"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/backgroundLight"
+        android:textSize="40sp"
+        android:text="@string/which_shape_do_you_need"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textBrowseShapeTitle"
-            android:fontFamily="@font/bold"
-            android:textColor="@color/backgroundLight"
-            android:textSize="40sp"
-            android:text="@string/which_shape_do_you_need"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="0dp"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.28" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -49,8 +34,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_browse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fittingLayout">
+        app:layout_constraintStart_toStartOf="parent">
 
 
         <LinearLayout
