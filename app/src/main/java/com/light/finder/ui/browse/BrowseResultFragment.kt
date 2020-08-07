@@ -81,7 +81,6 @@ class BrowseResultFragment : BaseFragment() {
                 rvCategories.gone()
                 textViewNoResultSubTitle.visible()
                 textViewNoResultTitle.visible()
-
                 updateData(model.message)
             }
         }
