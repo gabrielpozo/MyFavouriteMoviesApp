@@ -40,6 +40,8 @@
             android:id="@+id/textBrowseBulbName"
             style="@style/BulbCategory"
             android:textSize="18sp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Bulb" />
