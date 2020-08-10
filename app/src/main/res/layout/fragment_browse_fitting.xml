@@ -49,7 +49,6 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:layout_marginBottom="@dimen/bottom_nav_bar_height"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
