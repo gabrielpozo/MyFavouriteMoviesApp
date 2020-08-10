@@ -222,7 +222,7 @@ class CartFragment : BaseFragment() {
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner_cart.slideVertically(-totalDistance)
+            no_internet_banner_cart?.slideVertically(-totalDistance)
         }, NO_INTERNET_BANNER_DELAY)
     }
 

@@ -304,9 +304,8 @@ class CameraFragment : BaseFragment() {
             browseButton.visible()
         }
 
-        browseButton.setOnClickListener {
+        setBrowsingClickable()
 
-        }
     }
 
     private fun getExifOrientation(filepath: InputStream?): Int {

@@ -134,8 +134,9 @@ class AboutFragment : BaseFragment() {
         }
         val totalDistance = noInternetBanner.height.toFloat()
         noInternetBanner?.slideVertically(0F)
+        //TODO investigate why this is triggered from camera fragment
         Handler().postDelayed({
-            noInternetBanner.slideVertically(-totalDistance, hide = true)
+            noInternetBanner?.slideVertically(-totalDistance, hide = true)
         }, NO_INTERNET_BANNER_DELAY)
     }
 
@@ -184,6 +185,14 @@ class AboutFragment : BaseFragment() {
             flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             view?.systemUiVisibility = flags
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL) }
