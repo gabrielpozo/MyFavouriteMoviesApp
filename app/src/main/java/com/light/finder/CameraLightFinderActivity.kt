@@ -146,7 +146,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
+            no_internet_banner?.slideVertically(-no_internet_banner.height.toFloat())
         }, 5000)
     }
 
