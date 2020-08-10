@@ -67,20 +67,30 @@
                     android:text="@string/shape" />
 
 
-                <!-- should have 3 items per rows -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewShape"
-                    android:visibility="visible"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:clipToPadding="false"
-                    android:layout_gravity="center_horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    tools:listitem="@layout/item_browse_shape" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <View
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
 
+                    <!-- should have 3 items per rows -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewShape"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:clipToPadding="false"
+                        android:layout_gravity="center_horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        tools:listitem="@layout/item_browse_shape" />
 
+                </RelativeLayout>
                 <include
                     android:id="@+id/browseLoadingShape"
                     layout="@layout/layout_browse_loading"
