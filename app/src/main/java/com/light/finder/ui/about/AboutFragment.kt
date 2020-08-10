@@ -187,13 +187,5 @@ class AboutFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
     enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL) }
 }
