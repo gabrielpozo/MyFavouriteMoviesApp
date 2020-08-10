@@ -963,7 +963,10 @@ class CameraFragment : BaseFragment() {
     }
 
     fun restoreCamera() {
-        viewModel.onRestoreCameraView()
+        //TODO(this will be implemented differently according to US-1523)
+        if (modelUiState != ModelStatus.PERMISSION) {
+            viewModel.onRestoreCameraView()
+        }
     }
 
     private fun restoreCameraView() {
@@ -975,6 +978,7 @@ class CameraFragment : BaseFragment() {
         cameraUiContainer.visible()
         displayCameraItemsControl()
         initializeLottieAnimation()
+        modelUiState = ModelStatus.FEED
     }
 }
 
