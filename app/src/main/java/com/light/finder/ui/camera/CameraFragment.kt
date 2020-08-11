@@ -263,7 +263,6 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val file = File(uri.path!!)
                 val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
                 initGalleryPreviewUI(uri, rotation)
                 setGalleryPreviewListeners(uri, rotation)
@@ -288,23 +287,13 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-                val options = BitmapFactory.Options().apply {
-                    inJustDecodeBounds = true
-                }
-               val inputStream=  activity?.contentResolver?.openInputStream(uri)
-
-
-                inputStream?.let {
-                    val bitmapImage = decodeSampledBitmapFromResourceMemOpt(inputStream!!, 800, 800)
+               val inputStream = activity?.contentResolver?.openInputStream(uri)
+                inputStream?.let { stream ->
+                    val bitmapImage = decodeSampledBitmapFromStream(stream, 600, 800)
                     viewModel.onCameraButtonClicked(bitmapImage!!, rotation)
                     layoutPreviewGallery.gone()
                     modelUiState = ModelStatus.FEED
                 }
-                /*       val bitmapImage =
-                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
-                viewModel.onCameraButtonClicked(bitmapImage, rotation)
-                layoutPreviewGallery.gone()
-                modelUiState = ModelStatus.FEED*/
 
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -322,7 +311,7 @@ class CameraFragment : BaseFragment() {
 
     }
 
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         // Raw height and width of image
         val (height: Int, width: Int) = options.run { outHeight to outWidth }
         var inSampleSize = 1
@@ -342,9 +331,7 @@ class CameraFragment : BaseFragment() {
         return inSampleSize
     }
 
-    fun decodeSampledBitmapFromResourceMemOpt(
-        inputStream: InputStream, reqWidth: Int, reqHeight: Int
-    ): Bitmap? {
+    private fun decodeSampledBitmapFromStream(inputStream: InputStream, reqWidth: Int, reqHeight: Int): Bitmap? {
         var byteArr = ByteArray(0)
         val buffer = ByteArray(1024)
         var len: Int
@@ -372,9 +359,6 @@ class CameraFragment : BaseFragment() {
             options.inInputShareable = true
             options.inJustDecodeBounds = false
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val pids = intArrayOf(Process.myPid())
-       /*     val myMemInfo: MemoryInfo = mAM.getProcessMemoryInfo(pids).get(0)
-            Log.e(TAG, "dalvikPss (decoding) = " + myMemInfo.dalvikPss)*/
             BitmapFactory.decodeByteArray(byteArr, 0, count, options)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
