@@ -15,7 +15,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Process
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Size
