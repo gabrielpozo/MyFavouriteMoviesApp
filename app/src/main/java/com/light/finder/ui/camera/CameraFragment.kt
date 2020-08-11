@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -261,7 +262,6 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val file = File(uri.path!!)
                 val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
                 initGalleryPreviewUI(uri, rotation)
                 setGalleryPreviewListeners(uri, rotation)
@@ -286,11 +286,12 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-                val bitmapImage =
-                    BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
-                viewModel.onCameraButtonClicked(bitmapImage, rotation)
-                layoutPreviewGallery.gone()
-                modelUiState = ModelStatus.FEED
+               val inputStream = activity?.contentResolver?.openInputStream(uri)
+                inputStream?.let { stream ->
+                    viewModel.onCameraButtonClicked(imageRepository.decodeSampledBitmapFromStream(stream), rotation)
+                    layoutPreviewGallery.gone()
+                    modelUiState = ModelStatus.FEED
+                }
 
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -307,6 +308,7 @@ class CameraFragment : BaseFragment() {
         setBrowsingClickable()
 
     }
+
 
     private fun getExifOrientation(filepath: InputStream?): Int {
         var degree = 0
