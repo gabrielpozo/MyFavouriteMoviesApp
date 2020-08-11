@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,6 +15,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Process
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Size
@@ -286,11 +288,23 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-                val bitmapImage =
+                val options = BitmapFactory.Options().apply {
+                    inJustDecodeBounds = true
+                }
+               val inputStream=  activity?.contentResolver?.openInputStream(uri)
+
+
+                inputStream?.let {
+                    val bitmapImage = decodeSampledBitmapFromResourceMemOpt(inputStream!!, 800, 800)
+                    viewModel.onCameraButtonClicked(bitmapImage!!, rotation)
+                    layoutPreviewGallery.gone()
+                    modelUiState = ModelStatus.FEED
+                }
+                /*       val bitmapImage =
                     BitmapFactory.decodeStream(activity?.contentResolver?.openInputStream(uri))
                 viewModel.onCameraButtonClicked(bitmapImage, rotation)
                 layoutPreviewGallery.gone()
-                modelUiState = ModelStatus.FEED
+                modelUiState = ModelStatus.FEED*/
 
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -307,6 +321,67 @@ class CameraFragment : BaseFragment() {
         setBrowsingClickable()
 
     }
+
+    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        // Raw height and width of image
+        val (height: Int, width: Int) = options.run { outHeight to outWidth }
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+
+        return inSampleSize
+    }
+
+    fun decodeSampledBitmapFromResourceMemOpt(
+        inputStream: InputStream, reqWidth: Int, reqHeight: Int
+    ): Bitmap? {
+        var byteArr = ByteArray(0)
+        val buffer = ByteArray(1024)
+        var len: Int
+        var count = 0
+        return try {
+            while (inputStream.read(buffer).also { len = it } > -1) {
+                if (len != 0) {
+                    if (count + len > byteArr.size) {
+                        val newbuf = ByteArray((count + len) * 2)
+                        System.arraycopy(byteArr, 0, newbuf, 0, count)
+                        byteArr = newbuf
+                    }
+                    System.arraycopy(buffer, 0, byteArr, count, len)
+                    count += len
+                }
+            }
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeByteArray(byteArr, 0, count, options)
+            options.inSampleSize = calculateInSampleSize(
+                options, reqWidth,
+                reqHeight
+            )
+            options.inPurgeable = true
+            options.inInputShareable = true
+            options.inJustDecodeBounds = false
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            val pids = intArrayOf(Process.myPid())
+       /*     val myMemInfo: MemoryInfo = mAM.getProcessMemoryInfo(pids).get(0)
+            Log.e(TAG, "dalvikPss (decoding) = " + myMemInfo.dalvikPss)*/
+            BitmapFactory.decodeByteArray(byteArr, 0, count, options)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
     private fun getExifOrientation(filepath: InputStream?): Int {
         var degree = 0
