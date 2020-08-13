@@ -1,7 +1,7 @@
 package com.light.finder.di.modules.camera
 
 import com.light.finder.CameraLightFinderActivity
-import com.light.finder.common.ScreenNavigator
+import com.light.finder.navigators.ScreenNavigator
 import com.light.finder.di.modules.submodules.*
 import dagger.Module
 import dagger.Provides
@@ -22,6 +22,7 @@ interface LightFinderComponent {
     val screenNavigator: ScreenNavigator
 
     fun plus(module: CategoriesModule): CategoriesComponent
+    fun plus(module: BrowseResultModule): BrowseResultComponent
     fun plus(module: CameraModule): CameraComponent
     fun plus(module: DetailModule): DetailComponent
     fun plus(module: CartModule): CartComponent

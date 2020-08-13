@@ -23,6 +23,10 @@ class ProductsOptionsModule {
         GetFinishVariationsUseCase()
 
     @Provides
+    fun getConnectivityVariationsUseCase() =
+        GetConnectivityVariationsUseCase()
+
+    @Provides
     fun getAvailableSelectedFilterUseCase() =
         GetNewCompatibleVariationListUseCase()
 
@@ -39,7 +43,8 @@ class ProductsOptionsModule {
         getColorVariationsUseCase(),
         getFinishVariationsUseCase(),
         getAvailableSelectedFilterUseCase(),
-        getNewSelectedProduct()
+        getNewSelectedProduct(),
+        getConnectivityVariationsUseCase()
     )
 }
 

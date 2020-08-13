@@ -20,7 +20,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65999997"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
     <TextView
         android:id="@+id/textViewCameraSubtitle"
@@ -57,14 +65,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCameraSubtitle" />
 
+    <ImageView
+        android:id="@+id/imageGalleryButton"
+        android:elevation="8dp"
+        android:translationZ="8dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="44dp"
+        android:background="@drawable/imagegallery_button_curvy"
+        android:contentDescription="@string/switch_camera_button_alt"
+        app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
+        app:srcCompat="@drawable/ic_image_gallery" />
+
     <ImageButton
         android:id="@+id/flashSwitchButton"
-        android:layout_width="@dimen/round_button_medium"
-        android:layout_height="42dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="44dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/switch_camera_button_alt"
-        android:padding="@dimen/spacing_small"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,21 +104,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/flashSwitchButton"
-        app:layout_constraintStart_toEndOf="@+id/photoPreviewButton" />
+        app:layout_constraintStart_toEndOf="@+id/imageGalleryButton" />
 
-    <ImageButton
-        android:id="@+id/photoPreviewButton"
-        android:visibility="invisible"
-        android:layout_width="64dp"
-        android:layout_height="@dimen/round_button_medium"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/ic_outer_circle"
-        android:contentDescription="@string/gallery_button_alt"
-        android:padding="@dimen/spacing_large"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/cameraCaptureButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cameraCaptureButton"
-        app:srcCompat="@drawable/ic_photo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

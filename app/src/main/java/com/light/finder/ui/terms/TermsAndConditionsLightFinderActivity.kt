@@ -138,7 +138,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         val totalDistance = noInternetBanner.height.toFloat()
         noInternetBanner?.slideVertically(0F)
         Handler().postDelayed({
-            noInternetBanner.slideVertically(-totalDistance, hide = true)
+            noInternetBanner?.slideVertically(-totalDistance, hide = true)
         }, NO_INTERNET_BANNER_DELAY)
     }
 

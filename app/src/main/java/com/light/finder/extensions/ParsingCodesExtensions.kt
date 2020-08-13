@@ -1,30 +1,57 @@
 package com.light.finder.extensions
 
 import android.content.Context
-import android.view.View
-import com.light.domain.model.FilterType
+import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.data.source.remote.reports.CrashlyticsException
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 
-fun getLegendTagPref(
-    colorCode: Int,
+const val COLOR_LEGEND_TAG = "product_cct_code"
+const val FINISH_LEGEND_TAG = "product_finish_code"
+const val FORM_FACTOR_LEGEND_TAG = "product_formfactor_type_code"
+const val CONNECTIVITY_LEGEND_TAG = "product_connection_code"
+
+//TODO("this method will be removed at some point")
+fun getLegendCctTagPref(
+    code: Int,
     logError: Boolean = false,
     isForDetailScreen: Boolean = false,
-    filterTypeList: List<FilterType>,
+    filterTypeList: List<CctType>,
     legendTag: String
 ): String {
     val productColor = filterTypeList.find {
-        it.id == colorCode.toString()
+        it.id == code
     }
     return if (productColor != null) {
         productColor.name
 
     } else {
-        if (logError) CrashlyticsException(422, legendTag, colorCode).logException()
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
         if (!isForDetailScreen) {
-            colorCode.toString()
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendCctTagPrefIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.bigIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
         } else {
             ""
         }
@@ -32,28 +59,255 @@ fun getLegendTagPref(
 }
 
 
-fun Context.getformFactortType(factorTypeCode: Int): String = when (factorTypeCode) {
-    1 -> "Bulb"
-    2 -> "Reflector"
-    3 -> "Coil"
-    4 -> "Tube"
-    else -> {
-        CrashlyticsException(422, "product_formfactor_type_code", factorTypeCode).logException()
-        ""
+fun getLegendFinishTagPref(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
     }
 }
 
-fun String.dropFirstAndLastCharacter(): String {
-    val removeFirst = removePrefix(" -")
-    return when {
-        removeFirst.isEmpty() -> {
-            removeFirst
+fun getLegendConnectivityTagPref(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<ProductConnectivity>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
         }
-        removeFirst.takeLast(2) == "- " -> {
-            removeFirst.substring(0, removeFirst.length - 2)
+    }
+}
+
+fun getLegendArTypeTagPref(
+    code: Int,
+    filterTypeList: List<CctType>
+
+): Boolean {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.arType == 1
+}
+
+
+fun getFormFactorIdTagName(
+    shapeIdentified: String,
+    formFactoridTypeList: List<FormFactorTypeId>
+
+): String {
+    val formFactorTypeId = formFactoridTypeList.find {
+        it.name == shapeIdentified
+    }
+    return formFactorTypeId?.productFormFactorType ?: ""
+}
+
+fun getFormFactorBaseIdTagName(
+    baseIdentified: Int,
+    formFactoridTypeList: List<FormFactorTypeBaseId>
+
+): String {
+    val formFactorTypeId = formFactoridTypeList.find {
+        it.id == baseIdentified
+    }
+    return formFactorTypeId?.name ?: ""
+}
+
+
+fun getLegendFormFactorTag(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FormFactorType>,
+    legendTag: String
+): String {
+    val formFactorType = filterTypeList.find {
+        it.id == code
+    }
+    return if (formFactorType != null) {
+        formFactorType.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
         }
-        else -> {
-            removeFirst
+    }
+
+}
+
+fun getOrderColorVariation(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productFinish = filterTypeList.find {
+        it.id == code
+    }
+    return productFinish?.order?.toInt() ?: -1
+}
+
+
+fun getLegendFinishTagPrefImage(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.image
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendConnectivityTagPrefImage(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<ProductConnectivity>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.image
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendCctTagPrefSmallIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<CctType>,
+    legendTag: String
+): String {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productColor != null) {
+        productColor.smallIcon
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+fun getLegendCategoryName(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.name ?: ""
+}
+
+fun getLegendCategoryImage(
+    code: Int,
+    filterTypeList: List<ProductCategoryName>
+): String {
+    val productName = filterTypeList.find {
+        it.id == code
+    }
+    return productName?.image ?: ""
+}
+
+
+fun getLegendFormFactorTagPrefSmallIcon(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FinishType>,
+    legendTag: String
+): String {
+    val productFormFactor = filterTypeList.find {
+        it.id == code
+    }
+    return if (productFormFactor != null) {
+        productFormFactor.image
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
+        }
+    }
+}
+
+
+fun getLegendTagPrefFormFactor(
+    code: Int,
+    logError: Boolean = false,
+    isForDetailScreen: Boolean = false,
+    filterTypeList: List<FormFactorType>,
+    legendTag: String
+): String {
+    val formFactorType = filterTypeList.find {
+        it.id == code
+    }
+    return if (formFactorType != null) {
+        formFactorType.name
+
+    } else {
+        if (logError) CrashlyticsException(422, legendTag, code).logException()
+        if (!isForDetailScreen) {
+            code.toString()
+        } else {
+            ""
         }
     }
 }
@@ -75,6 +329,91 @@ fun checkCategoryFinishCodesAreValid(finishCodes: List<Int>) {
 }
 
 
+fun List<FilterVariationCF>.sortFinishByOrderField(filterFinishList: List<FinishType>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderFinish(it.codeFilter, filterFinishList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+fun List<FilterVariationCF>.sortConnectivityByOrderField(filterConnectivityList: List<ProductConnectivity>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderConnectivity(it.codeFilter, filterConnectivityList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+
+
+fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>): List<FilterVariationCF> {
+    val orderedList = map {
+        it.order = getOrderColor(it.codeFilter, filterColorList)
+        it
+    }
+
+    return orderedList.sortedBy { it.order }
+}
+
+fun List<Int>.sortSmallColorByOrderField(filterColorList: List<CctType>): List<ColorOrderList> {
+    val orderedColors = arrayListOf<ColorOrderList>()
+    forEach { orderedColors.add(ColorOrderList(it, getOrderColor(it, filterColorList))) }
+    orderedColors.sortBy { it.order }
+    return orderedColors
+}
+
+fun List<Int>.sortSmallFinishByOrderField(filterFinishList: List<FinishType>): List<FinishOrderList> {
+    val orderedFinish = arrayListOf<FinishOrderList>()
+    forEach { orderedFinish.add(FinishOrderList(it, getOrderFinish(it, filterFinishList))) }
+    orderedFinish.sortBy { it.order }
+    return orderedFinish
+}
+
+
+//Loop the category list from outside
+fun Category.addOrderField(
+    productCategoryNameList: List<ProductCategoryName>
+) {
+    val productCategoryName = productCategoryNameList.find {
+        //TODO by w
+        categoryIndex == it.id
+    }
+    order = productCategoryName?.order ?: -1
+}
+
+fun getOrderColor(
+    code: Int,
+    filterTypeList: List<CctType>
+): Int {
+    val productColor = filterTypeList.find {
+        it.id == code
+    }
+    return productColor?.order ?: -1
+}
+
+fun getOrderFinish(
+    code: Int,
+    filterTypeList: List<FinishType>
+): Int {
+    val productFinish = filterTypeList.find {
+        it.id == code
+    }
+    return productFinish?.order?.toInt() ?: -1
+}
+
+fun getOrderConnectivity(
+    code: Int,
+    filterTypeList: List<ProductConnectivity>
+): Int {
+    val productConnectivity= filterTypeList.find {
+        it.id == code
+    }
+    return productConnectivity?.order?.toInt() ?: -1
+}
+
 fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     1 -> {
         R.drawable.ic_warm
@@ -82,52 +421,22 @@ fun Context.getColorDrawable(colorCode: Int): Int = when (colorCode) {
     2 -> {
         R.drawable.ic_warm_white
     }
+    3 -> {
+        R.drawable.ic_soft_white
+    }
     4 -> {
-        R.drawable.ic_cool_white
+        R.drawable.cool_white
     }
     5 -> {
-        R.drawable.ic_daylight
+        R.drawable.daylight
     }
-
+    6 -> {
+        R.drawable.tunnable_white
+    }
+    7 -> {
+        R.drawable.full_color_range
+    }
     else -> {
         R.drawable.ic_holder
-    }
-}
-
-fun View.setColorVariation(colorCode: Int) {
-    when (colorCode) {
-        1 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm)
-        }
-
-        2 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.warm_white)
-        }
-
-        4 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.cool_white)
-        }
-
-        5 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.daylight)
-        }
-        else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
-        }
-    }
-}
-
-
-fun View.setFinishVariation(finishCode: Int) {
-    when (finishCode) {
-        1 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.clear)
-        }
-        2 -> {
-            imageFilterCover.setBackgroundResource(R.drawable.frosted)
-        }
-        else -> {
-            imageFilterCover.setBackgroundResource(R.drawable.ic_placeholder_variation)
-        }
     }
 }

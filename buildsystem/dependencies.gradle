@@ -30,7 +30,7 @@ ext {
     materialVersion = '1.0.0'
     recyclerViewVersion = '1.2.0-alpha01'
     recyclerViewSelectionVersion = '1.0.0'
-    roomVersion = '2.2.3'
+    roomVersion = '2.2.5'
     workVersion = '2.3.0'
     pagingVersion = '2.1.1'
     gsonVersion = '2.8.2'
@@ -61,12 +61,13 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.4"
-    googleAnalyticsFirebase = "17.2.2"
-    googleCrashAnalyticsFirebase = "2.10.1"
+    googleAnalyticsFirebase = "17.4.3"
+    googleCrashAnalyticsFirebase = "17.0.1"
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
     usabillaVersion = "7.0.3"
+    gpuVersion = "2.0.3"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -106,6 +107,7 @@ ext {
             material             : "com.google.android.material:material:$materialVersion",
             kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
+
     ]
 
     lottieDependencies = [
@@ -118,7 +120,8 @@ ext {
             cameraTwo      : "androidx.camera:camera-camera2:$cameraVersion",
             cameraxLifeCyle: "androidx.camera:camera-lifecycle:$cameraLifeCyleVersion",
             cameraxView    : "androidx.camera:camera-view:$cameraViewVersion",
-            dexter         : 'com.karumi:dexter:5.0.0'
+            dexter         : 'com.karumi:dexter:6.2.1',
+            gpu            : "jp.co.cyberagent.android:gpuimage:$gpuVersion"
     ]
 
     coroutinesDependencies = [
@@ -186,12 +189,10 @@ ext {
     ]
 
     googleServicesDependencies = [
-            analytics  : "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
-            crashlytics: "com.crashlytics.sdk.android:crashlytics:$googleCrashAnalyticsFirebase",
+            analytics  : "com.google.firebase:firebase-analytics-ktx:$googleAnalyticsFirebase",
+            crashlytics: "com.google.firebase:firebase-crashlytics:$googleCrashAnalyticsFirebase",
             performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance",
-            tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion",
-            //   authf      : 'com.google.firebase:firebase-auth:16.2.0'
-            //  sevicesanalytics: "com.google.android.gms:play-services-analytics-impl:$tagManagerVersion"
+            tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion"
     ]
 
     usabillaDependencies = [
