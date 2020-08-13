@@ -28,8 +28,8 @@ class DetailViewModel(
      * observable product page variables
      */
 
-    private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
-    val modelNavigation: LiveData<Event<NavigationModel>>
+    private val _modelNavigation = MutableLiveData<Event<NavigationModelSettings>>()
+    val modelNavigation: LiveData<Event<NavigationModelSettings>>
         get() = _modelNavigation
 
     private val _modelSapId = MutableLiveData<ContentProductId>()
@@ -38,8 +38,8 @@ class DetailViewModel(
             return _modelSapId
         }
 
-    private val _modelDialog = MutableLiveData<Event<ServerError>>()
-    val modelDialog: LiveData<Event<ServerError>>
+    private val _modelDialog = MutableLiveData<Event<DialogModel>>()
+    val modelDialog: LiveData<Event<DialogModel>>
         get() = _modelDialog
 
     private val _modelRequest = MutableLiveData<RequestModelContent>()
@@ -98,7 +98,7 @@ class DetailViewModel(
     /***
      * product page data classes
      */
-    class NavigationModel(val productList: List<Product>)
+    object NavigationModelSettings
 
     data class RequestModelContent(val cartItem: Event<Cart>)
 
@@ -113,7 +113,11 @@ class DetailViewModel(
         object PermissionDenied : PermissionStatus()
     }
 
-    object ServerError
+
+    sealed class DialogModel {
+        data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        object ServerError : DialogModel()
+    }
 
     /***
      * variation data classes
@@ -183,7 +187,7 @@ class DetailViewModel(
         exception: Exception?,
         message: String
     ) {
-        _modelDialog.value = Event(ServerError)
+        _modelDialog.value = Event(DialogModel.ServerError)
     }
 
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
@@ -408,6 +412,16 @@ class DetailViewModel(
         } else {
             _modelPermissionStatus.value = PermissionStatus.PermissionDenied
         }
+    }
+
+    fun onPermissionDenied(isPermanentlyDenied: Boolean, b: Boolean) {
+        if (isPermanentlyDenied) {
+            _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        }
+    }
+
+    fun onGoToSettingsClicked() {
+        _modelNavigation.value = Event(NavigationModelSettings)
     }
 
 }

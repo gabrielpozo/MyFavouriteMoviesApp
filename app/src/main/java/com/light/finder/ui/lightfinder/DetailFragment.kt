@@ -242,10 +242,13 @@ class DetailFragment : BaseFragment() {
     private fun setDetailObservers() {
         viewModel.modelSapId.observe(viewLifecycleOwner, Observer(::observeProductSapId))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
-        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogStatus))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
-        viewModel.modelPermissionStatus.observe(viewLifecycleOwner, Observer(::observePermissionStatus))
+        viewModel.modelPermissionStatus.observe(
+            viewLifecycleOwner,
+            Observer(::observePermissionStatus)
+        )
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
@@ -294,15 +297,31 @@ class DetailFragment : BaseFragment() {
 
     }
 
-    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.ServerError>) {
-        Timber.e("Add to cart failed")
-        cartAnimation.cancelAnimation()
-        showErrorDialog(
-            getString(R.string.sorry),
-            getString(R.string.cannot_added),
-            getString(R.string.ok),
-            false
-        )
+    private fun observeDialogStatus(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+        modelErrorEvent.getContentIfNotHandled()?.let { modelDialog ->
+            when (modelDialog) {
+                is DetailViewModel.DialogModel.ServerError -> {
+                    Timber.e("Add to cart failed")
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.sorry),
+                        getString(R.string.cannot_added),
+                        getString(R.string.ok),
+                        false
+                    )
+
+                }
+                is DetailViewModel.DialogModel.PermissionPermanentlyDenied -> {
+                    showErrorDialog(
+                        getString(R.string.enable_live_preview_access),
+                        getString(R.string.enable_live_preview_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+                }
+            }
+        }
+
     }
 
 
@@ -341,23 +360,37 @@ class DetailFragment : BaseFragment() {
         dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
-            alertDialog.dismiss()
+            if (neutralButton) {
+                viewModel.onGoToSettingsClicked()
+            } else {
+                alertDialog.dismiss()
+            }
         }
 
+
         dialogView.buttonNegative.gone()
-        dialogView.buttonNeutral.gone()
+        if (neutralButton) {
+            dialogView.buttonNeutral.text = getString(R.string.not_now)
+            dialogView.buttonNeutral.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+        } else {
+            dialogView.buttonNeutral.gone()
+        }
         alertDialog.show()
 
     }
 
     private fun setNavigationObserver() {
-        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
+        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToSettings))
     }
 
 
-    private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
-        navigationModel.getContentIfNotHandled()?.let { navModel ->
-            screenNavigator.navigateToVariationScreen(navModel.productList)
+    private fun navigateToSettings(navigationModel: Event<DetailViewModel.NavigationModelSettings>) {
+        navigationModel.getContentIfNotHandled()?.let {
+            screenNavigator.navigateToSettings()
+            alertDialog.dismiss()
         }
     }
 
@@ -442,6 +475,8 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observePermanentlyDeniedPermission(isPermanentlyDenied: Boolean) {
+        viewModel.onPermissionDenied(isPermanentlyDenied, false)
+
         //TODO
     }
 
