@@ -3,8 +3,10 @@ package com.light.finder.ui.adapters
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.FilterType
+import com.light.domain.model.CctType
 import com.light.domain.model.FilterVariationCF
+import com.light.domain.model.FinishType
+import com.light.domain.model.ProductConnectivity
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_button_filter_unselected.view.*
@@ -67,7 +69,7 @@ class FilterWattageAdapter(private val listener: (FilterVariationCF) -> Unit) :
 
 class FilterColorAdapter(
     private val listener: (FilterVariationCF) -> Unit,
-    private val filterColorList: List<FilterType> = emptyList()
+    private val filterColorList: List<CctType> = emptyList()
 ) :
     RecyclerView.Adapter<FilterColorAdapter.ViewHolder>() {
 
@@ -78,6 +80,14 @@ class FilterColorAdapter(
         areItemsTheSame = { old, new -> old.codeFilter == new.codeFilter },
         shouldRefreshData = false
     )
+
+    fun setColorFromAmbiance(color: Int) {
+        filterListColor.forEachIndexed { index, element ->
+            if (element.codeFilter == color) {
+                listener(filterListColor[index])
+            }
+        }
+    }
 
     fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
         filterVariationList.setBackgroundLayout(viewItemsMap)
@@ -103,14 +113,18 @@ class FilterColorAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariationCF, filterColorList: List<FilterType>) {
-            itemView.variation_name.text = getLegendTagPref(
+        fun bind(filter: FilterVariationCF, filterColorList: List<CctType>) {
+            itemView.variation_name.text = getLegendCctTagPref(
                 filter.codeFilter,
                 filterTypeList = filterColorList,
-                legendTag = "product_cct_code"
+                legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.setColorVariation(filter.codeFilter)
+            itemView.imageFilterCover.loadThumbnailVariation(getLegendCctTagPrefIcon(
+                filter.codeFilter,
+                filterTypeList = filterColorList,
+                legendTag = COLOR_LEGEND_TAG
+            ))
         }
     }
 }
@@ -118,7 +132,7 @@ class FilterColorAdapter(
 
 class FilterFinishAdapter(
     private val listener: (FilterVariationCF) -> Unit,
-    private val filterFinishList: List<FilterType> = emptyList()
+    private val filterFinishList: List<FinishType> = emptyList()
 ) :
     RecyclerView.Adapter<FilterFinishAdapter.ViewHolder>() {
     private val viewItemsMap = hashMapOf<Int, View>()
@@ -154,14 +168,74 @@ class FilterFinishAdapter(
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(filter: FilterVariationCF, filterFinishList: List<FilterType>) {
-            itemView.variation_name.text = getLegendTagPref(
+        fun bind(filter: FilterVariationCF, filterFinishList: List<FinishType>) {
+            itemView.variation_name.text = getLegendFinishTagPref(
                 filter.codeFilter,
                 filterTypeList = filterFinishList,
-                legendTag = "product_finish_code"
+                legendTag = FINISH_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.setFinishVariation(filter.codeFilter)
+
+            itemView.imageFilterCover.loadThumbnailVariation(getLegendFinishTagPrefImage(
+                filter.codeFilter,
+                filterTypeList = filterFinishList,
+                legendTag = FINISH_LEGEND_TAG
+            ))
+        }
+    }
+}
+
+class FilterConnectivityAdapter(
+    private val listener: (FilterVariationCF) -> Unit,
+    private val filterConnectivityList: List<ProductConnectivity> = emptyList()
+) :
+    RecyclerView.Adapter<FilterConnectivityAdapter.ViewHolder>() {
+    private val viewItemsMap = hashMapOf<Int, View>()
+
+    var filterListConnectivity: List<FilterVariationCF> by basicDiffUtil(
+        emptyList(),
+        areItemsTheSame = { old, new -> old.codeFilter == new.codeFilter },
+        shouldRefreshData = false
+    )
+
+
+    fun updateBackgroundAppearance(filterVariationList: List<FilterVariationCF>) {
+        filterVariationList.setBackgroundLayout(viewItemsMap)
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = parent.inflate(R.layout.item_card_filter_unselected, false)
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int = filterListConnectivity.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val filter = filterListConnectivity[position]
+        if (!viewItemsMap.containsKey(filter.codeFilter)) {
+            viewItemsMap[filter.codeFilter] = holder.itemView
+        }
+        holder.bind(filter, filterConnectivityList)
+        holder.itemView.setOnClickListener {
+            listener(filterListConnectivity[position])
+        }
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(filter: FilterVariationCF, filterConnectivityList: List<ProductConnectivity>) {
+            itemView.variation_name.text = getLegendConnectivityTagPref(
+                filter.codeFilter,
+                filterTypeList = filterConnectivityList,
+                legendTag = CONNECTIVITY_LEGEND_TAG
+            )
+            itemView.setDrawableOnBackground(filter)
+
+            itemView.imageFilterCover.loadThumbnailVariation(getLegendConnectivityTagPrefImage(
+                filter.codeFilter,
+                filterTypeList = filterConnectivityList,
+                legendTag = CONNECTIVITY_LEGEND_TAG
+            ))
         }
     }
 }

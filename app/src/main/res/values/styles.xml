@@ -41,11 +41,30 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="TitleTextBrowse" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="TitleTextGray" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/bottomNavBarColor</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
+
+    <style name="BrowseNext" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="BrowseNextDisable" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
 
     <style name="SubTitleTextGray" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/bottomNavBarColor</item>
@@ -73,6 +92,77 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="LiveButtonTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item  name="android:lineSpacingExtra">12sp</item>
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="BrowseButtonTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item  name="android:lineSpacingExtra">12sp</item>
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="WattButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:fontFamily">@font/book</item>
+        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+
+    </style>
+
+    <style name="PriceButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:height">30dp</item>
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="EnergyButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:height">30dp</item>
+        <item name="android:fontFamily">@font/book</item>
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="LiveButtonDisabledTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:fontFamily">@font/bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/textDisabled</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:lineSpacingExtra">12sp</item>
     </style>
 
     <!-- End New atributes -->
@@ -141,6 +231,18 @@
         <item name="android:fontFamily">@font/book</item>
     </style>
 
+    <style name="Result" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/book</item>
+    </style>
+
+    <style name="Fitting" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="SubtitleTextSmallLight" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/textLight</item>
         <item name="android:drawablePadding">14dp</item>
@@ -162,7 +264,7 @@
     </style>
 
     <style name="ActiveText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/primaryPressed</item>
+        <item name="android:textColor">@color/primaryOnDark</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
@@ -185,6 +287,18 @@
         <item name="android:fontFamily">@font/bold</item>
     </style>
 
+    <style name="NoResultTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/book</item>
+    </style>
+
+    <style name="NoResultSubTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textLight</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/bold</item>
+    </style>
+
     <style name="InActiveTextWhite" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/backgroundLight</item>
         <item name="android:textSize">18sp</item>
@@ -192,7 +306,7 @@
     </style>
 
     <style name="InactiveTextDark" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textColor">@color/textLight</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/book</item>
     </style>
@@ -216,7 +330,7 @@
     </style>
 
     <style name="DisabledText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/textDisabled</item>
+        <item name="android:textColor">@color/backgroundDarkPressed</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/book</item>
     </style>
@@ -300,7 +414,7 @@
         <item name="android:height">48dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/bold</item>
-        <item name="android:textColor">@color/primaryPressed</item>
+        <item name="android:textColor">@color/primaryOnDark</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingTop">8dp</item>
@@ -315,7 +429,7 @@
         <item name="android:minWidth">96dp</item>
         <item name="android:width">96dp</item>
         <item name="android:fontFamily">@font/book</item>
-        <item name="android:textColor">@color/backgroundDark</item>
+        <item name="android:textColor">@color/textLight</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingTop">8dp</item>
@@ -328,7 +442,7 @@
         <item name="android:minHeight">40dp</item>
         <item name="android:height">40dp</item>
         <item name="android:fontFamily">@font/book</item>
-        <item name="android:textColor">@color/textDisabled</item>
+        <item name="android:textColor">@color/backgroundDarkPressed</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingTop">8dp</item>
@@ -340,6 +454,11 @@
     <style name="TitleCategory" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/textDark</item>
         <item name="android:fontFamily">@font/bold</item>
+    </style>
+
+    <style name="BulbCategory" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textDark</item>
+        <item name="android:fontFamily">@font/book</item>
     </style>
 
     <style name="PriceCategory" parent="TextAppearance.AppCompat">

@@ -120,10 +120,7 @@ class CartFragment : BaseFragment() {
         when (modelReload) {
             CartViewModel.ContentReload.ContentToBeLoaded -> {
                 if(BuildConfig.FLAVOR == QA) {
-                    val extraHeaders: MutableMap<String, String> =
-                        HashMap()
-                    extraHeaders["Authorization"] = "Bearer 49385fe86a8fd424a98bacbdd8845357"
-                    webView.loadUrl(URL_QA,extraHeaders)
+                    webView.loadUrl(URL_QA)
                 } else {
                     webView.loadUrl(URL)
                 }
@@ -225,7 +222,7 @@ class CartFragment : BaseFragment() {
         val totalDistance = no_internet_banner_cart.height.toFloat() + cart_toolbar.height.toFloat()
         no_internet_banner_cart?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner_cart.slideVertically(-totalDistance)
+            no_internet_banner_cart?.slideVertically(-totalDistance)
         }, NO_INTERNET_BANNER_DELAY)
     }
 
@@ -247,6 +244,13 @@ class CartFragment : BaseFragment() {
         }
 
         progressBar?.progress = newProgress
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        //we do extra call to check if something has been added in browsing flow or scanning flow
+        viewModel.onRequestGetItemCount()
     }
 
     fun onCheckIfOffline() {

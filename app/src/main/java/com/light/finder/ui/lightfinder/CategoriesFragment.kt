@@ -7,22 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.light.domain.model.Category
+import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
-import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.MessageParcelable
 import com.light.finder.di.modules.submodules.CategoriesComponent
 import com.light.finder.di.modules.submodules.CategoriesModule
-import com.light.finder.extensions.deparcelizeMessage
-import com.light.finder.extensions.getIntFormatter
-import com.light.finder.extensions.getStringFormatter
-import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.CategoriesAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CategoryViewModel
-import com.light.source.local.LocalPreferenceDataSource
-import kotlinx.android.synthetic.main.fragment_categories.*
+import kotlinx.android.synthetic.main.fragment_category_result.*
 
 class CategoriesFragment : BaseFragment() {
 
@@ -34,11 +30,6 @@ class CategoriesFragment : BaseFragment() {
     private val viewModel: CategoryViewModel by lazy { getViewModel { component.categoryViewModel } }
     private lateinit var adapter: CategoriesAdapter
     private lateinit var activityCallback: ActivityCallback
-    private val localPreferences: LocalPreferenceDataSource by lazy {
-        LocalPreferenceDataSourceImpl(
-            requireContext()
-        )
-    }
 
 
     override fun onCreateView(
@@ -46,7 +37,7 @@ class CategoriesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        return inflater.inflate(R.layout.fragment_category_result, container, false)
     }
 
     override fun onAttach(context: Context) {
@@ -75,7 +66,6 @@ class CategoriesFragment : BaseFragment() {
         }
 
         navigationObserver()
-        initAdapter()
     }
 
 
@@ -89,15 +79,7 @@ class CategoriesFragment : BaseFragment() {
     }
 
     private fun updateUI(model: CategoryViewModel.Content) {
-        updateData(model.messages)
-    }
-
-    private fun initAdapter() {
-        adapter = CategoriesAdapter(
-            viewModel::onCategoryClick,
-            localPreferences.loadLegendCctFilterNames()
-        )
-        rvCategories.adapter = adapter
+        updateData(model.messages, model.message)
     }
 
     private fun navigateToProductList(navigationModel: Event<CategoryViewModel.NavigationModel>) {
@@ -106,16 +88,33 @@ class CategoriesFragment : BaseFragment() {
         }
     }
 
-    private fun updateData(categories: List<Category>) {
-        textViewResults.text = if (categories.size == 1) {
-            getString(R.string.text_result).getIntFormatter(categories.size)
-        } else {
-            getString(R.string.text_results).getIntFormatter(categories.size)
+    private fun updateData(categories: List<Category>, message: Message) {
+        when {
+            categories.isEmpty() -> {
+                textViewNoResultSubTitle.visible()
+                textViewNoResultTitle.visible()
+                rvCategories.gone()
+            }
+            else -> {
+                text_identified.text = message.textIdentified
+                identifiedBulb.loadIdentified(message.imageIdentified)
+            }
         }
-        textViewBulbType.text =
-            getString(R.string.light_bulb_recognised_as).getStringFormatter(categories[0].categoryProductBase)
+
+        setAdapter()
+        //TODO(move it to a standalone method)
 
         adapter.categories = categories
+
+    }
+
+
+    private fun setAdapter() {
+        adapter = CategoriesAdapter(
+            viewModel::onCategoryClick
+        )
+        rvCategories.adapter = adapter
+
     }
 
 }

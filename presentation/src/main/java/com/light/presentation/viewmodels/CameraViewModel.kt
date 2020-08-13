@@ -22,8 +22,7 @@ class CameraViewModel(
         const val MODE_ON = 1
         const val MODE_OFF = 2
     }
-
-
+    
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
@@ -37,6 +36,13 @@ class CameraViewModel(
         object PermissionsViewRequested : UiModel()
         object CameraViewDisplay : UiModel()
     }
+
+    class GalleryViewDisplay
+
+    private val _modelGallery = MutableLiveData<Event<GalleryViewDisplay>>()
+    val modelGallery: LiveData<Event<GalleryViewDisplay>>
+        get() = _modelGallery
+
 
     private val _modelPreview = MutableLiveData<Event<PreviewModel>>()
     val modelPreview: LiveData<Event<PreviewModel>>
@@ -57,9 +63,9 @@ class CameraViewModel(
     }
 
 
-    private val _modelRequestCancel = MutableLiveData<Event<CancelModel>>()
-    val modelRequestCancel: LiveData<Event<CancelModel>>
-        get() = _modelRequestCancel
+    private val _modelRequestCancelOrRestore = MutableLiveData<Event<CancelModel>>()
+    val modelRequestCancelOrRestore: LiveData<Event<CancelModel>>
+        get() = _modelRequestCancelOrRestore
 
     class CancelModel
 
@@ -76,6 +82,8 @@ class CameraViewModel(
             DialogModel()
 
         data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        data class GalleryPermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+
     }
 
     private val _modelResponseDialog = MutableLiveData<Event<ResponseDialogModel>>()
@@ -104,6 +112,13 @@ class CameraViewModel(
     data class RequestModelItemCount(val itemCount: Event<CartItemCount>)
 
 
+    object NavigationToBrowsingFiltering
+
+    private val _modelNavigationFiltering = MutableLiveData<Event<NavigationToBrowsingFiltering>>()
+    val modelNavigationFiltering: LiveData<Event<NavigationToBrowsingFiltering>>
+        get() = _modelNavigationFiltering
+
+
     fun onRequestGetItemCount() {
         launch {
             getItemCount.execute(
@@ -120,6 +135,7 @@ class CameraViewModel(
         _modelPreview.postValue(Event(PreviewModel(bitmap, rotationDegrees)))
         _modelRequest.postValue(Content.EncodeImage(bitmap))
     }
+
 
     fun onRequestCategoriesMessages(base64: String) {
         launch {
@@ -142,6 +158,12 @@ class CameraViewModel(
         if (isPermissionGranted) {
             _model.value = UiModel.CameraViewDisplay
 
+        }
+    }
+
+    fun onGalleryPermissionRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _modelGallery.value = Event(GalleryViewDisplay())
         }
     }
 
@@ -174,9 +196,11 @@ class CameraViewModel(
         }
     }
 
-    fun onPermissionDenied(isPermanentlyDenied: Boolean) {
-        if (isPermanentlyDenied) {
+    fun onPermissionDenied(isPermanentlyDenied: Boolean, isGalleryPermission: Boolean) {
+        if (isPermanentlyDenied && !isGalleryPermission) {
             _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        } else if (isPermanentlyDenied && isGalleryPermission) {
+            _modelDialog.value = Event(DialogModel.GalleryPermissionPermanentlyDenied(isPermanentlyDenied))
         }
     }
 
@@ -202,14 +226,19 @@ class CameraViewModel(
             )
 
         } else {
-            _modelRequestCancel.value = Event(CancelModel())
+            _modelRequestCancelOrRestore.value = Event(CancelModel())
 
         }
+    }
+
+    fun onRestoreCameraView(){
+        _modelRequestCancelOrRestore.value = Event(CancelModel())
     }
 
     private fun handleEmptyResponse() {
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)
     }
+
 
     //TODO it might be used on media image user story
     private fun handleFileImageRetrieved(imageEncoded: String) {
@@ -220,5 +249,8 @@ class CameraViewModel(
         _modelDialog.value = Event(DialogModel.TimeOutError)
     }
 
+    fun onBrowsingButtonClicked() {
+        _modelNavigationFiltering.value = Event(NavigationToBrowsingFiltering)
+    }
 }
 

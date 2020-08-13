@@ -7,127 +7,184 @@
     android:layout_marginEnd="@dimen/margin_big"
     android:layout_marginStart="@dimen/margin_big"
     android:layout_marginBottom="@dimen/margin_big"
+    android:focusableInTouchMode="false"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
     app:cardBackgroundColor="@color/backgroundLight">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/bulbCover"
-            android:layout_width="130dp"
-            android:layout_height="150dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:background="@color/backgroundLight"
-            android:layout_marginTop="24dp"
-            android:contentDescription="@string/lightbulb_cd"
-            android:layout_marginStart="8dp"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:focusableInTouchMode="false"
+                android:id="@+id/bulbCover"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:background="@color/backgroundLight"
+                android:contentDescription="@string/lightbulb_cd"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:id="@+id/energyButton"
+                style="@style/EnergyButton"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_curvy_corners_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/most_efficient_option"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="top|left" />
+
+
+
+            <View
+                android:id="@+id/cover_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/primaryDisabled"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom" />
+
+            <Button
+                android:id="@+id/priceButton"
+                style="@style/PriceButton"
+                android:layout_marginEnd="16dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:background="@drawable/button_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/_0_00_0_00_each"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|right" />
+
+            <LinearLayout
+                android:id="@+id/thumbnail"
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_anchor="@id/bulbCover"
+                app:layout_anchorGravity="bottom|left" />
+
+
+            <LinearLayout
+                android:id="@+id/imagesLayout"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_anchor="@id/cover_line"
+                app:layout_anchorGravity="bottom|left" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <TextView
+            android:maxLines="2"
+            android:ellipsize="end"
             android:id="@+id/category_name"
             style="@style/TitleCategory"
             android:layout_width="0dp"
             android:letterSpacing="0.03"
-            android:textSize="18sp"
-            android:lineSpacingExtra="8sp"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="16dp"
+            android:lineSpacingExtra="2sp"
             android:includeFontPadding="false"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/product_detail"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout"
             tools:text="Category Name" />
 
         <TextView
-            android:id="@+id/product_detail"
-            style="@style/TitleCategory"
-            android:textSize="18sp"
-            android:letterSpacing="0.03"
-            android:lineSpacingExtra="8sp"
-            android:text="@string/placeholder"
+            android:id="@+id/bulbName"
+            style="@style/BulbCategory"
             android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="16sp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:lineSpacingExtra="2sp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bulbCover"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
-            tools:text="40W - 60W E26" />
+            android:text="@string/bulb_s" />
+
+        <TextView
+            android:id="@+id/textOptions"
+            style="@style/BulbCategory"
+            android:layout_width="0dp"
+            android:letterSpacing="0.03"
+            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginStart="16dp"
+            android:lineSpacingExtra="2sp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bulbName"
+            android:text="@string/available_options" />
 
         <LinearLayout
-            android:id="@+id/textViewsLayout"
+            android:id="@+id/colorsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="fill"
-            android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/price"
-            app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/product_detail"></LinearLayout>
-
-
-        <TextView
-            android:id="@+id/price"
-            style="@style/PriceCategory"
-            android:textSize="18sp"
-            android:letterSpacing="0.03"
-            android:lineSpacingExtra="8sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:singleLine="true"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@id/energyButton"
-            app:layout_constraintStart_toEndOf="@+id/bulbCover"
-            app:layout_constraintTop_toBottomOf="@+id/textViewsLayout"
-            tools:text="$0.00-$0.00" />
-
-        <TextView
-            style="@style/SubtitleTextGreen"
-            android:text="@string/text_bulb"
-            android:textSize="16sp"
-            android:lineSpacingExtra="6sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/price"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/price"
-            app:layout_constraintTop_toTopOf="@+id/price" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textOptions" />
 
-        <Button
-            android:id="@+id/energyButton"
-            style="@style/BlueButton"
-            android:background="@drawable/button_curvy_corners_categories"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/wattageLayout"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/most_efficient_option"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price" />
+            app:layout_constraintTop_toBottomOf="@+id/colorsLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.cardview.widget.CardView>

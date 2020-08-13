@@ -2,8 +2,8 @@ package com.light.finder.common
 
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
-import com.light.finder.data.source.remote.EnergySaving
-import com.light.finder.data.source.remote.Price
+import com.light.finder.data.source.remote.dto.EnergySaving
+import com.light.finder.data.source.remote.dto.Price
 import timber.log.Timber
 
 class HiddenAnnotationExclusionStrategy : ExclusionStrategy {

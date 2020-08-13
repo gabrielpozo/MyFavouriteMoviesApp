@@ -1,10 +1,13 @@
 package com.light.finder.extensions
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -15,14 +18,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.light.domain.model.Category
-import com.light.domain.model.Message
-import com.light.domain.model.Product
+import com.bumptech.glide.request.target.CustomTarget
+import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.SignifyApp
-import com.light.finder.data.source.remote.CategoryParcelable
-import com.light.finder.data.source.remote.MessageParcelable
-import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.data.source.remote.*
 import kotlin.properties.Delegates
 
 
@@ -91,17 +91,84 @@ fun ImageView.loadUrl(url: String) {
         .placeholder(R.drawable.category_placeholder).into(this)
 }
 
+fun ImageView.loadIdentified(url: String) {
+    Glide.with(context).load(url)
+        .placeholder(R.drawable.ic_app_icon_front_white).into(this)
+}
+
+fun ImageView.loadUrWithoutPlaceholderl(url: String) {
+    Glide.with(context).load(url)
+        .override(460, 460)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(this)
+}
+
+fun ImageView.loadFitting(url: String) {
+    Glide.with(context).load(url)
+        .placeholder(R.color.backgroundLight).into(this)
+}
+
+fun ImageView.loadThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_holder)
+        .into(this)
+}
+
+fun ImageView.loadThumbnailVariation(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .placeholder(R.drawable.ic_placeholder_variation)
+        .into(this)
+}
+
+
+fun ImageView.loadBulbThumbnail(url: String) {
+    Glide.with(context)
+        .load(url)
+        .circleCrop()
+        .centerInside()
+        .placeholder(R.drawable.all_circle).into(this)
+
+}
+
 fun ImageView.loadUrlCenterCrop(url: String) {
     Glide.with(context).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).centerInside()
         .placeholder(R.drawable.fallback_image)
         .into(this)
 }
 
+fun ImageView.loadCircleImage(url: String) {
+    Glide.with(context).load(url).circleCrop().placeholder(R.drawable.ic_placeholder_variation)
+        .into(this)
+}
+
+
 fun ImageView.setPlaceholder() {
     Glide.with(context).load(R.drawable.fallback_image).centerInside()
         .into(this)
 }
 
+fun TextView.loadSmallColorIcon(url: String, @DrawableRes id: Int = 0) {
+    Glide.with(context)
+        .load(url)
+        .placeholder(R.drawable.ic_holder)
+        .error(R.drawable.ic_holder)
+        .into(object : CustomTarget<Drawable>(75, 75) {
+            override fun onLoadCleared(drawable: Drawable?) {
+                setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+            }
+
+            override fun onResourceReady(
+                res: Drawable,
+                transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
+            ) {
+                setCompoundDrawablesWithIntrinsicBounds(null, null, res, null)
+            }
+        })
+}
 
 fun Category.parcelizeCategory(): CategoryParcelable =
     CategoryParcelable(
@@ -111,13 +178,14 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         categoryName,
         categoryImage,
         priceRange,
-        minWattage,
-        maxWattage,
+        categoryWattReplaced,
         maxEnergySaving,
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryConnectivityCode,
+        categoryDescription
     )
 
 
@@ -130,12 +198,13 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         categoryImage,
         priceRange,
         minWattage,
-        maxWattage,
         maxEnergySaving,
         minEnergySaving,
         colors,
         finishCodes,
-        categoryShape
+        categoryShape,
+        categoryConnectivityCode,
+        categoryDescription
     )
 
 
@@ -146,6 +215,42 @@ fun List<Product>.parcelizeProductList(): ArrayList<ProductParcelable> {
     }
     return parcelizeProducts
 }
+
+
+fun List<CctType>.parcelizeCctList(): ArrayList<CctTypeParcelable> {
+    val parcelizeCctType = ArrayList<CctTypeParcelable>()
+    forEach { cctColor ->
+        parcelizeCctType.add(mapDomainCctToParcelable(cctColor))
+    }
+    return parcelizeCctType
+}
+
+fun List<CctTypeParcelable>.deparcelizeCctList(): ArrayList<CctType> {
+    val parcelizeCct = ArrayList<CctType>()
+    forEach { cctParcelable ->
+        parcelizeCct.add(mapParcelableCctToDomain(cctParcelable))
+    }
+    return parcelizeCct
+}
+
+
+fun List<ShapeBrowsing>.parcelizeBrowsingList(): ArrayList<ShapeBrowsingParcelable> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsingParcelable>()
+    forEach { cctColor ->
+        parcelizeBrowsing.add(mapDomainShapeBrowsingToParcelable(cctColor))
+    }
+    return parcelizeBrowsing
+}
+
+
+fun List<ShapeBrowsingParcelable>.deParcelizeBrowsingList(): ArrayList<ShapeBrowsing> {
+    val parcelizeBrowsing = ArrayList<ShapeBrowsing>()
+    forEach { shapeParcelable ->
+        parcelizeBrowsing.add(mapParcelizeShapeBrowsingToDomain(shapeParcelable))
+    }
+    return parcelizeBrowsing
+}
+
 
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
@@ -161,7 +266,19 @@ fun Message.parcelizeMessage(): MessageParcelable =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
+    )
+
+fun FormFactorTypeBaseId.parcelizeFormFactor(): FormFactorTypeBaseIdParcelable =
+    FormFactorTypeBaseIdParcelable(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
     )
 
 
@@ -171,9 +288,19 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         version = version,
         baseIdentified = baseIdentified,
         formfactorType = formfactorType,
-        shapeIdentified = shapeIdentified
+        shapeIdentified = shapeIdentified,
+        textIdentified = textIdentified,
+        imageIdentified = imageIdentified
     )
-
+fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
+    FormFactorTypeBaseId(
+        id = id,
+        name = name,
+        image = image,
+        description = description,
+        order = order,
+        isSelected = isSelected
+    )
 
 val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
     ProductParcelable(
@@ -190,7 +317,7 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.qtyLampscase,
         product.wattageReplaced,
         product.country,
-        product.priority,
+        product.productPrio,
         product.wattageClaim,
         product.factorBase,
         product.discountProc,
@@ -209,10 +336,40 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
+        product.produtCategoryCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        product.wattageReplacedExtra
     )
 
+}
+
+val mapDomainCctToParcelable: (CctType) -> CctTypeParcelable = { cctType ->
+    CctTypeParcelable(
+        cctType.id,
+        cctType.name,
+        cctType.smallIcon,
+        cctType.bigIcon,
+        cctType.order,
+        cctType.arType,
+        mapDomainKelvinToParcelable(cctType.kelvinSpec),
+        cctType.isSelected
+    )
+
+}
+
+val mapParcelableCctToDomain: (CctTypeParcelable) -> CctType = { cctType ->
+    CctType(
+        cctType.id,
+        cctType.name,
+        cctType.smallIcon,
+        cctType.bigIcon,
+        cctType.order,
+        cctType.arType,
+        mapParcelableKelvinToDomain(cctType.kelvinSpec),
+        cctType.isSelected
+    )
 }
 
 val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
@@ -249,9 +406,59 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.colorCctCode,
         product.formfactorType,
         product.productFinishCode,
+        product.productConnectionCode,
+        product.productCategoryCode,
         product.isSelected,
-        product.isAvailable
+        product.isAvailable,
+        wattageReplacedExtra = product.wattageReplacedExtra
     )
 
 }
 
+val mapDomainKelvinToParcelable: (KelvinSpec) -> KelvinSpecParcelable = { kelvinSpec ->
+    KelvinSpecParcelable(
+        kelvinSpec.minValue,
+        kelvinSpec.maxValue,
+        kelvinSpec.defaultValue
+    )
+}
+
+
+val mapParcelableKelvinToDomain: (KelvinSpecParcelable) -> KelvinSpec = { kelvinSpecParcelable ->
+    KelvinSpec(
+        kelvinSpecParcelable.minValue,
+        kelvinSpecParcelable.maxValue,
+        kelvinSpecParcelable.defaultValue
+    )
+}
+
+
+val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelable =
+    { shapeBrowsing ->
+        ShapeBrowsingParcelable(
+            shapeBrowsing.id,
+            shapeBrowsing.name,
+            shapeBrowsing.image,
+            shapeBrowsing.order,
+            shapeBrowsing.subtitleCount,
+            shapeBrowsing.baseIdFitting,
+            shapeBrowsing.baseNameFitting,
+            shapeBrowsing.isSelected
+        )
+
+    }
+
+val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsing =
+    { shapeBrowsingParcelable ->
+        ShapeBrowsing(
+            shapeBrowsingParcelable.id,
+            shapeBrowsingParcelable.name,
+            shapeBrowsingParcelable.image,
+            shapeBrowsingParcelable.order,
+            shapeBrowsingParcelable.subtitleCount,
+            shapeBrowsingParcelable.baseFittingId,
+            shapeBrowsingParcelable.baseNameFitting,
+            shapeBrowsingParcelable.isSelected
+        )
+
+    }

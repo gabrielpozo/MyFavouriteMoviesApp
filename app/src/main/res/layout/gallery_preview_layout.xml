@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundDark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/preview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        android:textSize="20sp"
+        android:textColor="@color/textLight"
+        android:lineSpacingExtra="12sp"
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/bold"
+        android:text="Identify a lightbulb"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_container"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="80dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="80dp"
+        app:cardElevation="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/preview_title">
+
+        <ImageView
+            android:id="@+id/galleryPreview"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/cancelPhoto"
+            style="@style/GreenButton"
+            android:text="Cancel"
+            android:layout_weight="1"
+            android:background="@color/backgroundDark"
+            android:textColor="@color/primaryOnDark"
+            android:stateListAnimator="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="27dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/confirmPhoto"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/confirmPhoto"
+            style="@style/GreenButton"
+            android:text="Use Photo"
+            android:layout_weight="1"
+            android:stateListAnimator="@null"
+            android:background="@drawable/button_curvy_corners"
+            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginEnd="27dp" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

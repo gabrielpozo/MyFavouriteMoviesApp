@@ -3,14 +3,14 @@ package com.light.finder.di.modules.singleton
 import android.app.Application
 import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
-import com.light.finder.data.source.remote.CartItemCountRemoteDataSource
-import com.light.finder.data.source.remote.CartItemRemoteDataSource
-import com.light.finder.data.source.remote.SignifyRemoteDataSource
+import com.light.finder.data.source.local.db.BrowseRoomDataBase
+import com.light.finder.data.source.local.db.BrowseRoomDataSource
+import com.light.finder.data.source.local.db.dao.BrowseDao
+import com.light.finder.data.source.remote.*
+import com.light.source.local.LocalDbDataSource
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
-import com.light.source.remote.CartRemoteDataSource
-import com.light.source.remote.ItemRemoteDataSource
-import com.light.source.remote.RemoteDataSource
+import com.light.source.remote.*
 import dagger.Module
 import dagger.Provides
 
@@ -27,6 +27,21 @@ class ApplicationModule {
     @Provides
     fun getCartItemCountRemoteDataSource(app: Application): ItemRemoteDataSource =
         CartItemCountRemoteDataSource(app)
+
+    @Provides
+    fun getLegendDataSource(): RemoteFetchLegendDataSource =
+        LegendRemoteDataSource()
+
+    @Provides
+    fun getBrowsingProductRemoteDataSource(): RemoteFetchBrowsingDataSource =
+        BrowsingRemoteDataSource()
+
+    @Provides
+    fun getMoviesDao(app: Application): BrowseDao = BrowseRoomDataBase.getDatabase(app).browseDao()
+
+    @Provides
+    fun getLocalBrowsingDataBase(browseDao: BrowseDao): LocalDbDataSource =
+        BrowseRoomDataSource(browseDao)
 
     @Provides
     fun getLocalMediaDataSource(): LocalMediaDataSource = LocalMediaDataSourceImpl()

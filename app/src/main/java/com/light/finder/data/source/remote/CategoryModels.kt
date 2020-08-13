@@ -1,6 +1,7 @@
 package com.light.finder.data.source.remote
 
 import android.os.Parcelable
+import com.light.domain.model.ShapeBrowsing
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -11,13 +12,14 @@ data class CategoryParcelable(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
-    val minWattage: String,
-    val maxWattage: String,
+    val minWattage: List<Int>,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,
     val colors: List<Int>,
     val finishCodes: List<Int>,
-    val categoryShape: String
+    val categoryShape: String,
+    val categoryConnectivityCode: List<Int>,
+    val categoryDescription: String
 ) : Parcelable
 
 @Parcelize
@@ -54,8 +56,11 @@ data class ProductParcelable(
     var colorCctCode: Int,
     var formfactorType: Int,
     var productFinishCode: Int,
+    var productConnectionCode: Int,
+    var productCategoryCode: Int,
     var isSelected: Boolean,
-    var isAvailable: Boolean
+    var isAvailable: Boolean,
+    var wattageReplacedExtra: String
 ) : Parcelable
 
 @Parcelize
@@ -64,6 +69,48 @@ data class MessageParcelable(
     val version: String,
     val baseIdentified: String,
     val formfactorType: String,
-    val shapeIdentified: String
+    val shapeIdentified: String,
+    val textIdentified: String,
+    val imageIdentified: String
 ) : Parcelable
+
+@Parcelize
+data class FormFactorTypeBaseIdParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val description: String,
+    val order: Int,
+    var isSelected: Boolean = false
+):Parcelable
+
+@Parcelize
+data class CctTypeParcelable(
+    val id: Int,
+    val name: String,
+    val smallIcon: String,
+    val bigIcon: String,
+    val order: Int,
+    val arType: Int,
+    val kelvinSpec: KelvinSpecParcelable,
+    var isSelected: Boolean = false
+) : Parcelable
+
+
+@Parcelize
+data class KelvinSpecParcelable(val minValue: Int, val maxValue: Int, val defaultValue: Int) :
+    Parcelable
+
+
+@Parcelize
+data class ShapeBrowsingParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val order: Int,
+    val subtitleCount:Int,
+    var baseFittingId:Int = -1,
+    var baseNameFitting: String,
+    var isSelected: Boolean = false
+    ) : Parcelable
 

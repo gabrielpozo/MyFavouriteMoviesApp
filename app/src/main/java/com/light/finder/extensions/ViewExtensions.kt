@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
@@ -69,9 +68,9 @@ fun View.showWithAnimation() {
         })
 }
 
-fun View.slideVertically(distance: Float, duration: Long = 1000, hide: Boolean = false) {
+fun View.slideVertically(distance: Float, duration: Long = 500, hide: Boolean = false) {
     val view = this
-    this.animate().translationY(distance).setDuration(500)
+    this.animate().translationY(distance).setDuration(duration)
         .setListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
 
@@ -116,7 +115,7 @@ fun ImageView.loadImage(bitmap: Bitmap, rotationDegree: Int) {
 }
 
 fun View.setSafeOnClickListener(
-    onViewResponse: (Boolean) -> Unit,
+    onViewResponse: (Boolean) -> Unit = {},
     onSafeClick: (View) -> Unit
 ) {
     val safeClickListener = SafeClickListener {
@@ -142,10 +141,13 @@ fun String?.getSplitUrl(): String {
     return chain
 }
 
+fun Int.pluralOrSingular() =
+    if (this > 1) {
+        "s"
+    } else {
+        ""
+    }
 
-fun TextView.endDrawableIcon(@DrawableRes id: Int = 0) {
-    setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, id, 0)
-}
 
 
 

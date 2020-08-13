@@ -1,7 +1,9 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
+import com.light.domain.model.ProductCategoryName
 import com.light.finder.data.source.remote.*
+import com.light.finder.data.source.remote.dto.*
 
 val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
 
@@ -15,50 +17,21 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     categoryName = categoryDto.categoryName,
                     categoryIndex = categoryDto.categoryIndex,
                     categoryImage = categoryDto.categoryImage,
-                    priceRange = getMinMaxPriceTag(
-                        categoryDto.categoryPrice?.minPrice,
-                        categoryDto.categoryPrice?.maxPrice
+                    priceRange = getMinPriceTag(
+                        categoryDto.categoryPrice?.minPrice
                     ),
-                    minWattage = categoryDto.categoryWattReplace.let { list ->
-                        if (list.isNotEmpty()) {
-                            list.min().toString()
-                        } else ""
-                    },
-                    maxWattage = categoryDto.categoryWattReplace.let { list ->
-                        if (list.isNotEmpty() && list.size > 1) {
-                            list.max().toString()
-                        } else ""
-                    },
+                    categoryWattReplaced = categoryDto.categoryWattReplace,
                     maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,
                     colors = categoryDto.categoryCctCode.map { it },
                     finishCodes = categoryDto.categoryFilterFinishCode.map { it },
-                    categoryShape = categoryDto.categoryProductShape
+                    categoryShape = categoryDto.categoryProductShape,
+                    categoryConnectivityCode = categoryDto.categoryConnectivityCode.map { it },
+                    categoryDescription = categoryDto.categoryDescription
                 )
             )
         }
     }
-
-
-    val cctFilter = messageDto.legend.cctFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-    val finishFilter = messageDto.legend.finishFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-    val lightShapeFilter = messageDto.legend.lightShapeFilter.map {
-        FilterType(it.id, it.name)
-    }
-
-
-    val legend = Legend(
-        cctFilter = cctFilter,
-        finishFilter = finishFilter,
-        lightShapeFilter = lightShapeFilter
-    )
-
 
     Message(
         //TODO move sortedBy to repository
@@ -67,7 +40,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
         baseIdentified = messageDto.baseIdentified,
         formfactorType = messageDto.formfactorType,
         shapeIdentified = messageDto.shape_identified,
-        legend = legend
+        textIdentified = messageDto.textIdentified,
+        imageIdentified = messageDto.imageIdentified
     )
 }
 
@@ -86,7 +60,7 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         qtyLampscase = productDto.qtyLampscase,
         wattageReplaced = productDto.wattageReplaced,
         country = productDto.country,
-        priority = productDto.priority,
+        productPrio = productDto.priority,
         wattageClaim = productDto.wattageClaim,
         factorBase = productDto.factorBase,
         discountProc = productDto.discountProc,
@@ -104,7 +78,11 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         factorTypeCode = productDto.factorTypeCode,
         colorCctCode = productDto.productCctCode,
         formfactorType = productDto.factorTypeCode,
-        productFinishCode = productDto.productFinishCode
+        productFinishCode = productDto.productFinishCode,
+        productConnectionCode = productDto.productConnectionCode,
+        produtCategoryCode = productDto.productCategoryCode,
+        wattageReplacedExtra = productDto.wattageReplacedExtra
+
     )
 }
 
@@ -136,6 +114,102 @@ val mapCartItemCountToDomain: (CartItemCountResultDto) -> CartItemCount = { coun
 }
 
 
+val mapLegendToDomain: (LegendParsingDto) -> LegendParsing = { legendDto ->
+    LegendParsing(
+        legend = mapLegendValueToDomain(legendDto.legend)
+
+    )
+}
+
+private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendValueDto ->
+    LegendValue(
+        productFormFactorType = legendValueDto.productFormFactorType.map {
+            FormFactorType(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
+        },
+        finishType = legendValueDto.productFinish.map {
+            FinishType(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
+        },
+         cctType = legendValueDto.productCctName.map {
+            CctType(
+                it.id,
+                it.name,
+                it.smallIcon,
+                it.bigIcon,
+                it.order,
+                it.arType,
+                MAP_KELVIN_DTO_TO_DOMAIN(it.kelvinSpec)
+            )
+        },
+        formfactorTypeId = legendValueDto.productFormFactorId.map {
+            FormFactorTypeId(
+                it.id,
+                it.name,
+                it.productFormFactorType,
+                it.productFormFactorTypeId,
+                it.image,
+                it.description,
+                it.order
+            )
+        },
+        productConnectivity = legendValueDto.productConnectivity.map {
+            ProductConnectivity(
+                it.id,
+                it.name,
+                it.image,
+                it.order
+            )
+        },
+        formfactorTypeBaseId = legendValueDto.productFormFactorBaseId.map {
+            FormFactorTypeBaseId(
+                it.id,
+                it.name,
+                it.image,
+                it.description,
+                it.order
+            )
+        },
+        productCategoryName = legendValueDto.productCategoryName.map {
+            ProductCategoryName(
+                it.id,
+                it.name,
+                it.order,
+                it.image,
+                it.description
+            )
+        }
+    )
+}
+
+private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
+    {
+        KelvinSpec(
+            it.minValue,
+            it.maxValue,
+            it.defaultValue
+        )
+    }
+
+fun getMinPriceTag(minPrice: Float?): String =
+    if (minPrice == null) {
+        "-"
+    } else  {
+        priceTransform(minPrice)
+    }
+
+fun priceTransform(value: Float): String {
+    return "$%.2f".format(value)
+}
+
 fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
     if (minPrice == null || maxPrice == null) {
         "-"
@@ -145,6 +219,4 @@ fun getMinMaxPriceTag(minPrice: Float?, maxPrice: Float?): String =
         "${priceTransform(minPrice)}-${priceTransform(maxPrice)}"
     }
 
-fun priceTransform(value: Float): String {
-    return "$%.2f".format(value)
-}
+

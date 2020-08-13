@@ -98,9 +98,9 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun setDoneClickListener() {
-        textViewDone.setOnClickListener {
-            viewModel.onDoneButtonClicked()
-        }
+//        textViewDone.setOnClickListener {
+//            viewModel.onDoneButtonClicked()
+//        }
     }
 
     private fun initAdapters() {
@@ -147,15 +147,15 @@ class ProductVariationsLightFinderActivity : BaseLightFinderActivity() {
             getString(R.string.wattage_variation),
             productSelectedModel.productSelected.wattageReplaced.toString()
         )
-        textViewColor.text = getLegendTagPref(
+        textViewColor.text = getLegendCctTagPref(
             productSelectedModel.productSelected.colorCctCode,
             filterTypeList = localPreferences.loadLegendCctFilterNames(),
-            legendTag = "product_cct_code"
+            legendTag = COLOR_LEGEND_TAG
         )
-        textViewFinish.text = getLegendTagPref(
+        textViewFinish.text = getLegendFinishTagPref(
             productSelectedModel.productSelected.productFinishCode,
             filterTypeList = localPreferences.loadLegendFinishFilterNames(),
-            legendTag = "product_finish_code"
+            legendTag = FINISH_LEGEND_TAG
         )
     }
 

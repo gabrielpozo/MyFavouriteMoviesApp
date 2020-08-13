@@ -1,6 +1,5 @@
 package com.light.finder
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,20 +14,22 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.light.domain.model.Product
 import com.light.finder.common.*
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_ABOUT
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.common.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
-import com.light.finder.data.source.remote.ProductParcelable
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
+import com.light.finder.navigators.ScreenNavigator
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.camera.CameraFragment
+import com.light.finder.ui.camera.ModelStatus
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
+import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
@@ -40,7 +41,6 @@ import java.io.File
 class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.RootFragmentListener,
     ActivityCallback, ReloadingCallback {
 
-
     private lateinit var container: FrameLayout
     private val screenNavigator: ScreenNavigator by lazy { lightFinderComponent.screenNavigator }
     val lightFinderComponent: LightFinderComponent by lazy {
@@ -50,6 +50,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             )
         )
     }
+    private var isBackButtonBlocked = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override val numberOfRootFragments: Int = 3
@@ -57,6 +58,9 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     companion object {
         const val LIMITED_NUMBER_BADGE = 100
+        const val CAMERA_LIGHT_FINDER_ACTIVITY_ID: String = "CAMERA_LIGHT_FINDER_ACTIVITY_ID"
+        const val BROWSING_SHAPE_VALUES_ID: String = "BrowseShapeValues::id"
+        const val BROWSING_ACTIVITY:String = "BrowsingActivity"
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
             val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
@@ -69,9 +73,21 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+
+        if (intent != null) {
+            val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
+            if (dataId.equals(BROWSING_ACTIVITY)) {
+                val shapeResult = intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(BROWSING_SHAPE_VALUES_ID)
+                shapeResult?.let {
+                    screenNavigator.setInitialRootFragment(BrowseResultFragment.newInstance(shapeResult.deParcelizeBrowsingList()))
+                }
+
+            } else {
+                screenNavigator.setInitialRootFragment(CameraFragment.newInstance())
+            }
+        }
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -110,35 +126,18 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
     override fun onCartCleared() {
         bottom_navigation_view.setNotification(AHNotification(), INDEX_CART)
-
     }
 
     override fun onBottomBarBlocked(isClickable: Boolean) {
         if (!isClickable) {
+            isBackButtonBlocked = true
             bottom_navigation_view.setItemDisableColor(getColor(R.color.backgroundLight))
             bottom_navigation_view.disableItemAtPosition(INDEX_CART)
             bottom_navigation_view.disableItemAtPosition(INDEX_ABOUT)
         } else {
+            isBackButtonBlocked = false
             bottom_navigation_view.enableItemAtPosition(INDEX_CART)
             bottom_navigation_view.enableItemAtPosition(INDEX_ABOUT)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ProductVariationsLightFinderActivity.REQUEST_CODE_PRODUCT) {
-                val productList: List<Product> =
-                    data?.getParcelableArrayListExtra<ProductParcelable>(
-                        ProductVariationsLightFinderActivity.PRODUCT_LIST_EXTRA
-                    )
-                        ?.deparcelizeProductList() ?: emptyList()
-                val currentFragment = screenNavigator.getCurrentFragment()
-                if (currentFragment is DetailFragment) {
-                    currentFragment.retrieveLisFromProductVariation(productList)
-                    firebaseAnalytics.trackScreen(currentFragment, this)
-                }
-            }
         }
     }
 
@@ -147,7 +146,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
         no_internet_banner?.slideVertically(0F)
         Handler().postDelayed({
-            no_internet_banner.slideVertically(-no_internet_banner.height.toFloat())
+            no_internet_banner?.slideVertically(-no_internet_banner.height.toFloat())
         }, 5000)
     }
 
@@ -204,8 +203,19 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun onBackPressed() {
-        if (screenNavigator.popFragmentNot()) {
+        val current = screenNavigator.getCurrentFragment()
+        if (current is CameraFragment) {
+            if (current.getStatusView() == ModelStatus.GALLERY) {
+                // go back to gallery
+                current.pickImageFromGallery()
+                return
+            }
+        }
+
+
+        if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
             super.onBackPressed()
+            overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
         }
     }
 
@@ -220,15 +230,35 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         }
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val op = data?.getIntExtra(
+            LiveAmbianceLightFinderActivity.CCT_LIST_EXTRA,
+            0
+        ) ?: -1
+        if (requestCode == LiveAmbianceLightFinderActivity.REQUEST_CODE_AMBIANCE) {
+            val currentFragment = screenNavigator.getCurrentFragment()
+            if (currentFragment is DetailFragment) {
+                currentFragment.returningFromLiveAmbiance(
+                    data?.getIntExtra(
+                        LiveAmbianceLightFinderActivity.CCT_LIST_EXTRA,
+                        0
+                    ) ?: -1
+                )
+            }
+        }
+    }
+
+
     override fun getRootFragment(index: Int): Fragment {
         when (index) {
             INDEX_LIGHT_FINDER -> {
-                return CameraFragment.newInstance()
+                return screenNavigator.getInitialRootFragment()
             }
             INDEX_CART -> return CartFragment.newInstance()
             INDEX_ABOUT -> return AboutFragment.newInstance()
         }
         throw IllegalStateException("Need to send an index that we know")
     }
-
 }
