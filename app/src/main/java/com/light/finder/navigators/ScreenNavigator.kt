@@ -15,6 +15,7 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
+import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -134,7 +135,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         val isFragmentPopped = fragNavController.popFragment().not()
         val current = getCurrentFragment()
         if(current is CameraFragment){
-            current.restoreCamera()
+            current.restoreCameraFromScanning()
         }
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
@@ -229,7 +230,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun navigateToBrowsingFiltering() {
-        activity.startActivity<BrowseActivity> { }
+        activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {}
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }

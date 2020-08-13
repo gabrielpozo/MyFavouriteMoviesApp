@@ -54,6 +54,10 @@ class DetailViewModel(
     val modelCctType: LiveData<Event<CctColorsSelected>>
         get() = _modelCctType
 
+    private val _modelPermissionStatus = MutableLiveData<PermissionStatus>()
+    val modelPermissionStatus: LiveData<PermissionStatus>
+        get() = _modelPermissionStatus
+
     /**
      * observable variation variables
      */
@@ -103,6 +107,11 @@ class DetailViewModel(
     data class ContentProductId(val productSapId: String)
 
     data class CctColorsSelected(val cctTypeList: List<CctType>)
+
+    sealed class PermissionStatus {
+        object PermissionGranted : PermissionStatus()
+        object PermissionDenied : PermissionStatus()
+    }
 
     object ServerError
 
@@ -390,6 +399,14 @@ class DetailViewModel(
         if (::dataProductsVariation.isInitialized) {
             val product = products[0].also { it.isSelected = true }
             _modelSapId.value = ContentProductId(product.sapID12NC.toString())
+        }
+    }
+
+    fun onCameraPermissionRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _modelPermissionStatus.value = PermissionStatus.PermissionGranted
+        } else {
+            _modelPermissionStatus.value = PermissionStatus.PermissionDenied
         }
     }
 

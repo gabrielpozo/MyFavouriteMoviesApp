@@ -6,8 +6,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.hardware.display.DisplayManager
@@ -213,7 +211,10 @@ class CameraFragment : BaseFragment() {
         viewModel.model.observe(viewLifecycleOwner, Observer(::observeUpdateUI))
         viewModel.modelPreview.observe(viewLifecycleOwner, Observer(::observePreviewView))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeModelContent))
-        viewModel.modelRequestCancelOrRestore.observe(viewLifecycleOwner, Observer(::observeCancelRestoreRequest))
+        viewModel.modelRequestCancelOrRestore.observe(
+            viewLifecycleOwner,
+            Observer(::observeCancelRestoreRequest)
+        )
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelResponseDialog.observe(
@@ -286,9 +287,13 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-               val inputStream = activity?.contentResolver?.openInputStream(uri)
+                val inputStream = activity?.contentResolver?.openInputStream(uri)
                 inputStream?.let { stream ->
-                    viewModel.onCameraButtonClicked(imageRepository.decodeSampledBitmapFromStream(stream), rotation)
+                    viewModel.onCameraButtonClicked(
+                        imageRepository.decodeSampledBitmapFromStream(
+                            stream
+                        ), rotation
+                    )
                     layoutPreviewGallery.gone()
                     modelUiState = ModelStatus.FEED
                 }
@@ -963,11 +968,14 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.isEnabled = true
     }
 
-    fun restoreCamera() {
-        //TODO(this will be implemented differently according to US-1523)
+    fun restoreCameraFromScanning() {
         if (modelUiState != ModelStatus.PERMISSION) {
-            viewModel.onRestoreCameraView()
+            viewModel.onRestoreCameraViewFromScanning()
         }
+    }
+
+    fun restoreCameraFromBrowsing() {
+        viewModel.onRestoreCameraViewFromBrowsing(checkSelfCameraPermission())
     }
 
     private fun restoreCameraView() {

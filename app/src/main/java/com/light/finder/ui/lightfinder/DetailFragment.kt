@@ -1,5 +1,6 @@
 package com.light.finder.ui.lightfinder
 
+import android.Manifest
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.PermissionRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -58,6 +60,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private lateinit var filterConnectivityAdapter: FilterConnectivityAdapter
+    private lateinit var cameraPermissionRequester: PermissionRequester
+
 
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -94,8 +98,11 @@ class DetailFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(DetailModule())
             connectivityRequester = ConnectivityRequester(this)
+            cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
 
         } ?: throw Exception("Invalid Activity")
+
+
 
         setNavigationObserver()
         setDetailObservers()
@@ -238,6 +245,7 @@ class DetailFragment : BaseFragment() {
         viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
+        viewModel.modelPermissionStatus.observe(viewLifecycleOwner, Observer(::observePermissionStatus))
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
@@ -301,6 +309,17 @@ class DetailFragment : BaseFragment() {
     private fun observeCctType(modelCctTypeEvent: Event<DetailViewModel.CctColorsSelected>) {
         modelCctTypeEvent.getContentIfNotHandled()?.let { contentCctList ->
             screenNavigator.navigateToLiveAmbiance(contentCctList.cctTypeList)
+        }
+    }
+
+    private fun observePermissionStatus(modelPermissionStatus: DetailViewModel.PermissionStatus) {
+        when (modelPermissionStatus) {
+            is DetailViewModel.PermissionStatus.PermissionGranted -> {
+                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+            }
+            is DetailViewModel.PermissionStatus.PermissionDenied -> {
+                //TODO Permission Denied
+            }
         }
     }
 
@@ -415,9 +434,15 @@ class DetailFragment : BaseFragment() {
                     localPreferences.loadLegendCctFilterNames()
                 )
             ) {
-                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+                cameraPermissionRequester.request({ isPermissionGranted ->
+                    viewModel.onCameraPermissionRequested(isPermissionGranted)
+                }, (::observePermanentlyDeniedPermission))
             }
         }
+    }
+
+    private fun observePermanentlyDeniedPermission(isPermanentlyDenied: Boolean) {
+        //TODO
     }
 
     private fun setViewPager() {
@@ -569,7 +594,9 @@ class DetailFragment : BaseFragment() {
         }
 
         filterConnectivityAdapter.filterListConnectivity =
-            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(localPreferences.loadLegendConnectivityNames())
+            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(
+                localPreferences.loadLegendConnectivityNames()
+            )
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
@@ -580,7 +607,8 @@ class DetailFragment : BaseFragment() {
         populateProductData(productSelectedModel.productSelected)
         populateStickyHeaderData(productSelectedModel.productSelected)
 
-        textViewWattage.text = getString(R.string.wattage_detail,
+        textViewWattage.text = getString(
+            R.string.wattage_detail,
             productSelectedModel.productSelected.wattageReplaced.toString(),
             productSelectedModel.productSelected.wattageReplacedExtra
         )
