@@ -1,5 +1,6 @@
 package com.light.finder.ui.lightfinder
 
+import android.Manifest
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.light.domain.model.Product
 import com.light.finder.R
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.PermissionRequester
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
@@ -58,6 +60,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private lateinit var filterConnectivityAdapter: FilterConnectivityAdapter
+    private lateinit var cameraPermissionRequester: PermissionRequester
+
 
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -94,8 +98,11 @@ class DetailFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(DetailModule())
             connectivityRequester = ConnectivityRequester(this)
+            cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
 
         } ?: throw Exception("Invalid Activity")
+
+
 
         setNavigationObserver()
         setDetailObservers()
@@ -235,9 +242,13 @@ class DetailFragment : BaseFragment() {
     private fun setDetailObservers() {
         viewModel.modelSapId.observe(viewLifecycleOwner, Observer(::observeProductSapId))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
-        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogStatus))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
+        viewModel.modelPermissionStatus.observe(
+            viewLifecycleOwner,
+            Observer(::observePermissionStatus)
+        )
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
@@ -286,21 +297,48 @@ class DetailFragment : BaseFragment() {
 
     }
 
-    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.ServerError>) {
-        Timber.e("Add to cart failed")
-        cartAnimation.cancelAnimation()
-        showErrorDialog(
-            getString(R.string.sorry),
-            getString(R.string.cannot_added),
-            getString(R.string.ok),
-            false
-        )
+    private fun observeDialogStatus(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+        modelErrorEvent.getContentIfNotHandled()?.let { modelDialog ->
+            when (modelDialog) {
+                is DetailViewModel.DialogModel.ServerError -> {
+                    Timber.e("Add to cart failed")
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.sorry),
+                        getString(R.string.cannot_added),
+                        getString(R.string.ok),
+                        false
+                    )
+
+                }
+                is DetailViewModel.DialogModel.PermissionPermanentlyDenied -> {
+                    showErrorDialog(
+                        getString(R.string.enable_live_preview_access),
+                        getString(R.string.enable_live_preview_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+                }
+            }
+        }
+
     }
 
 
     private fun observeCctType(modelCctTypeEvent: Event<DetailViewModel.CctColorsSelected>) {
         modelCctTypeEvent.getContentIfNotHandled()?.let { contentCctList ->
             screenNavigator.navigateToLiveAmbiance(contentCctList.cctTypeList)
+        }
+    }
+
+    private fun observePermissionStatus(modelPermissionStatus: DetailViewModel.PermissionStatus) {
+        when (modelPermissionStatus) {
+            is DetailViewModel.PermissionStatus.PermissionGranted -> {
+                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+            }
+            is DetailViewModel.PermissionStatus.PermissionDenied -> {
+                //TODO Permission Denied
+            }
         }
     }
 
@@ -322,23 +360,37 @@ class DetailFragment : BaseFragment() {
         dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
-            alertDialog.dismiss()
+            if (neutralButton) {
+                viewModel.onGoToSettingsClicked()
+            } else {
+                alertDialog.dismiss()
+            }
         }
 
+
         dialogView.buttonNegative.gone()
-        dialogView.buttonNeutral.gone()
+        if (neutralButton) {
+            dialogView.buttonNeutral.text = getString(R.string.not_now)
+            dialogView.buttonNeutral.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+        } else {
+            dialogView.buttonNeutral.gone()
+        }
         alertDialog.show()
 
     }
 
     private fun setNavigationObserver() {
-        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
+        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToSettings))
     }
 
 
-    private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
-        navigationModel.getContentIfNotHandled()?.let { navModel ->
-            screenNavigator.navigateToVariationScreen(navModel.productList)
+    private fun navigateToSettings(navigationModel: Event<DetailViewModel.NavigationModelSettings>) {
+        navigationModel.getContentIfNotHandled()?.let {
+            screenNavigator.navigateToSettings()
+            alertDialog.dismiss()
         }
     }
 
@@ -415,9 +467,17 @@ class DetailFragment : BaseFragment() {
                     localPreferences.loadLegendCctFilterNames()
                 )
             ) {
-                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+                cameraPermissionRequester.request({ isPermissionGranted ->
+                    viewModel.onCameraPermissionRequested(isPermissionGranted)
+                }, (::observePermanentlyDeniedPermission))
             }
         }
+    }
+
+    private fun observePermanentlyDeniedPermission(isPermanentlyDenied: Boolean) {
+        viewModel.onPermissionDenied(isPermanentlyDenied, false)
+
+        //TODO
     }
 
     private fun setViewPager() {
@@ -569,7 +629,9 @@ class DetailFragment : BaseFragment() {
         }
 
         filterConnectivityAdapter.filterListConnectivity =
-            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(localPreferences.loadLegendConnectivityNames())
+            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(
+                localPreferences.loadLegendConnectivityNames()
+            )
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
@@ -580,7 +642,8 @@ class DetailFragment : BaseFragment() {
         populateProductData(productSelectedModel.productSelected)
         populateStickyHeaderData(productSelectedModel.productSelected)
 
-        textViewWattage.text = getString(R.string.wattage_detail,
+        textViewWattage.text = getString(
+            R.string.wattage_detail,
             productSelectedModel.productSelected.wattageReplaced.toString(),
             productSelectedModel.productSelected.wattageReplacedExtra
         )
