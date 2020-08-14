@@ -2,6 +2,7 @@ package com.light.finder.ui.liveambiance
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -25,6 +26,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
 import kotlinx.android.synthetic.main.activity_live_ambiance.*
+import kotlinx.android.synthetic.main.ambiance_snackbar.*
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -43,7 +45,11 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
-
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            this
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +74,22 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         initView()
 
         initCamera()
+
+
     }
 
+    private fun initDisclaimerText() {
+        if (localPreferences.isDisclaimerAccepted()) {
+            return
+        }
+        ok_button.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
+        custom_toast.fadeIn()
+
+        ok_button.setOnClickListener {
+            custom_toast.fadeOut()
+            localPreferences.disclaimerAccepted(true)
+        }
+    }
 
 
     private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
@@ -148,6 +168,12 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
                 }
             })
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initDisclaimerText()
+
     }
 
     override fun onPause() {
