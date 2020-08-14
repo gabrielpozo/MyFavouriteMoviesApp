@@ -24,6 +24,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
         private const val PRODUCTS_FILTERED_PRODUCT_BROWSING = "filteredProductsBrowsing"
         private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
+        private const val DISCLAIMER_TEXT = "disclaimerText"
+
 
     }
 
@@ -52,6 +54,15 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             Gson().toJson(legend.legend.productCategoryName)
         ).commit()
     }
+
+    override fun disclaimerAccepted(confirmed: Boolean) {
+        editor.putBoolean(DISCLAIMER_TEXT, confirmed)
+            .commit()
+    }
+
+    override fun isDisclaimerAccepted(): Boolean =
+        pref.getBoolean(DISCLAIMER_TEXT, false)
+
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
