@@ -522,6 +522,7 @@ class CameraFragment : BaseFragment() {
                     )
                 }
                 is DialogModel.PermissionPermanentlyDenied -> {
+                    modelUiState = ModelStatus.PERMISSION
                     isGalleryDenied = false
                     showErrorDialog(
                         getString(R.string.enable_camera_access),
