@@ -53,7 +53,7 @@
             android:fontFamily="@font/book"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="3"
+            android:maxLines="4"
             android:ellipsize="end"
             android:textSize="12sp"
             android:textColor="@color/textDark"
