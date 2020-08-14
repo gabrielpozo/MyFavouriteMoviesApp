@@ -976,7 +976,9 @@ class CameraFragment : BaseFragment() {
     }
 
     fun restoreCameraFromBrowsing() {
-        viewModel.onRestoreCameraViewFromBrowsing(checkSelfCameraPermission())
+        if (modelUiState == ModelStatus.PERMISSION) {
+            viewModel.onRestoreCameraViewFromBrowsing(checkSelfCameraPermission())
+        }
     }
 
     private fun restoreCameraView() {

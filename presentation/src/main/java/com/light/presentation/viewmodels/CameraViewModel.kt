@@ -242,12 +242,7 @@ class CameraViewModel(
 
     fun onRestoreCameraViewFromBrowsing(isPermissionGranted: Boolean) {
         if (isPermissionGranted) {
-            if (isCameraPreviouslyInitialized) {
-                _modelRequestCancelOrRestore.value = Event(CancelModel())
-            } else {
-                _model.value = UiModel.RequestCameraViewDisplay
-                isCameraPreviouslyInitialized = true
-            }
+            _model.value = UiModel.RequestCameraViewDisplay
         }
     }
 
