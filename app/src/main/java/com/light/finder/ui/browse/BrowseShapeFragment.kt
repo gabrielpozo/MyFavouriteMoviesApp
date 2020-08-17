@@ -3,13 +3,13 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -52,10 +52,11 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         }
 
         arguments?.let { bundle ->
-            bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)?.let { productBaseId ->
-                //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
-                viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
-            }
+            bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
+                ?.let { productBaseId ->
+                    //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
+                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+                }
         }
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -84,12 +85,27 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
+        recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    line_divider.visibility = View.VISIBLE
+
+                } else {
+                    line_divider.visibility = View.INVISIBLE
+
+
+                }
+            }
+        })
     }
+
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-        
+
 
         context?.let {
             val displayMetrics = it.resources.displayMetrics
@@ -131,7 +147,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
                 settingFilterShapeSelected()
             }
-            is BrowseShapeViewModel.StatusBottomBar.NoButtonsClicked ->{
+            is BrowseShapeViewModel.StatusBottomBar.NoButtonsClicked -> {
                 resetShapeSelection()
             }
         }
