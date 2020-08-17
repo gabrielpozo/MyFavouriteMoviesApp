@@ -6,10 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.light.domain.model.Category
 import com.light.finder.R
-import com.light.finder.extensions.basicDiffUtil
-import com.light.finder.extensions.inflate
-import com.light.finder.extensions.loadUrWithoutPlaceholderl
-import com.light.finder.extensions.loadUrl
+import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.item_category.view.*
 import kotlinx.android.synthetic.main.item_category.view.priceButton
 import kotlinx.android.synthetic.main.item_results.view.*
@@ -38,7 +35,7 @@ class CategoriesAdapter(
         holder.bind(
             category
         )
-        holder.itemView.setOnClickListener { listener(category) }
+        holder.itemView.setSafeOnClickListener { listener(category) }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
