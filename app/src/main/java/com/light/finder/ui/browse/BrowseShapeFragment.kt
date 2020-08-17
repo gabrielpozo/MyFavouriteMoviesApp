@@ -29,7 +29,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
-        const val RESTORE_STATE = 4
+        const val RESTORED_STATE = 4
     }
 
     private lateinit var component: BrowseShapeComponent
@@ -113,11 +113,10 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 override fun onSlide(p0: View, p1: Float) {}
 
                 override fun onStateChanged(p0: View, state: Int) {
-                    if (state == RESTORE_STATE) {
+                    if (state == RESTORED_STATE) {
                         line_divider.invisible()
                     }
                 }
-
             })
         }
     }
