@@ -29,6 +29,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
+        const val RESTORE_STATE = 4
     }
 
     private lateinit var component: BrowseShapeComponent
@@ -89,13 +90,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                //it is scrolling up
                 if (dy > 0) {
-                    line_divider.visibility = View.VISIBLE
-
-                } else {
-                    line_divider.visibility = View.INVISIBLE
-
-
+                    line_divider.visible()
                 }
             }
         })
@@ -111,7 +108,18 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
+            bottomSheetBehavior.setBottomSheetCallback(object :
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(p0: View, p1: Float) {}
 
+                override fun onStateChanged(p0: View, state: Int) {
+                    if (state == RESTORE_STATE) {
+                        line_divider.invisible()
+                    }
+                }
+
+            })
+            val state = bottomSheetBehavior.state
         }
     }
 
