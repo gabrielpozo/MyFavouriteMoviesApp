@@ -119,7 +119,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 }
 
             })
-            val state = bottomSheetBehavior.state
         }
     }
 
