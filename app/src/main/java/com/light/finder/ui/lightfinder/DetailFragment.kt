@@ -441,9 +441,9 @@ class DetailFragment : BaseFragment() {
                 p0.height
                 p1.toString()
                 if (p1 == 1F) {
-                    stickyHeaderTitle?.slideVertically(0F, 250)
+                    stickyHeaderTitle?.slideVertically(0F, 100)
                 } else {
-                    stickyHeaderTitle?.slideVertically(-stickyHeaderTitle.height.toFloat(), 200)
+                    stickyHeaderTitle?.slideVertically(-stickyHeaderTitle.height.toFloat(), 75)
                 }
             }
         })
