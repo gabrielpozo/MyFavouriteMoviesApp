@@ -154,6 +154,6 @@
     <string name="skip">Skip</string>
     <string name="not_available">Not available for this fitting</string>
     <string name="not_available_choice">Not available for this fitting and shape</string>
-    <string name="what_type_of_light_do_you_prefer">What type of light do you prefer?</string>
+    <string name="what_type_of_light_do_you_prefer">What category do you need?</string>
     <string name="product_category">Product category</string>
 </resources>
