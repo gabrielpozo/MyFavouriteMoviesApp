@@ -186,3 +186,26 @@ data class ShapeBrowsing(
         return id
     }
 }
+
+
+data class ChoiceBrowsing(
+    val id: Int,
+    val name: String,
+    val order: Int,
+    val image: String?,
+    val subtitleCount: Int,
+    var description: String = "",
+    var isSelected: Boolean = false
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as ShapeBrowsing
+
+        return other.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+}

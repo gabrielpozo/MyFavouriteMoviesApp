@@ -461,6 +461,7 @@
         <item name="android:fontFamily">@font/book</item>
     </style>
 
+
     <style name="PriceCategory" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/primaryOnLight</item>
         <item name="android:fontFamily">@font/bold</item>
