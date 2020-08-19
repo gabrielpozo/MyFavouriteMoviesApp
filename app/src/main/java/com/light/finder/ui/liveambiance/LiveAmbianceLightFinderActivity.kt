@@ -86,7 +86,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         custom_toast.fadeIn()
 
         ok_button.setOnClickListener {
-            custom_toast.fadeOutNow()
+            custom_toast.fadeOut(0,true)
             localPreferences.disclaimerAccepted(true)
         }
     }
