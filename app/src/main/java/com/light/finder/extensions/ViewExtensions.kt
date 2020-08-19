@@ -116,6 +116,7 @@ fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
         })
 }
 
+
 fun View.fadeIn(duration: Long = 500L) {
     val view = this
     view.visible()
