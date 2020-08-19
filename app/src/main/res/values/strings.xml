@@ -39,7 +39,7 @@
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
     <string name="scan_completed">Scan completed!</string>
-    <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
+    <string name="scan_completed_tip">Check the scan result and choose the type of product that fits your needs:</string>
     <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
