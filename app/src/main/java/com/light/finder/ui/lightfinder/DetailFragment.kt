@@ -442,9 +442,8 @@ class DetailFragment : BaseFragment() {
             product.pricePack
         )
 
-        sticky_header_title.text = stickyHeaderTitle
-        sticky_header_packs.text = stickyHeaderPacks
-        sticky_header_price.text = pricePerPack
+        sticky_header_title.text = product.stickyHeaderFirstLine
+        sticky_header_packs.text = product.stickyHeaderSecondLine
     }
 
     private fun setLivePreviewButton(product: Product) {
