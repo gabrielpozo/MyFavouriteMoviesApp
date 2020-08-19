@@ -417,34 +417,16 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-        val formFactorType = getLegendTagPrefFormFactor(
-            product.formfactorType,
-            filterTypeList = localPreferences.loadFormFactorLegendTags(),
-            legendTag = FORM_FACTOR_LEGEND_TAG
-        ).toLowerCase()
-
-        val stickyHeaderPacks = String.format(
-            getString(R.string.sticky_header_packs),
-            product.qtySkuCase,
-            product.qtySkuCase.pluralOrSingular(),
-            product.qtyLampSku,
-            formFactorType,
-            product.qtyLampSku.pluralOrSingular()
-        )
-
-        val stickyHeaderTitle = String.format(
-            getString(R.string.sticky_header_title),
-            product.categoryName, product.wattageReplaced, product.factorBase
-        )
 
         val pricePerPack = String.format(
             getString(R.string.sticky_header_price),
             product.pricePack
         )
 
-        sticky_header_title.text = stickyHeaderTitle
-        sticky_header_packs.text = stickyHeaderPacks
+        sticky_header_title.text = product.stickyHeaderFirstLine
+        sticky_header_packs.text = product.stickyHeaderSecondLine
         sticky_header_price.text = pricePerPack
+
     }
 
     private fun setLivePreviewButton(product: Product) {

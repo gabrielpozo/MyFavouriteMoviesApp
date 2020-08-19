@@ -81,8 +81,9 @@ private val mapServerProductToDomain: (ProductDto) -> Product = { productDto ->
         productFinishCode = productDto.productFinishCode,
         productConnectionCode = productDto.productConnectionCode,
         produtCategoryCode = productDto.productCategoryCode,
-        wattageReplacedExtra = productDto.wattageReplacedExtra
-
+        wattageReplacedExtra = productDto.wattageReplacedExtra,
+        stickyHeaderFirstLine = productDto.stickyHeaderFirstLine,
+        stickyHeaderSecondLine = productDto.stickyHeaderSecondLine
     )
 }
 
