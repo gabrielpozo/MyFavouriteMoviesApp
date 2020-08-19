@@ -88,7 +88,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
             }
         }
 
-        textViewStatement.setOnClickListener {
+        textViewStatement.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showErrorDialog(PRIVACY_URL)
             } else {
@@ -96,7 +96,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
             }
         }
 
-        textViewTermsOfUse.setOnClickListener {
+        textViewTermsOfUse.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showErrorDialog(TERMS_URL)
             } else {
@@ -144,7 +144,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun setContinueClickListener() {
-        buttonTerms.setOnClickListener {
+        buttonTerms.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 val prefManager = PrefManager(_context = this)
                 prefManager.isTermsAccepted = true
