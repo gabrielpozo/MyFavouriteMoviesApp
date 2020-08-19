@@ -149,7 +149,8 @@ ext {
 
     navigationDependencies = [
             fragnav: "com.ncapdevi:frag-nav:$navigationFragNav",
-            bottom : "com.aurelhubert:ahbottomnavigation:$bottombar"
+            bottom : "com.aurelhubert:ahbottomnavigation:$bottombar",
+            phoenix:  'com.jakewharton:process-phoenix:2.0.0'
     ]
 
     networkDependencies = [

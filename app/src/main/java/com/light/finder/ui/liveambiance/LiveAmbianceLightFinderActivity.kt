@@ -1,14 +1,15 @@
 package com.light.finder.ui.liveambiance
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.light.domain.model.CctType
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -20,6 +21,7 @@ import com.light.finder.ui.adapters.LiveAmbianceAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
+import com.light.finder.ui.splash.SplashLightFinderActivity
 import com.light.presentation.viewmodels.LiveAmbianceViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import jp.co.cyberagent.android.gpuimage.GPUImageView
@@ -27,6 +29,8 @@ import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
 import kotlinx.android.synthetic.main.activity_live_ambiance.*
 import kotlinx.android.synthetic.main.ambiance_snackbar.*
+import kotlin.system.exitProcess
+
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -50,6 +54,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             this
         )
     }
+    private var isHasPermission = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +83,18 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     }
 
+    private fun restartApp() {
+
+        val intent = Intent(this, SplashLightFinderActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this.finish()
+        /*      if (context is Activity) {
+                  (context as Activity).finish()
+              }*/
+        Runtime.getRuntime().exit(0)
+    }
+
     private fun initDisclaimerText() {
         if (localPreferences.isDisclaimerAccepted()) {
             return
@@ -92,10 +109,11 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     }
 
 
-    private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
+    private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors) {
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
-            colorList.cctList)
+            colorList.cctList
+        )
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
@@ -106,7 +124,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun initView() {
-        gpuImageView =findViewById(R.id.gpuimage)
+        gpuImageView = findViewById(R.id.gpuimage)
 
     }
 
@@ -147,32 +165,43 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!gpuImageView?.isLayoutRequested!!) {
-            cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
-        } else {
-            gpuImageView?.addOnLayoutChangeListener(object :
-                View.OnLayoutChangeListener {
-                override fun onLayoutChange(
-                    v: View,
-                    left: Int,
-                    top: Int,
-                    right: Int,
-                    bottom: Int,
-                    oldLeft: Int,
-                    oldTop: Int,
-                    oldRight: Int,
-                    oldBottom: Int
-                ) {
-                    gpuImageView!!.removeOnLayoutChangeListener(this)
-                    cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
-                }
-            })
+        if (isHasPermission) {
+            if (!gpuImageView?.isLayoutRequested!!) {
+                cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
+            } else {
+                gpuImageView?.addOnLayoutChangeListener(object :
+                    View.OnLayoutChangeListener {
+                    override fun onLayoutChange(
+                        v: View,
+                        left: Int,
+                        top: Int,
+                        right: Int,
+                        bottom: Int,
+                        oldLeft: Int,
+                        oldTop: Int,
+                        oldRight: Int,
+                        oldBottom: Int
+                    ) {
+                        gpuImageView!!.removeOnLayoutChangeListener(this)
+                        cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
+                    }
+                })
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
         initDisclaimerText()
+        Log.d("Gabriel", "onStart!")
+
+
+        isHasPermission = checkSelfCameraPermission()
+        if (!isHasPermission) {
+            Log.d("Gabriel", "it hasn't permission!!")
+            //ProcessPhoenix.triggerRebirth(this)
+            //restartApp()
+        }
 
     }
 
@@ -183,8 +212,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun switchFilterTo(filter: GPUImageFilter) {
-            currentImageFilter = filter
-            gpuImageView?.filter = currentImageFilter
+        currentImageFilter = filter
+        gpuImageView?.filter = currentImageFilter
 
     }
 
