@@ -66,7 +66,9 @@ data class Product(
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
     var filtered: Boolean = false,
-    var wattageReplacedExtra: String
+    var wattageReplacedExtra: String,
+    var stickyHeaderFirstLine: String,
+    var stickyHeaderSecondLine: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
