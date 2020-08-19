@@ -461,7 +461,7 @@ class DetailFragment : BaseFragment() {
         }
 
 
-        livePreviewButton.setOnClickListener {
+        livePreviewButton.setSafeOnClickListener {
             if (getLegendArTypeTagPref(
                     product.colorCctCode,
                     localPreferences.loadLegendCctFilterNames()
