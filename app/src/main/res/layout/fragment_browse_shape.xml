@@ -174,12 +174,11 @@
         <Button
             android:id="@+id/buttonSearch"
             style="@style/BrowseNextDisable"
-            android:text="@string/search"
+            android:text="@string/next"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:stateListAnimator="@null"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_icon_small_search"
             android:background="@drawable/browse_next_disable"
             android:textAllCaps="false"
             android:layout_width="0dp"

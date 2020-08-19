@@ -11,10 +11,7 @@ import com.light.finder.R
 import com.light.finder.extensions.newInstance
 import com.light.finder.extensions.parcelizeBrowsingList
 import com.light.finder.extensions.startActivity
-import com.light.finder.ui.browse.BaseFilteringFragment
-import com.light.finder.ui.browse.BrowseActivity
-import com.light.finder.ui.browse.BrowseFittingFragment
-import com.light.finder.ui.browse.BrowseShapeFragment
+import com.light.finder.ui.browse.*
 
 
 class ScreenFilteringNavigator(private val activity: BrowseActivity) {
@@ -74,6 +71,10 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
             )
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
+        replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
     }
 
 

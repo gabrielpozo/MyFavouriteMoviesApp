@@ -128,7 +128,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
         viewModel.modelNavigationToResult.observe(
             viewLifecycleOwner,
-            Observer(::navigatesToCategoriesResult)
+            Observer(::navigatesToCategoriesChoice)
         )
     }
 
@@ -195,9 +195,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         adapter.setShapeProductList(productFittingList)
     }
 
-    private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
+    private fun navigatesToCategoriesChoice(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
+            screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
         }
     }
 

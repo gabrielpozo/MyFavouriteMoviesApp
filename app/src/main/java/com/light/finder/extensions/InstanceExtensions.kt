@@ -10,6 +10,7 @@ import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.Message
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseChoiceFragment
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -70,6 +71,15 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
     val args = android.os.Bundle()
     args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
     val fragment = BrowseShapeFragment()
+    fragment.arguments = args
+    return  fragment
+}
+
+//todo parcelize list
+fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<ShapeBrowsing>): BrowseChoiceFragment {
+    val args = android.os.Bundle()
+    args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected)
+    val fragment = BrowseChoiceFragment()
     fragment.arguments = args
     return  fragment
 }
