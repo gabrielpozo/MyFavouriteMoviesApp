@@ -116,6 +116,30 @@ fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
         })
 }
 
+fun View.fadeOutNow(hide: Boolean = true) {
+    val view = this
+    this.animate()
+        .alpha(0F)
+        .setListener(object : Animator.AnimatorListener{
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                if (hide) {
+                    view.gone()
+                }
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+}
+
 fun View.fadeIn(duration: Long = 500L) {
     val view = this
     view.visible()
