@@ -93,7 +93,7 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun setClickListeners() {
-        layoutTerms.setOnClickListener {
+        layoutTerms.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.TERMS)
             } else {
@@ -101,7 +101,7 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutPrivacy.setOnClickListener {
+        layoutPrivacy.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.PRIVACY)
             } else {
@@ -109,7 +109,7 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutFeedback.setOnClickListener {
+        layoutFeedback.setSafeOnClickListener {
             screenNavigator.navigateToUsabillaForm()
 
         }

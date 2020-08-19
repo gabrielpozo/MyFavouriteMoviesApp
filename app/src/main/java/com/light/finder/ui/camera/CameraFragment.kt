@@ -772,7 +772,7 @@ class CameraFragment : BaseFragment() {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
-            imageGalleryButton.setOnClickListener {
+            imageGalleryButton.setSafeOnClickListener {
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))
