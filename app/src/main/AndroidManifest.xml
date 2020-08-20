@@ -48,7 +48,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AmbianceTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.splash.SplashLightFinderActivity"
@@ -91,7 +91,7 @@
             android:resizeableActivity="false"
             android:rotationAnimation="seamless"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/CameraTheme"
             android:windowSoftInputMode="adjustPan"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="O">
