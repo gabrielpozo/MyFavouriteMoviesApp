@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -17,10 +18,7 @@ import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
-import com.light.finder.extensions.trackScreen
-import com.light.finder.extensions.visible
+import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseFittingAdapter
 import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
@@ -82,6 +80,16 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             val dpHeight = displayMetrics.heightPixels
 
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
+            bottomSheetBehavior.setBottomSheetCallback(object :
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(p0: View, p1: Float) {}
+
+                override fun onStateChanged(p0: View, state: Int) {
+                    if (state == BrowseShapeFragment.RESTORED_STATE) {
+                        line_divider_fitting.invisible()
+                    }
+                }
+            })
 
         }
     }
@@ -97,6 +105,22 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
+        recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                //it is scrolling up
+                if (dy > 0) {
+                    line_divider_fitting.visible()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(layoutManager.findFirstCompletelyVisibleItemPosition() == 0){
+                    line_divider_fitting.invisible()
+                }
+            }
+        })
     }
 
 
@@ -146,7 +170,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun showLoading() {
         buttonNext.gone()
-        recyclerViewFitting.gone()
+        list_container.gone()
         browseError.gone()
         browseLoading.visible()
         with(browseLoadingAnimation) {
@@ -156,7 +180,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun showError() {
-        recyclerViewFitting.gone()
+        list_container.gone()
         browseError.visible()
         browseLoading.gone()
         buttonNext.gone()
@@ -164,7 +188,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun showFittings(productFittingList: List<FormFactorTypeBaseId>) {
         buttonNext.visible()
-        recyclerViewFitting.visible()
+        list_container.visible()
         browseError.gone()
         browseLoading.gone()
         adapter.setFittingProductList(productFittingList)
