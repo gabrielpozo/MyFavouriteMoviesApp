@@ -150,6 +150,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 )
             )
         }
+
 /*        shapesToDisplay.add(
             ShapeBrowsing(
                 id = 15,
