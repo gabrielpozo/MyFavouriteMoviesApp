@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/backgroundLight</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@color/primaryPressed</item>
-        <item name="android:windowBackground">@color/backgroundDark</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -17,6 +16,14 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/backgroundDark</item>
+    </style>
+
+    <style name="AmbianceTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/backgroundDark</item>
+    </style>
+
+    <style name="CameraTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/backgroundDark</item>
     </style>
 
