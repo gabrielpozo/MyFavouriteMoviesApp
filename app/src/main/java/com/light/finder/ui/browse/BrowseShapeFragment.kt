@@ -98,7 +98,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         })
     }
 
-
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)

@@ -357,7 +357,7 @@ class CameraFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (isComingFromSettings && !isGalleryDenied) {
-            viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            viewModel.onPermissionsViewRequested(requireContext().checkSelfCameraPermission())
             isComingFromSettings = false
         }
         if (isComingFromSettings && isGalleryDenied) {
@@ -405,7 +405,7 @@ class CameraFragment : BaseFragment() {
     private fun observeUpdateUI(model: UiModel) {
         when (model) {
             is UiModel.CameraInitializeScreen -> {
-                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+                viewModel.onPermissionsViewRequested(requireContext().checkSelfCameraPermission())
             }
 
             is UiModel.PermissionsViewRequested -> {
@@ -977,7 +977,7 @@ class CameraFragment : BaseFragment() {
 
     fun restoreCameraFromBrowsing() {
         if (modelUiState == ModelStatus.PERMISSION) {
-            viewModel.onRestoreCameraViewFromBrowsing(checkSelfCameraPermission())
+            viewModel.onRestoreCameraViewFromBrowsing(requireContext().checkSelfCameraPermission())
         }
     }
 
