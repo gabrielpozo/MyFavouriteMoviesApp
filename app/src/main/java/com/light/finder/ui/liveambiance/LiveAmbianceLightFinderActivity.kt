@@ -152,6 +152,9 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onResume() {
         super.onResume()
+        
+        initDisclaimerText()
+
         if (isHasPermission) {
             if (!gpuImageView?.isLayoutRequested!!) {
                 cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
@@ -179,8 +182,6 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onStart() {
         super.onStart()
-        initDisclaimerText()
-
 
         isHasPermission = checkSelfCameraPermission()
         if (!isHasPermission) {
