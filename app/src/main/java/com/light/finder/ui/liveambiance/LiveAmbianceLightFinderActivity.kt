@@ -78,14 +78,11 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun restartApp() {
-
         val intent = Intent(this, SplashLightFinderActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-        this.finish()
-        /*      if (context is Activity) {
-                  (context as Activity).finish()
-              }*/
+        finishAffinity()
+        //this.finish()
         Runtime.getRuntime().exit(0)
     }
 
