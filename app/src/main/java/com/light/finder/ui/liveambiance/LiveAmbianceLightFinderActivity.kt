@@ -1,5 +1,6 @@
 package com.light.finder.ui.liveambiance
 
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import com.light.finder.ui.adapters.LiveAmbianceAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
+import com.light.finder.ui.splash.SplashLightFinderActivity
 import com.light.presentation.viewmodels.LiveAmbianceViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import jp.co.cyberagent.android.gpuimage.GPUImageView
@@ -46,6 +48,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
             this
         )
     }
+    private var isHasPermission = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component = app.applicationComponent.plus(LiveAmbianceModule())
@@ -73,6 +77,17 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     }
 
+    private fun restartApp() {
+
+        val intent = Intent(this, SplashLightFinderActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        this.finish()
+        /*      if (context is Activity) {
+                  (context as Activity).finish()
+              }*/
+        Runtime.getRuntime().exit(0)
+    }
 
     private fun initDisclaimerText() {
         if (localPreferences.isDisclaimerAccepted()) {
@@ -144,7 +159,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (checkSelfCameraPermission()) {
+        if (isHasPermission) {
             if (!gpuImageView?.isLayoutRequested!!) {
                 cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
             } else {
@@ -172,6 +187,13 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     override fun onStart() {
         super.onStart()
         initDisclaimerText()
+
+
+        isHasPermission = checkSelfCameraPermission()
+        if (!isHasPermission) {
+            restartApp()
+        }
+
     }
 
     override fun onPause() {
