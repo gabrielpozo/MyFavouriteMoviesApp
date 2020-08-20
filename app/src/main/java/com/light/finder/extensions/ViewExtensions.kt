@@ -122,6 +122,7 @@ fun View.fadeIn(duration: Long = 500L) {
     view.visible()
     view.alpha = 0F
     this.animate()
+        .setStartDelay(500L)
         .alpha(1F)
         .setDuration(duration)
         .setListener(object : Animator.AnimatorListener{
