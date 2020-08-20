@@ -170,7 +170,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun showLoading() {
         buttonNext.gone()
-        recyclerViewFitting.gone()
+        list_container.gone()
         browseError.gone()
         browseLoading.visible()
         with(browseLoadingAnimation) {
@@ -180,7 +180,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     }
 
     private fun showError() {
-        recyclerViewFitting.gone()
+        list_container.gone()
         browseError.visible()
         browseLoading.gone()
         buttonNext.gone()
@@ -188,7 +188,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun showFittings(productFittingList: List<FormFactorTypeBaseId>) {
         buttonNext.visible()
-        recyclerViewFitting.visible()
+        list_container.visible()
         browseError.gone()
         browseLoading.gone()
         adapter.setFittingProductList(productFittingList)
