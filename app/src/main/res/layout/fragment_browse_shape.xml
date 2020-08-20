@@ -70,7 +70,7 @@
                     android:layout_height="match_parent">
                     <View
                         android:id="@+id/line_divider"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         android:background="@color/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
