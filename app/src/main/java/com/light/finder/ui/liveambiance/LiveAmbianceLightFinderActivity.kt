@@ -71,10 +71,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         liveAmbianceViewModel.modelList.observe(this, Observer(::setColorAdapter))
 
         initView()
-
         initCamera()
-
-
     }
 
     private fun restartApp() {
@@ -82,7 +79,6 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finishAffinity()
-        //this.finish()
         Runtime.getRuntime().exit(0)
     }
 
