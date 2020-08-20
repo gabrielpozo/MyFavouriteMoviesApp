@@ -87,7 +87,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up

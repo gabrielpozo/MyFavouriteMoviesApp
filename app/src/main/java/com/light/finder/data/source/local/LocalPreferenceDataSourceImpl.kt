@@ -40,7 +40,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             .commit()
         editor.putString(FORM_FACTOR_LEGEND_ID, Gson().toJson(legend.legend.formfactorTypeId))
             .commit()
-        editor.putString(PRODUCT_CONNECTIVITY_LEGEND, Gson().toJson(legend.legend.productConnectivity))
+        editor.putString(
+            PRODUCT_CONNECTIVITY_LEGEND,
+            Gson().toJson(legend.legend.productConnectivity)
+        )
             .commit()
         editor.putString(
             FORM_FACTOR_LEGEND_BASE_ID,
@@ -76,6 +79,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override fun loadLegendConnectivityNames(): List<ProductConnectivity> =
         Gson().fromJson(pref.getString(PRODUCT_CONNECTIVITY_LEGEND, null) ?: "")
+
     override fun loadFormFactorIBaseIdLegendTags(): List<FormFactorTypeBaseId> = Gson().fromJson(
         pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
             ?: emptyList<FormFactorTypeBaseId>().toString()
@@ -135,7 +139,30 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 )
             )
         }
-        return shapesToDisplay
+/*        shapesToDisplay.add(
+            ShapeBrowsing(
+                id = 15,
+                name = "Ega",
+                image = "",
+                order = 19,
+                subtitleCount = 9,
+                baseIdFitting = 2,
+                baseNameFitting = "lol",
+                isSelected = false))
+
+        shapesToDisplay.add(
+            ShapeBrowsing(
+                id = 16,
+                name = "Alignment",
+                image = "",
+                order = 21,
+                subtitleCount = 4,
+                baseIdFitting = 2,
+                baseNameFitting = "lolment",
+                isSelected = false))*/
+
+
+                return shapesToDisplay
     }
 
 
@@ -151,7 +178,9 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         }
 
         return mapBrowsingProductToMessageDomain(
-            shapeBrowsingList[0].baseNameFitting, loadProductCategoryName(),loadFormFactorLegendTags(),
+            shapeBrowsingList[0].baseNameFitting,
+            loadProductCategoryName(),
+            loadFormFactorLegendTags(),
             browsedShapeFilteredList.groupBy { it.toKey() })
     }
 
