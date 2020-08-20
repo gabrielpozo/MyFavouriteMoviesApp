@@ -150,7 +150,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 )
             )
         }
-        shapesToDisplay.add(
+/*        shapesToDisplay.add(
             ShapeBrowsing(
                 id = 15,
                 name = "Ega",
@@ -170,7 +170,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 subtitleCount = 4,
                 baseIdFitting = 2,
                 baseNameFitting = "lolment",
-                isSelected = false))
+                isSelected = false))*/
 
 
                 return shapesToDisplay
