@@ -121,7 +121,6 @@
     <string name="open_terms_of_use">open_terms_of_use</string>
     <string name="open_privacy_notice">open_privacy_notice</string>
     <string name="payment_successful">payment_successful</string>
-    <string name="view_product">view_product</string>
     <string name="no_internet_banner">no_internet_banner</string>
     <string name="parameter_sku">sku</string>
     <string name="photo_help">photo_help_tips</string>
@@ -153,4 +152,10 @@
     <string name="search">Search</string>
     <string name="skip">Skip</string>
     <string name="not_available">Not available for this fitting</string>
+
+    <!-- Facebook SDK-->
+    <string name="facebook_app_id">2579741185672513</string>
+    <string name="value">value</string>
+    <string name="view_product">view_product</string>
+    <string name="payment_succesful">payment_successful</string>
 </resources>

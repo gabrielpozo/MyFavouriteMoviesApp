@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.facebook.appevents.AppEventsConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -253,6 +254,9 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
+        logger.logEventOnFacebookSdk(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -262,7 +266,11 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart)){
+                    putString(getString(R.string.parameter_sku), productSapId)
+                    putDouble(getString(R.string.value),pricePerPack.toDouble())
+            }
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)
