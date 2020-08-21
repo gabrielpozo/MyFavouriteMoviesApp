@@ -153,4 +153,7 @@
     <string name="search">Search</string>
     <string name="skip">Skip</string>
     <string name="not_available">Not available for this fitting</string>
+
+    <!-- Facebook SDK-->
+    <string name="facebook_app_id">2579741185672513</string>
 </resources>

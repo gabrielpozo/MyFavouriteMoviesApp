@@ -29,6 +29,8 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.facebook.appevents.AppEventsConstants
+import com.facebook.appevents.AppEventsLogger
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
@@ -184,6 +186,7 @@ class CameraFragment : BaseFragment() {
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
+            logger.logEvent("send_photo")
             viewModel.onCameraButtonClicked(
                 imageRepository.getBitmap(image.image!!),
                 image.imageInfo.rotationDegrees
@@ -287,6 +290,7 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
+                logger.logEvent("send_photo")
                 val inputStream = activity?.contentResolver?.openInputStream(uri)
                 inputStream?.let { stream ->
                     viewModel.onCameraButtonClicked(
