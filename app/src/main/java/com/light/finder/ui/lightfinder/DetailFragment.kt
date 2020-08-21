@@ -255,8 +255,8 @@ class DetailFragment : BaseFragment() {
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         val params = Bundle()
         productSapId = contentCart.productSapId
-        params.putString("sku", productSapId)
-        logger.logEvent("view_product",params)
+        params.putString(getString(R.string.parameter_sku), productSapId)
+        logger.logEvent(getString(R.string.view_product),params)
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -267,10 +267,10 @@ class DetailFragment : BaseFragment() {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
             val params = Bundle()
-            params.putString("sku", productSapId)
-            params.putDouble("value",pricePerPack.toDouble())
-            logger.logEvent("add_to_cart",params)
-            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+            params.putString(getString(R.string.parameter_sku), productSapId)
+            params.putDouble(getString(R.string.value),pricePerPack.toDouble())
+            logger.logEvent(getString(R.string.add_to_cart),params)
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)

@@ -156,4 +156,6 @@
 
     <!-- Facebook SDK-->
     <string name="facebook_app_id">2579741185672513</string>
+    <string name="value">value</string>
+    <string name="view_product">view_product</string>
 </resources>
