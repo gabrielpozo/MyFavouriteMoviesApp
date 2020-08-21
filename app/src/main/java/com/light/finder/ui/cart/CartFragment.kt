@@ -141,7 +141,7 @@ class CartFragment : BaseFragment() {
             }
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
-                logger.logEvent("payment_successful")
+                logger.logEvent(getString(R.string.payment_succesful))
                 activityCallback.onCartCleared()
             }
         }
