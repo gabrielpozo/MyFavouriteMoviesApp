@@ -93,21 +93,21 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun updateData(message: Message) {
-        when (message.categories.size) {
-            1 -> {
-                textViewResults.text =
-                    getString(R.string.text_result).getIntFormatter(message.categories.size)
-            }
-            else -> {
-                textViewResults.text =
-                    getString(R.string.text_results).getIntFormatter(message.categories.size)
-            }
-        }
+//        when (message.categories.size) {
+//            1 -> {
+//                textViewResults.text =
+//                    getString(R.string.text_result).getIntFormatter(message.categories.size)
+//            }
+//            else -> {
+//                textViewResults.text =
+//                    getString(R.string.text_results).getIntFormatter(message.categories.size)
+//            }
+//        }
 
         textViewBulbType.invisible()
-        textViewFitting.text = getString(R.string.based_on_result_fitting).format(
-         message.shapeIdentified
-        )
+//        textViewFitting.text = getString(R.string.based_on_result_fitting).format(
+//         message.shapeIdentified
+//        )
     }
 
     private fun updateAdapter(message: Message) {

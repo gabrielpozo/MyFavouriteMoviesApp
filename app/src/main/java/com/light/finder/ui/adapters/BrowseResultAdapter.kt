@@ -8,10 +8,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.paris.extensions.*
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.layoutMarginEndDp
+import com.airbnb.paris.extensions.paddingDp
+import com.airbnb.paris.extensions.style
 import com.light.domain.model.*
 import com.light.finder.R
 import com.light.finder.extensions.*
+import kotlinx.android.synthetic.main.browse_results_header.view.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
 
@@ -24,41 +28,70 @@ class BrowseResultAdapter(
     private val productCategoryNameList: List<ProductCategoryName> = emptyList(),
     private val shapeIdentified: String
 ) :
-    RecyclerView.Adapter<BrowseResultAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val TYPE_HEADER = 0
+    private val TYPE_ITEM = 1
 
     var categories: List<Category> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_category, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == TYPE_HEADER) {
+            // Here Inflating your header view
+            val view = parent.inflate(R.layout.browse_results_header, false)
+
+            return HeaderViewHolder(view)
+
+        } else if (viewType == TYPE_ITEM) {
+            val view = parent.inflate(R.layout.item_category, false)
+            return ItemViewHolder(view)
+        } else {
+            throw ClassCastException("Unknown viewType ${viewType}")
+        }
+
+
     }
 
-    override fun getItemCount(): Int = categories.size
+    override fun getItemCount(): Int = categories.size + 1
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category = categories[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        val indexes = getMaxIndices(categories)
 
-        holder.itemView.colorsLayout.removeAllViews()
-        holder.itemView.wattageLayout.removeAllViews()
-        holder.itemView.imagesLayout.removeAllViews()
-        holder.bind(
-            category,
-            indexes,
-            categories.size,
-            position,
-            filterColorList,
-            formFactorList,
-            formFactorIdList,
-            shapeIdentified,
-            filterFinishList,
-            productCategoryNameList
-        )
-        holder.itemView.setOnClickListener { listener(category) }
+        if (holder is HeaderViewHolder){
+            holder.bind(categories.size, "identified as E17 test")
+
+        } else if (holder is ItemViewHolder){
+            val category = categories[position - 1]
+            val indexes = getMaxIndices(categories)
+            holder.itemView.colorsLayout.removeAllViews()
+            holder.itemView.wattageLayout.removeAllViews()
+            holder.itemView.imagesLayout.removeAllViews()
+            holder.bind(
+                category,
+                indexes,
+                categories.size,
+                position,
+                filterColorList,
+                formFactorList,
+                formFactorIdList,
+                shapeIdentified,
+                filterFinishList,
+                productCategoryNameList
+            )
+            holder.itemView.setOnClickListener { listener(category) }
+
+        }
+
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
     }
 
     private fun getMaxIndices(categories: List<Category>): List<Int> {
@@ -73,8 +106,18 @@ class BrowseResultAdapter(
         return maxIndices
     }
 
+    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(
+            categorySize : Int,
+            shapeIdentified : String
+        ) {
+            itemView.textViewResults.text = categorySize.toString()
+            itemView.textViewFitting.text = "Based on " + shapeIdentified
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        }
+    }
+
+    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
 
         fun bind(
