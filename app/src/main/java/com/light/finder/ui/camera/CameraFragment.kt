@@ -186,7 +186,6 @@ class CameraFragment : BaseFragment() {
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun onCaptureSuccess(image: ImageProxy) {
-            logger.logEvent("send_photo")
             viewModel.onCameraButtonClicked(
                 imageRepository.getBitmap(image.image!!),
                 image.imageInfo.rotationDegrees
@@ -899,6 +898,7 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
+                    logger.logEvent("send_photo")
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
                         putBoolean(
                             getString(R.string.flash_enabled),
