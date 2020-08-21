@@ -68,7 +68,7 @@ ext {
     tagManagerVersion = "11.0.4"
     usabillaVersion = "7.0.3"
     gpuVersion = "2.0.3"
-    facebookVersion = "5.0.0"
+    facebookVersion = "7.1.0"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
