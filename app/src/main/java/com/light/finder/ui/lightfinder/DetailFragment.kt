@@ -253,10 +253,10 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
-        val params = Bundle()
         productSapId = contentCart.productSapId
-        params.putString(getString(R.string.parameter_sku), productSapId)
-        logger.logEvent(getString(R.string.view_product),params)
+        logger.logEventOnFacebookSdk(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -266,10 +266,10 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            val params = Bundle()
-            params.putString(getString(R.string.parameter_sku), productSapId)
-            params.putDouble(getString(R.string.value),pricePerPack.toDouble())
-            logger.logEvent(getString(R.string.add_to_cart),params)
+            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart)){
+                    putString(getString(R.string.parameter_sku), productSapId)
+                    putDouble(getString(R.string.value),pricePerPack.toDouble())
+            }
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
