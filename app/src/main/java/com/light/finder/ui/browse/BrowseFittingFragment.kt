@@ -111,6 +111,8 @@ class BrowseFittingFragment : BaseFilteringFragment() {
                 //it is scrolling up
                 if (dy > 0) {
                     line_divider_fitting.visible()
+                } else if (dy < 0) {
+                    line_divider_fitting.invisible()
                 }
             }
 

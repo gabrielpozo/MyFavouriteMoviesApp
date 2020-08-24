@@ -92,12 +92,15 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 //it is scrolling up
                 if (dy > 0) {
                     line_divider.visible()
+                } else if (dy < 0) {
+                    line_divider.invisible()
                 }
+
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(layoutManager.findFirstCompletelyVisibleItemPosition() == 0){
+                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     line_divider.invisible()
                 }
             }
