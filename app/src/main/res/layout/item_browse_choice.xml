@@ -31,7 +31,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="7dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageViewBrowseIcon"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +44,7 @@
                     style="@style/TitleCategory"
                     android:layout_marginBottom="8dp"
                     android:textSize="20sp"
+                    android:lineSpacingExtra="2sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="LED Non-Dimmable" />
@@ -55,6 +56,7 @@
                     style="@style/BulbCategory"
                     android:layout_marginBottom="8dp"
                     android:textSize="12sp"
+                    android:lineSpacingExtra="6sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Everyday value everywhere in your home. These LED light bulbs provide a Soft White or Daylight." />
@@ -64,7 +66,7 @@
                     android:ellipsize="end"
                     android:id="@+id/textBrowseResultsCount"
                     style="@style/DisableTextDarkSubtitle"
-                    android:textSize="12sp"
+                    android:lineSpacingExtra="6sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="results" />
@@ -77,6 +79,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginEnd="16dp"
+                tools:src="@color/primaryOnLight"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
