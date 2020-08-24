@@ -42,7 +42,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             .commit()
         editor.putString(FORM_FACTOR_LEGEND_ID, Gson().toJson(legend.legend.formfactorTypeId))
             .commit()
-        editor.putString(PRODUCT_CONNECTIVITY_LEGEND, Gson().toJson(legend.legend.productConnectivity))
+        editor.putString(
+            PRODUCT_CONNECTIVITY_LEGEND,
+            Gson().toJson(legend.legend.productConnectivity)
+        )
             .commit()
         editor.putString(
             FORM_FACTOR_LEGEND_BASE_ID,
@@ -87,6 +90,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override fun loadLegendConnectivityNames(): List<ProductConnectivity> =
         Gson().fromJson(pref.getString(PRODUCT_CONNECTIVITY_LEGEND, null) ?: "")
+
     override fun loadFormFactorIBaseIdLegendTags(): List<FormFactorTypeBaseId> = Gson().fromJson(
         pref.getString(FORM_FACTOR_LEGEND_BASE_ID, null)
             ?: emptyList<FormFactorTypeBaseId>().toString()
@@ -151,6 +155,21 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
 
     override fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message {
+        getShapeFilteredList(shapeBrowsingList)
+        return mapBrowsingProductToMessageDomain(
+            shapeBrowsingList[0].baseNameFitting,
+            loadProductCategoryName(),
+            loadFormFactorLegendTags(),
+            getShapeFilteredList(shapeBrowsingList).groupBy { it.toKey() })
+    }
+
+
+
+    fun getCategoryChoice(){
+
+    }
+
+   override fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
         val browsedFilteredList = loadProductBrowsingFiltered()
         val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
         shapeBrowsingList.forEach { shapeBrowse ->
@@ -161,9 +180,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             }
         }
 
-        return mapBrowsingProductToMessageDomain(
-            shapeBrowsingList[0].baseNameFitting, loadProductCategoryName(),loadFormFactorLegendTags(),
-            browsedShapeFilteredList.groupBy { it.toKey() })
+       return browsedShapeFilteredList
     }
 
 

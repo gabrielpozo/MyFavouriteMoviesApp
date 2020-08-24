@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseChoiceComponent
 import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
@@ -57,13 +58,15 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseChoiceModule())
         }
 
-        /*arguments?.let { bundle ->
-            bundle.getParcelable<FormFactorTypeBaseIdParcelable>(CHOICE_ID_KEY)
-                ?.let { productBaseId ->
-                    //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
-                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+        arguments?.let { bundle ->
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY)
+                ?.let { shapeBrowsingProducts ->
+                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
-        }*/
+
+            //viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
+        }
+
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -203,7 +206,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     //todo change with categories
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
        modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
+            //screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
         }
     }
 

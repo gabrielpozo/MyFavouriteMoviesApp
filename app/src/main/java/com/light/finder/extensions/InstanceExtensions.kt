@@ -78,7 +78,7 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
 //todo parcelize list
 fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<ShapeBrowsing>): BrowseChoiceFragment {
     val args = android.os.Bundle()
-    args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected)
+    args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
     return  fragment
