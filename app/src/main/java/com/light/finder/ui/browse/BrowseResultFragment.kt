@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseResultComponent
 import com.light.finder.di.modules.submodules.BrowseResultModule
@@ -52,9 +53,9 @@ class BrowseResultFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->
-            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CATEGORIES_BROWSE_ID_KEY)
-                ?.let { shapeBrowsingProducts ->
-                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
+            bundle.getParcelableArrayList<ChoiceBrowsingParcelable>(CATEGORIES_BROWSE_ID_KEY)
+                ?.let { choiceBrowsingProducts ->
+                    viewModel.onRetrieveShapeProducts(choiceBrowsingProducts.deparcelizeChoiceBrowsingList())
                 }
 
             viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })

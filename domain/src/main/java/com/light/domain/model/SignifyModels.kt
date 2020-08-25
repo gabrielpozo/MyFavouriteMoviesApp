@@ -195,6 +195,8 @@ data class ChoiceBrowsing(
     val image: String?,
     val subtitleCount: Int,
     var description: String = "",
+    var baseIdFitting: Int = -1,
+    var baseNameFitting: String = "",
     var isSelected: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {

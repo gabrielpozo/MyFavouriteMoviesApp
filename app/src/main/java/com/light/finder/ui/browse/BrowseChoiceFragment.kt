@@ -179,7 +179,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
             add(R.style.BrowseNextDisable)
             backgroundRes(R.drawable.browse_next_disable)
         }
-
         adapter.clearSelection()
     }
 
@@ -201,7 +200,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     //todo change with categories
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
        modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            //screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
+            screenFilteringNavigator.navigateToResultCategories2(browseNavigation.productsChoiceSelected)
         }
     }
 

@@ -3,6 +3,7 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
+import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
@@ -44,7 +45,7 @@ class BrowseResultViewModel(
         )
     }
 
-    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
+    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {
         launch {
             getBrowseProductsResultUseCase.execute(
                 ::handleResultProducts,

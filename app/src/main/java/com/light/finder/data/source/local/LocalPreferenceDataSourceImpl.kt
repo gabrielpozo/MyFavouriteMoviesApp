@@ -163,8 +163,30 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             getShapeFilteredList(shapeBrowsingList).groupBy { it.toKey() })
     }
 
+    override fun getFilteredProductsMessageFromChoice(choiceBrowsingList: List<ChoiceBrowsing>): Message {
+        return mapBrowsingProductToMessageDomain(
+            choiceBrowsingList[0].baseNameFitting,
+            loadProductCategoryName(),
+            loadFormFactorLegendTags(),
+            getChoiceFilteredList(choiceBrowsingList).groupBy { it.toKey() })
+    }
 
-   override fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
+
+    private fun getChoiceFilteredList(choiceBrowsingList: List<ChoiceBrowsing>): List<ProductBrowsing> {
+        val browsedFilteredList = loadProductBrowsingFiltered()
+        val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
+        choiceBrowsingList.forEach { choiceBrowse ->
+            if (choiceBrowse.isSelected) {
+                browsedShapeFilteredList.addAll(browsedFilteredList.filter { productBrowse ->
+                    choiceBrowse.id == productBrowse.productFormfactorTypeCode
+                })
+            }
+        }
+
+        return browsedShapeFilteredList
+    }
+
+    override fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
         val browsedFilteredList = loadProductBrowsingFiltered()
         val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
         shapeBrowsingList.forEach { shapeBrowse ->
@@ -175,9 +197,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             }
         }
 
-       return browsedShapeFilteredList
+        return browsedShapeFilteredList
     }
-
-
 }
 
