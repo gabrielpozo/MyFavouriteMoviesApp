@@ -10,6 +10,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
         val categoryChoiceList = mutableListOf<ChoiceBrowsing>()
         val categoryNameList = localPreferenceDataSource.loadProductCategoryName()
         val filteredProductsByShape = localPreferenceDataSource.getShapeFilteredList(browsingList)
+
         //TODO maybe save the new product filtered list here??, probably
 
         categoryNameList.forEach { categoryName ->
@@ -22,7 +23,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
                     description = categoryName.description,
                     subtitleCount =  filteredProductsByShape.filter {
                         categoryName.id == it.productCategoryCode
-                    }.size
+                    }.groupBy { it.toKeyBrow() }.size
                 )
             )
         }
@@ -30,3 +31,4 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
     }
 }
 
+fun ProductBrowsing.toKeyBrow() = Key(productCategoryCode, productFormfactorShapeId)
