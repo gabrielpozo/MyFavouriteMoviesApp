@@ -60,7 +60,9 @@ data class ProductParcelable(
     var productCategoryCode: Int,
     var isSelected: Boolean,
     var isAvailable: Boolean,
-    var wattageReplacedExtra: String
+    var wattageReplacedExtra: String,
+    var stickyHeaderFirstLine: String,
+    var stickyHeaderSecondLine: String
 ) : Parcelable
 
 @Parcelize

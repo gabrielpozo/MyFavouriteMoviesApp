@@ -116,11 +116,13 @@ fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
         })
 }
 
+
 fun View.fadeIn(duration: Long = 500L) {
     val view = this
     view.visible()
     view.alpha = 0F
     this.animate()
+        .setStartDelay(500L)
         .alpha(1F)
         .setDuration(duration)
         .setListener(object : Animator.AnimatorListener{

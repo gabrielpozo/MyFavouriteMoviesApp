@@ -357,7 +357,9 @@ val mapDomainProductToParcelable: (Product) -> ProductParcelable = { product ->
         product.produtCategoryCode,
         product.isSelected,
         product.isAvailable,
-        product.wattageReplacedExtra
+        product.wattageReplacedExtra,
+        product.stickyHeaderFirstLine,
+        product.stickyHeaderSecondLine
     )
 
 }
@@ -427,7 +429,9 @@ val mapParcelableProductToDomain: (ProductParcelable) -> Product = { product ->
         product.productCategoryCode,
         product.isSelected,
         product.isAvailable,
-        wattageReplacedExtra = product.wattageReplacedExtra
+        wattageReplacedExtra = product.wattageReplacedExtra,
+        stickyHeaderFirstLine = product.stickyHeaderFirstLine,
+        stickyHeaderSecondLine = product.stickyHeaderSecondLine
     )
 
 }

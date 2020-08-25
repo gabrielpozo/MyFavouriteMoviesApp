@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import com.facebook.appevents.AppEventsConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -253,6 +254,9 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
+        logger.logEventOnFacebookSdk(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -262,7 +266,11 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart)){
+                    putString(getString(R.string.parameter_sku), productSapId)
+                    putDouble(getString(R.string.value),pricePerPack.toDouble())
+            }
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)
@@ -417,34 +425,18 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-        val formFactorType = getLegendTagPrefFormFactor(
-            product.formfactorType,
-            filterTypeList = localPreferences.loadFormFactorLegendTags(),
-            legendTag = FORM_FACTOR_LEGEND_TAG
-        ).toLowerCase()
-
-        val stickyHeaderPacks = String.format(
-            getString(R.string.sticky_header_packs),
-            product.qtySkuCase,
-            product.qtySkuCase.pluralOrSingular(),
-            product.qtyLampSku,
-            formFactorType,
-            product.qtyLampSku.pluralOrSingular()
-        )
-
-        val stickyHeaderTitle = String.format(
-            getString(R.string.sticky_header_title),
-            product.categoryName, product.wattageReplaced, product.factorBase
-        )
 
         val pricePerPack = String.format(
             getString(R.string.sticky_header_price),
             product.pricePack
         )
 
-        sticky_header_title.text = stickyHeaderTitle
-        sticky_header_packs.text = stickyHeaderPacks
+        sticky_header_title.text = product.stickyHeaderFirstLine
+        sticky_header_packs.text = product.stickyHeaderSecondLine
         sticky_header_price.text = pricePerPack
+
+        sticky_header_packs.invalidate()
+        sticky_header_packs.requestLayout()
     }
 
     private fun setLivePreviewButton(product: Product) {
@@ -461,7 +453,7 @@ class DetailFragment : BaseFragment() {
         }
 
 
-        livePreviewButton.setOnClickListener {
+        livePreviewButton.setSafeOnClickListener {
             if (getLegendArTypeTagPref(
                     product.colorCctCode,
                     localPreferences.loadLegendCctFilterNames()

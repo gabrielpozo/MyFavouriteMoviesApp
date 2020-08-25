@@ -87,17 +87,25 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up
                 if (dy > 0) {
                     line_divider.visible()
+                } else if (dy < 0) {
+                    line_divider.invisible()
+                }
+
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    line_divider.invisible()
                 }
             }
         })
     }
-
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)

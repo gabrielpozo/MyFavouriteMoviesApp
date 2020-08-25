@@ -29,6 +29,8 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.facebook.appevents.AppEventsConstants
+import com.facebook.appevents.AppEventsLogger
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
@@ -287,6 +289,7 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
+                logger.logEvent(getString(R.string.send_photo))
                 val inputStream = activity?.contentResolver?.openInputStream(uri)
                 inputStream?.let { stream ->
                     viewModel.onCameraButtonClicked(
@@ -357,7 +360,7 @@ class CameraFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (isComingFromSettings && !isGalleryDenied) {
-            viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+            viewModel.onPermissionsViewRequested(requireContext().checkSelfCameraPermission())
             isComingFromSettings = false
         }
         if (isComingFromSettings && isGalleryDenied) {
@@ -405,7 +408,7 @@ class CameraFragment : BaseFragment() {
     private fun observeUpdateUI(model: UiModel) {
         when (model) {
             is UiModel.CameraInitializeScreen -> {
-                viewModel.onPermissionsViewRequested(checkSelfCameraPermission())
+                viewModel.onPermissionsViewRequested(requireContext().checkSelfCameraPermission())
             }
 
             is UiModel.PermissionsViewRequested -> {
@@ -895,6 +898,7 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
+                    logger.logEvent(getString(R.string.send_photo))
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
                         putBoolean(
                             getString(R.string.flash_enabled),
@@ -977,7 +981,7 @@ class CameraFragment : BaseFragment() {
 
     fun restoreCameraFromBrowsing() {
         if (modelUiState == ModelStatus.PERMISSION) {
-            viewModel.onRestoreCameraViewFromBrowsing(checkSelfCameraPermission())
+            viewModel.onRestoreCameraViewFromBrowsing(requireContext().checkSelfCameraPermission())
         }
     }
 

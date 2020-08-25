@@ -151,7 +151,31 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 )
             )
         }
-        return shapesToDisplay
+
+/*        shapesToDisplay.add(
+            ShapeBrowsing(
+                id = 15,
+                name = "Ega",
+                image = "",
+                order = 19,
+                subtitleCount = 9,
+                baseIdFitting = 2,
+                baseNameFitting = "lol",
+                isSelected = false))
+
+        shapesToDisplay.add(
+            ShapeBrowsing(
+                id = 16,
+                name = "Alignment",
+                image = "",
+                order = 21,
+                subtitleCount = 4,
+                baseIdFitting = 2,
+                baseNameFitting = "lolment",
+                isSelected = false))*/
+
+
+                return shapesToDisplay
     }
 
 
@@ -198,6 +222,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         }
 
         return browsedShapeFilteredList
+
     }
 }
 
