@@ -155,7 +155,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
 
     override fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message {
-        getShapeFilteredList(shapeBrowsingList)
+        //getShapeFilteredList(shapeBrowsingList)
         return mapBrowsingProductToMessageDomain(
             shapeBrowsingList[0].baseNameFitting,
             loadProductCategoryName(),
@@ -163,11 +163,6 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             getShapeFilteredList(shapeBrowsingList).groupBy { it.toKey() })
     }
 
-
-
-    fun getCategoryChoice(){
-
-    }
 
    override fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
         val browsedFilteredList = loadProductBrowsingFiltered()

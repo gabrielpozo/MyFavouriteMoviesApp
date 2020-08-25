@@ -1,9 +1,7 @@
 package com.light.repository
 
 import com.light.domain.BrowseChoiceRepository
-import com.light.domain.model.ChoiceBrowsing
-import com.light.domain.model.ProductBrowsing
-import com.light.domain.model.ShapeBrowsing
+import com.light.domain.model.*
 import com.light.source.local.LocalPreferenceDataSource
 
 class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
@@ -11,7 +9,8 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
     override fun getCategoryCategoriesChoice(browsingList: List<ShapeBrowsing>): List<ChoiceBrowsing> {
         val categoryChoiceList = mutableListOf<ChoiceBrowsing>()
         val categoryNameList = localPreferenceDataSource.loadProductCategoryName()
-        val productBrowsingList = localPreferenceDataSource.loadProductBrowsingFiltered()
+        val filteredProductsByShape = localPreferenceDataSource.getShapeFilteredList(browsingList)
+        //TODO maybe save the new product filtered list here??, probably
 
         categoryNameList.forEach { categoryName ->
             categoryChoiceList.add(
@@ -21,28 +20,13 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
                     order = categoryName.order,
                     image = categoryName.image,
                     description = categoryName.description,
-                    subtitleCount = checkCat(
-                        categoryName.id,
-                        localPreferenceDataSource.getShapeFilteredList(browsingList)
-                    )
+                    subtitleCount =  filteredProductsByShape.filter {
+                        categoryName.id == it.productCategoryCode
+                    }.size
                 )
             )
-
-
         }
-         return categoryChoiceList
+        return categoryChoiceList
     }
 }
 
-private fun checkCat(
-    categoryId: Int,
-    productBrowsingList: List<ProductBrowsing>
-): Int {
-
-    productBrowsingList.groupBy {productBrowsing ->
-     //   productBrowsing.toKeyCaetegoryChoice()
-    }
-    return 0
-}
-
-//fun ProductBrowsing.toKeyCaetegoryChoice() = Key(productCategoryCode)

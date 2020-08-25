@@ -3,7 +3,6 @@ package com.light.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ChoiceBrowsing
-import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.presentation.common.isProductsChoiceSelected
@@ -29,9 +28,9 @@ class BrowseChoiceViewModel(
         object LoadingStatus : UiBrowsingChoiceModel()
     }
 
-    val modelBrowsingLiveData: LiveData<UiBrowsingChoiceModel>
-        get() = _modelBrowsingLiveData
-    private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingChoiceModel>()
+    val modelChoiceLiveData: LiveData<UiBrowsingChoiceModel>
+        get() = _modelChoiceLiveData
+    private val _modelChoiceLiveData = MutableLiveData<UiBrowsingChoiceModel>()
 
     data class NavigationToResults(val productsChoiceSelected: List<ChoiceBrowsing>)
 
@@ -49,27 +48,20 @@ class BrowseChoiceViewModel(
         object NoButtonsClicked : StatusBottomBar()
     }
 
-
-    fun onRequestFilteringChoices(productBaseId: FormFactorTypeBaseId) {
-        /*launch {
-            _modelBrowsingLiveData.value = UiBrowsingChoiceModel.LoadingStatus
-            requestBrowsingChoiceUseCase.execute(
-                ::handleSuccessRequest,
-                productBaseId.id,
-                productBaseId.name
-            )
-        }*/
-    }
-
     fun onResetButtonPressed() {
         productsChoiceSelected.resetChoiceProductList()
         _modelBottomStatus.value = StatusBottomBar.ResetChoice
     }
 
-    private fun handleSuccessRequest(productBrowsingList: List<ChoiceBrowsing>) {
-        productsChoiceSelected = productBrowsingList.toMutableList()
-        _modelBrowsingLiveData.value =
-            UiBrowsingChoiceModel.SuccessRequestStatus(productBrowsingList)
+
+    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
+        requestBrowsingChoiceUseCase.execute(::handleSuccessChoiceResults, shapeBrowsingList)
+    }
+
+    private fun handleSuccessChoiceResults(choiceResults: List<ChoiceBrowsing>) {
+        _modelChoiceLiveData.value =
+            UiBrowsingChoiceModel.SuccessRequestStatus(choiceResults)
+
     }
 
     fun onSearchButtonClicked() {
@@ -91,7 +83,7 @@ class BrowseChoiceViewModel(
         _modelNavigationToResult.value = Event(NavigationToResults(productsChoiceSelected))
     }
 
-    fun onRetrieveShapeProducts(browsingList: ArrayList<ShapeBrowsing>) {
-        requestBrowsingChoiceUseCase.execute(browsingList)
-    }
+
+
+
 }

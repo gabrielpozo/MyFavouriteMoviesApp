@@ -7,6 +7,10 @@ import com.light.domain.model.ShapeBrowsing
 
 class RequestBrowsingChoiceUseCase(private val choiceLightBulbRepository: BrowseChoiceRepository) {
 
-    fun execute(shapeBrowsingList: List<ShapeBrowsing>): List<ChoiceBrowsing> =
-        choiceLightBulbRepository.getCategoryCategoriesChoice(shapeBrowsingList)
+    fun execute(
+        onSuccess: (List<ChoiceBrowsing>) -> Unit = {},
+        shapeBrowsingList: List<ShapeBrowsing>
+    ) {
+        onSuccess.invoke(choiceLightBulbRepository.getCategoryCategoriesChoice(shapeBrowsingList))
+    }
 }

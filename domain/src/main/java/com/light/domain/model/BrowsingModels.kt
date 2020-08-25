@@ -49,3 +49,5 @@ data class ProductBrowsing(
 )
 
 data class Key(val productCategoryCode: Int, val productFormFactorShapeId: Int)
+data class KeyChoice(val productCategoryCode: Int)
+

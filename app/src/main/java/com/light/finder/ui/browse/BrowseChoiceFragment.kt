@@ -20,7 +20,6 @@ import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ChoiceBrowsing
-import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
 import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseChoiceComponent
@@ -28,7 +27,6 @@ import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseChoiceAdapter
 import com.light.presentation.common.Event
-import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseChoiceFragment : BaseFilteringFragment() {
@@ -59,14 +57,11 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         }
 
         arguments?.let { bundle ->
-            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY)
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
                 ?.let { shapeBrowsingProducts ->
                     viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
-
-            //viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
         }
-
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -130,7 +125,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     }
 
     private fun setObservers() {
-        viewModel.modelBrowsingLiveData.observe(
+        viewModel.modelChoiceLiveData.observe(
             viewLifecycleOwner, Observer(::updateBrowsingChoiceUI)
         )
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
@@ -141,10 +136,10 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     }
 
 
-    private fun updateBrowsingChoiceUI(modelBrowse: BrowseChoiceViewModel.UiBrowsingChoiceModel) {
-        when (modelBrowse) {
+    private fun updateBrowsingChoiceUI(modelChoiceBrowse: BrowseChoiceViewModel.UiBrowsingChoiceModel) {
+        when (modelChoiceBrowse) {
             is BrowseChoiceViewModel.UiBrowsingChoiceModel.SuccessRequestStatus -> {
-                showChoices(modelBrowse.productBrowsingList)
+                showChoices(modelChoiceBrowse.productBrowsingList)
             }
 
             is BrowseChoiceViewModel.UiBrowsingChoiceModel.LoadingStatus -> {
