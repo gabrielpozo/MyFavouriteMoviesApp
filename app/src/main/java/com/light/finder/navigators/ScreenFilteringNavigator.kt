@@ -57,7 +57,6 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
             .commit()
     }
 
-
     fun popFragment() {
         fragmentManager.popBackStack()
     }

@@ -2,6 +2,7 @@ package com.light.repository
 
 import com.light.domain.BrowseChoiceRepository
 import com.light.domain.model.*
+import com.light.domain.toKey
 import com.light.source.local.LocalPreferenceDataSource
 
 class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
@@ -23,7 +24,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
                     description = categoryName.description,
                     subtitleCount =  filteredProductsByShape.filter {
                         categoryName.id == it.productCategoryCode
-                    }.groupBy { it.toKeyBrow() }.size
+                    }.groupBy { it.toKey() }.size
                 )
             )
         }
@@ -31,4 +32,3 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
     }
 }
 
-fun ProductBrowsing.toKeyBrow() = Key(productCategoryCode, productFormfactorShapeId)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.light.domain.model.*
+import com.light.domain.toKey
 import com.light.finder.data.mappers.mapBrowsingProductToMessageDomain
 import com.light.finder.extensions.*
 
@@ -155,7 +156,6 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
 
     override fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message {
-        //getShapeFilteredList(shapeBrowsingList)
         return mapBrowsingProductToMessageDomain(
             shapeBrowsingList[0].baseNameFitting,
             loadProductCategoryName(),
