@@ -4,17 +4,12 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.paris.extensions.alpha
-import com.airbnb.paris.extensions.style
-import com.airbnb.paris.extensions.textColor
 import com.light.domain.model.ChoiceBrowsing
-import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
 import kotlinx.android.synthetic.main.item_browse_choice.view.*
-import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseChoiceAdapter(
     private val listener: (ChoiceBrowsing) -> Unit
@@ -88,22 +83,20 @@ class BrowseChoiceAdapter(
                     )
                 }
                 else -> {
-
-                    itemView.isClickable = false
-                    itemView.textBrowseResultsCount.text =
-                        itemView.context.getString(R.string.not_available_choice)
-                    itemView.textBrowseBulbName.style {
-                        textColor(R.color.textDisabled)
-                    }
-                    itemView.textBrowseBulbDesc.style {
-                        textColor(R.color.textDisabled)
-                    }
-                    itemView.imageViewBrowseIcon.style {
-                         alpha(0.7f)
-                    }
-
+                    makeItemDisabled()
                 }
             }
+        }
+
+        private fun makeItemDisabled() {
+            itemView.isClickable = false
+            itemView.isEnabled = false
+            itemView.textBrowseBulbName.alpha = 0.4F
+            itemView.textBrowseResultsCount.alpha = 0.4F
+            itemView.imageViewBrowseIcon.alpha = 0.4F
+            itemView.textBrowseBulbDesc.alpha = 0.4F
+            itemView.textBrowseResultsCount.text =
+                itemView.context.getString(R.string.not_available)
         }
     }
 }
