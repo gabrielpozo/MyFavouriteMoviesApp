@@ -15,7 +15,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.common.*
-import com.light.finder.data.source.remote.ShapeBrowsingParcelable
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
 import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
 import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
@@ -80,13 +80,13 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (intent != null) {
             val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
             if (dataId.equals(BROWSING_ACTIVITY)) {
-                val shapeResult = intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(
+                val choiceResult = intent.extras?.getParcelableArrayList<ChoiceBrowsingParcelable>(
                     BROWSING_SHAPE_VALUES_ID
                 )
-                shapeResult?.let {
+                choiceResult?.let {
                     screenNavigator.setInitialRootFragment(
                         BrowseResultFragment.newInstance(
-                            shapeResult.deParcelizeBrowsingList()
+                            choiceResult.deparcelizeChoiceBrowsingList()
                         )
                     )
                 }

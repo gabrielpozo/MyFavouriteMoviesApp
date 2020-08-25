@@ -178,7 +178,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         choiceBrowsingList.forEach { choiceBrowse ->
             if (choiceBrowse.isSelected) {
                 browsedShapeFilteredList.addAll(browsedFilteredList.filter { productBrowse ->
-                    choiceBrowse.id == productBrowse.productFormfactorTypeCode
+                    choiceBrowse.id == productBrowse.productCategoryCode
                 })
             }
         }

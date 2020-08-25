@@ -10,9 +10,13 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
     override fun getCategoryCategoriesChoice(browsingList: List<ShapeBrowsing>): List<ChoiceBrowsing> {
         val categoryChoiceList = mutableListOf<ChoiceBrowsing>()
         val categoryNameList = localPreferenceDataSource.loadProductCategoryName()
-        val filteredProductsByShape = localPreferenceDataSource.getShapeFilteredList(browsingList)
+        val filteredProductsByShape =
+        if (browsingList.find { it.isSelected } != null ) {
+             localPreferenceDataSource.getShapeFilteredList(browsingList)
+        } else {
+            localPreferenceDataSource.loadProductBrowsingFiltered()
+        }
 
-        //TODO maybe save the new product filtered list here??, probably
         localPreferenceDataSource.saveFittingFilteredList(filteredProductsByShape)
 
         categoryNameList.forEach { categoryName ->
@@ -30,7 +34,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
                 )
             )
         }
-        return categoryChoiceList
+        return categoryChoiceList.sortedBy { it.order }
     }
 }
 

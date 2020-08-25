@@ -2,10 +2,6 @@ package com.light.finder.ui.browse
 
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
-import kotlinx.android.synthetic.main.fragment_browse_shape.buttonSearch
-import kotlinx.android.synthetic.main.fragment_browse_shape.line_divider
-import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
-import kotlinx.android.synthetic.main.fragment_browse_shape.textSkip
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
