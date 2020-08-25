@@ -64,6 +64,7 @@ class BrowseChoiceAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(product: ChoiceBrowsing) {
             itemView.textBrowseBulbName.text = product.name
+            itemView.textBrowseBulbDesc.text = product.description
             when (product.image) {
                 null -> {
                     itemView.imageViewBrowseIcon.setBackgroundResource(R.color.backgroundLight)
