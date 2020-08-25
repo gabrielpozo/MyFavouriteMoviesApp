@@ -15,7 +15,7 @@ class BrowseChoiceViewModel(
     private val requestBrowsingChoiceUseCase: RequestBrowsingChoiceUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
-    private lateinit var productsChoiceSelected: MutableList<ChoiceBrowsing>
+    private lateinit var productChoiceSelectedList: MutableList<ChoiceBrowsing>
 
     companion object {
         private const val RESET_BASE_ID = -1
@@ -49,7 +49,7 @@ class BrowseChoiceViewModel(
     }
 
     fun onResetButtonPressed() {
-        productsChoiceSelected.resetChoiceProductList()
+        productChoiceSelectedList.resetChoiceProductList()
         _modelBottomStatus.value = StatusBottomBar.ResetChoice
     }
 
@@ -59,20 +59,21 @@ class BrowseChoiceViewModel(
     }
 
     private fun handleSuccessChoiceResults(choiceResults: List<ChoiceBrowsing>) {
+        productChoiceSelectedList = choiceResults.toMutableList()
         _modelChoiceLiveData.value =
-            UiBrowsingChoiceModel.SuccessRequestStatus(choiceResults)
+            UiBrowsingChoiceModel.SuccessRequestStatus(productChoiceSelectedList)
 
     }
 
     fun onSearchButtonClicked() {
-        if (productsChoiceSelected.isProductsChoiceSelected()) {
-            _modelNavigationToResult.value = Event(NavigationToResults(productsChoiceSelected))
+        if (productChoiceSelectedList.isProductsChoiceSelected()) {
+            _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
         }
     }
 
     fun onChoiceClick(productChoice: ChoiceBrowsing) {
-        productsChoiceSelected.setSelectedProductChoice(productChoice)
-        if (productsChoiceSelected.isProductsChoiceSelected()) {
+        productChoiceSelectedList.setSelectedProductChoice(productChoice)
+        if (productChoiceSelectedList.isProductsChoiceSelected()) {
             _modelBottomStatus.value = StatusBottomBar.ChoiceClicked
         } else {
             _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
@@ -80,7 +81,7 @@ class BrowseChoiceViewModel(
     }
 
     fun onSkipButtonClicked() {
-        _modelNavigationToResult.value = Event(NavigationToResults(productsChoiceSelected))
+        _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
     }
 
 
