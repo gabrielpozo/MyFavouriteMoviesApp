@@ -266,7 +266,7 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart)){
+            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
                     putString(getString(R.string.parameter_sku), productSapId)
                     putDouble(getString(R.string.value),pricePerPack.toDouble())
             }
