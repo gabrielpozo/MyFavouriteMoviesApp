@@ -1,5 +1,6 @@
 package com.light.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ChoiceBrowsing
@@ -60,6 +61,10 @@ class BrowseChoiceViewModel(
 
     private fun handleSuccessChoiceResults(choiceResults: List<ChoiceBrowsing>) {
         productChoiceSelectedList = choiceResults.toMutableList()
+        choiceResults.forEach {
+            Log.d("Gabriel","name: ${it.name}, count: ${it.subtitleCount}")
+        }
+
         _modelChoiceLiveData.value =
             UiBrowsingChoiceModel.SuccessRequestStatus(productChoiceSelectedList)
 
