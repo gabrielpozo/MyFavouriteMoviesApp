@@ -91,16 +91,9 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up
                 if (dy > 0) {
-                    line_divider.visible()
+                    line_divider_category_choice.visible()
                 } else if (dy < 0) {
-                    line_divider.invisible()
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    line_divider.invisible()
+                    line_divider_category_choice.invisible()
                 }
             }
         })
@@ -110,8 +103,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-
-
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
@@ -122,7 +113,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
                 override fun onStateChanged(p0: View, state: Int) {
                     if (state == RESTORED_STATE) {
-                        line_divider.invisible()
+                        line_divider_category_choice.invisible()
                     }
                 }
             })

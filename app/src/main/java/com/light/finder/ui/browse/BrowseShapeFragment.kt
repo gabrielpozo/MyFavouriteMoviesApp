@@ -103,14 +103,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 } else if (dy < 0) {
                     line_divider.invisible()
                 }
-
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    line_divider.invisible()
-                }
             }
         })
     }
