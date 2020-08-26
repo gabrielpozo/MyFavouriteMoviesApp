@@ -13,6 +13,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.light.finder.common.SafeClickListener
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -117,15 +118,11 @@ fun View.setSafeOnClickListener(
     onViewResponse: (Boolean) -> Unit = {},
     onSafeClick: (View) -> Unit
 ) {
-    var lastTapTimestamp: Long = 0
-    val customListener = View.OnClickListener {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastTapTimestamp > 700L) {
-            lastTapTimestamp = currentTime
-            onSafeClick(it)
-        }
+    val safeClickListener = SafeClickListener {
+        onViewResponse.invoke(true)
+        onSafeClick(it)
     }
-    this.setOnClickListener(customListener)
+    setOnClickListener(safeClickListener)
 }
 
 
