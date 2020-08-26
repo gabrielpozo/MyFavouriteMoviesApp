@@ -70,8 +70,6 @@
                     android:layout_height="match_parent">
                     <View
                         android:id="@+id/line_divider"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="6dp"
                         android:visibility="invisible"
                         android:background="@color/divider"
                         android:layout_width="match_parent"
@@ -80,7 +78,7 @@
                     <!-- should have 3 items per rows -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewChoice"
-                        android:paddingTop="16dp"
+                        android:paddingTop="18dp"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -133,27 +131,27 @@
             android:maxLines="1"
             android:id="@+id/textSkip"
             android:clickable="true"
-            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:visibility="visible"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/bold"
             android:text="@string/skip"
             android:layout_width="0dp"
-            android:maxWidth="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:clickable="true"
-            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:visibility="gone"
             android:id="@+id/textReset"
             android:textSize="18sp"

@@ -79,7 +79,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginEnd="16dp"
-                tools:src="@color/primaryOnLight"
+                tools:src="@drawable/category_placeholder"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"

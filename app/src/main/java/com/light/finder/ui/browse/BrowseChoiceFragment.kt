@@ -1,7 +1,5 @@
 package com.light.finder.ui.browse
 
-import com.light.presentation.viewmodels.BrowseChoiceViewModel
-import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
@@ -23,6 +21,8 @@ import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseChoiceAdapter
 import com.light.presentation.common.Event
+import com.light.presentation.viewmodels.BrowseChoiceViewModel
+import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseChoiceFragment : BaseFilteringFragment() {
@@ -92,6 +92,15 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 //it is scrolling up
                 if (dy > 0) {
                     line_divider.visible()
+                } else if (dy < 0) {
+                    line_divider.invisible()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    line_divider.invisible()
                 }
             }
         })
@@ -195,7 +204,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
     //todo change with categories
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
-       modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
+        modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
             screenFilteringNavigator.navigateToResultCategories2(browseNavigation.productsChoiceSelected)
         }
     }
