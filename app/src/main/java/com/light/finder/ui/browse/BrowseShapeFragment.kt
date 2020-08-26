@@ -3,6 +3,7 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,8 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private lateinit var component: BrowseShapeComponent
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var viewModelInitialized = false
+
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
 
@@ -55,8 +58,10 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
-                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+                    if (!viewModelInitialized) {
+                        viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+                        viewModelInitialized = true
+                    }
                 }
         }
 
@@ -111,7 +116,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
-
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
@@ -144,6 +148,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private fun updateBrowsingShapeUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
         when (modelBrowse) {
             is BrowseShapeViewModel.UiBrowsingShapeModel.SuccessRequestStatus -> {
+                Log.d("Gabriel", "updateBrowsingShapeUI")
                 showShapes(modelBrowse.productBrowsingList)
             }
 

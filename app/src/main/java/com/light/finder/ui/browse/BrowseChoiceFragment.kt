@@ -205,7 +205,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     //todo change with categories
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories2(browseNavigation.productsChoiceSelected)
+            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
         }
     }
 

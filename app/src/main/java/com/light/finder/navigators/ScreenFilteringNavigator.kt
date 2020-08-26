@@ -59,22 +59,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
             .commit()
     }
 
-    fun popFragment() {
-        fragmentManager.popBackStack()
-    }
-
-    fun navigateToResultCategories(productsShapeSelected: List<ShapeBrowsing>) {
-        activity.startActivity<CameraLightFinderActivity> {
-            putExtra(CAMERA_LIGHT_FINDER_ACTIVITY_ID, BROWSING_ACTIVITY)
-            putParcelableArrayListExtra(
-                CameraLightFinderActivity.BROWSING_SHAPE_VALUES_ID,
-                productsShapeSelected.parcelizeBrowsingList()
-            )
-        }
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
-
-    fun navigateToResultCategories2(productsChoiceSelected: List<ChoiceBrowsing>) {
+    fun navigateToResultCategories(productsChoiceSelected: List<ChoiceBrowsing>) {
         activity.startActivity<CameraLightFinderActivity> {
             putExtra(CAMERA_LIGHT_FINDER_ACTIVITY_ID, BROWSING_ACTIVITY)
             putParcelableArrayListExtra(
@@ -88,6 +73,11 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
         replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
+    }
+
+
+    fun popFragment() {
+        fragmentManager.popBackStack()
     }
 
 
