@@ -119,10 +119,9 @@
 
 
         <TextView
-            android:focusableInTouchMode="false"
-            android:focusable="false"
             android:id="@+id/textResetSkip"
             android:clickable="true"
+            android:focusable="true"
             android:visibility="gone"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
