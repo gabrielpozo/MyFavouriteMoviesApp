@@ -3,7 +3,6 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +55,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         arguments?.let { bundle ->
             bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
                 ?.let { shapeBrowsingProducts ->
-                    Log.d("Gabriel","on choice: $shapeBrowsingProducts")
                     viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
         }

@@ -3,7 +3,6 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +36,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var viewModelInitialized = false
+    private var rootview: View? = null
 
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
@@ -46,7 +46,10 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_browse_shape, container, false)
+        if (rootview == null) {
+            rootview = inflater.inflate(R.layout.fragment_browse_shape, container, false)
+        }
+        return rootview
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -148,7 +151,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private fun updateBrowsingShapeUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
         when (modelBrowse) {
             is BrowseShapeViewModel.UiBrowsingShapeModel.SuccessRequestStatus -> {
-                Log.d("Gabriel", "updateBrowsingShapeUI")
                 showShapes(modelBrowse.productBrowsingList)
             }
 

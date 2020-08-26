@@ -1,6 +1,5 @@
 package com.light.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
@@ -75,19 +74,15 @@ class BrowseShapeViewModel(
 
     fun onSearchButtonClicked() {
         if (productsShapeSelected.isProductsShapeSelected()) {
-            Log.d("Gabriel","isProduct is selected: $productsShapeSelected")
             _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
         }
     }
 
     fun onShapeClick(productShape: ShapeBrowsing) {
-        Log.d("Gabriel","onshapeCLick: ${productShape.isSelected}")
         productsShapeSelected.setSelectedProductShape(productShape)
         if (productsShapeSelected.isProductsShapeSelected()) {
-            Log.d("Gabriel","SHAPE CLICKED")
             _modelBottomStatus.value = StatusBottomBar.ShapeClicked
         } else {
-            Log.d("Gabriel","SHAPE NO CLICKED")
             _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
         }
     }

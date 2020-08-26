@@ -1,6 +1,5 @@
 package com.light.finder.navigators
 
-import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.FormFactorTypeBaseId
@@ -10,7 +9,6 @@ import com.light.finder.CameraLightFinderActivity.Companion.BROWSING_ACTIVITY
 import com.light.finder.CameraLightFinderActivity.Companion.CAMERA_LIGHT_FINDER_ACTIVITY_ID
 import com.light.finder.R
 import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.parcelizeBrowsingList
 import com.light.finder.extensions.parcelizeChoiceBrowsingList
 import com.light.finder.extensions.startActivity
 import com.light.finder.ui.browse.*
@@ -29,11 +27,6 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
     fun navigateToBrowsingShapeScreen(productBaseId: FormFactorTypeBaseId) {
-
-/*        val bundle = Bundle()
-        bundle.putInt(BrowseShapeFragment.SHAPE_ID_KEY, productBaseId)
-        val browseShapeFragment = BrowseShapeFragment()
-        browseShapeFragment.arguments = bundle*/
         replaceFragmentTransaction(BrowseShapeFragment.newInstance(productBaseId))
     }
 
