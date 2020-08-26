@@ -130,7 +130,8 @@
 
         <TextView
             android:clickable="true"
-            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:visibility="visible"
             android:id="@+id/textSkip"
             android:textSize="18sp"
@@ -150,7 +151,8 @@
 
         <TextView
             android:clickable="true"
-            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
             android:visibility="gone"
             android:id="@+id/textReset"
             android:textSize="18sp"
