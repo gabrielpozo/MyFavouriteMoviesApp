@@ -157,5 +157,6 @@
     <string name="facebook_app_id">2579741185672513</string>
     <string name="value">value</string>
     <string name="view_product">view_product</string>
+    <string name="add_to_cart_fb">add_to_cart</string>
     <string name="payment_succesful">payment_successful</string>
 </resources>
