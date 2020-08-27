@@ -207,5 +207,4 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
         }
     }
-
 }
