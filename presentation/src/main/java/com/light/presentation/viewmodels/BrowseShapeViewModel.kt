@@ -17,6 +17,7 @@ class BrowseShapeViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productsShapeSelected: MutableList<ShapeBrowsing>
+    private var viewModelInitialized = false
 
     companion object {
         private const val RESET_BASE_ID = -1
@@ -51,14 +52,20 @@ class BrowseShapeViewModel(
 
 
     fun onRequestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
-            launch {
-                _modelBrowsingLiveData.value = UiBrowsingShapeModel.LoadingStatus
-                requestBrowsingShapeUseCase.execute(
-                    ::handleSuccessRequest,
-                    productBaseId.id,
-                    productBaseId.name
-                )
-            }
+        if (viewModelInitialized) {
+            return
+        }
+
+        launch {
+            _modelBrowsingLiveData.value = UiBrowsingShapeModel.LoadingStatus
+            requestBrowsingShapeUseCase.execute(
+                ::handleSuccessRequest,
+                productBaseId.id,
+                productBaseId.name
+            )
+        }
+
+        viewModelInitialized = true
     }
 
     fun onResetButtonPressed() {

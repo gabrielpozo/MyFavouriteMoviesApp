@@ -35,7 +35,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private lateinit var component: BrowseShapeComponent
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var viewModelInitialized = false
     private var rootview: View? = null
 
 
@@ -61,10 +60,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    if (!viewModelInitialized) {
-                        viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
-                        viewModelInitialized = true
-                    }
+                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
                 }
         }
 
