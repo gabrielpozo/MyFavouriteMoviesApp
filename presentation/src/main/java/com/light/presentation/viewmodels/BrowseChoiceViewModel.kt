@@ -17,10 +17,6 @@ class BrowseChoiceViewModel(
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productChoiceSelectedList: MutableList<ChoiceBrowsing>
 
-    companion object {
-        private const val RESET_BASE_ID = -1
-    }
-
     sealed class UiBrowsingChoiceModel {
         data class SuccessRequestStatus(val productBrowsingList: List<ChoiceBrowsing>) :
             UiBrowsingChoiceModel()
@@ -83,8 +79,5 @@ class BrowseChoiceViewModel(
     fun onSkipButtonClicked() {
         _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
     }
-
-
-
 
 }
