@@ -65,4 +65,8 @@ class DataModule {
     fun getProductsBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ProductBrowsingRepository =
         ProductBrowsingRepositoryImpl(localPreferenceDataSource)
 
+    @Provides
+    fun getChoiceBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): BrowseChoiceRepository =
+        BrowseChoiceCategoryRepositoryImpl(localPreferenceDataSource)
+
 }

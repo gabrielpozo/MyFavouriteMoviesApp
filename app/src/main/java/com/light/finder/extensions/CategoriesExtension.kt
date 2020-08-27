@@ -252,6 +252,23 @@ fun List<ShapeBrowsingParcelable>.deParcelizeBrowsingList(): ArrayList<ShapeBrow
 }
 
 
+fun List<ChoiceBrowsing>.parcelizeChoiceBrowsingList(): ArrayList<ChoiceBrowsingParcelable> {
+    val parcelizeChoiceBrowsing = ArrayList<ChoiceBrowsingParcelable>()
+    forEach { categoryChoice ->
+        parcelizeChoiceBrowsing.add(mapDomainChoiceBrowsingToParcelable(categoryChoice))
+    }
+    return parcelizeChoiceBrowsing
+}
+
+fun List<ChoiceBrowsingParcelable>.deparcelizeChoiceBrowsingList(): ArrayList<ChoiceBrowsing> {
+    val parcelizeChoiceBrowsing = ArrayList<ChoiceBrowsing>()
+    forEach { categoryChoice ->
+        parcelizeChoiceBrowsing.add(mapDomainChoiceBrowsingToDomain(categoryChoice))
+    }
+    return parcelizeChoiceBrowsing
+}
+
+
 fun List<ProductParcelable>.deparcelizeProductList(): ArrayList<Product> {
     val parcelizeProducts = ArrayList<Product>()
     forEach { productParcelable ->
@@ -452,6 +469,7 @@ val mapDomainShapeBrowsingToParcelable: (ShapeBrowsing) -> ShapeBrowsingParcelab
 
     }
 
+
 val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsing =
     { shapeBrowsingParcelable ->
         ShapeBrowsing(
@@ -466,3 +484,38 @@ val mapParcelizeShapeBrowsingToDomain: (ShapeBrowsingParcelable) -> ShapeBrowsin
         )
 
     }
+
+val mapDomainChoiceBrowsingToParcelable: (ChoiceBrowsing) -> ChoiceBrowsingParcelable =
+    { shapeBrowsing ->
+        ChoiceBrowsingParcelable(
+            shapeBrowsing.id,
+            shapeBrowsing.name,
+            shapeBrowsing.image,
+            shapeBrowsing.order,
+            shapeBrowsing.description,
+            shapeBrowsing.subtitleCount,
+            shapeBrowsing.baseNameFitting,
+            shapeBrowsing.baseIdFitting,
+            shapeBrowsing.isSelected
+        )
+
+    }
+
+
+val mapDomainChoiceBrowsingToDomain: (ChoiceBrowsingParcelable) -> ChoiceBrowsing =
+    { choiceBrowsing ->
+        ChoiceBrowsing(
+            choiceBrowsing.id,
+            choiceBrowsing.name,
+            choiceBrowsing.order,
+            choiceBrowsing.image,
+            choiceBrowsing.subtitleCount,
+            choiceBrowsing.description,
+            choiceBrowsing.baseFittingId,
+            choiceBrowsing.baseNameFitting,
+            choiceBrowsing.isSelected
+        )
+
+    }
+
+

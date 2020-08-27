@@ -13,13 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
-import com.facebook.appevents.AppEventsLogger
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectionLiveData
 import com.light.finder.common.ConnectionModel
 import com.light.finder.common.ReloadingCallback
-import com.light.finder.data.source.remote.ShapeBrowsingParcelable
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
@@ -84,13 +83,13 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (intent != null) {
             val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
             if (dataId.equals(BROWSING_ACTIVITY)) {
-                val shapeResult = intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(
+                val choiceResult = intent.extras?.getParcelableArrayList<ChoiceBrowsingParcelable>(
                     BROWSING_SHAPE_VALUES_ID
                 )
-                shapeResult?.let {
+                choiceResult?.let {
                     screenNavigator.setInitialRootFragment(
                         BrowseResultFragment.newInstance(
-                            shapeResult.deParcelizeBrowsingList()
+                            choiceResult.deparcelizeChoiceBrowsingList()
                         )
                     )
                 }

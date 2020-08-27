@@ -116,3 +116,15 @@ data class ShapeBrowsingParcelable(
     var isSelected: Boolean = false
     ) : Parcelable
 
+@Parcelize
+data class ChoiceBrowsingParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val order: Int,
+    val description: String,
+    val subtitleCount:Int,
+    var baseNameFitting: String,
+    var baseFittingId:Int = -1,
+    var isSelected: Boolean = false
+) : Parcelable

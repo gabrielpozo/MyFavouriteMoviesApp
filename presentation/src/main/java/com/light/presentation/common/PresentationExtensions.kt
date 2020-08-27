@@ -1,9 +1,6 @@
 package com.light.presentation.common
 
-import com.light.domain.model.FilterVariationCF
-import com.light.domain.model.Product
-import com.light.domain.model.ShapeBrowsing
-import com.light.domain.model.TYPE
+import com.light.domain.model.*
 
 
 fun FilterVariationCF.setSelectedProduct(dataProducts: List<Product>): Product? {
@@ -55,5 +52,20 @@ fun List<ShapeBrowsing>.resetShapeProductList(){
     forEach {
         it.isSelected = false
     }
+}
 
+
+fun List<ChoiceBrowsing>.isProductsChoiceSelected(): Boolean =
+    find { it.isSelected } != null
+
+fun List<ChoiceBrowsing>.setSelectedProductChoice(productChoice: ChoiceBrowsing) {
+    find { it.id == productChoice.id }?.let {
+        it.isSelected = productChoice.isSelected
+    }
+}
+
+fun List<ChoiceBrowsing>.resetChoiceProductList(){
+    forEach {
+        it.isSelected = false
+    }
 }
