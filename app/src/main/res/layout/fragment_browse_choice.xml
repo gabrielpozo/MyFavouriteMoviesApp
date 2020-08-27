@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
                     <View
-                        android:id="@+id/line_divider_category_choice"
+                        android:id="@+id/lineDividerCategoryChoice"
                         android:visibility="invisible"
                         android:background="@color/divider"
                         android:layout_width="match_parent"

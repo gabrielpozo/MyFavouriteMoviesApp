@@ -91,9 +91,9 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up
                 if (dy > 0) {
-                    line_divider_category_choice.visible()
+                    lineDividerCategoryChoice.visible()
                 } else if (dy < 0) {
-                    line_divider_category_choice.invisible()
+                    lineDividerCategoryChoice.invisible()
                 }
             }
         })
@@ -113,7 +113,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
                 override fun onStateChanged(p0: View, state: Int) {
                     if (state == RESTORED_STATE) {
-                        line_divider_category_choice.invisible()
+                        lineDividerCategoryChoice.invisible()
                     }
                 }
             })
