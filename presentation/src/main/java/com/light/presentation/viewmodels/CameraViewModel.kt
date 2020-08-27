@@ -18,11 +18,13 @@ class CameraViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    private var isCameraPreviouslyInitialized = false
+
     companion object {
         const val MODE_ON = 1
         const val MODE_OFF = 2
     }
-    
+
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
@@ -82,7 +84,8 @@ class CameraViewModel(
             DialogModel()
 
         data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
-        data class GalleryPermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        data class GalleryPermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) :
+            DialogModel()
 
     }
 
@@ -200,7 +203,8 @@ class CameraViewModel(
         if (isPermanentlyDenied && !isGalleryPermission) {
             _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
         } else if (isPermanentlyDenied && isGalleryPermission) {
-            _modelDialog.value = Event(DialogModel.GalleryPermissionPermanentlyDenied(isPermanentlyDenied))
+            _modelDialog.value =
+                Event(DialogModel.GalleryPermissionPermanentlyDenied(isPermanentlyDenied))
         }
     }
 
@@ -231,9 +235,17 @@ class CameraViewModel(
         }
     }
 
-    fun onRestoreCameraView(){
+    fun onRestoreCameraViewFromScanning() {
         _modelRequestCancelOrRestore.value = Event(CancelModel())
+
     }
+
+    fun onRestoreCameraViewFromBrowsing(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _model.value = UiModel.RequestCameraViewDisplay
+        }
+    }
+
 
     private fun handleEmptyResponse() {
         _modelDialog.value = Event(DialogModel.NotBulbIdentified)

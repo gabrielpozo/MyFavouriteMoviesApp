@@ -1,13 +1,10 @@
 package com.light.finder.ui.liveambiance
 
-import android.Manifest
-import android.content.pm.PackageManager
+import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.light.domain.model.CctType
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -19,12 +16,15 @@ import com.light.finder.ui.adapters.LiveAmbianceAdapter
 import com.light.finder.ui.liveambiance.camera.Camera2Loader
 import com.light.finder.ui.liveambiance.camera.CameraLoader
 import com.light.finder.ui.liveambiance.util.GPUImageFilterTools
+import com.light.finder.ui.splash.SplashLightFinderActivity
 import com.light.presentation.viewmodels.LiveAmbianceViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.util.Rotation
 import kotlinx.android.synthetic.main.activity_live_ambiance.*
+import kotlinx.android.synthetic.main.ambiance_snackbar.*
+
 
 class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
@@ -43,7 +43,12 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
     private val noImageFilter = GPUImageFilter()
     private var currentImageFilter = noImageFilter
     private var cameraLoader: CameraLoader? = null
-
+    private val localPreferences: LocalPreferenceDataSource by lazy {
+        LocalPreferenceDataSourceImpl(
+            this
+        )
+    }
+    private var isHasPermission = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,57 +71,36 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         liveAmbianceViewModel.modelList.observe(this, Observer(::setColorAdapter))
 
         initView()
-
-        if (!hasCameraPermission()) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_REQUEST_CODE
-            )
-        } else {
-            initCamera()
-        }
-
+        initCamera()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            CAMERA_REQUEST_CODE -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                   initCamera()
-                } else {
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
-                }
-                return
-            }
+    private fun restartApp() {
+        val intent = Intent(this, SplashLightFinderActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finishAffinity()
+        Runtime.getRuntime().exit(0)
+    }
 
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
-            }
+    private fun initDisclaimerText() {
+        if (localPreferences.isDisclaimerAccepted()) {
+            return
+        }
+        ok_button.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        custom_toast.fadeIn()
+
+        ok_button.setOnClickListener {
+            custom_toast.fadeOut(0,true)
+            localPreferences.disclaimerAccepted(true)
         }
     }
 
-    private fun hasCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
 
-
-    private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors){
+    private fun setColorAdapter(colorList: LiveAmbianceViewModel.ContentColors) {
         filterColorAdapter = LiveAmbianceAdapter(
             liveAmbianceViewModel::onFilterClick,
-            colorList.cctList)
+            colorList.cctList
+        )
         recyclerViewFilter.adapter = filterColorAdapter
     }
 
@@ -127,7 +111,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun initView() {
-        gpuImageView =findViewById(R.id.gpuimage)
+        gpuImageView = findViewById(R.id.gpuimage)
 
     }
 
@@ -168,27 +152,42 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!gpuImageView?.isLayoutRequested!!) {
-            cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
-        } else {
-            gpuImageView?.addOnLayoutChangeListener(object :
-                View.OnLayoutChangeListener {
-                override fun onLayoutChange(
-                    v: View,
-                    left: Int,
-                    top: Int,
-                    right: Int,
-                    bottom: Int,
-                    oldLeft: Int,
-                    oldTop: Int,
-                    oldRight: Int,
-                    oldBottom: Int
-                ) {
-                    gpuImageView!!.removeOnLayoutChangeListener(this)
-                    cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
-                }
-            })
+        
+        initDisclaimerText()
+
+        if (isHasPermission) {
+            if (!gpuImageView?.isLayoutRequested!!) {
+                cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
+            } else {
+                gpuImageView?.addOnLayoutChangeListener(object :
+                    View.OnLayoutChangeListener {
+                    override fun onLayoutChange(
+                        v: View,
+                        left: Int,
+                        top: Int,
+                        right: Int,
+                        bottom: Int,
+                        oldLeft: Int,
+                        oldTop: Int,
+                        oldRight: Int,
+                        oldBottom: Int
+                    ) {
+                        gpuImageView!!.removeOnLayoutChangeListener(this)
+                        cameraLoader?.onResume(gpuImageView?.width!!, gpuImageView?.height!!)
+                    }
+                })
+            }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        isHasPermission = checkSelfCameraPermission()
+        if (!isHasPermission) {
+            restartApp()
+        }
+
     }
 
     override fun onPause() {
@@ -198,8 +197,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun switchFilterTo(filter: GPUImageFilter) {
-            currentImageFilter = filter
-            gpuImageView?.filter = currentImageFilter
+        currentImageFilter = filter
+        gpuImageView?.filter = currentImageFilter
 
     }
 

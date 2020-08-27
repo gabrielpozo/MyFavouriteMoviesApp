@@ -39,7 +39,7 @@
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
     <string name="scan_completed">Scan completed!</string>
-    <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
+    <string name="scan_completed_tip">Check the scan result and choose the type of product that fits your needs:</string>
     <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
@@ -47,7 +47,7 @@
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="timeout_sub">That took longer than expected</string>
-    <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
+    <string name="unidentified_sub">We\'re struggling to recognize a light bulb in the image.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops!</string>
     <string name="bulb_not_available">%s %s not available</string>
@@ -57,8 +57,11 @@
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
     <string name="enable_gallery_access">LightFinder wants to access your photos</string>
+    <string name="enable_live_preview_access">LightFinder wants to access your camera</string>
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
     <string name="enable_gallery_subtitle">This way, you can use a photo to find an exact match or recommendation.</string>
+    <string name="enable_live_preview_subtitle">This way, you can see how the color temperature would look in your own environment.</string>
+
 
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>
@@ -118,7 +121,6 @@
     <string name="open_terms_of_use">open_terms_of_use</string>
     <string name="open_privacy_notice">open_privacy_notice</string>
     <string name="payment_successful">payment_successful</string>
-    <string name="view_product">view_product</string>
     <string name="no_internet_banner">no_internet_banner</string>
     <string name="parameter_sku">sku</string>
     <string name="photo_help">photo_help_tips</string>
@@ -150,4 +152,14 @@
     <string name="search">Search</string>
     <string name="skip">Skip</string>
     <string name="not_available">Not available for this fitting</string>
+    <string name="not_available_choice">Not available for this fitting and shape</string>
+    <string name="what_type_of_light_do_you_prefer">What category do you need?</string>
+    <string name="product_category">Product category</string>
+
+    <!-- Facebook SDK-->
+    <string name="facebook_app_id">2579741185672513</string>
+    <string name="value">value</string>
+    <string name="view_product">view_product</string>
+    <string name="add_to_cart_fb">add_to_cart</string>
+    <string name="payment_succesful">payment_successful</string>
 </resources>

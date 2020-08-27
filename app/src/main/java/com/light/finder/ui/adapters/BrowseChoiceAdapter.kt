@@ -4,27 +4,27 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.light.domain.model.ShapeBrowsing
+import com.light.domain.model.ChoiceBrowsing
 import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
-import kotlinx.android.synthetic.main.item_browse_shape.view.*
+import kotlinx.android.synthetic.main.item_browse_choice.view.*
 
-class BrowseShapeAdapter(
-    private val listener: (ShapeBrowsing) -> Unit
-) : RecyclerView.Adapter<BrowseShapeAdapter.ViewHolder>() {
-    private var productsList: List<ShapeBrowsing> by basicDiffUtil(
+class BrowseChoiceAdapter(
+    private val listener: (ChoiceBrowsing) -> Unit
+) : RecyclerView.Adapter<BrowseChoiceAdapter.ViewHolder>() {
+    private var productsList: List<ChoiceBrowsing> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.id == new.id }
     )
 
-    fun setShapeProductList(formFactorBaseIdList: List<ShapeBrowsing>) {
+    fun setChoiceProductList(formFactorBaseIdList: List<ChoiceBrowsing>) {
         productsList = formFactorBaseIdList.map { it.copy() }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_browse_shape, false)
+        val view = parent.inflate(R.layout.item_browse_choice, false)
         return ViewHolder(view)
     }
 
@@ -48,17 +48,18 @@ class BrowseShapeAdapter(
         }
 
         if (product.isSelected) {
-            holder.itemView.shapeBg.setBackgroundResource(R.drawable.browse_rounded_edge)
+            holder.itemView.choiceBg.setBackgroundResource(R.drawable.browse_rounded_edge)
         } else {
-            holder.itemView.shapeBg.setBackgroundResource(R.drawable.browse_rounded_edge_unselected)
+            holder.itemView.choiceBg.setBackgroundResource(R.drawable.browse_rounded_edge_unselected)
         }
     }
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
-        fun bind(product: ShapeBrowsing) {
+        fun bind(product: ChoiceBrowsing) {
             itemView.textBrowseBulbName.text = product.name
+            itemView.textBrowseBulbDesc.text = product.description
             when (product.image) {
                 null -> {
                     itemView.imageViewBrowseIcon.setBackgroundResource(R.color.backgroundLight)
@@ -93,6 +94,7 @@ class BrowseShapeAdapter(
             itemView.textBrowseBulbName.alpha = 0.4F
             itemView.textBrowseResultsCount.alpha = 0.4F
             itemView.imageViewBrowseIcon.alpha = 0.4F
+            itemView.textBrowseBulbDesc.alpha = 0.4F
             itemView.textBrowseResultsCount.text =
                 itemView.context.getString(R.string.not_available)
         }

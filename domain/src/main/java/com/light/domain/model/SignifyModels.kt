@@ -66,7 +66,9 @@ data class Product(
     var isSelected: Boolean = false,
     var isAvailable: Boolean = false,
     var filtered: Boolean = false,
-    var wattageReplacedExtra: String
+    var wattageReplacedExtra: String,
+    var stickyHeaderFirstLine: String,
+    var stickyHeaderSecondLine: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -170,6 +172,31 @@ data class ShapeBrowsing(
     val image: String?,
     val order: Int,
     val subtitleCount: Int,
+    var baseIdFitting: Int = -1,
+    var baseNameFitting: String = "",
+    var isSelected: Boolean = false
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+        other as ShapeBrowsing
+
+        return other.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+}
+
+
+data class ChoiceBrowsing(
+    val id: Int,
+    val name: String,
+    val order: Int,
+    val image: String?,
+    val subtitleCount: Int,
+    var description: String = "",
     var baseIdFitting: Int = -1,
     var baseNameFitting: String = "",
     var isSelected: Boolean = false

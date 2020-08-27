@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.light.domain.model.*
+import com.light.domain.toKey
 import com.light.finder.data.mappers.mapBrowsingProductToMessageDomain
 import com.light.finder.extensions.*
 
@@ -24,6 +25,9 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
         private const val PRODUCTS_FILTERED_PRODUCT_BROWSING = "filteredProductsBrowsing"
         private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
+        private const val PRODUCTS_FILTERED_SHAPED_BROWSING = "products_filtered_shaped_browsing"
+        private const val DISCLAIMER_TEXT = "disclaimerText"
+
 
     }
 
@@ -55,6 +59,15 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             Gson().toJson(legend.legend.productCategoryName)
         ).commit()
     }
+
+    override fun disclaimerAccepted(confirmed: Boolean) {
+        editor.putBoolean(DISCLAIMER_TEXT, confirmed)
+            .commit()
+    }
+
+    override fun isDisclaimerAccepted(): Boolean =
+        pref.getBoolean(DISCLAIMER_TEXT, false)
+
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
@@ -99,6 +112,12 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<ProductBrowsing>().toString()
     )
 
+    override fun loadProductShapeBrowsingFiltered(): List<ProductBrowsing> = Gson().fromJson(
+        pref.getString(PRODUCTS_FILTERED_SHAPED_BROWSING, null)
+            ?: emptyList<ProductBrowsing>().toString()
+    )
+
+
     override fun getAllProductsMessage(baseNameFitting: String): Message {
         val productsFiltered = loadProductBrowsingFiltered()
         return mapBrowsingProductToMessageDomain(
@@ -115,6 +134,14 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             Gson().toJson(productsFilteredBrowsing)
         ).commit()
     }
+
+    override fun saveShapeFilteredList(productsFilteredBrowsing: List<ProductBrowsing>) {
+        editor.putString(
+            PRODUCTS_FILTERED_SHAPED_BROWSING,
+            Gson().toJson(productsFilteredBrowsing)
+        ).commit()
+    }
+
 
 
     override fun getFilteringShapeProducts(
@@ -168,6 +195,37 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
 
     override fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message {
+        return mapBrowsingProductToMessageDomain(
+            shapeBrowsingList[0].baseNameFitting,
+            loadProductCategoryName(),
+            loadFormFactorLegendTags(),
+            getShapeFilteredList(shapeBrowsingList).groupBy { it.toKey() })
+    }
+
+    override fun getFilteredProductsMessageFromChoice(choiceBrowsingList: List<ChoiceBrowsing>): Message {
+        return mapBrowsingProductToMessageDomain(
+            choiceBrowsingList[0].baseNameFitting,
+            loadProductCategoryName(),
+            loadFormFactorLegendTags(),
+            getChoiceFilteredList(choiceBrowsingList).groupBy { it.toKey() })
+    }
+
+
+    private fun getChoiceFilteredList(choiceBrowsingList: List<ChoiceBrowsing>): List<ProductBrowsing> {
+        val browsedFilteredList = loadProductShapeBrowsingFiltered()
+        val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
+        choiceBrowsingList.forEach { choiceBrowse ->
+            if (choiceBrowse.isSelected) {
+                browsedShapeFilteredList.addAll(browsedFilteredList.filter { productBrowse ->
+                    choiceBrowse.id == productBrowse.productCategoryCode
+                })
+            }
+        }
+
+        return browsedShapeFilteredList
+    }
+
+    override fun  getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
         val browsedFilteredList = loadProductBrowsingFiltered()
         val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
         shapeBrowsingList.forEach { shapeBrowse ->
@@ -178,13 +236,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             }
         }
 
-        return mapBrowsingProductToMessageDomain(
-            shapeBrowsingList[0].baseNameFitting,
-            loadProductCategoryName(),
-            loadFormFactorLegendTags(),
-            browsedShapeFilteredList.groupBy { it.toKey() })
+        return browsedShapeFilteredList
+
     }
-
-
 }
 

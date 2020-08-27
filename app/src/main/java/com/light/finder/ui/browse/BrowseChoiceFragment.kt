@@ -13,66 +13,61 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.light.domain.model.ShapeBrowsing
+import com.light.domain.model.ChoiceBrowsing
 import com.light.finder.R
-import com.light.finder.data.source.remote.FormFactorTypeBaseIdParcelable
-import com.light.finder.di.modules.submodules.BrowseShapeComponent
-import com.light.finder.di.modules.submodules.BrowseShapeModule
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
+import com.light.finder.di.modules.submodules.BrowseChoiceComponent
+import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
-import com.light.finder.ui.adapters.BrowseShapeAdapter
+import com.light.finder.ui.adapters.BrowseChoiceAdapter
 import com.light.presentation.common.Event
-import com.light.presentation.viewmodels.BrowseShapeViewModel
-import kotlinx.android.synthetic.main.fragment_browse_shape.*
+import com.light.presentation.viewmodels.BrowseChoiceViewModel
+import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseShapeFragment : BaseFilteringFragment() {
+class BrowseChoiceFragment : BaseFilteringFragment() {
 
     companion object {
-        const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
+        const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
         const val RESTORED_STATE = 4
     }
 
-    private lateinit var component: BrowseShapeComponent
-    private lateinit var adapter: BrowseShapeAdapter
+    private lateinit var component: BrowseChoiceComponent
+    private lateinit var adapter: BrowseChoiceAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var rootview: View? = null
 
-
-    private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
+    private val viewModel: BrowseChoiceViewModel by lazy { getViewModel { component.browseChoiceViewModel } }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (rootview == null) {
-            rootview = inflater.inflate(R.layout.fragment_browse_shape, container, false)
-        }
-        return rootview
+        return inflater.inflate(R.layout.fragment_browse_choice, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
-            component = browseComponent.plus(BrowseShapeModule())
+            component = browseComponent.plus(BrowseChoiceModule())
         }
 
         arguments?.let { bundle ->
-            bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
-                ?.let { productBaseId ->
-                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
+                ?.let { shapeBrowsingProducts ->
+                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
         }
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        textReset.setSafeOnClickListener {
+        textReset.setOnClickListener {
             viewModel.onResetButtonPressed()
         }
-        textSkip.setSafeOnClickListener {
+        textSkip.setOnClickListener {
             viewModel.onSkipButtonClicked()
         }
-        buttonSearch.setSafeOnClickListener {
+        buttonSearch.setOnClickListener {
             viewModel.onSearchButtonClicked()
         }
 
@@ -82,22 +77,23 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     }
 
     private fun setAdapter() {
-        adapter = BrowseShapeAdapter(
-            viewModel::onShapeClick
+        adapter = BrowseChoiceAdapter(
+            viewModel::onChoiceClick
         )
         adapter.setHasStableIds(true)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerViewShape.layoutManager = layoutManager
-        recyclerViewShape.adapter = adapter
-        recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerViewChoice.layoutManager = layoutManager
+        recyclerViewChoice.adapter = adapter
+        recyclerViewChoice.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up
                 if (dy > 0) {
-                    line_divider.visible()
+                    lineDividerCategoryChoice.visible()
                 } else if (dy < 0) {
-                    line_divider.invisible()
+                    lineDividerCategoryChoice.invisible()
                 }
             }
         })
@@ -107,7 +103,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
-
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
@@ -118,7 +113,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
                 override fun onStateChanged(p0: View, state: Int) {
                     if (state == RESTORED_STATE) {
-                        line_divider.invisible()
+                        lineDividerCategoryChoice.invisible()
                     }
                 }
             })
@@ -126,45 +121,45 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     }
 
     private fun setObservers() {
-        viewModel.modelBrowsingLiveData.observe(
-            viewLifecycleOwner, Observer(::updateBrowsingShapeUI)
+        viewModel.modelChoiceLiveData.observe(
+            viewLifecycleOwner, Observer(::updateBrowsingChoiceUI)
         )
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
         viewModel.modelNavigationToResult.observe(
             viewLifecycleOwner,
-            Observer(::navigatesToCategoriesChoice)
+            Observer(::navigatesToCategoriesResult)
         )
     }
 
 
-    private fun updateBrowsingShapeUI(modelBrowse: BrowseShapeViewModel.UiBrowsingShapeModel) {
-        when (modelBrowse) {
-            is BrowseShapeViewModel.UiBrowsingShapeModel.SuccessRequestStatus -> {
-                showShapes(modelBrowse.productBrowsingList)
+    private fun updateBrowsingChoiceUI(modelChoiceBrowse: BrowseChoiceViewModel.UiBrowsingChoiceModel) {
+        when (modelChoiceBrowse) {
+            is BrowseChoiceViewModel.UiBrowsingChoiceModel.SuccessRequestStatus -> {
+                showChoices(modelChoiceBrowse.productBrowsingList)
             }
 
-            is BrowseShapeViewModel.UiBrowsingShapeModel.LoadingStatus -> {
+            is BrowseChoiceViewModel.UiBrowsingChoiceModel.LoadingStatus -> {
                 showLoading()
             }
         }
     }
 
-    private fun updateStatusBottomBar(statusBottomBar: BrowseShapeViewModel.StatusBottomBar?) {
+    private fun updateStatusBottomBar(statusBottomBar: BrowseChoiceViewModel.StatusBottomBar?) {
         when (statusBottomBar) {
-            is BrowseShapeViewModel.StatusBottomBar.ResetShape -> {
-                resetShapeSelection()
+            is BrowseChoiceViewModel.StatusBottomBar.ResetChoice -> {
+                resetChoiceSelection()
             }
-            is BrowseShapeViewModel.StatusBottomBar.ShapeClicked -> {
-                settingFilterShapeSelected()
+            is BrowseChoiceViewModel.StatusBottomBar.ChoiceClicked -> {
+                settingChoiceSelected()
             }
-            is BrowseShapeViewModel.StatusBottomBar.NoButtonsClicked -> {
-                resetShapeSelection()
+            is BrowseChoiceViewModel.StatusBottomBar.NoButtonsClicked -> {
+                resetChoiceSelection()
             }
         }
 
     }
 
-    private fun settingFilterShapeSelected() {
+    private fun settingChoiceSelected() {
         buttonSearch.style {
             add(R.style.TitleTextGray)
             backgroundRes(R.drawable.button_curvy_corners)
@@ -173,35 +168,36 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         textSkip.gone()
     }
 
-    private fun resetShapeSelection() {
+    private fun resetChoiceSelection() {
         textSkip.visible()
         textReset.gone()
         buttonSearch.style {
             add(R.style.BrowseNextDisable)
             backgroundRes(R.drawable.browse_next_disable)
         }
-
         adapter.clearSelection()
     }
 
     private fun showLoading() {
-        recyclerViewShape.gone()
-        browseLoadingShape.visible()
+        recyclerViewChoice.gone()
+        browseLoadingChoice.visible()
         with(browseLoadingAnimation) {
             playAnimation()
             repeatCount = ValueAnimator.INFINITE
         }
     }
 
-    private fun showShapes(productFittingList: List<ShapeBrowsing>) {
-        recyclerViewShape.visible()
-        browseLoadingShape.gone()
-        adapter.setShapeProductList(productFittingList)
+    private fun showChoices(productChoiceList: List<ChoiceBrowsing>) {
+        recyclerViewChoice.visible()
+        browseLoadingChoice.gone()
+        adapter.setChoiceProductList(productChoiceList)
     }
 
-    private fun navigatesToCategoriesChoice(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
+    //todo change with categories
+    private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
+            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
         }
     }
+
 }

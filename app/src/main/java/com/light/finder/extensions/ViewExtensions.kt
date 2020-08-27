@@ -91,6 +91,58 @@ fun View.slideVertically(distance: Float, duration: Long = 500, hide: Boolean = 
         })
 }
 
+fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
+    val view = this
+    this.animate()
+        .alpha(0F)
+        .setDuration(duration)
+        .setListener(object : Animator.AnimatorListener{
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                if (hide) {
+                    view.gone()
+                }
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+}
+
+
+fun View.fadeIn(duration: Long = 500L) {
+    val view = this
+    view.visible()
+    view.alpha = 0F
+    this.animate()
+        .setStartDelay(500L)
+        .alpha(1F)
+        .setDuration(duration)
+        .setListener(object : Animator.AnimatorListener{
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+}
+
 fun ImageView.loadFile(file: File) {
     Glide.with(this).load(file).diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true).into(this)

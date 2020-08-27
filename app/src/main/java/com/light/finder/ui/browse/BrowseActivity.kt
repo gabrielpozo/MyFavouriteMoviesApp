@@ -13,6 +13,10 @@ import com.light.finder.navigators.ScreenFilteringNavigator
 
 class BrowseActivity : BaseLightFinderActivity(){
 
+    companion object {
+        const val REQUEST_CODE_BROWSING = 2
+    }
+
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private val screenFilteringNavigator: ScreenFilteringNavigator by lazy { browsingFilteringComponent.screenFilteringNavigator }
     val browsingFilteringComponent: BrowseFilteringComponent by lazy {

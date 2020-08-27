@@ -60,7 +60,9 @@ data class ProductParcelable(
     var productCategoryCode: Int,
     var isSelected: Boolean,
     var isAvailable: Boolean,
-    var wattageReplacedExtra: String
+    var wattageReplacedExtra: String,
+    var stickyHeaderFirstLine: String,
+    var stickyHeaderSecondLine: String
 ) : Parcelable
 
 @Parcelize
@@ -114,3 +116,15 @@ data class ShapeBrowsingParcelable(
     var isSelected: Boolean = false
     ) : Parcelable
 
+@Parcelize
+data class ChoiceBrowsingParcelable(
+    val id: Int,
+    val name: String,
+    val image: String?,
+    val order: Int,
+    val description: String,
+    val subtitleCount:Int,
+    var baseNameFitting: String,
+    var baseFittingId:Int = -1,
+    var isSelected: Boolean = false
+) : Parcelable
