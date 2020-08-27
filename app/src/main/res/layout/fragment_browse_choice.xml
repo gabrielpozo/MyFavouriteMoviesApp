@@ -130,9 +130,9 @@
         <TextView
             android:maxLines="1"
             android:id="@+id/textSkip"
-            android:clickable="true"
             android:focusableInTouchMode="false"
             android:focusable="false"
+            android:textIsSelectable="false"
             android:visibility="visible"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"

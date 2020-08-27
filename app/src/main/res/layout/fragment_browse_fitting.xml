@@ -134,9 +134,9 @@
 
         <TextView
             android:id="@+id/textResetSkip"
-            android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:textIsSelectable="false"
             android:visibility="gone"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
