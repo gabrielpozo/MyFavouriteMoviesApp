@@ -7,12 +7,12 @@ import com.light.source.local.LocalPreferenceDataSource
 
 class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
     BrowseChoiceRepository {
-    override fun getCategoryCategoriesChoice(shapeBrowsingList: List<ShapeBrowsing>): List<ChoiceBrowsing> {
+    override fun getCategoryCategoriesChoice(browsingList: List<ShapeBrowsing>): List<ChoiceBrowsing> {
         val categoryChoiceList = mutableListOf<ChoiceBrowsing>()
         val categoryNameList = localPreferenceDataSource.loadProductCategoryName()
         val filteredProductsByShape =
-        if (shapeBrowsingList.find { it.isSelected } != null ) {
-             localPreferenceDataSource.getShapeFilteredList(shapeBrowsingList)
+        if (browsingList.find { it.isSelected } != null ) {
+             localPreferenceDataSource.getShapeFilteredList(browsingList)
         } else {
             localPreferenceDataSource.loadProductBrowsingFiltered()
         }
@@ -27,7 +27,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
                     order = categoryName.order,
                     image = categoryName.image,
                     description = categoryName.description,
-                    baseNameFitting = shapeBrowsingList[0].baseNameFitting,
+                    baseNameFitting = browsingList[0].baseNameFitting,
                     subtitleCount = filteredProductsByShape.filter {
                         categoryName.id == it.productCategoryCode
                     }.groupBy { it.toKey() }.size
