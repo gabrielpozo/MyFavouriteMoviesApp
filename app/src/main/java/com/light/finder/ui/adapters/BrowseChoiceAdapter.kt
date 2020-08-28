@@ -96,7 +96,7 @@ class BrowseChoiceAdapter(
             itemView.imageViewBrowseIcon.alpha = 0.4F
             itemView.textBrowseBulbDesc.alpha = 0.4F
             itemView.textBrowseResultsCount.text =
-                itemView.context.getString(R.string.not_available)
+                itemView.context.getString(R.string.not_available_choice)
         }
     }
 }
