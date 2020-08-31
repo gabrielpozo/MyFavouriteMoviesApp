@@ -25,6 +25,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
+import timber.log.Timber
 
 
 class AboutFragment : BaseFragment() {
@@ -34,6 +35,7 @@ class AboutFragment : BaseFragment() {
             "https://www.signify.com/global/terms-of-use/mobile-apps/signify-lightfinder-en"
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
+        const val FAQ_URL = "https://www.signify.com/en-us/lightfinder/support"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
@@ -93,7 +95,7 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun setClickListeners() {
-        layoutTerms.setOnClickListener {
+        layoutTerms.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.TERMS)
             } else {
@@ -101,7 +103,7 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutPrivacy.setOnClickListener {
+        layoutPrivacy.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.PRIVACY)
             } else {
@@ -109,7 +111,15 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutFeedback.setOnClickListener {
+        layoutFaq.setSafeOnClickListener {
+            if (InternetUtil.isInternetOn()) {
+                showAboutDialog(AboutDialogFlags.FAQ)
+            } else {
+                displayNoInternetBanner()
+            }
+        }
+
+        layoutFeedback.setSafeOnClickListener {
             screenNavigator.navigateToUsabillaForm()
 
         }
@@ -118,8 +128,7 @@ class AboutFragment : BaseFragment() {
     private fun observeNetworkConnection(model: AboutViewModel.NetworkModel) {
         when (model) {
             is AboutViewModel.NetworkModel.NetworkOnline -> {
-
-
+                Timber.d("network online")
             }
             is AboutViewModel.NetworkModel.NetworkOffline -> {
                 displayNoInternetBanner()
@@ -166,6 +175,9 @@ class AboutFragment : BaseFragment() {
                 AboutDialogFlags.TERMS -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.open_terms_of_use)) {}
                 }
+                AboutDialogFlags.FAQ -> {
+                    //firebaseAnalytics.logEventOnGoogleTagManager("") {}
+                }
             }
             alertDialog.dismiss()
             openBrowser(aboutFlag.url)
@@ -187,5 +199,5 @@ class AboutFragment : BaseFragment() {
         }
     }
 
-    enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL) }
+    enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL), FAQ(FAQ_URL) }
 }
