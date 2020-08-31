@@ -23,6 +23,9 @@ import com.light.finder.ui.adapters.BrowseChoiceAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
+import kotlinx.android.synthetic.main.fragment_browse_choice.buttonSearch
+import kotlinx.android.synthetic.main.fragment_browse_choice.textReset
+import kotlinx.android.synthetic.main.fragment_browse_choice.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseChoiceFragment : BaseFilteringFragment() {
@@ -92,7 +95,12 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 //it is scrolling up
                 if (dy > 0) {
                     lineDividerCategoryChoice.visible()
-                } else if (dy < 0) {
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (layoutManager != null && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     lineDividerCategoryChoice.invisible()
                 }
             }
@@ -112,9 +120,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 override fun onSlide(p0: View, p1: Float) {}
 
                 override fun onStateChanged(p0: View, state: Int) {
-                    if (state == RESTORED_STATE) {
-                        lineDividerCategoryChoice.invisible()
-                    }
                 }
             })
         }
