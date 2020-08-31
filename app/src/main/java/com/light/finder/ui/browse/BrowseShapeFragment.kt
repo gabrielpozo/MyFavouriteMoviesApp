@@ -96,7 +96,12 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 //it is scrolling up
                 if (dy > 0) {
                     line_divider.visible()
-                } else if (dy < 0) {
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (layoutManager != null && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     line_divider.invisible()
                 }
             }
@@ -115,11 +120,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {
-                    if (state == RESTORED_STATE) {
-                        line_divider.invisible()
-                    }
-                }
+                override fun onStateChanged(p0: View, state: Int) {}
             })
         }
     }
