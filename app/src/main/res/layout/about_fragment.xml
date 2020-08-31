@@ -61,13 +61,13 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="40dp"
-                app:layout_constraintBottom_toTopOf="@+id/view0"
+                app:layout_constraintBottom_toTopOf="@+id/seperatorFeedback"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
 
             <View
-                android:id="@+id/view0"
+                android:id="@+id/seperatorFeedback"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/dividerOnLight"
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/view"
+                app:layout_constraintBottom_toTopOf="@+id/seperatorTou"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -113,7 +113,7 @@
 
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/seperatorTou"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/dividerOnLight"
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/view2"
+                app:layout_constraintBottom_toTopOf="@+id/seperatorPrivacy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -160,7 +160,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:id="@+id/view2"
+                android:id="@+id/seperatorPrivacy"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/dividerOnLight"
@@ -177,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/view3"
+                app:layout_constraintBottom_toTopOf="@+id/seperatorFaq"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -206,7 +206,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:id="@+id/view3"
+                android:id="@+id/seperatorFaq"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/dividerOnLight"
@@ -222,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                app:layout_constraintBottom_toTopOf="@+id/view6"
+                app:layout_constraintBottom_toTopOf="@+id/seperatorConsent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -253,7 +253,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
-                android:id="@+id/view6"
+                android:id="@+id/seperatorConsent"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/dividerOnLight"

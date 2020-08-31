@@ -104,7 +104,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="64dp"
             android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintBottom_toTopOf="@id/seperatorTou"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -137,7 +137,7 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/seperatorTou"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/dividerOnLight"
