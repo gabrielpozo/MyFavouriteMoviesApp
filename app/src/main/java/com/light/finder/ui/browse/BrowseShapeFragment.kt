@@ -120,8 +120,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {
-                }
+                override fun onStateChanged(p0: View, state: Int) {}
             })
         }
     }
