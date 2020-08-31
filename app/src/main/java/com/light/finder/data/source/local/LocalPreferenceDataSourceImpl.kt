@@ -222,7 +222,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             }
         }
 
-        return browsedShapeFilteredList
+        return if (browsedShapeFilteredList.isNotEmpty()) browsedShapeFilteredList else browsedFilteredList
     }
 
     override fun  getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
