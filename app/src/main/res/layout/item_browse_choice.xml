@@ -62,7 +62,7 @@
                     tools:text="Everyday value everywhere in your home. These LED light bulbs provide a Soft White or Daylight." />
 
                 <TextView
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:id="@+id/textBrowseResultsCount"
                     style="@style/DisableTextDarkSubtitle"
