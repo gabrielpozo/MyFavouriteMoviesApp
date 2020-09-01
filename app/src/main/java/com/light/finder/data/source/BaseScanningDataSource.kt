@@ -10,10 +10,12 @@ import retrofit2.Response
 abstract class BaseScanningDataSource : BaseDataSource<CategoryResultDto, List<Message>>() {
 
     override fun successfulResponse(
-        response: Response<CategoryResultDto>,
-        code: Int
+        response: Response<CategoryResultDto>
     ): Result<List<Message>> =
-        when (code) {
+        when (response.code()) {
+            SUCCESSFUL_CODE -> {
+                Result.success(mapResultToDomainModel(response.body()!!),code = SUCCESSFUL_CODE)
+            }
             NO_CONTENT_CODE -> {
                 Result.success(code = NO_CONTENT_CODE)
             }
@@ -21,7 +23,7 @@ abstract class BaseScanningDataSource : BaseDataSource<CategoryResultDto, List<M
                 Result.success(mapResultToDomainModel(response.body()!!), code = NO_PRODUCTS_CODE)
             }
             else -> {
-                Result.success(mapResultToDomainModel(response.body()!!))
+                Result.success(mapResultToDomainModel(response.body()!!), code = response.code())
             }
         }
 

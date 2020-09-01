@@ -6,13 +6,13 @@ import retrofit2.Response
 
 abstract class BaseCatalogueDataSource <Dto, DomainModel> : BaseDataSource<Dto, DomainModel>() {
 
-    override fun successfulResponse(response: Response<Dto>, code: Int): Result<DomainModel> =
-        when (code) {
+    override fun successfulResponse(response: Response<Dto>): Result<DomainModel> =
+        when (response.code()) {
             SUCCESSFUL_CODE -> {
                 Result.success(mapResultToDomainModel(response.body()!!), code = SUCCESSFUL_CODE)
             }
             else -> {
-                Result.success(mapResultToDomainModel(response.body()!!))
+                Result.success(mapResultToDomainModel(response.body()!!), code = response.code())
             }
         }
 
