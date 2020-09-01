@@ -254,14 +254,9 @@ fun getLegendCategoryName(
     return productName?.name ?: ""
 }
 
-fun getLegendCategoryImage(
-    code: Int,
-    filterTypeList: List<ProductCategoryName>
-): String {
-    val productName = filterTypeList.find {
-        it.id == code
-    }
-    return productName?.image ?: ""
+fun  List<Product>.getProductImage(): String {
+    val lowestPrioProduct = this.minBy {it.productPrio}
+    return lowestPrioProduct?.imageUrls?.firstOrNull() ?: ""
 }
 
 
