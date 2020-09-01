@@ -27,16 +27,15 @@ data class Result<out T>(
             )
         }
 
-        fun <T> badRequest(data: T? = null, code: Int = 404): Result<T> {
+        fun <T> badRequest(code: Int = 404): Result<T> {
             return Result(
                 Status.BAD_REQUEST,
-                data,
                 code = code,
                 message = null
             )
         }
 
-
+        //TODO("improve the error handling, create an error status")
         fun <T> error(
             message: String,
             data: T? = null,
