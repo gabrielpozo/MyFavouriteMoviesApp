@@ -19,7 +19,7 @@ abstract class BaseDataSource<Dto, DomainModel> {
             if (response.isSuccessful) {
                 Result.success(mapResultToDomainModel(response.body()!!), code = response.code())
             } else {
-                badRequestResponse(response.code())
+                Result.badRequest(code = response.code())
             }
         }
 
@@ -36,6 +36,5 @@ abstract class BaseDataSource<Dto, DomainModel> {
     }
 
 
-    protected abstract fun badRequestResponse(code: Int): Result<DomainModel>
     protected abstract fun mapResultToDomainModel(dtoObject: Dto): DomainModel
 }
