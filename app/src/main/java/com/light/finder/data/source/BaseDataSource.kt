@@ -17,7 +17,7 @@ abstract class BaseDataSource<Dto, DomainModel> {
         withContext(Dispatchers.IO) {
             val response = call()
             if (response.isSuccessful) {
-                successfulResponse(response)
+                Result.success(mapResultToDomainModel(response.body()!!), code = response.code())
             } else {
                 badRequestResponse(response.code())
             }
@@ -35,9 +35,6 @@ abstract class BaseDataSource<Dto, DomainModel> {
         Result.error(e.message.toString())
     }
 
-    protected abstract fun successfulResponse(
-        response: Response<Dto>
-    ): Result<DomainModel>
 
     protected abstract fun badRequestResponse(code: Int): Result<DomainModel>
     protected abstract fun mapResultToDomainModel(dtoObject: Dto): DomainModel
