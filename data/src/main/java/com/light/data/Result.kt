@@ -12,6 +12,7 @@ data class Result<out T>(
     enum class Status {
         SUCCESS,
         ERROR,
+        BAD_REQUEST,
         TIME_OUT_ERROR,
         PARSE_ERROR
     }
@@ -20,6 +21,15 @@ data class Result<out T>(
         fun <T> success(data: T? = null, code: Int = 200): Result<T> {
             return Result(
                 Status.SUCCESS,
+                data,
+                code = code,
+                message = null
+            )
+        }
+
+        fun <T> badRequest(data: T? = null, code: Int = 404): Result<T> {
+            return Result(
+                Status.BAD_REQUEST,
                 data,
                 code = code,
                 message = null

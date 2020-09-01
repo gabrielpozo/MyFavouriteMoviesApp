@@ -62,6 +62,11 @@
     <string name="enable_gallery_subtitle">This way, you can use a photo to find an exact match or recommendation.</string>
     <string name="enable_live_preview_subtitle">This way, you can see how the color temperature would look in your own environment.</string>
 
+    //BAD REQUEST CART
+    <string name="product_not_found">The product cannot be added. Please try again at a later time. (404)</string>
+    <string name="out_of_stock">Out of stock</string>
+    <string name="out_of_stock_description">This product is sold out. We are working to refill the warehouse. (422)</string>
+    <string name="product_disable">The product cannot be added. Please try again at a later time. (424)</string>
 
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>

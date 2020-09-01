@@ -1,7 +1,7 @@
 package com.light.finder.data.source.remote.services
 
 import com.light.finder.data.source.remote.CartItemCountResultDto
-import com.light.finder.data.source.remote.Image
+import com.light.finder.data.source.remote.SignifyRemoteDataSource.*
 import com.light.finder.data.source.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.*

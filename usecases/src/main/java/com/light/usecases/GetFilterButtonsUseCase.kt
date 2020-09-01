@@ -7,7 +7,7 @@ import com.light.domain.state.DataState
 
 
 @Suppress("UNCHECKED_CAST")
-class GetFilterButtonsUseCase : BaseUseCase<List<FilterVariationCF>>() {
+class GetFilterButtonsUseCase : BaseScanningUseCase<List<FilterVariationCF>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariationCF>> {
         val productList: List<Product> = params[0] as List<Product>

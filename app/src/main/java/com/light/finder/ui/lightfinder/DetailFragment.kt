@@ -176,7 +176,6 @@ class DetailFragment : BaseFragment() {
                     it2
                 )
             }
-
         }
     }
 
@@ -325,6 +324,30 @@ class DetailFragment : BaseFragment() {
                         getString(R.string.enable_live_preview_subtitle),
                         getString(R.string.enable_camera_button),
                         true
+                    )
+                }
+                is DetailViewModel.DialogModel.ProductNotFound -> {
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_not_found),
+                        getString(R.string.ok),
+                        false
+                    )
+                }
+                is DetailViewModel.DialogModel.OutStock -> {
+                    showErrorDialog(
+                        getString(R.string.out_of_stock),
+                        getString(R.string.out_of_stock_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                }
+                is DetailViewModel.DialogModel.ProductDisable -> {
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_disable),
+                        getString(R.string.ok),
+                        false
                     )
                 }
             }

@@ -4,20 +4,20 @@ import android.content.Context
 import com.light.data.Result
 import com.light.domain.model.Cart
 import com.light.finder.data.mappers.mapCartToDomain
-import com.light.finder.data.source.BaseDataSource
+import com.light.finder.data.source.BaseCartDataSource
 import com.light.finder.data.source.remote.dto.CartResultDto
 import com.light.finder.data.source.remote.services.CartRemoteUtil
 import com.light.source.remote.CartRemoteDataSource
 
-class CartItemRemoteDataSource(val context: Context) : BaseDataSource(),
+class CartItemRemoteDataSource(val context: Context) : BaseCartDataSource<CartResultDto, Cart>(),
     CartRemoteDataSource {
 
     override suspend fun fetchCartItems(productSapId: String): Result<Cart> =
-        getResult(::mapResultToDomainModel) {
+        getResult {
             CartRemoteUtil.getInstance(context).service.fetchCartAsync(productSapId)
         }
 
-    private fun mapResultToDomainModel(cartResult: CartResultDto): Cart {
+    override fun mapResultToDomainModel(cartResult: CartResultDto): Cart {
         return mapCartToDomain(cartResult)
     }
 }
