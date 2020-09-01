@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import com.facebook.appevents.AppEventsConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -265,9 +264,9 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
-                    putString(getString(R.string.parameter_sku), productSapId)
-                    putDouble(getString(R.string.value),pricePerPack.toDouble())
+            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)) {
+                putString(getString(R.string.parameter_sku), productSapId)
+                putDouble(getString(R.string.value), pricePerPack.toDouble())
             }
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
@@ -327,29 +326,47 @@ class DetailFragment : BaseFragment() {
                     )
                 }
                 is DetailViewModel.DialogModel.ProductNotFound -> {
+                    cartAnimation.cancelAnimation()
                     showErrorDialog(
                         getString(R.string.oops),
-                        getString(R.string.product_not_found),
+                        getString(R.string.product_not_found_description),
                         getString(R.string.ok),
                         false
                     )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+
+                    }
                 }
                 is DetailViewModel.DialogModel.OutStock -> {
+                    cartAnimation.cancelAnimation()
                     showErrorDialog(
                         getString(R.string.out_of_stock),
                         getString(R.string.out_of_stock_description),
                         getString(R.string.ok),
                         false
                     )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+
+                    }
                 }
                 is DetailViewModel.DialogModel.ProductDisable -> {
+                    cartAnimation.cancelAnimation()
                     showErrorDialog(
                         getString(R.string.oops),
-                        getString(R.string.product_disable),
+                        getString(R.string.product_disable_description),
                         getString(R.string.ok),
                         false
                     )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                    }
                 }
+
             }
         }
 

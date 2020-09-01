@@ -63,10 +63,10 @@
     <string name="enable_live_preview_subtitle">This way, you can see how the color temperature would look in your own environment.</string>
 
     //BAD REQUEST CART
-    <string name="product_not_found">The product cannot be added. Please try again at a later time. (404)</string>
-    <string name="out_of_stock">Out of stock</string>
+    <string name="product_not_found_description">The product cannot be added. Please try again at a later time. (404)</string>
     <string name="out_of_stock_description">This product is sold out. We are working to refill the warehouse. (422)</string>
-    <string name="product_disable">The product cannot be added. Please try again at a later time. (424)</string>
+    <string name="product_disable_description">The product cannot be added. Please try again at a later time. (424)</string>
+    <string name="out_of_stock">Out of stock</string>
 
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>
@@ -133,6 +133,11 @@
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
     <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
+    <string name="add_to_cart_error">add_to_cart_error</string>
+    <string name="product_not_found_event_tag">product_not_found</string>
+    <string name="product_disabled_event_tag">product_disabled</string>
+    <string name="out_of_stock_event_tag">out_of_stock</string>
+
 
     // Sticky Header Product Details
     <string name="sticky_header_title">%s %sW %s</string>
