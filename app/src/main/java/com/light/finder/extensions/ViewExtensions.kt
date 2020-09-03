@@ -4,7 +4,12 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +26,7 @@ import java.util.*
 
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
+
 
 fun TextView.setHtmlText(source: String) {
     this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -96,7 +102,7 @@ fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
     this.animate()
         .alpha(0F)
         .setDuration(duration)
-        .setListener(object : Animator.AnimatorListener{
+        .setListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
 
             }
@@ -125,7 +131,7 @@ fun View.fadeIn(duration: Long = 500L) {
         .setStartDelay(500L)
         .alpha(1F)
         .setDuration(duration)
-        .setListener(object : Animator.AnimatorListener{
+        .setListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
 
             }
@@ -191,6 +197,29 @@ fun String?.getSplitUrl(): String {
     }
 
     return chain
+}
+
+fun SpannableString.withClickableSpan(
+    clickablePart: String,
+    color: Int,
+    onClickListener: () -> Unit
+): SpannableString {
+    val clickableSpan = object : ClickableSpan() {
+        override fun onClick(view: View) = onClickListener.invoke()
+        override fun updateDrawState(text: TextPaint) {
+            text.isUnderlineText = false
+            text.color = color
+            text.typeface = Typeface.DEFAULT_BOLD
+        }
+    }
+    val clickablePartStart = indexOf(clickablePart)
+    setSpan(
+        clickableSpan,
+        clickablePartStart,
+        clickablePartStart + clickablePart.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    return this
 }
 
 fun Int.pluralOrSingular() =
