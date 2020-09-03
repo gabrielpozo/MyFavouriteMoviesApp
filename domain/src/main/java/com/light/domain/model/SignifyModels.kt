@@ -1,5 +1,10 @@
 package com.light.domain.model
 
+data class Credential(
+    val grantType: String = "client_credentials",
+    val scope: String = ""
+)
+
 data class Message(
     val categories: List<Category>,
     val version: String,

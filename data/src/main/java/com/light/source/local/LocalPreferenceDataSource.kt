@@ -29,5 +29,6 @@ interface LocalPreferenceDataSource {
     fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing>
     fun getAllProductsMessage(baseIdFitting: String): Message
     fun disclaimerAccepted(confirmed : Boolean)
-    fun isDisclaimerAccepted() : Boolean
+    fun isDisclaimerAccepted(): Boolean
+    fun saveCredentials(credentials: Credential)
 }

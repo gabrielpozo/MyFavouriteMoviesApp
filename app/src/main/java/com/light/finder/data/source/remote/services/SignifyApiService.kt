@@ -1,5 +1,6 @@
 package com.light.finder.data.source.remote.services
 
+import com.light.domain.model.Credential
 import com.light.finder.data.source.remote.CartItemCountResultDto
 import com.light.finder.data.source.remote.Image
 import com.light.finder.data.source.remote.dto.*
@@ -35,5 +36,11 @@ interface SignifyApiService {
     @GET("browse")
     suspend fun fetchBrowsingProductsAsync(
     ): Response<ProductBrowsingListDto>
+
+    //todo headers?
+    @Headers("Content-Type: application/json")
+    @POST("token")
+    @FormUrlEncoded
+    suspend fun fetchBearerTokenAsync(@Body credential: Credential): Response<BearerResultDto>
 }
 
