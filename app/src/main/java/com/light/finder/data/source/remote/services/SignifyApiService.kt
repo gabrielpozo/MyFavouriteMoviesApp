@@ -41,6 +41,9 @@ interface SignifyApiService {
     @Headers("Content-Type: application/json")
     @POST("token")
     @FormUrlEncoded
-    suspend fun fetchBearerTokenAsync(@Body credential: Credential): Response<BearerResultDto>
+    suspend fun fetchBearerTokenAsync(
+        @Header("Authorization") base64String: String,
+        @Body credential: Credential
+    ): Response<BearerResultDto>
 }
 
