@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
-import com.facebook.appevents.AppEventsConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
@@ -268,8 +267,9 @@ class DetailFragment : BaseFragment() {
             Timber.d("egeee ${product.name}")
             logger.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
                     putString(getString(R.string.parameter_sku), productSapId)
-                    putDouble(getString(R.string.value),pricePerPack.toDouble())
+                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
             }
+
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
