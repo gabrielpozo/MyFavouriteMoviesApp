@@ -4,11 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.airbnb.paris.extensions.style
+import com.facebook.FacebookSdk
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.CameraLightFinderActivity
@@ -31,6 +34,8 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
             "https://www.signify.com/global/terms-of-use/mobile-apps/signify-lightfinder-en"
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
+        const val COOKIES_NOTICE_URL =
+            "https://www.signify.com/global/privacy/legal-information/cookies-notice"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
@@ -64,6 +69,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             FirebaseAnalytics.getInstance(this)
                 .setAnalyticsCollectionEnabled(isChecked)
+            FacebookSdk.setAutoLogAppEventsEnabled(isChecked)
             prefManager?.isConsentAccepted = isChecked
         }
 
@@ -108,6 +114,24 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             val prefManager = PrefManager(_context = this)
             prefManager.isConsentAccepted = isChecked
+        }
+
+        setConsentToggleText()
+    }
+
+    private fun setConsentToggleText() {
+        // make part of the text clickable and set color
+        val consentSpannableString =
+            SpannableString(getText(R.string.share_my_usage_data_to_help_improve_the_app))
+        val clickablePart = getString(R.string.cookie_notice_text)
+        val clickableColor = getColor(R.color.primaryOnLight)
+        consentInfo.movementMethod = LinkMovementMethod.getInstance()
+        consentInfo.text = consentSpannableString.withClickableSpan(clickablePart, clickableColor) {
+            if (InternetUtil.isInternetOn()) {
+                showErrorDialog(COOKIES_NOTICE_URL)
+            } else {
+                displayNoInternetBanner()
+            }
         }
     }
 
