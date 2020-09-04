@@ -24,7 +24,12 @@ object MessageRemoteUtil {
 
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        addInterceptor(BearerInterceptor(accessToken = localPreferences.loadCredentials()))
+        addInterceptor(
+            BearerInterceptor(
+                tokenType = localPreferences.loadTokenType(),
+                accessToken = localPreferences.loadAccessToken()
+            )
+        )
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     }.build()

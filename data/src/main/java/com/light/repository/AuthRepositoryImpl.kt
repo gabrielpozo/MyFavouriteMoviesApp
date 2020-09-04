@@ -14,7 +14,7 @@ class AuthRepositoryImpl(
     override suspend fun getBearerToken(): DataState<Bearer> =
         repositoryAuthHandleSource(
             remoteSourceRequest = { authRemoteDataSource.fetchBearerToken() },
-            localPreferenceDataSource = { localPreferenceDataSource.saveCredentials(it) }
+            localPreferenceDataSource = { localPreferenceDataSource.saveAccessToken(it) }
         )
 
 }

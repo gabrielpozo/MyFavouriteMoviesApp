@@ -27,6 +27,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCTS_FILTERED_SHAPED_BROWSING = "products_filtered_shaped_browsing"
         private const val DISCLAIMER_TEXT = "disclaimerText"
         private const val ACCESS_TOKEN = "accessToken"
+        private const val TOKEN_TYPE = "tokenType"
 
 
     }
@@ -68,12 +69,20 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun isDisclaimerAccepted(): Boolean =
         pref.getBoolean(DISCLAIMER_TEXT, false)
 
-    override fun saveCredentials(credentials: Bearer) {
+    override fun saveAccessToken(credentials: Bearer) {
         editor.putString(ACCESS_TOKEN, credentials.accessToken).commit()
     }
 
-    override fun loadCredentials(): String {
+    override fun saveTokenType(credentials: Bearer) {
+        editor.putString(TOKEN_TYPE, credentials.tokenType).commit()
+    }
+
+    override fun loadAccessToken(): String {
         return pref.getString(ACCESS_TOKEN, null) ?: ""
+    }
+
+    override fun loadTokenType(): String {
+        return pref.getString(TOKEN_TYPE, null) ?: ""
     }
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
