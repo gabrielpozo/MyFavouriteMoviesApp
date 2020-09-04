@@ -1,31 +1,43 @@
 package com.light.finder.data.source.utils
 
 import com.light.domain.AuthRepository
-import com.light.usecases.GetBearerTokenUseCase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.light.domain.model.Bearer
+import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 
 
-class TokenAuthenticator : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? {
-        // This is a synchronous call
-        // This runs when 401 error happens
-        val updatedToken = getNewToken()
-        return response.request.newBuilder()
-            .header("Authorization", updatedToken)
-            .build()
+class TokenAuthenticator(private val authRepository: AuthRepository
+) : Authenticator {
+    override fun authenticate(route: Route?, response: Response): Request? = when {
+        response.retryCount > 2 -> null
+        else -> runBlocking {
+            response.createSignedRequest()
+        }
     }
 
-    private fun getNewToken(): String {
-
-        //TODO get new token and return it
-
-//        val newToken = "${authTokenResponse.tokenType} ${authTokenResponse.accessToken}"
-//        SharedPreferenceUtils.saveString(Constants.PreferenceKeys.USER_ACCESS_TOKEN, newToken)
-        return "newToken"
+    private suspend fun Response.createSignedRequest(): Request? = try {
+        val accessToken = authRepository.getBearerToken()
+        request.signWithToken(accessToken as Bearer) //TODO find a way to get Bearer from repo
+    } catch (error: Throwable) {
+        null
     }
 }
+
+private val Response.retryCount: Int
+    get() {
+        var currentResponse = priorResponse
+        var result = 0
+        while (currentResponse != null) {
+            result++
+            currentResponse = currentResponse.priorResponse
+        }
+        return result
+    }
+
+fun Request.signWithToken(accessToken: Bearer) =
+    newBuilder()
+        .header("Authorization", "Bearer ${accessToken.accessToken}")
+        .build()
