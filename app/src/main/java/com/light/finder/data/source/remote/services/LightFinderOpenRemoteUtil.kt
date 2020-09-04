@@ -24,6 +24,7 @@ object LightFinderOpenRemoteUtil {
 
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
+        //authenticator(TokenAuthenticator())
         addInterceptor(
             BearerInterceptor(
                 tokenType = localPreferences.loadTokenType(),

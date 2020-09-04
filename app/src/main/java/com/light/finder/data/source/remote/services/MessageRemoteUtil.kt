@@ -8,7 +8,6 @@ import com.light.finder.common.HiddenAnnotationExclusionStrategy
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
-import com.light.finder.data.source.utils.TokenAuthenticator
 import com.light.source.local.LocalPreferenceDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,7 +24,7 @@ object MessageRemoteUtil {
 
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        authenticator(TokenAuthenticator())
+        //authenticator(TokenAuthenticator())
         addInterceptor(
             BearerInterceptor(
                 tokenType = localPreferences.loadTokenType(),
