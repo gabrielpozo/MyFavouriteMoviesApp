@@ -10,6 +10,7 @@ import com.light.source.remote.RemoteFetchAuthDataSource
 import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import kotlinx.coroutines.withTimeout
 
+//TODO needs refactoring
 class AuthRemoteDataSource : BaseDataSource(), RemoteFetchAuthDataSource {
     override suspend fun fetchBearerToken(): Result<Bearer> =
         getResult(::mapAuthResultToDomainModel) {
