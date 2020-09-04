@@ -9,7 +9,6 @@ import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
-import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseResultComponent
 import com.light.finder.di.modules.submodules.BrowseResultModule
 import com.light.finder.extensions.*
