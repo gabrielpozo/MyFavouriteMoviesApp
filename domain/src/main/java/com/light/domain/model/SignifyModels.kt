@@ -1,8 +1,9 @@
 package com.light.domain.model
 
-data class Credential(
-    val grantType: String = "client_credentials",
-    val scope: String = ""
+data class Bearer(
+    val accessToken: String,
+    var expiresIn: Long,
+    val tokenType: String
 )
 
 data class Message(

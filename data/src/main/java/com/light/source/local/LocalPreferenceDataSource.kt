@@ -28,7 +28,10 @@ interface LocalPreferenceDataSource {
     fun getFilteredProductsMessageFromChoice(shapeBrowsingList: List<ChoiceBrowsing>): Message
     fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing>
     fun getAllProductsMessage(baseIdFitting: String): Message
-    fun disclaimerAccepted(confirmed : Boolean)
+    fun disclaimerAccepted(confirmed: Boolean)
     fun isDisclaimerAccepted(): Boolean
-    fun saveCredentials(credentials: Credential)
+
+    //TODO Akis save to Private_mode shared pref
+    fun saveCredentials(credentials: Bearer)
+
 }
