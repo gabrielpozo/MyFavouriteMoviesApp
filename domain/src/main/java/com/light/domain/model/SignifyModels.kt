@@ -1,5 +1,11 @@
 package com.light.domain.model
 
+data class Bearer(
+    val accessToken: String,
+    var expiresIn: Long,
+    val tokenType: String
+)
+
 data class Message(
     val categories: List<Category>,
     val version: String,

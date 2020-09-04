@@ -191,6 +191,15 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
     )
 }
 
+val mapAuthToDomain: (BearerResultDto) -> Bearer = {
+
+    Bearer(
+        it.accessToken,
+        it.expiresIn,
+        it.tokenType
+    )
+}
+
 private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
     {
         KelvinSpec(
