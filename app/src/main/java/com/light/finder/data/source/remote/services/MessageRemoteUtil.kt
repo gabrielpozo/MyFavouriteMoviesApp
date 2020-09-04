@@ -19,7 +19,7 @@ object MessageRemoteUtil {
 
     private val localPreferences: LocalPreferenceDataSource by lazy {
         LocalPreferenceDataSourceImpl(
-            SignifyApp.getContext()
+            SignifyApp.getContext()!!
         )
     }
 

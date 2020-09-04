@@ -10,7 +10,7 @@ import com.light.finder.extensions.fromJson
 import com.light.source.local.LocalPreferenceDataSource
 
 
-class LocalPreferenceDataSourceImpl(private val context: Context?) :
+class LocalPreferenceDataSourceImpl(private val context: Context) :
     LocalPreferenceDataSource {
 
     companion object {
