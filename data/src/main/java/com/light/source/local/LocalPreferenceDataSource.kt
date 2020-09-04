@@ -30,8 +30,7 @@ interface LocalPreferenceDataSource {
     fun getAllProductsMessage(baseIdFitting: String): Message
     fun disclaimerAccepted(confirmed: Boolean)
     fun isDisclaimerAccepted(): Boolean
-
-    //TODO Akis save to Private_mode shared pref
     fun saveCredentials(credentials: Bearer)
+    fun loadCredentials(): String
 
 }

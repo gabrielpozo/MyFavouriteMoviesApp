@@ -26,6 +26,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
         private const val PRODUCTS_FILTERED_SHAPED_BROWSING = "products_filtered_shaped_browsing"
         private const val DISCLAIMER_TEXT = "disclaimerText"
+        private const val ACCESS_TOKEN = "accessToken"
 
 
     }
@@ -68,9 +69,12 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         pref.getBoolean(DISCLAIMER_TEXT, false)
 
     override fun saveCredentials(credentials: Bearer) {
-        TODO("Akis save Bearer to private sharedpref Not yet implemented")
+        editor.putString(ACCESS_TOKEN, credentials.accessToken).commit()
     }
 
+    override fun loadCredentials(): String {
+        return pref.getString(ACCESS_TOKEN, null) ?: ""
+    }
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
