@@ -6,8 +6,7 @@ import com.google.gson.Gson
 import com.light.domain.model.*
 import com.light.domain.toKey
 import com.light.finder.data.mappers.mapBrowsingProductToMessageDomain
-import com.light.finder.extensions.*
-
+import com.light.finder.extensions.fromJson
 import com.light.source.local.LocalPreferenceDataSource
 
 
@@ -67,6 +66,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override fun isDisclaimerAccepted(): Boolean =
         pref.getBoolean(DISCLAIMER_TEXT, false)
+
+    override fun saveCredentials(credentials: Bearer) {
+        TODO("Akis save Bearer to private sharedpref Not yet implemented")
+    }
 
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
