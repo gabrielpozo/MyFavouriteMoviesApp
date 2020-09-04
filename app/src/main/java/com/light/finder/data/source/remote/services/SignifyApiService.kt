@@ -35,5 +35,11 @@ interface SignifyApiService {
     @GET("browse")
     suspend fun fetchBrowsingProductsAsync(
     ): Response<ProductBrowsingListDto>
+
+    @POST("token")
+    @FormUrlEncoded
+    suspend fun fetchBearerTokenAsync(
+        @Field("grant_type") grantType: String = "client_credentials"
+    ): Response<BearerResultDto>
 }
 

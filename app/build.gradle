@@ -56,6 +56,7 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "CART_URL", "\"https://lightfinder-staging.luzernsolutions.com/us/hueCart/api/\""
             buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
+            buildConfigField "String", "OAUTH_URL", "\"https://lightfinder.auth.us-east-1.amazoncognito.com/oauth2/\""
 
         }
         production {
@@ -63,6 +64,7 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
             buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
+            buildConfigField "String", "OAUTH_URL", "\"https://lightfinder.auth.us-east-1.amazoncognito.com/oauth2/\""
 
         }
     }
