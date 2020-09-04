@@ -6,11 +6,10 @@ import com.light.finder.BuildConfig
 import com.light.finder.SignifyApp
 import com.light.finder.common.HiddenAnnotationExclusionStrategy
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
+import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
 import com.light.source.local.LocalPreferenceDataSource
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,17 +22,9 @@ object MessageRemoteUtil {
         )
     }
 
-    private var bearerInterceptor: Interceptor = Interceptor { chain ->
-        val original: Request = chain.request()
-        val request: Request = original.newBuilder()
-            .addHeader("Authorization", "Bearer ${localPreferences.loadCredentials()}")
-            .method(original.method, original.body)
-            .build()
-        chain.proceed(request)
-    }
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        addInterceptor(bearerInterceptor)
+        addInterceptor(BearerInterceptor(accessToken = localPreferences.loadCredentials()))
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     }.build()
