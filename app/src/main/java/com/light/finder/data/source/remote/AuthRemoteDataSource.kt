@@ -2,6 +2,7 @@ package com.light.finder.data.source.remote
 
 import com.light.data.Result
 import com.light.domain.model.Bearer
+import com.light.finder.data.mappers.mapAuthToDomain
 import com.light.finder.data.source.BaseDataSource
 import com.light.finder.data.source.remote.dto.BearerResultDto
 import com.light.finder.data.source.remote.services.OAuthRemoteUtil
@@ -18,6 +19,6 @@ class AuthRemoteDataSource : BaseDataSource(), RemoteFetchAuthDataSource {
         }
 
     private fun mapAuthResultToDomainModel(bearerResultDto: BearerResultDto): Bearer {
-        TODO(" Akis map bearerdto to bearer")
+        return mapAuthToDomain(bearerResultDto)
     }
 }
