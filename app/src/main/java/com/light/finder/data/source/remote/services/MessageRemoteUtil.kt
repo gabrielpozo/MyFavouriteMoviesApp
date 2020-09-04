@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object MessageRemoteUtil {
 //TODO pass bearer to interceptor from a local source
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        addInterceptor(BearerInterceptor("Bearer 49385fe86a8fd424a98bacbdd8845357"))
+        addInterceptor(BearerInterceptor("49385fe86a8fd424a98bacbdd8845357"))
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     }.build()
