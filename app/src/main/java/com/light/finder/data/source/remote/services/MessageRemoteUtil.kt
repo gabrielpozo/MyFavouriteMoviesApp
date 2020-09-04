@@ -23,7 +23,7 @@ object MessageRemoteUtil {
         )
     }
 
-    var bearerInterceptor: Interceptor = Interceptor { chain ->
+    private var bearerInterceptor: Interceptor = Interceptor { chain ->
         val original: Request = chain.request()
         val request: Request = original.newBuilder()
             .addHeader("Authorization", "Bearer ${localPreferences.loadCredentials()}")
