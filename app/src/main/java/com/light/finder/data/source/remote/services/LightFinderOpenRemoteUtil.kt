@@ -7,6 +7,7 @@ import com.light.finder.SignifyApp
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
+import com.light.finder.data.source.utils.TokenAuthenticator
 import com.light.source.local.LocalPreferenceDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,7 +25,6 @@ object LightFinderOpenRemoteUtil {
 
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
-        //authenticator(TokenAuthenticator())
         addInterceptor(
             BearerInterceptor(
                 tokenType = localPreferences.loadTokenType(),
@@ -33,6 +33,7 @@ object LightFinderOpenRemoteUtil {
         )
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        authenticator(TokenAuthenticator(localPreferences))
     }.build()
 
 
