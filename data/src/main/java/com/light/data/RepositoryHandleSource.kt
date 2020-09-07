@@ -27,6 +27,10 @@ suspend fun <T> repositoryCartHandleSource(
                 }
             }
 
+            Result.Status.BAD_REQUEST -> {
+                DataState.BadRequest(resultRequest.code)
+            }
+
             Result.Status.ERROR -> {
                 DataState.Error(
                     resultRequest.message ?: GENERAL_ERROR
@@ -211,7 +215,12 @@ private suspend fun <T> sendMainRequest(
                 )
             }
 
+            else -> {
+                DataState.Error(NULLABLE_ERROR)
+            }
+
         }
+
     }
 
 }
@@ -223,7 +232,7 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
     mainRemoteRequest: suspend () -> Result<T>,
     saveLegendRequestOnLocal: suspend (A) -> Unit,
     saveBrowsingonLocal: suspend (T) -> Unit,
-    legendParsing: () ->U
+    legendParsing: () -> U
 ): DataState<U> {
     if (shouldDoFetchLegendRequest) {
         legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
@@ -304,6 +313,13 @@ private suspend fun <T, U> sendMainRequestBrowsing(
             }
 
             Result.Status.ERROR -> {
+                DataState.Error(
+                    resultRequest.message ?: GENERAL_ERROR,
+                    isCanceled = resultRequest.isCancelRequest
+                )
+            }
+
+            else -> {
                 DataState.Error(
                     resultRequest.message ?: GENERAL_ERROR,
                     isCanceled = resultRequest.isCancelRequest

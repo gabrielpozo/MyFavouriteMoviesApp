@@ -10,16 +10,17 @@ import com.light.source.remote.RemoteFetchBrowsingDataSource
 import com.light.util.BROWSING_FLAG_TIMEOUT
 import kotlinx.coroutines.withTimeout
 
-class BrowsingRemoteDataSource : BaseDataSource(), RemoteFetchBrowsingDataSource {
+class BrowsingRemoteDataSource :
+    BaseDataSource<ProductBrowsingListDto, List<ProductBrowsing>>(),
+    RemoteFetchBrowsingDataSource {
     override suspend fun fetchBrowsingProducts(): Result<List<ProductBrowsing>> =
-        getResult(::mapLegendResultToDomainModel) {
+        getResult {
             withTimeout(BROWSING_FLAG_TIMEOUT) {
                 LightFinderOpenRemoteUtil.service.fetchBrowsingProductsAsync()
             }
         }
 
-
-    private fun mapLegendResultToDomainModel(productBrowsingDto: ProductBrowsingListDto): List<ProductBrowsing> {
-        return mapProductsBrowsingToDomain(productBrowsingDto)
+    override fun mapResultToDomainModel(cartResult: ProductBrowsingListDto): List<ProductBrowsing> {
+        return mapProductsBrowsingToDomain(cartResult)
     }
 }

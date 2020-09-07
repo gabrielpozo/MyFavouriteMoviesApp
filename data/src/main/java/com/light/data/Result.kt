@@ -12,6 +12,7 @@ data class Result<out T>(
     enum class Status {
         SUCCESS,
         ERROR,
+        BAD_REQUEST,
         TIME_OUT_ERROR,
         PARSE_ERROR
     }
@@ -26,7 +27,15 @@ data class Result<out T>(
             )
         }
 
+        fun <T> badRequest(code: Int = 404): Result<T> {
+            return Result(
+                Status.BAD_REQUEST,
+                code = code,
+                message = null
+            )
+        }
 
+        //TODO("improve the error handling, create an error status")
         fun <T> error(
             message: String,
             data: T? = null,

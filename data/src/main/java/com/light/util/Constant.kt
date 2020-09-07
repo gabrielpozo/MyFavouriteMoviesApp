@@ -16,6 +16,10 @@ const val NO_CONTENT_CODE = 204
 const val NO_PRODUCTS_CODE = 206
 const val SUCCESSFUL_CODE = 200
 
+//CART
+const val PRODUCT_NOT_FOUND = 404
+const val OUT_STOCK = 422
+const val PRODUCT_DISABLE = 424
 
 const val FILE_NAME = "gallery_file_name"
 const val EMPTY_MESSAGE = "gallery_file_name"
