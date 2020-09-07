@@ -158,6 +158,11 @@ class DetailFragment : BaseFragment() {
 
 
     private fun addToCart() {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
+            putString("CURRENCY", "USD")
+            putString("ITEMS", productSapId)
+            putFloat("VALUE", pricePerPack)
+        }
         viewModel.onRequestAddToCart(productSapId = productSapId)
         cartAnimation.visible()
         cartAnimation.playAnimation()
