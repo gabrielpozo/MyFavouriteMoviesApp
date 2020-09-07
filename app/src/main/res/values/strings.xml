@@ -82,7 +82,9 @@
     <string name="privacy_notice">Privacy Notice</string>
     <string name="i_agree_with_the">I agree with the</string>
     <string name="terms_of_use_text">Terms of Use</string>
-    <string name="share_my_usage_data_to_help_improve_the_app">Share my usage data to help improve the app</string>
+    <string name="share_my_usage_data_to_help_improve_the_app">Give the consent to share your usage data to help improve the app, and data with social media and other providers to receive targeted Signify advertisements, see Cookie Notice</string>
+    <string name="cookie_notice_text">Cookie Notice</string>
+    <string name="privacy_note">We respect your privacy. By using the app your personal data will be processed in accordance with our Privacy Notice</string>
     <string name="_2020_signify_holding_all_rights_reserved">© 2020 Signify Holding. All rights reserved.</string>
     <string name="version">Version</string>
     <string name="lightfinder">LightFinder</string>

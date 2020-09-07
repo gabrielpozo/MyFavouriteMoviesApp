@@ -5,12 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.facebook.FacebookSdk
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BuildConfig
 import com.light.finder.CameraLightFinderActivity
@@ -36,6 +40,8 @@ class AboutFragment : BaseFragment() {
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
         const val FAQ_URL = "https://www.signify.com/en-us/lightfinder/support"
+        const val COOKIES_NOTICE_URL =
+            "https://www.signify.com/global/privacy/legal-information/cookies-notice"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
@@ -90,8 +96,12 @@ class AboutFragment : BaseFragment() {
             val prefManager = PrefManager(_context = requireContext())
             FirebaseAnalytics.getInstance(requireContext())
                 .setAnalyticsCollectionEnabled(isChecked)
+            FacebookSdk.setAutoLogAppEventsEnabled(isChecked)
             prefManager.isConsentAccepted = isChecked
         }
+
+        setConsentToggleText()
+
     }
 
     private fun setClickListeners() {
@@ -122,6 +132,26 @@ class AboutFragment : BaseFragment() {
         layoutFeedback.setSafeOnClickListener {
             screenNavigator.navigateToUsabillaForm()
 
+        }
+
+    }
+
+    private fun setConsentToggleText() {
+        context?.let {
+            // make part of the text clickable and set color
+            val consentSpannableString =
+                SpannableString(getText(R.string.share_my_usage_data_to_help_improve_the_app))
+            val clickablePart = getString(R.string.cookie_notice_text)
+            val clickableColor = getColor(it, R.color.primaryOnLight)
+            consentInfo.movementMethod = LinkMovementMethod.getInstance()
+            consentInfo.text =
+                consentSpannableString.withClickableSpan(clickablePart, clickableColor) {
+                    if (InternetUtil.isInternetOn()) {
+                        showAboutDialog(AboutDialogFlags.COOKIES)
+                    } else {
+                        displayNoInternetBanner()
+                    }
+                }
         }
     }
 
@@ -199,5 +229,9 @@ class AboutFragment : BaseFragment() {
         }
     }
 
-    enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL), FAQ(FAQ_URL) }
+    enum class AboutDialogFlags(val url: String) {
+        PRIVACY(PRIVACY_URL), TERMS(TERMS_URL), FAQ(FAQ_URL), COOKIES(
+            COOKIES_NOTICE_URL
+        )
+    }
 }
