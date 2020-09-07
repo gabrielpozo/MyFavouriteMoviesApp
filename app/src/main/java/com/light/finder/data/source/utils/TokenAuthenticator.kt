@@ -8,8 +8,7 @@ import okhttp3.Response
 import okhttp3.Route
 
 
-class TokenAuthenticator(
-) : Authenticator {
+class TokenAuthenticator : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? = when {
         response.retryCount > 2 -> null
         else -> runBlocking {
@@ -22,8 +21,7 @@ class TokenAuthenticator(
         val tokenService = OAuthRemoteUtil.service.fetchBearerTokenAsync()
         val accessToken = tokenService.body()?.accessToken
 
-        //TODO check nullability
-        request.signWithToken(accessToken!!)
+        accessToken?.let { request.signWithToken(it) }
     } catch (error: Throwable) {
         null
     }
