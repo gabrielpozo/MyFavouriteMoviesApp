@@ -33,7 +33,7 @@ object LightFinderOpenRemoteUtil {
         )
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        authenticator(TokenAuthenticator())
+        authenticator(TokenAuthenticator(localPreferences))
     }.build()
 
 
