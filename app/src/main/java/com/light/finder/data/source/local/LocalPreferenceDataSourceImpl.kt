@@ -85,6 +85,10 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         return pref.getString(TOKEN_TYPE, null) ?: ""
     }
 
+    override  fun removeToken() {
+        editor.remove(ACCESS_TOKEN).commit()
+    }
+
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
             PRODUCTS_BROWSING_BASE,

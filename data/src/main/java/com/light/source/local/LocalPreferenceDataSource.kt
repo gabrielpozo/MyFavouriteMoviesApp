@@ -34,5 +34,5 @@ interface LocalPreferenceDataSource {
     fun saveTokenType(credentials: Bearer)
     fun loadAccessToken(): String
     fun loadTokenType(): String
-
+    fun removeToken()
 }
