@@ -28,6 +28,10 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
+import kotlinx.android.synthetic.main.about_fragment.consentInfo
+import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
+import kotlinx.android.synthetic.main.about_fragment.noInternetBanner
+import kotlinx.android.synthetic.main.about_fragment.switchConsent
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 
@@ -76,8 +80,15 @@ class AboutFragment : BaseFragment() {
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
         FirebaseAnalytics.getInstance(requireContext())
             .setAnalyticsCollectionEnabled(switchConsent.isChecked)
+
+        setFacebookConsent(switchConsent.isChecked)
     }
 
+    private fun setFacebookConsent(checked: Boolean) {
+        FacebookSdk.setAutoLogAppEventsEnabled(checked)
+        FacebookSdk.setAdvertiserIDCollectionEnabled(checked)
+        FacebookSdk.setAutoInitEnabled(checked)
+    }
 
     private fun setObserver() {
         InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
@@ -96,7 +107,7 @@ class AboutFragment : BaseFragment() {
             val prefManager = PrefManager(_context = requireContext())
             FirebaseAnalytics.getInstance(requireContext())
                 .setAnalyticsCollectionEnabled(isChecked)
-            FacebookSdk.setAutoLogAppEventsEnabled(isChecked)
+            setFacebookConsent(isChecked)
             prefManager.isConsentAccepted = isChecked
         }
 
