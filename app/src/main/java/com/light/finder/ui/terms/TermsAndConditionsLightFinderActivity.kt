@@ -56,6 +56,8 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         prefManager = PrefManager(this)
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
 
+        setFacebookConsent(switchConsent.isChecked )
+
         if (!InternetUtil.isInternetOn()) {
             displayNoInternetBanner()
         }
@@ -65,11 +67,17 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
 
     }
 
+    private fun setFacebookConsent(checked: Boolean) {
+        FacebookSdk.setAutoLogAppEventsEnabled(checked)
+        FacebookSdk.setAdvertiserIDCollectionEnabled(checked)
+        FacebookSdk.setAutoInitEnabled(checked)
+    }
+
     private fun setView() {
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             FirebaseAnalytics.getInstance(this)
                 .setAnalyticsCollectionEnabled(isChecked)
-            FacebookSdk.setAutoLogAppEventsEnabled(isChecked)
+            setFacebookConsent(isChecked)
             prefManager?.isConsentAccepted = isChecked
         }
 
