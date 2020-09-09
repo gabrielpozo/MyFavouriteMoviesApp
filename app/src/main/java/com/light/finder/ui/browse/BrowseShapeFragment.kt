@@ -90,18 +90,15 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
                 //it is scrolling up
-                if (dy > 0) {
+                if (currentFirstVisible > firstVisible) {
                     line_divider.visible()
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (layoutManager != null && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                } else {
                     line_divider.invisible()
                 }
             }

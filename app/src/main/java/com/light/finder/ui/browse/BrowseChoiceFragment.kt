@@ -23,9 +23,6 @@ import com.light.finder.ui.adapters.BrowseChoiceAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
-import kotlinx.android.synthetic.main.fragment_browse_choice.buttonSearch
-import kotlinx.android.synthetic.main.fragment_browse_choice.textReset
-import kotlinx.android.synthetic.main.fragment_browse_choice.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseChoiceFragment : BaseFilteringFragment() {
@@ -88,19 +85,17 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewChoice.layoutManager = layoutManager
         recyclerViewChoice.adapter = adapter
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewChoice.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 //it is scrolling up
-                if (dy > 0) {
+                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
+                //it is scrolling up
+                if (currentFirstVisible > firstVisible) {
                     lineDividerCategoryChoice.visible()
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (layoutManager != null && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                } else {
                     lineDividerCategoryChoice.invisible()
                 }
             }
