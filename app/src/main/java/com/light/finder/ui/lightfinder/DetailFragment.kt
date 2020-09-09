@@ -271,7 +271,7 @@ class DetailFragment : BaseFragment() {
                 putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
             }
 
-            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)
