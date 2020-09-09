@@ -9,14 +9,15 @@ import com.light.finder.data.source.remote.services.LightFinderOpenRemoteUtil
 import com.light.source.remote.RemoteFetchLegendDataSource
 
 
-class LegendRemoteDataSource : BaseDataSource(), RemoteFetchLegendDataSource {
+class LegendRemoteDataSource : BaseDataSource<LegendParsingDto, LegendParsing>(),
+    RemoteFetchLegendDataSource {
     override suspend fun fetchLegendTags(): Result<LegendParsing> =
-        getResult(::mapLegendResultToDomainModel) {
+        getResult {
             LightFinderOpenRemoteUtil.service.fetchLegendTagsAsync()
         }
 
 
-    private fun mapLegendResultToDomainModel(legendResult: LegendParsingDto): LegendParsing {
+    override fun mapResultToDomainModel(legendResult: LegendParsingDto): LegendParsing {
         return mapLegendToDomain(legendResult)
     }
 }

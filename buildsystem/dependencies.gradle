@@ -81,7 +81,7 @@ ext {
             timber      : "com.jakewharton.timber:timber:$timberVersion",
             stetho      : "com.facebook.stetho:stetho:$stetho",
             stethoOkhttp: "com.facebook.stetho:stetho-okhttp3:$stetho",
-            facebook : "com.facebook.android:facebook-android-sdk:${facebookVersion}"
+            facebook : "com.facebook.android:facebook-core:${facebookVersion}"
     ]
 
     kaptJetpackDependencies = [

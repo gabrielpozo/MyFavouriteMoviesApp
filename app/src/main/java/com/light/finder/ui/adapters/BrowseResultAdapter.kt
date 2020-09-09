@@ -89,6 +89,7 @@ class BrowseResultAdapter(
             finishList: List<FinishType>,
             productNameCategoryList: List<ProductCategoryName>
         ) {
+
             itemView.category_name.text = getLegendCategoryName(
                 category.categoryProducts[0].produtCategoryCode,
                 productNameCategoryList
@@ -98,10 +99,7 @@ class BrowseResultAdapter(
             itemView.priceButton.text = Html.fromHtml(sourceString)
 
             itemView.bulbCover.loadUrl(
-                getLegendCategoryImage(
-                    category.categoryProducts[0].produtCategoryCode,
-                    productNameCategoryList
-                )
+                category.categoryProducts.getProductImage()
             )
 
             category.finishCodes.sortSmallFinishByOrderField(finishList)

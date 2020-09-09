@@ -7,6 +7,9 @@ import com.light.presentation.common.Event
 import com.light.presentation.common.getSelectedProduct
 import com.light.presentation.common.setSelectedProduct
 import com.light.usecases.*
+import com.light.util.OUT_STOCK
+import com.light.util.PRODUCT_DISABLE
+import com.light.util.PRODUCT_NOT_FOUND
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -117,6 +120,10 @@ class DetailViewModel(
     sealed class DialogModel {
         data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
         object ServerError : DialogModel()
+        object ProductNotFound : DialogModel()
+        object OutStock : DialogModel()
+        object ProductDisable : DialogModel()
+
     }
 
     /***
@@ -153,7 +160,8 @@ class DetailViewModel(
                 getAddToCart.execute(
                     ::handleSuccessResponse,
                     ::handleErrorResponse,
-                    params = *arrayOf(productSapId)
+                    onBadRequest = ::handleBadRequestResponse,
+                    params = * arrayOf(productSapId)
                 )
             }
         }
@@ -182,12 +190,26 @@ class DetailViewModel(
         _modelRequest.value = RequestModelContent(Event(cartItem))
     }
 
-    private fun handleErrorResponse(
-        hasBeenCancelled: Boolean,
-        exception: Exception?,
-        message: String
-    ) {
+    private fun handleErrorResponse() {
         _modelDialog.value = Event(DialogModel.ServerError)
+    }
+
+    private fun handleBadRequestResponse(
+        codeBadRequest: Int
+    ) {
+        when (codeBadRequest) {
+            PRODUCT_NOT_FOUND -> {
+                _modelDialog.value = Event(DialogModel.ProductNotFound)
+            }
+
+            OUT_STOCK -> {
+                _modelDialog.value = Event(DialogModel.OutStock)
+            }
+
+            PRODUCT_DISABLE -> {
+                _modelDialog.value = Event(DialogModel.ProductDisable)
+            }
+        }
     }
 
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {

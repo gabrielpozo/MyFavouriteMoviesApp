@@ -6,8 +6,7 @@ import com.google.gson.Gson
 import com.light.domain.model.*
 import com.light.domain.toKey
 import com.light.finder.data.mappers.mapBrowsingProductToMessageDomain
-import com.light.finder.extensions.*
-
+import com.light.finder.extensions.fromJson
 import com.light.source.local.LocalPreferenceDataSource
 
 
@@ -27,6 +26,8 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
         private const val PRODUCTS_FILTERED_SHAPED_BROWSING = "products_filtered_shaped_browsing"
         private const val DISCLAIMER_TEXT = "disclaimerText"
+        private const val ACCESS_TOKEN = "accessToken"
+        private const val TOKEN_TYPE = "tokenType"
 
 
     }
@@ -68,6 +69,25 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun isDisclaimerAccepted(): Boolean =
         pref.getBoolean(DISCLAIMER_TEXT, false)
 
+    override fun saveAccessToken(credentials: Bearer) {
+        editor.putString(ACCESS_TOKEN, credentials.accessToken).commit()
+    }
+
+    override fun saveTokenType(credentials: Bearer) {
+        editor.putString(TOKEN_TYPE, credentials.tokenType).commit()
+    }
+
+    override fun loadAccessToken(): String {
+        return pref.getString(ACCESS_TOKEN, null) ?: ""
+    }
+
+    override fun loadTokenType(): String {
+        return pref.getString(TOKEN_TYPE, null) ?: ""
+    }
+
+    override  fun removeToken() {
+        editor.remove(ACCESS_TOKEN).commit()
+    }
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
@@ -222,7 +242,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             }
         }
 
-        return browsedShapeFilteredList
+        return if (browsedShapeFilteredList.isNotEmpty()) browsedShapeFilteredList else browsedFilteredList
     }
 
     override fun  getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {

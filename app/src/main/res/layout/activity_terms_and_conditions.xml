@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="bottom"
     android:orientation="vertical"
     android:fillViewport="true"
@@ -8,200 +9,215 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/noInternetBanner"
+        layout="@layout/layout_no_internet"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:layout_gravity="bottom"
         android:orientation="vertical"
+        android:fillViewport="true"
+        android:background="@color/backgroundLight"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include
-            android:id="@+id/noInternetBanner"
-            layout="@layout/layout_no_internet"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <ImageView
-            android:layout_width="180dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewTermsTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_logo_color" />
-
-        <TextView
-            android:id="@+id/textViewTermsTitle"
-            style="@style/TitleTextTermsBold"
-            android:text="@string/terms_of_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewTerms"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewTerms"
-            style="@style/TitleTextTerms"
-            android:textAlignment="center"
-            android:lineSpacingExtra="1sp"
-            android:text="We respect your privacy. By using the app your personal data will be processed in accordance with our Privacy Notice  "
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/layoutPrivacy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/layoutPrivacy"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline">
-
-
-            <TextView
-                style="@style/TitleTextTerms"
-                android:textAlignment="textEnd"
-                android:layout_marginEnd="8dp"
-                android:text="@string/see_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/textViewStatement"
-                style="@style/TitleTextTermsGreen"
-                android:text="@string/privacy_notice"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintBottom_toTopOf="@id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkBox"
-                android:layout_marginStart="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:theme="@style/CheckboxStyle">
-
-            </androidx.appcompat.widget.AppCompatCheckBox>
-
-
-            <TextView
-                style="@style/TitleTextTerms"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/i_agree_with_the"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textViewTermsOfUse"
-                style="@style/TitleTextTermsGreen"
-                android:text="@string/terms_of_use_text"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/dividerOnLight"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@id/layoutConsent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/buttonTerms"
-            style="@style/TermsButtonUnSelected"
-            android:text="@string/continue_terms"
-            android:stateListAnimator="@null"
-            android:background="@color/primaryDisabled"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="40dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutConsent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@id/buttonTerms"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:paddingBottom="40dp"
+            android:layout_height="wrap_content">
+
+            <!-- 20 % logo guideline -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/signify_logo_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <ImageView
+                android:id="@+id/signify_logo"
+                android:layout_width="180dp"
+                android:layout_height="44dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signify_logo_guideline"
+                app:srcCompat="@drawable/ic_logo_color" />
 
             <TextView
+                android:id="@+id/textViewTermsTitle"
+                style="@style/TitleTextTermsBold"
+                android:text="@string/terms_of_use"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signify_logo" />
+
+            <TextView
+                android:id="@+id/textViewTerms"
                 style="@style/TitleTextTerms"
-                android:text="@string/share_my_usage_data_to_help_improve_the_app"
+                android:textAlignment="center"
+                android:lineSpacingExtra="10sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/privacy_note"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTermsTitle" />
+
+            <LinearLayout
+                android:id="@+id/layoutPrivacy"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTerms">
+
+                <TextView
+                    style="@style/TitleTextTerms"
+                    android:textAlignment="textEnd"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/see_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textViewStatement"
+                    style="@style/TitleTextTermsGreen"
+                    android:text="@string/privacy_notice"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- 55 % terms guideline -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/terms_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.60" />
+
+
+            <LinearLayout
+                android:id="@+id/termsAgreementLayout"
+                android:orientation="horizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/switchConsent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Switch
-                android:id="@+id/switchConsent"
-                android:thumbTint="@color/backgroundLight"
-                android:trackTint="@drawable/toggle_style"
-                android:trackTintMode="src_over"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/terms_guideline">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:theme="@style/CheckboxStyle">
+
+                </androidx.appcompat.widget.AppCompatCheckBox>
+
+                <TextView
+                    style="@style/TitleTextTerms"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/i_agree_with_the"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textViewTermsOfUse"
+                    style="@style/TitleTextTermsGreen"
+                    android:text="@string/terms_of_use_text"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/seperatorTou"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/dividerOnLight"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/termsAgreementLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutConsent"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="27dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seperatorTou">
+
+                <TextView
+                    android:id="@+id/consentInfo"
+                    style="@style/TitleTextTerms"
+                    android:lineSpacingExtra="6sp"
+                    android:layout_width="0dp"
+                    android:textColorLink="@color/primaryOnLight"
+                    android:layout_marginEnd="17dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/switchConsent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/share_my_usage_data_to_help_improve_the_app" />
 
 
+                <Switch
+                    android:id="@+id/switchConsent"
+                    android:layout_marginTop="8dp"
+                    android:thumbTint="@color/backgroundLight"
+                    android:trackTint="@drawable/toggle_style"
+                    android:trackTintMode="src_over"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/buttonTerms"
+                style="@style/TermsButtonUnSelected"
+                android:text="@string/continue_terms"
+                android:stateListAnimator="@null"
+                android:background="@color/primaryDisabled"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutConsent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.usecases.GetLegendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class TermsViewModel(
     private val getLegendUseCase: GetLegendUseCase,
@@ -16,18 +14,7 @@ class TermsViewModel(
     private val _modelNetworkConnection = MutableLiveData<NetworkModel>()
     val modelNetworkConnection: LiveData<NetworkModel>
         get() = _modelNetworkConnection
-
-
-    init {
-        onRetrieveLegendTags()
-    }
-
-    private fun onRetrieveLegendTags() {
-        launch {
-            getLegendUseCase.execute()
-        }
-    }
-
+    
 
     sealed class NetworkModel {
         object NetworkOffline : NetworkModel()

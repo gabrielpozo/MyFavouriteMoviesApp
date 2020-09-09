@@ -84,11 +84,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {
-                    if (state == BrowseShapeFragment.RESTORED_STATE) {
-                        line_divider_fitting.invisible()
-                    }
-                }
+                override fun onStateChanged(p0: View, state: Int) {}
             })
 
         }
@@ -105,20 +101,15 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
                 //it is scrolling up
-                if (dy > 0) {
+                if (currentFirstVisible > firstVisible) {
                     line_divider_fitting.visible()
-                } else if (dy < 0) {
-                    line_divider_fitting.invisible()
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if(layoutManager.findFirstCompletelyVisibleItemPosition() == 0){
+                } else {
                     line_divider_fitting.invisible()
                 }
             }

@@ -1,7 +1,6 @@
 package com.light.usecases
 
 import com.light.common.checkThereIsPreviousActiveStateCon
-import com.light.common.checkThereIsPreviousActiveStateF
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.domain.model.TYPE
@@ -9,7 +8,7 @@ import com.light.domain.state.DataState
 
 
 @Suppress("UNCHECKED_CAST")
-class GetConnectivityVariationsUseCase : BaseUseCase<List<FilterVariationCF>>() {
+class GetConnectivityVariationsUseCase : BaseScanningUseCase<List<FilterVariationCF>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<FilterVariationCF>> {
         val productList: List<Product> = params[0] as List<Product>

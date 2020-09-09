@@ -2,15 +2,15 @@ package com.light.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.light.usecases.GetBearerTokenUseCase
 import com.light.usecases.GetLegendUseCase
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
     private val getLegendUseCase: GetLegendUseCase,
+    private val getBearerTokenUseCase: GetBearerTokenUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     val liveData: LiveData<SplashState>
@@ -18,9 +18,8 @@ class SplashViewModel(
     private val mutableLiveData = MutableLiveData<SplashState>()
 
     init {
-        // TODO: Improve this by implementing Lottie listener
         launch {
-            onRetrieveLegendTags()
+            onRetrieveBearerToken()
             delay(4000)
             mutableLiveData.postValue(SplashState.CameraActivity)
         }
@@ -29,6 +28,12 @@ class SplashViewModel(
     private fun onRetrieveLegendTags() {
         launch {
             getLegendUseCase.execute()
+        }
+    }
+
+    private fun onRetrieveBearerToken() {
+        launch {
+            getBearerTokenUseCase.execute(onSuccess = ::onRetrieveLegendTags)
         }
     }
 }
