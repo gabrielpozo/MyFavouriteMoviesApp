@@ -3,7 +3,6 @@ apply plugin: 'kotlin'
 
 dependencies {
     implementation project(":domain")
-    implementation debugToolsDependencies.values()
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation coroutinesDependencies.values()
 

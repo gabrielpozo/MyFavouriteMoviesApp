@@ -2,7 +2,6 @@ package com.light.finder
 
 import android.app.Application
 import android.content.Context
-import com.facebook.FacebookSdk
 import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil
 import com.light.finder.di.ApplicationComponent
@@ -33,8 +32,6 @@ class SignifyApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        FacebookSdk.setAutoInitEnabled(true)
-        FacebookSdk.fullyInitialize()
         InternetUtil.init(this)
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)

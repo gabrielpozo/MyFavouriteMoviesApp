@@ -88,6 +88,7 @@ class AboutFragment : BaseFragment() {
         FacebookSdk.setAutoLogAppEventsEnabled(checked)
         FacebookSdk.setAdvertiserIDCollectionEnabled(checked)
         FacebookSdk.setAutoInitEnabled(checked)
+        facebookAnalyticsUtil.setConsent(checked)
     }
 
     private fun setObserver() {
