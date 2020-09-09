@@ -1,8 +1,10 @@
-package com.light.finder.common
+package com.light.finder.data.analytics
 
 import android.content.Context
 import android.os.Bundle
 import com.facebook.appevents.AppEventsLogger
+import com.light.finder.common.PrefManager
+import com.light.util.SingletonHolder
 import com.light.finder.extensions.bundleFor
 
 
@@ -27,21 +29,4 @@ class FacebookAnalyticsUtil private constructor(context: Context) {
 
     companion object : SingletonHolder<FacebookAnalyticsUtil, Context>(::FacebookAnalyticsUtil)
 
-}
-
-
-open class SingletonHolder<out T, in A>(private val constructor: (A) -> T) {
-
-    @Volatile
-    private var instance: T? = null
-
-    fun getInstance(arg: A): T {
-        return when {
-            instance != null -> instance!!
-            else -> synchronized(this) {
-                if (instance == null) instance = constructor(arg)
-                instance!!
-            }
-        }
-    }
 }

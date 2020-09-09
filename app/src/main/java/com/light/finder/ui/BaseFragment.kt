@@ -2,10 +2,9 @@ package com.light.finder.ui
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.facebook.appevents.AppEventsLogger
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.CameraLightFinderActivity
-import com.light.finder.common.FacebookAnalyticsUtil
+import com.light.finder.data.analytics.FacebookAnalyticsUtil
 import com.light.finder.navigators.ScreenNavigator
 import com.light.finder.di.modules.camera.LightFinderComponent
 
