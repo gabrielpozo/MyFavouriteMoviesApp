@@ -289,7 +289,7 @@ class CameraFragment : BaseFragment() {
         confirmPhoto.setOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
-                logger.logEvent(getString(R.string.send_photo))
+                facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
                 val inputStream = activity?.contentResolver?.openInputStream(uri)
                 inputStream?.let { stream ->
                     viewModel.onCameraButtonClicked(
@@ -898,7 +898,7 @@ class CameraFragment : BaseFragment() {
         controls?.cameraCaptureButton?.setSafeOnClickListener(::checkFlagOnView) {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
-                    logger.logEvent(getString(R.string.send_photo))
+                    facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
                         putBoolean(
                             getString(R.string.flash_enabled),

@@ -19,10 +19,7 @@ import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.ActivityCallback
-import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.PermissionRequester
-import com.light.finder.common.ReloadingCallback
+import com.light.finder.common.*
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
@@ -257,7 +254,7 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
-        logger.logEventOnFacebookSdk(getString(R.string.view_product)) {
+        facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
@@ -269,7 +266,7 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            logger.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
                     putString(getString(R.string.parameter_sku), productSapId)
                 putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
             }
