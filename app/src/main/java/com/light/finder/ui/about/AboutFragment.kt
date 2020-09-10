@@ -50,7 +50,6 @@ class AboutFragment : BaseFragment() {
     }
 
     private lateinit var component: AboutComponent
-    private lateinit var alertDialog: AlertDialog
     private var prefManager: PrefManager? = null
     private val viewModel: AboutViewModel by lazy { getViewModel { component.aboutViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
@@ -198,6 +197,7 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun showAboutDialog(aboutFlag: AboutDialogFlags) {
+        val alertDialog: AlertDialog
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)

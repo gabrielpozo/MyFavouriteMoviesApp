@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.SystemClock
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
@@ -26,6 +27,7 @@ import java.util.*
 
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
+private var defaultInterval: Int = 1000
 
 
 fun TextView.setHtmlText(source: String) {
@@ -205,7 +207,16 @@ fun SpannableString.withClickableSpan(
     onClickListener: () -> Unit
 ): SpannableString {
     val clickableSpan = object : ClickableSpan() {
-        override fun onClick(view: View) = onClickListener.invoke()
+        private var lastTimeClicked: Long = 0
+
+        override fun onClick(view: View) {
+            if (SystemClock.elapsedRealtime() - lastTimeClicked < defaultInterval) {
+                return
+            }
+            lastTimeClicked = SystemClock.elapsedRealtime()
+            onClickListener.invoke()
+        }
+
         override fun updateDrawState(text: TextPaint) {
             text.isUnderlineText = false
             text.color = color
