@@ -28,10 +28,6 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
-import kotlinx.android.synthetic.main.about_fragment.consentInfo
-import kotlinx.android.synthetic.main.about_fragment.layoutPrivacy
-import kotlinx.android.synthetic.main.about_fragment.noInternetBanner
-import kotlinx.android.synthetic.main.about_fragment.switchConsent
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
 import timber.log.Timber
 
@@ -101,7 +97,7 @@ class AboutFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun setView() {
         textViewVersion.text =
-            getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.VERSION_CODE.toString()
+            getString(R.string.version) + " " + BuildConfig.VERSION_NAME
 
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             val prefManager = PrefManager(_context = requireContext())
