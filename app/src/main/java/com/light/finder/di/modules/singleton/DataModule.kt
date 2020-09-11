@@ -1,6 +1,7 @@
 package com.light.finder.di.modules.singleton
 
 import com.light.domain.*
+import com.light.finder.data.source.remote.AuthRemoteDataSource
 import com.light.repository.*
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
@@ -46,6 +47,13 @@ class DataModule {
         LegendRepositoryImpl(legendRemoteDataSource, localPreferenceDataSource)
 
     @Provides
+    fun getAuthRepository(
+        authRemoteDataSource: AuthRemoteDataSource,
+        localPreferenceDataSource: LocalPreferenceDataSource
+    ): AuthRepository =
+        AuthRepositoryImpl(authRemoteDataSource, localPreferenceDataSource)
+
+    @Provides
     fun getBrowsingProductsRepository(
         remoteFetchBrowsingSource: RemoteFetchBrowsingDataSource,
         localPreferenceDataSource: LocalPreferenceDataSource,
@@ -64,5 +72,9 @@ class DataModule {
     @Provides
     fun getProductsBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): ProductBrowsingRepository =
         ProductBrowsingRepositoryImpl(localPreferenceDataSource)
+
+    @Provides
+    fun getChoiceBrowsingRepository(localPreferenceDataSource: LocalPreferenceDataSource): BrowseChoiceRepository =
+        BrowseChoiceCategoryRepositoryImpl(localPreferenceDataSource)
 
 }

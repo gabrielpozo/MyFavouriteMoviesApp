@@ -1,7 +1,7 @@
 package com.light.finder.navigators
 
-import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.CameraLightFinderActivity
@@ -9,12 +9,9 @@ import com.light.finder.CameraLightFinderActivity.Companion.BROWSING_ACTIVITY
 import com.light.finder.CameraLightFinderActivity.Companion.CAMERA_LIGHT_FINDER_ACTIVITY_ID
 import com.light.finder.R
 import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.parcelizeBrowsingList
+import com.light.finder.extensions.parcelizeChoiceBrowsingList
 import com.light.finder.extensions.startActivity
-import com.light.finder.ui.browse.BaseFilteringFragment
-import com.light.finder.ui.browse.BrowseActivity
-import com.light.finder.ui.browse.BrowseFittingFragment
-import com.light.finder.ui.browse.BrowseShapeFragment
+import com.light.finder.ui.browse.*
 
 
 class ScreenFilteringNavigator(private val activity: BrowseActivity) {
@@ -30,11 +27,6 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
     fun navigateToBrowsingShapeScreen(productBaseId: FormFactorTypeBaseId) {
-
-/*        val bundle = Bundle()
-        bundle.putInt(BrowseShapeFragment.SHAPE_ID_KEY, productBaseId)
-        val browseShapeFragment = BrowseShapeFragment()
-        browseShapeFragment.arguments = bundle*/
         replaceFragmentTransaction(BrowseShapeFragment.newInstance(productBaseId))
     }
 
@@ -60,20 +52,25 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
             .commit()
     }
 
-
-    fun popFragment() {
-        fragmentManager.popBackStack()
-    }
-
-    fun navigateToResultCategories(productsShapeSelected: List<ShapeBrowsing>) {
+    fun navigateToResultCategories(productsChoiceSelected: List<ChoiceBrowsing>) {
         activity.startActivity<CameraLightFinderActivity> {
             putExtra(CAMERA_LIGHT_FINDER_ACTIVITY_ID, BROWSING_ACTIVITY)
             putParcelableArrayListExtra(
                 CameraLightFinderActivity.BROWSING_SHAPE_VALUES_ID,
-                productsShapeSelected.parcelizeBrowsingList()
+                productsChoiceSelected.parcelizeChoiceBrowsingList()
             )
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+
+    fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
+        replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
+    }
+
+
+    fun popFragment() {
+        fragmentManager.popBackStack()
     }
 
 

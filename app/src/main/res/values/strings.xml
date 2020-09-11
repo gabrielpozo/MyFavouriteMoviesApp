@@ -39,7 +39,7 @@
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
     <string name="scan_completed">Scan completed!</string>
-    <string name="scan_completed_tip">Choose the kind of product that best fit your needs:</string>
+    <string name="scan_completed_tip">Check the scan result and choose the type of product that fits your needs:</string>
     <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
     <string name="live_preview_button_text">Live preview</string>
@@ -47,9 +47,9 @@
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
     <string name="timeout_sub">That took longer than expected</string>
-    <string name="unidentified_sub">We’re struggling to recognise a lightbulb in screen. Please try again ensuring as much of your lighbulb is in view as possible.</string>
+    <string name="unidentified_sub">We\'re struggling to recognize a light bulb in the image.</string>
     <string name="ok">OK</string>
-    <string name="oops">Oops!</string>
+    <string name="oops">Oops</string>
     <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="error_sub_not_available">Sorry! We recognised your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
@@ -57,8 +57,16 @@
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
     <string name="enable_gallery_access">LightFinder wants to access your photos</string>
+    <string name="enable_live_preview_access">LightFinder wants to access your camera</string>
     <string name="enable_subtitle">To identify your light bulb using LightFinder, please enable camera permissions in Settings.</string>
     <string name="enable_gallery_subtitle">This way, you can use a photo to find an exact match or recommendation.</string>
+    <string name="enable_live_preview_subtitle">This way, you can see how the color temperature would look in your own environment.</string>
+
+    //BAD REQUEST CART
+    <string name="product_not_found_description">The product cannot be added. Please try again at a later time. (404)</string>
+    <string name="out_of_stock_description">This product is sold out. We are working to refill the warehouse. (422)</string>
+    <string name="product_disable_description">The product cannot be added. Please try again at a later time. (424)</string>
+    <string name="out_of_stock">Out of stock</string>
 
     <string name="enable_camera_button">Go to Settings</string>
     <string name="added_to_cart">Added to cart</string>
@@ -79,7 +87,9 @@
     <string name="privacy_notice">Privacy Notice</string>
     <string name="i_agree_with_the">I agree with the</string>
     <string name="terms_of_use_text">Terms of Use</string>
-    <string name="share_my_usage_data_to_help_improve_the_app">Share my usage data to help improve the app</string>
+    <string name="share_my_usage_data_to_help_improve_the_app">Consent to share my usage data to help improve the app, and data with social media and other providers to receive targeted Signify advertisements. See Cookie Notice</string>
+    <string name="cookie_notice_text">Cookie Notice</string>
+    <string name="privacy_note">We respect your privacy. By using the app your personal data will be processed in accordance with our Privacy Notice</string>
     <string name="_2020_signify_holding_all_rights_reserved">© 2020 Signify Holding. All rights reserved.</string>
     <string name="version">Version</string>
     <string name="lightfinder">LightFinder</string>
@@ -118,7 +128,6 @@
     <string name="open_terms_of_use">open_terms_of_use</string>
     <string name="open_privacy_notice">open_privacy_notice</string>
     <string name="payment_successful">payment_successful</string>
-    <string name="view_product">view_product</string>
     <string name="no_internet_banner">no_internet_banner</string>
     <string name="parameter_sku">sku</string>
     <string name="photo_help">photo_help_tips</string>
@@ -126,6 +135,11 @@
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
     <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
+    <string name="add_to_cart_error">add_to_cart_error</string>
+    <string name="product_not_found_event_tag">product_not_found</string>
+    <string name="product_disabled_event_tag">product_disabled</string>
+    <string name="out_of_stock_event_tag">out_of_stock</string>
+
 
     // Sticky Header Product Details
     <string name="sticky_header_title">%s %sW %s</string>
@@ -150,4 +164,15 @@
     <string name="search">Search</string>
     <string name="skip">Skip</string>
     <string name="not_available">Not available for this fitting</string>
+    <string name="not_available_choice">Not available for this fitting and shape</string>
+    <string name="what_type_of_light_do_you_prefer">What category do you need?</string>
+    <string name="product_category">Product category</string>
+
+    <!-- Facebook SDK-->
+    <string name="facebook_app_id">2579741185672513</string>
+    <string name="value">value</string>
+    <string name="view_product">view_product</string>
+    <string name="add_to_cart_fb">add_to_cart</string>
+    <string name="payment_succesful">payment_successful</string>
+    <string name="faq">FAQ</string>
 </resources>

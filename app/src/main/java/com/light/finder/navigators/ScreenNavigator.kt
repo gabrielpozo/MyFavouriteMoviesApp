@@ -2,6 +2,7 @@ package com.light.finder.navigators
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
@@ -15,6 +16,7 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
+import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -133,8 +135,8 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     fun popFragmentNot(): Boolean {
         val isFragmentPopped = fragNavController.popFragment().not()
         val current = getCurrentFragment()
-        if(current is CameraFragment){
-            current.restoreCamera()
+        if (current is CameraFragment) {
+            current.restoreCameraFromScanning()
         }
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
@@ -150,19 +152,8 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
 
-    fun navigateToVariationScreen(productList: List<Product>) {
-        firebaseAnalytics.setCurrentScreen(
-            activity,
-            activity.getString(R.string.product_variations),
-            null
-        )
-        activity.startActivityForResult<ProductVariationsLightFinderActivity> {
-            putParcelableArrayListExtra(
-                ProductVariationsLightFinderActivity.PRODUCTS_OPTIONS_ID_KEY,
-                productList.parcelizeProductList()
-            )
-        }
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    fun navigateToSettings() {
+        activity.startActivity(Intent(Settings.ACTION_SETTINGS))
     }
 
     fun navigateToLiveAmbiance(listCctType: List<CctType>) {
@@ -229,7 +220,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     fun navigateToBrowsingFiltering() {
-        activity.startActivity<BrowseActivity> { }
+        activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {}
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }

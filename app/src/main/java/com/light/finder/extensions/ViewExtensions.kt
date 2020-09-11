@@ -4,7 +4,13 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.SystemClock
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +27,8 @@ import java.util.*
 
 private const val bitmapWidth = 1650
 private const val bitmapHeight = 2200
+private var defaultInterval: Int = 1000
+
 
 fun TextView.setHtmlText(source: String) {
     this.text = HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -91,6 +99,58 @@ fun View.slideVertically(distance: Float, duration: Long = 500, hide: Boolean = 
         })
 }
 
+fun View.fadeOut(duration: Long = 200L, hide: Boolean = true) {
+    val view = this
+    this.animate()
+        .alpha(0F)
+        .setDuration(duration)
+        .setListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                if (hide) {
+                    view.gone()
+                }
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+}
+
+
+fun View.fadeIn(duration: Long = 500L) {
+    val view = this
+    view.visible()
+    view.alpha = 0F
+    this.animate()
+        .setStartDelay(500L)
+        .alpha(1F)
+        .setDuration(duration)
+        .setListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+        })
+}
+
 fun ImageView.loadFile(file: File) {
     Glide.with(this).load(file).diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true).into(this)
@@ -139,6 +199,38 @@ fun String?.getSplitUrl(): String {
     }
 
     return chain
+}
+
+fun SpannableString.withClickableSpan(
+    clickablePart: String,
+    color: Int,
+    onClickListener: () -> Unit
+): SpannableString {
+    val clickableSpan = object : ClickableSpan() {
+        private var lastTimeClicked: Long = 0
+
+        override fun onClick(view: View) {
+            if (SystemClock.elapsedRealtime() - lastTimeClicked < defaultInterval) {
+                return
+            }
+            lastTimeClicked = SystemClock.elapsedRealtime()
+            onClickListener.invoke()
+        }
+
+        override fun updateDrawState(text: TextPaint) {
+            text.isUnderlineText = false
+            text.color = color
+            text.typeface = Typeface.DEFAULT_BOLD
+        }
+    }
+    val clickablePartStart = indexOf(clickablePart)
+    setSpan(
+        clickableSpan,
+        clickablePartStart,
+        clickablePartStart + clickablePart.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    return this
 }
 
 fun Int.pluralOrSingular() =

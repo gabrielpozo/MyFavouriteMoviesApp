@@ -37,6 +37,10 @@ class ApplicationModule {
         BrowsingRemoteDataSource()
 
     @Provides
+    fun getAuthRemoteDataSource(): AuthRemoteDataSource =
+        AuthRemoteDataSource()
+
+    @Provides
     fun getMoviesDao(app: Application): BrowseDao = BrowseRoomDataBase.getDatabase(app).browseDao()
 
     @Provides

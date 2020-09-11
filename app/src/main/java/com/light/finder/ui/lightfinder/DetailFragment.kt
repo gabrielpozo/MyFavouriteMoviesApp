@@ -1,5 +1,6 @@
 package com.light.finder.ui.lightfinder
 
+import android.Manifest
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
@@ -18,9 +19,7 @@ import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.ActivityCallback
-import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.ReloadingCallback
+import com.light.finder.common.*
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
@@ -58,6 +57,8 @@ class DetailFragment : BaseFragment() {
     private lateinit var filterColorAdapter: FilterColorAdapter
     private lateinit var filterFinishAdapter: FilterFinishAdapter
     private lateinit var filterConnectivityAdapter: FilterConnectivityAdapter
+    private lateinit var cameraPermissionRequester: PermissionRequester
+
 
     private var isSingleImage: Boolean = true
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -94,8 +95,11 @@ class DetailFragment : BaseFragment() {
         activity?.run {
             component = lightFinderComponent.plus(DetailModule())
             connectivityRequester = ConnectivityRequester(this)
+            cameraPermissionRequester = PermissionRequester(this, Manifest.permission.CAMERA)
 
         } ?: throw Exception("Invalid Activity")
+
+
 
         setNavigationObserver()
         setDetailObservers()
@@ -151,6 +155,11 @@ class DetailFragment : BaseFragment() {
 
 
     private fun addToCart() {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
+            putString("CURRENCY", "USD")
+            putString("ITEMS", productSapId)
+            putFloat("VALUE", pricePerPack)
+        }
         viewModel.onRequestAddToCart(productSapId = productSapId)
         cartAnimation.visible()
         cartAnimation.playAnimation()
@@ -168,7 +177,6 @@ class DetailFragment : BaseFragment() {
                     it2
                 )
             }
-
         }
     }
 
@@ -235,13 +243,20 @@ class DetailFragment : BaseFragment() {
     private fun setDetailObservers() {
         viewModel.modelSapId.observe(viewLifecycleOwner, Observer(::observeProductSapId))
         viewModel.modelRequest.observe(viewLifecycleOwner, Observer(::observeUpdateUi))
-        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeErrorResponse))
+        viewModel.modelDialog.observe(viewLifecycleOwner, Observer(::observeDialogStatus))
         viewModel.modelItemCountRequest.observe(viewLifecycleOwner, Observer(::observeItemCount))
         viewModel.modelCctType.observe(viewLifecycleOwner, Observer(::observeCctType))
+        viewModel.modelPermissionStatus.observe(
+            viewLifecycleOwner,
+            Observer(::observePermissionStatus)
+        )
     }
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
+        facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -251,7 +266,12 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
+                    putString(getString(R.string.parameter_sku), productSapId)
+                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
+            }
+
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)
@@ -286,21 +306,90 @@ class DetailFragment : BaseFragment() {
 
     }
 
-    private fun observeErrorResponse(modelErrorEvent: Event<DetailViewModel.ServerError>) {
-        Timber.e("Add to cart failed")
-        cartAnimation.cancelAnimation()
-        showErrorDialog(
-            getString(R.string.sorry),
-            getString(R.string.cannot_added),
-            getString(R.string.ok),
-            false
-        )
+    private fun observeDialogStatus(modelErrorEvent: Event<DetailViewModel.DialogModel>) {
+        modelErrorEvent.getContentIfNotHandled()?.let { modelDialog ->
+            when (modelDialog) {
+                is DetailViewModel.DialogModel.ServerError -> {
+                    Timber.e("Add to cart failed")
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.sorry),
+                        getString(R.string.cannot_added),
+                        getString(R.string.ok),
+                        false
+                    )
+
+                }
+                is DetailViewModel.DialogModel.PermissionPermanentlyDenied -> {
+                    showErrorDialog(
+                        getString(R.string.enable_live_preview_access),
+                        getString(R.string.enable_live_preview_subtitle),
+                        getString(R.string.enable_camera_button),
+                        true
+                    )
+                }
+                is DetailViewModel.DialogModel.ProductNotFound -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_not_found_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+
+                    }
+                }
+                is DetailViewModel.DialogModel.OutStock -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.out_of_stock),
+                        getString(R.string.out_of_stock_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+
+                    }
+                }
+                is DetailViewModel.DialogModel.ProductDisable -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_disable_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                    }
+                }
+
+            }
+        }
+
     }
 
 
     private fun observeCctType(modelCctTypeEvent: Event<DetailViewModel.CctColorsSelected>) {
         modelCctTypeEvent.getContentIfNotHandled()?.let { contentCctList ->
             screenNavigator.navigateToLiveAmbiance(contentCctList.cctTypeList)
+        }
+    }
+
+    private fun observePermissionStatus(modelPermissionStatus: DetailViewModel.PermissionStatus) {
+        when (modelPermissionStatus) {
+            is DetailViewModel.PermissionStatus.PermissionGranted -> {
+                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+            }
+            is DetailViewModel.PermissionStatus.PermissionDenied -> {
+                //TODO Permission Denied
+            }
         }
     }
 
@@ -322,23 +411,37 @@ class DetailFragment : BaseFragment() {
         dialogView.buttonPositive.text = buttonPositiveText
 
         dialogView.buttonPositive.setOnClickListener {
-            alertDialog.dismiss()
+            if (neutralButton) {
+                viewModel.onGoToSettingsClicked()
+            } else {
+                alertDialog.dismiss()
+            }
         }
 
+
         dialogView.buttonNegative.gone()
-        dialogView.buttonNeutral.gone()
+        if (neutralButton) {
+            dialogView.buttonNeutral.text = getString(R.string.not_now)
+            dialogView.buttonNeutral.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+        } else {
+            dialogView.buttonNeutral.gone()
+        }
         alertDialog.show()
 
     }
 
     private fun setNavigationObserver() {
-        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
+        viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToSettings))
     }
 
 
-    private fun navigateToProductList(navigationModel: Event<DetailViewModel.NavigationModel>) {
-        navigationModel.getContentIfNotHandled()?.let { navModel ->
-            screenNavigator.navigateToVariationScreen(navModel.productList)
+    private fun navigateToSettings(navigationModel: Event<DetailViewModel.NavigationModelSettings>) {
+        navigationModel.getContentIfNotHandled()?.let {
+            screenNavigator.navigateToSettings()
+            alertDialog.dismiss()
         }
     }
 
@@ -365,34 +468,18 @@ class DetailFragment : BaseFragment() {
 
     private fun populateStickyHeaderData(product: Product) {
         // product sticky header
-        val formFactorType = getLegendTagPrefFormFactor(
-            product.formfactorType,
-            filterTypeList = localPreferences.loadFormFactorLegendTags(),
-            legendTag = FORM_FACTOR_LEGEND_TAG
-        ).toLowerCase()
-
-        val stickyHeaderPacks = String.format(
-            getString(R.string.sticky_header_packs),
-            product.qtySkuCase,
-            product.qtySkuCase.pluralOrSingular(),
-            product.qtyLampSku,
-            formFactorType,
-            product.qtyLampSku.pluralOrSingular()
-        )
-
-        val stickyHeaderTitle = String.format(
-            getString(R.string.sticky_header_title),
-            product.categoryName, product.wattageReplaced, product.factorBase
-        )
 
         val pricePerPack = String.format(
             getString(R.string.sticky_header_price),
             product.pricePack
         )
 
-        sticky_header_title.text = stickyHeaderTitle
-        sticky_header_packs.text = stickyHeaderPacks
+        sticky_header_title.text = product.stickyHeaderFirstLine
+        sticky_header_packs.text = product.stickyHeaderSecondLine
         sticky_header_price.text = pricePerPack
+
+        sticky_header_packs.invalidate()
+        sticky_header_packs.requestLayout()
     }
 
     private fun setLivePreviewButton(product: Product) {
@@ -415,9 +502,17 @@ class DetailFragment : BaseFragment() {
                     localPreferences.loadLegendCctFilterNames()
                 )
             ) {
-                viewModel.onRetrievingCctSelectedColors(localPreferences.loadLegendCctFilterNames())
+                cameraPermissionRequester.request({ isPermissionGranted ->
+                    viewModel.onCameraPermissionRequested(isPermissionGranted)
+                }, (::observePermanentlyDeniedPermission))
             }
         }
+    }
+
+    private fun observePermanentlyDeniedPermission(isPermanentlyDenied: Boolean) {
+        viewModel.onPermissionDenied(isPermanentlyDenied, false)
+
+        //TODO
     }
 
     private fun setViewPager() {
@@ -569,7 +664,9 @@ class DetailFragment : BaseFragment() {
         }
 
         filterConnectivityAdapter.filterListConnectivity =
-            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(localPreferences.loadLegendConnectivityNames())
+            filterConnectivity.filterConnectivityButtons.sortConnectivityByOrderField(
+                localPreferences.loadLegendConnectivityNames()
+            )
     }
 
     private fun observeProductSelectedResult(productSelectedModel: DetailViewModel.ProductSelectedModel) {
@@ -580,7 +677,8 @@ class DetailFragment : BaseFragment() {
         populateProductData(productSelectedModel.productSelected)
         populateStickyHeaderData(productSelectedModel.productSelected)
 
-        textViewWattage.text = getString(R.string.wattage_detail,
+        textViewWattage.text = getString(
+            R.string.wattage_detail,
             productSelectedModel.productSelected.wattageReplaced.toString(),
             productSelectedModel.productSelected.wattageReplacedExtra
         )

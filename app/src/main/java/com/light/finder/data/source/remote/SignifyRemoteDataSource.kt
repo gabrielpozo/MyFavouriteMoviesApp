@@ -13,21 +13,20 @@ import com.light.util.IMMERSIVE_FLAG_TIMEOUT
 import kotlinx.coroutines.withTimeout
 
 
-class SignifyRemoteDataSource : BaseDataSource(),
+class SignifyRemoteDataSource : BaseDataSource<CategoryResultDto, List<Message>>(),
     RemoteDataSource {
 
     override suspend fun fetchMessages(base64: String): Result<List<Message>> =
-        getResult(::mapResultToDomainModel) {
+        getResult {
             withTimeout(IMMERSIVE_FLAG_TIMEOUT) {
                 MessageRemoteUtil.service.fetchMessageAsync(Image(BASE64_PREFIX + base64))
             }
         }
+
+    override fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> {
+        return categoryResult.messageList?.map(mapServerMessagesToDomain)!!
+    }
+
+    data class Image(@SerializedName("image") private val base: String)
+
 }
-
-
-private fun mapResultToDomainModel(categoryResult: CategoryResultDto): List<Message> {
-    return categoryResult.messageList?.map(mapServerMessagesToDomain)!!
-}
-
-
-data class Image(@SerializedName("image") private val base: String)

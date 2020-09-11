@@ -4,11 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.airbnb.paris.extensions.style
+import com.facebook.FacebookSdk
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.CameraLightFinderActivity
@@ -31,12 +34,13 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
             "https://www.signify.com/global/terms-of-use/mobile-apps/signify-lightfinder-en"
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
+        const val COOKIES_NOTICE_URL =
+            "https://www.signify.com/global/privacy/legal-information/cookies-notice"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
     private var prefManager: PrefManager? = null
     private lateinit var component: TermsComponent
-    private lateinit var alertDialog: AlertDialog
     private val viewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
 
@@ -51,6 +55,8 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         prefManager = PrefManager(this)
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
 
+        setFacebookConsent(switchConsent.isChecked )
+
         if (!InternetUtil.isInternetOn()) {
             displayNoInternetBanner()
         }
@@ -60,10 +66,17 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
 
     }
 
+    private fun setFacebookConsent(checked: Boolean) {
+        FacebookSdk.setAutoLogAppEventsEnabled(checked)
+        FacebookSdk.setAdvertiserIDCollectionEnabled(checked)
+        FacebookSdk.setAutoInitEnabled(checked)
+    }
+
     private fun setView() {
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             FirebaseAnalytics.getInstance(this)
                 .setAnalyticsCollectionEnabled(isChecked)
+            setFacebookConsent(isChecked)
             prefManager?.isConsentAccepted = isChecked
         }
 
@@ -108,6 +121,24 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             val prefManager = PrefManager(_context = this)
             prefManager.isConsentAccepted = isChecked
+        }
+
+        setConsentToggleText()
+    }
+
+    private fun setConsentToggleText() {
+        // make part of the text clickable and set color
+        val consentSpannableString =
+            SpannableString(getText(R.string.share_my_usage_data_to_help_improve_the_app))
+        val clickablePart = getString(R.string.cookie_notice_text)
+        val clickableColor = getColor(R.color.primaryOnLight)
+        consentInfo.movementMethod = LinkMovementMethod.getInstance()
+        consentInfo.text = consentSpannableString.withClickableSpan(clickablePart, clickableColor) {
+            if (InternetUtil.isInternetOn()) {
+                showErrorDialog(COOKIES_NOTICE_URL)
+            } else {
+                displayNoInternetBanner()
+            }
         }
     }
 
@@ -161,6 +192,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun showErrorDialog(URL: String) {
+        val alertDialog: AlertDialog
         val dialogBuilder = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)
