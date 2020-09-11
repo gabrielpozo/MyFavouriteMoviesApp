@@ -244,7 +244,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun setBrowsingClickable() {
-        browseButton.setOnClickListener {
+        browseButton.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 viewModel.onBrowsingButtonClicked()
             } else {
@@ -781,7 +781,7 @@ class CameraFragment : BaseFragment() {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
-            imageGalleryButton.setOnClickListener {
+            imageGalleryButton.setSafeOnClickListener {
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))

@@ -66,13 +66,13 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        textReset.setOnClickListener {
+        textReset.setSafeOnClickListener {
             viewModel.onResetButtonPressed()
         }
-        textSkip.setOnClickListener {
+        textSkip.setSafeOnClickListener {
             viewModel.onSkipButtonClicked()
         }
-        buttonSearch.setOnClickListener {
+        buttonSearch.setSafeOnClickListener {
             viewModel.onSearchButtonClicked()
         }
 
@@ -104,6 +104,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             }
         })
     }
+
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)

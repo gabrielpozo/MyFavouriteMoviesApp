@@ -58,7 +58,7 @@ class BrowseResultAdapter(
             filterFinishList,
             productCategoryNameList
         )
-        holder.itemView.setOnClickListener { listener(category) }
+        holder.itemView.setSafeOnClickListener { listener(category) }
     }
 
     private fun getMaxIndices(categories: List<Category>): List<Int> {
