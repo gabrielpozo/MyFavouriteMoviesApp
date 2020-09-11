@@ -39,7 +39,7 @@ class BrowseResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == TYPE_HEADER) {
-            // Here Inflating your header view
+            // Here Inflating the header view
             val view = parent.inflate(R.layout.browse_results_header, false)
 
             return HeaderViewHolder(view)
@@ -58,11 +58,10 @@ class BrowseResultAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        if (holder is HeaderViewHolder) {
+            holder.bind(categories.size, shapeIdentified)
 
-        if (holder is HeaderViewHolder){
-            holder.bind(categories.size, "identified as E17 test")
-
-        } else if (holder is ItemViewHolder){
+        } else if (holder is ItemViewHolder) {
             val category = categories[position - 1]
             val indexes = getMaxIndices(categories)
             holder.itemView.colorsLayout.removeAllViews()
@@ -108,11 +107,25 @@ class BrowseResultAdapter(
 
     class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(
-            categorySize : Int,
-            shapeIdentified : String
+            categorySize: Int,
+            shapeIdentified: String
         ) {
-            itemView.textViewResults.text = categorySize.toString()
-            itemView.textViewFitting.text = "Based on " + shapeIdentified
+            when (categorySize) {
+                1 -> {
+                    itemView.textViewResults.text =
+                        itemView.context.getString(R.string.text_result)
+                            .getIntFormatter(categorySize)
+                }
+                else -> {
+                    itemView.textViewResults.text =
+                        itemView.context.getString(R.string.text_results)
+                            .getIntFormatter(categorySize)
+                }
+            }
+            itemView.textViewFitting.text =
+                itemView.context.getString(R.string.based_on_result_fitting).format(
+                    shapeIdentified
+                )
 
         }
     }

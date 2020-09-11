@@ -4,14 +4,6 @@
     android:orientation="vertical"
     android:layout_marginBottom="24dp"
     android:layout_height="wrap_content">
-    <!--Results header-->
-
-    <View
-        android:id="@+id/results_divider"
-        android:layout_gravity="bottom"
-        android:background="@color/backgroundDarkPressed"
-        android:layout_width="match_parent"
-        android:layout_height="2dp" />
 
     <TextView
         android:id="@+id/textViewResults"
