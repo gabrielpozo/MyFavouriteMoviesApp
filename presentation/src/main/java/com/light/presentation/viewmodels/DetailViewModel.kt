@@ -7,6 +7,9 @@ import com.light.presentation.common.Event
 import com.light.presentation.common.getSelectedProduct
 import com.light.presentation.common.setSelectedProduct
 import com.light.usecases.*
+import com.light.util.OUT_STOCK
+import com.light.util.PRODUCT_DISABLE
+import com.light.util.PRODUCT_NOT_FOUND
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -28,8 +31,8 @@ class DetailViewModel(
      * observable product page variables
      */
 
-    private val _modelNavigation = MutableLiveData<Event<NavigationModel>>()
-    val modelNavigation: LiveData<Event<NavigationModel>>
+    private val _modelNavigation = MutableLiveData<Event<NavigationModelSettings>>()
+    val modelNavigation: LiveData<Event<NavigationModelSettings>>
         get() = _modelNavigation
 
     private val _modelSapId = MutableLiveData<ContentProductId>()
@@ -38,8 +41,8 @@ class DetailViewModel(
             return _modelSapId
         }
 
-    private val _modelDialog = MutableLiveData<Event<ServerError>>()
-    val modelDialog: LiveData<Event<ServerError>>
+    private val _modelDialog = MutableLiveData<Event<DialogModel>>()
+    val modelDialog: LiveData<Event<DialogModel>>
         get() = _modelDialog
 
     private val _modelRequest = MutableLiveData<RequestModelContent>()
@@ -53,6 +56,10 @@ class DetailViewModel(
     private val _modelCctType = MutableLiveData<Event<CctColorsSelected>>()
     val modelCctType: LiveData<Event<CctColorsSelected>>
         get() = _modelCctType
+
+    private val _modelPermissionStatus = MutableLiveData<PermissionStatus>()
+    val modelPermissionStatus: LiveData<PermissionStatus>
+        get() = _modelPermissionStatus
 
     /**
      * observable variation variables
@@ -94,7 +101,7 @@ class DetailViewModel(
     /***
      * product page data classes
      */
-    class NavigationModel(val productList: List<Product>)
+    object NavigationModelSettings
 
     data class RequestModelContent(val cartItem: Event<Cart>)
 
@@ -104,7 +111,20 @@ class DetailViewModel(
 
     data class CctColorsSelected(val cctTypeList: List<CctType>)
 
-    object ServerError
+    sealed class PermissionStatus {
+        object PermissionGranted : PermissionStatus()
+        object PermissionDenied : PermissionStatus()
+    }
+
+
+    sealed class DialogModel {
+        data class PermissionPermanentlyDenied(val isPermanentlyDenied: Boolean) : DialogModel()
+        object ServerError : DialogModel()
+        object ProductNotFound : DialogModel()
+        object OutStock : DialogModel()
+        object ProductDisable : DialogModel()
+
+    }
 
     /***
      * variation data classes
@@ -140,7 +160,8 @@ class DetailViewModel(
                 getAddToCart.execute(
                     ::handleSuccessResponse,
                     ::handleErrorResponse,
-                    params = *arrayOf(productSapId)
+                    onBadRequest = ::handleBadRequestResponse,
+                    params = * arrayOf(productSapId)
                 )
             }
         }
@@ -169,12 +190,26 @@ class DetailViewModel(
         _modelRequest.value = RequestModelContent(Event(cartItem))
     }
 
-    private fun handleErrorResponse(
-        hasBeenCancelled: Boolean,
-        exception: Exception?,
-        message: String
+    private fun handleErrorResponse() {
+        _modelDialog.value = Event(DialogModel.ServerError)
+    }
+
+    private fun handleBadRequestResponse(
+        codeBadRequest: Int
     ) {
-        _modelDialog.value = Event(ServerError)
+        when (codeBadRequest) {
+            PRODUCT_NOT_FOUND -> {
+                _modelDialog.value = Event(DialogModel.ProductNotFound)
+            }
+
+            OUT_STOCK -> {
+                _modelDialog.value = Event(DialogModel.OutStock)
+            }
+
+            PRODUCT_DISABLE -> {
+                _modelDialog.value = Event(DialogModel.ProductDisable)
+            }
+        }
     }
 
     private fun handleItemCountSuccessResponse(cartItemCount: CartItemCount) {
@@ -391,6 +426,24 @@ class DetailViewModel(
             val product = products[0].also { it.isSelected = true }
             _modelSapId.value = ContentProductId(product.sapID12NC.toString())
         }
+    }
+
+    fun onCameraPermissionRequested(isPermissionGranted: Boolean) {
+        if (isPermissionGranted) {
+            _modelPermissionStatus.value = PermissionStatus.PermissionGranted
+        } else {
+            _modelPermissionStatus.value = PermissionStatus.PermissionDenied
+        }
+    }
+
+    fun onPermissionDenied(isPermanentlyDenied: Boolean, b: Boolean) {
+        if (isPermanentlyDenied) {
+            _modelDialog.value = Event(DialogModel.PermissionPermanentlyDenied(isPermanentlyDenied))
+        }
+    }
+
+    fun onGoToSettingsClicked() {
+        _modelNavigation.value = Event(NavigationModelSettings)
     }
 
 }

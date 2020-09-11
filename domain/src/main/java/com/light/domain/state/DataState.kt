@@ -5,6 +5,7 @@ sealed class DataState<out T> {
     data class Empty<T>(val message: String) : DataState<T>()
     data class NoResult<T>(val data: T) : DataState<T>()
     data class ProductsNotAvailable<T>(val data: T) : DataState<T>()
+    data class BadRequest<T>(val code: Int) : DataState<T>()
     data class Error(
         val errorMessage: String,
         val cause: Exception? = null,

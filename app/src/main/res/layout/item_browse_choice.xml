@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:padding="3dp"
+    android:id="@+id/choiceBg"
+    android:background="@drawable/browse_rounded_edge_unselected">
+
+
+    <androidx.cardview.widget.CardView app:cardCornerRadius="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_gravity="center"
+            android:background="@color/backgroundLight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:gravity="start"
+                android:textAlignment="textStart"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="7dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewBrowseIcon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:id="@+id/textBrowseBulbName"
+                    style="@style/TitleCategory"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp"
+                    android:lineSpacingExtra="2sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="LED Non-Dimmable" />
+
+                <TextView
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:id="@+id/textBrowseBulbDesc"
+                    style="@style/BulbCategory"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="6sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Everyday value everywhere in your home. These LED light bulbs provide a Soft White or Daylight." />
+
+                <TextView
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:id="@+id/textBrowseResultsCount"
+                    style="@style/DisableTextDarkSubtitle"
+                    android:lineSpacingExtra="6sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="results" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewBrowseIcon"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginEnd="16dp"
+                tools:src="@drawable/category_placeholder"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

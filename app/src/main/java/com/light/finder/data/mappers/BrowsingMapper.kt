@@ -55,7 +55,9 @@ val mapProductsBrowsingToDomain: (ProductBrowsingListDto) -> List<ProductBrowsin
                     productImage = it.product_image,
                     productSpec1 = it.product_spec1,
                     productSpec2 = it.product_spec2,
-                    productSpec3 = it.product_spec3
+                    productSpec3 = it.product_spec3,
+                    stickyHeaderFirstLine = it.stickyHeaderFirstLine,
+                    stickyHeaderSecondLine = it.stickyHeaderSecondLine
                 )
             )
         }
@@ -160,6 +162,8 @@ val mapBrowsingProductToProductDomain: (ProductBrowsing) -> Product =
             produtCategoryCode = productBrowse.productCategoryCode,
             wattageReplacedExtra = productBrowse.productWattageReplacedExtra,
             productConnectionCode = productBrowse.productConnectionCode,
-            productPrio = productBrowse.productPrio
+            productPrio = productBrowse.productPrio,
+            stickyHeaderFirstLine = productBrowse.stickyHeaderFirstLine,
+            stickyHeaderSecondLine = productBrowse.stickyHeaderSecondLine
         )
     }

@@ -49,5 +49,7 @@ data class ProductBrowsingDto(
     @SerializedName("product_image") val product_image: List<String>,
     @SerializedName("product_spec1") val product_spec1: Double,
     @SerializedName("product_spec2") val product_spec2: String,
-    @SerializedName("product_spec3") val product_spec3: List<Int>
+    @SerializedName("product_spec3") val product_spec3: List<Int>,
+    @SerializedName("sticky_header_line1") var stickyHeaderFirstLine: String,
+    @SerializedName("sticky_header_line2") var stickyHeaderSecondLine: String
 )

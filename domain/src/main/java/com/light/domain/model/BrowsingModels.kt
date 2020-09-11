@@ -45,7 +45,11 @@ data class ProductBrowsing(
     val productSpec1: Double,
     val productSpec2: String,
     val productSpec3: List<Int>,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    var stickyHeaderFirstLine: String,
+    var stickyHeaderSecondLine: String
 )
 
 data class Key(val productCategoryCode: Int, val productFormFactorShapeId: Int)
+data class KeyChoice(val productCategoryCode: Int)
+
