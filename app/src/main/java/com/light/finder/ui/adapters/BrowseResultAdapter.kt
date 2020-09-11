@@ -68,10 +68,13 @@ class BrowseResultAdapter(
         } else if (holder is ItemViewHolder) {
             val category = categories[position - headerOffset]
             val indexes = getMaxIndices(categories)
+
+            // removing view to avoid duplicates
             holder.itemView.colorsLayout.removeAllViews()
             holder.itemView.wattageLayout.removeAllViews()
             holder.itemView.imagesLayout.removeAllViews()
             holder.itemView.thumbnail.removeAllViews()
+
             holder.bind(
                 category,
                 indexes,
