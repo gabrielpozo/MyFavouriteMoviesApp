@@ -34,6 +34,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var isExpended = false
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
@@ -84,7 +85,9 @@ class BrowseFittingFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {}
+                override fun onStateChanged(p0: View, state: Int) {
+                    isExpended = state == BottomSheetBehavior.STATE_EXPANDED
+                }
             })
 
         }
@@ -101,13 +104,11 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
-        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
                 //it is scrolling up
-                if (currentFirstVisible > firstVisible) {
+                if ((layoutManager.findFirstCompletelyVisibleItemPosition() > 0) && isExpended) {
                     line_divider_fitting.visible()
                 } else {
                     line_divider_fitting.invisible()
