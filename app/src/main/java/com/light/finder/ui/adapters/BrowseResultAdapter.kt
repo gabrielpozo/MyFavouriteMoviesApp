@@ -12,7 +12,10 @@ import com.airbnb.paris.extensions.backgroundRes
 import com.airbnb.paris.extensions.layoutMarginEndDp
 import com.airbnb.paris.extensions.paddingDp
 import com.airbnb.paris.extensions.style
-import com.light.domain.model.*
+import com.light.domain.model.Category
+import com.light.domain.model.CctType
+import com.light.domain.model.FinishType
+import com.light.domain.model.ProductCategoryName
 import com.light.finder.R
 import com.light.finder.extensions.*
 import kotlinx.android.synthetic.main.browse_results_header.view.*
@@ -36,20 +39,20 @@ class BrowseResultAdapter(
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == TYPE_HEADER) {
-            // Here Inflating the header view
-            val view = parent.inflate(R.layout.browse_results_header, false)
-
-            return HeaderViewHolder(view)
-
-        } else if (viewType == TYPE_ITEM) {
-            val view = parent.inflate(R.layout.item_category, false)
-            return ItemViewHolder(view)
-        } else {
-            throw ClassCastException("Unknown viewType ${viewType}")
+        return when (viewType) {
+            TYPE_HEADER -> {
+                // Here Inflating the header view
+                val view = parent.inflate(R.layout.browse_results_header, false)
+                HeaderViewHolder(view)
+            }
+            TYPE_ITEM -> {
+                val view = parent.inflate(R.layout.item_category, false)
+                ItemViewHolder(view)
+            }
+            else -> {
+                throw ClassCastException("Unknown viewType $viewType")
+            }
         }
-
-
     }
 
     override fun getItemCount(): Int = categories.size + 1
@@ -77,8 +80,6 @@ class BrowseResultAdapter(
             holder.itemView.setOnClickListener { listener(category) }
 
         }
-
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -90,7 +91,6 @@ class BrowseResultAdapter(
 
     private fun getMaxIndices(categories: List<Category>): List<Int> {
         val max = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
-
         val maxIndices = mutableListOf<Int>()
         for (i in categories.indices) {
             if (categories[i].maxEnergySaving == max) {

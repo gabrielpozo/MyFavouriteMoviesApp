@@ -77,7 +77,7 @@ class BrowseResultFragment : BaseFragment() {
 
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
                 rvCategories.gone()
-                browseResultErrorView.visible()
+                browseNoResultsView.visible()
                 updateNoResultsData(model.message)
             }
         }

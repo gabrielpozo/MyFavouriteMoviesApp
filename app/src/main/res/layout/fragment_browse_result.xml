@@ -9,8 +9,8 @@
 
     <!--No Results View-->
     <include
-        android:id="@+id/browseResultErrorView"
-        layout="@layout/browse_result_error_layout"
+        android:id="@+id/browseNoResultsView"
+        layout="@layout/browse_no_results_layout"
         android:visibility="gone" />
 
     <!--RecyclerView-->
