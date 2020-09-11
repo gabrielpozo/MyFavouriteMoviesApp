@@ -128,6 +128,8 @@ class AboutFragment : BaseFragment() {
             }
         }
 
+
+
         layoutFaq.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.FAQ)
