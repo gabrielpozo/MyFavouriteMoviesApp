@@ -41,7 +41,6 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
 
     private var prefManager: PrefManager? = null
     private lateinit var component: TermsComponent
-    private lateinit var alertDialog: AlertDialog
     private val viewModel: TermsViewModel by lazy { getViewModel { component.termsViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
 
@@ -193,6 +192,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun showErrorDialog(URL: String) {
+        val alertDialog: AlertDialog
         val dialogBuilder = AlertDialog.Builder(this)
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)
