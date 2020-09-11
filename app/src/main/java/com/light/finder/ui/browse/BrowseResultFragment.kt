@@ -72,12 +72,12 @@ class BrowseResultFragment : BaseFragment() {
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {
             is BrowseResultViewModel.ResultBrowse.Content -> {
-                browseResultErrorView.gone()
                 updateAdapter(model.message)
-
             }
+
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
                 rvCategories.gone()
+                browseResultErrorView.visible()
                 updateNoResultsData(model.message)
             }
         }
@@ -104,8 +104,6 @@ class BrowseResultFragment : BaseFragment() {
         textViewFitting.text = getString(R.string.based_on_result_fitting).format(
             message.shapeIdentified
         )
-
-        browseResultErrorView.visible()
     }
 
 
@@ -120,9 +118,7 @@ class BrowseResultFragment : BaseFragment() {
         adapter = BrowseResultAdapter(
             viewModel::onCategoryClick,
             localPreferences.loadLegendCctFilterNames(),
-            localPreferences.loadFormFactorLegendTags(),
             localPreferences.loadLegendFinishFilterNames(),
-            localPreferences.loadFormFactorIdLegendTags(),
             localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )

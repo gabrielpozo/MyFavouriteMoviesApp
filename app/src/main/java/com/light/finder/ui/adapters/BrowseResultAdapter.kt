@@ -22,9 +22,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
 class BrowseResultAdapter(
     private val listener: (Category) -> Unit,
     private val filterColorList: List<CctType> = emptyList(),
-    private val formFactorList: List<FormFactorType> = emptyList(),
     private val filterFinishList: List<FinishType> = emptyList(),
-    private val formFactorIdList: List<FormFactorTypeId> = emptyList(),
     private val productCategoryNameList: List<ProductCategoryName> = emptyList(),
     private val shapeIdentified: String
 ) :
@@ -73,9 +71,6 @@ class BrowseResultAdapter(
                 categories.size,
                 position,
                 filterColorList,
-                formFactorList,
-                formFactorIdList,
-                shapeIdentified,
                 filterFinishList,
                 productCategoryNameList
             )
@@ -139,9 +134,6 @@ class BrowseResultAdapter(
             categoriesSize: Int,
             position: Int,
             filterColorList: List<CctType>,
-            formFactorList: List<FormFactorType>,
-            formFactorListId: List<FormFactorTypeId>,
-            shapeIdentified: String,
             finishList: List<FinishType>,
             productNameCategoryList: List<ProductCategoryName>
         ) {

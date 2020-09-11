@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp" />
 
+    <!--Header View-->
     <include
         android:id="@+id/results_header"
         layout="@layout/browse_results_header"
