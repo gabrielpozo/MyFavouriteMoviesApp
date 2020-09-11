@@ -14,7 +14,9 @@ interface LocalPreferenceDataSource {
     fun loadProductCategoryName(): List<ProductCategoryName>
     fun loadProductBrowsingTags(): List<ProductBrowsing>
     fun loadProductBrowsingFiltered(): List<ProductBrowsing>
+    fun loadProductShapeBrowsingFiltered(): List<ProductBrowsing>
     fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>)
+    fun saveShapeFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
     fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
     fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,
@@ -23,7 +25,14 @@ interface LocalPreferenceDataSource {
     ): List<ShapeBrowsing>
 
     fun getFilteredProductsMessage(shapeBrowsingList: List<ShapeBrowsing>): Message
+    fun getFilteredProductsMessageFromChoice(shapeBrowsingList: List<ChoiceBrowsing>): Message
+    fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing>
     fun getAllProductsMessage(baseIdFitting: String): Message
-    fun disclaimerAccepted(confirmed : Boolean)
-    fun isDisclaimerAccepted() : Boolean
+    fun disclaimerAccepted(confirmed: Boolean)
+    fun isDisclaimerAccepted(): Boolean
+    fun saveAccessToken(credentials: Bearer)
+    fun saveTokenType(credentials: Bearer)
+    fun loadAccessToken(): String
+    fun loadTokenType(): String
+    fun removeToken()
 }

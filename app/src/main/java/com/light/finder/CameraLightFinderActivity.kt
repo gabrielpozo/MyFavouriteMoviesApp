@@ -14,15 +14,18 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.light.finder.common.*
-import com.light.finder.data.source.remote.ShapeBrowsingParcelable
-import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
-import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
-import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
+import com.light.finder.common.ActivityCallback
+import com.light.finder.common.ConnectionLiveData
+import com.light.finder.common.ConnectionModel
+import com.light.finder.common.ReloadingCallback
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
 import com.light.finder.navigators.ScreenNavigator
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_ABOUT
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_CART
+import com.light.finder.navigators.ScreenNavigator.Companion.INDEX_LIGHT_FINDER
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.browse.BrowseResultFragment
@@ -80,13 +83,13 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         if (intent != null) {
             val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
             if (dataId.equals(BROWSING_ACTIVITY)) {
-                val shapeResult = intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(
+                val choiceResult = intent.extras?.getParcelableArrayList<ChoiceBrowsingParcelable>(
                     BROWSING_SHAPE_VALUES_ID
                 )
-                shapeResult?.let {
+                choiceResult?.let {
                     screenNavigator.setInitialRootFragment(
                         BrowseResultFragment.newInstance(
-                            shapeResult.deParcelizeBrowsingList()
+                            choiceResult.deparcelizeChoiceBrowsingList()
                         )
                     )
                 }

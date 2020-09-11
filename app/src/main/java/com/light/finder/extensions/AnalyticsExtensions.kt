@@ -4,6 +4,7 @@ package com.light.finder.extensions
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.facebook.appevents.AppEventsLogger
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.R
 import com.light.finder.ui.about.AboutFragment
@@ -19,6 +20,15 @@ inline fun bundleFor(body: Bundle.() -> Unit): Bundle =
 
 
 inline fun FirebaseAnalytics.logEventOnGoogleTagManager(
+    typeEvent: String,
+    body: Bundle.() -> Unit
+) {
+    logEvent(typeEvent, bundleFor(body))
+
+}
+
+
+inline fun AppEventsLogger.logEventOnFacebookSdk(
     typeEvent: String,
     body: Bundle.() -> Unit
 ) {

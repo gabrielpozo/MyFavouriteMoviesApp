@@ -2,7 +2,7 @@ package com.light.usecases
 
 import com.light.domain.state.DataState
 
-abstract class BaseUseCase<T> {
+abstract class BaseScanningUseCase<T> {
 
     suspend fun execute(
         onSuccess: (T) -> Unit,

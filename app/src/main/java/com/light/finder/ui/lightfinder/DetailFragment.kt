@@ -19,10 +19,7 @@ import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.ActivityCallback
-import com.light.finder.common.ConnectivityRequester
-import com.light.finder.common.PermissionRequester
-import com.light.finder.common.ReloadingCallback
+import com.light.finder.common.*
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
@@ -158,6 +155,11 @@ class DetailFragment : BaseFragment() {
 
 
     private fun addToCart() {
+        firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart)) {
+            putString("CURRENCY", "USD")
+            putString("ITEMS", productSapId)
+            putFloat("VALUE", pricePerPack)
+        }
         viewModel.onRequestAddToCart(productSapId = productSapId)
         cartAnimation.visible()
         cartAnimation.playAnimation()
@@ -175,7 +177,6 @@ class DetailFragment : BaseFragment() {
                     it2
                 )
             }
-
         }
     }
 
@@ -253,6 +254,9 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
+        facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.view_product)) {
+            putString(getString(R.string.parameter_sku), productSapId)
+        }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
@@ -262,7 +266,12 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            firebaseAnalytics.logEventOnGoogleTagManager("add_to_cart") {
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
+                    putString(getString(R.string.parameter_sku), productSapId)
+                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
+            }
+
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)
@@ -319,6 +328,48 @@ class DetailFragment : BaseFragment() {
                         true
                     )
                 }
+                is DetailViewModel.DialogModel.ProductNotFound -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_not_found_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+
+                    }
+                }
+                is DetailViewModel.DialogModel.OutStock -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.out_of_stock),
+                        getString(R.string.out_of_stock_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+
+                    }
+                }
+                is DetailViewModel.DialogModel.ProductDisable -> {
+                    cartAnimation.cancelAnimation()
+                    showErrorDialog(
+                        getString(R.string.oops),
+                        getString(R.string.product_disable_description),
+                        getString(R.string.ok),
+                        false
+                    )
+                    firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
+                        putString(getString(R.string.parameter_sku), productSapId)
+                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                    }
+                }
+
             }
         }
 
@@ -427,6 +478,8 @@ class DetailFragment : BaseFragment() {
         sticky_header_packs.text = product.stickyHeaderSecondLine
         sticky_header_price.text = pricePerPack
 
+        sticky_header_packs.invalidate()
+        sticky_header_packs.requestLayout()
     }
 
     private fun setLivePreviewButton(product: Product) {

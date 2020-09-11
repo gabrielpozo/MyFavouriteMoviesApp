@@ -5,12 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.facebook.FacebookSdk
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BuildConfig
 import com.light.finder.CameraLightFinderActivity
@@ -25,6 +29,7 @@ import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.AboutViewModel
 import kotlinx.android.synthetic.main.about_fragment.*
 import kotlinx.android.synthetic.main.layout_reusable_dialog.view.*
+import timber.log.Timber
 
 
 class AboutFragment : BaseFragment() {
@@ -34,11 +39,13 @@ class AboutFragment : BaseFragment() {
             "https://www.signify.com/global/terms-of-use/mobile-apps/signify-lightfinder-en"
         const val PRIVACY_URL =
             "https://www.signify.com/global/privacy/legal-information/privacy-notice"
+        const val FAQ_URL = "https://www.signify.com/en-us/lightfinder/support"
+        const val COOKIES_NOTICE_URL =
+            "https://www.signify.com/global/privacy/legal-information/cookies-notice"
         const val NO_INTERNET_BANNER_DELAY = 5000L
     }
 
     private lateinit var component: AboutComponent
-    private lateinit var alertDialog: AlertDialog
     private var prefManager: PrefManager? = null
     private val viewModel: AboutViewModel by lazy { getViewModel { component.aboutViewModel } }
     private lateinit var connectivityRequester: ConnectivityRequester
@@ -68,8 +75,16 @@ class AboutFragment : BaseFragment() {
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
         FirebaseAnalytics.getInstance(requireContext())
             .setAnalyticsCollectionEnabled(switchConsent.isChecked)
+
+        setFacebookConsent(switchConsent.isChecked)
     }
 
+    private fun setFacebookConsent(checked: Boolean) {
+        FacebookSdk.setAutoLogAppEventsEnabled(checked)
+        FacebookSdk.setAdvertiserIDCollectionEnabled(checked)
+        FacebookSdk.setAutoInitEnabled(checked)
+        facebookAnalyticsUtil.setConsent(checked)
+    }
 
     private fun setObserver() {
         InternetUtil.observe(viewLifecycleOwner, Observer(viewModel::onCheckNetworkConnection))
@@ -82,18 +97,22 @@ class AboutFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun setView() {
         textViewVersion.text =
-            getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.VERSION_CODE.toString()
+            getString(R.string.version) + " " + BuildConfig.VERSION_NAME
 
         switchConsent.setOnCheckedChangeListener { _, isChecked ->
             val prefManager = PrefManager(_context = requireContext())
             FirebaseAnalytics.getInstance(requireContext())
                 .setAnalyticsCollectionEnabled(isChecked)
+            setFacebookConsent(isChecked)
             prefManager.isConsentAccepted = isChecked
         }
+
+        setConsentToggleText()
+
     }
 
     private fun setClickListeners() {
-        layoutTerms.setOnClickListener {
+        layoutTerms.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.TERMS)
             } else {
@@ -101,7 +120,7 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutPrivacy.setOnClickListener {
+        layoutPrivacy.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
                 showAboutDialog(AboutDialogFlags.PRIVACY)
             } else {
@@ -109,17 +128,44 @@ class AboutFragment : BaseFragment() {
             }
         }
 
-        layoutFeedback.setOnClickListener {
+        layoutFaq.setSafeOnClickListener {
+            if (InternetUtil.isInternetOn()) {
+                showAboutDialog(AboutDialogFlags.FAQ)
+            } else {
+                displayNoInternetBanner()
+            }
+        }
+
+        layoutFeedback.setSafeOnClickListener {
             screenNavigator.navigateToUsabillaForm()
 
+        }
+
+    }
+
+    private fun setConsentToggleText() {
+        context?.let {
+            // make part of the text clickable and set color
+            val consentSpannableString =
+                SpannableString(getText(R.string.share_my_usage_data_to_help_improve_the_app))
+            val clickablePart = getString(R.string.cookie_notice_text)
+            val clickableColor = getColor(it, R.color.primaryOnLight)
+            consentInfo.movementMethod = LinkMovementMethod.getInstance()
+            consentInfo.text =
+                consentSpannableString.withClickableSpan(clickablePart, clickableColor) {
+                    if (InternetUtil.isInternetOn()) {
+                        showAboutDialog(AboutDialogFlags.COOKIES)
+                    } else {
+                        displayNoInternetBanner()
+                    }
+                }
         }
     }
 
     private fun observeNetworkConnection(model: AboutViewModel.NetworkModel) {
         when (model) {
             is AboutViewModel.NetworkModel.NetworkOnline -> {
-
-
+                Timber.d("network online")
             }
             is AboutViewModel.NetworkModel.NetworkOffline -> {
                 displayNoInternetBanner()
@@ -147,6 +193,7 @@ class AboutFragment : BaseFragment() {
     }
 
     private fun showAboutDialog(aboutFlag: AboutDialogFlags) {
+        val alertDialog: AlertDialog
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.layout_reusable_dialog, null)
         dialogBuilder.setView(dialogView)
@@ -165,6 +212,9 @@ class AboutFragment : BaseFragment() {
                 }
                 AboutDialogFlags.TERMS -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.open_terms_of_use)) {}
+                }
+                AboutDialogFlags.FAQ -> {
+                    //firebaseAnalytics.logEventOnGoogleTagManager("") {}
                 }
             }
             alertDialog.dismiss()
@@ -187,5 +237,9 @@ class AboutFragment : BaseFragment() {
         }
     }
 
-    enum class AboutDialogFlags(val url: String) { PRIVACY(PRIVACY_URL), TERMS(TERMS_URL) }
+    enum class AboutDialogFlags(val url: String) {
+        PRIVACY(PRIVACY_URL), TERMS(TERMS_URL), FAQ(FAQ_URL), COOKIES(
+            COOKIES_NOTICE_URL
+        )
+    }
 }
