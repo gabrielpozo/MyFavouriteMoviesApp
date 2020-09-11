@@ -7,7 +7,7 @@ import com.light.domain.state.DataState
 
 
 @Suppress("UNCHECKED_CAST")
-class GetNewCompatibleVariationListUseCase : BaseUseCase<List<Product>>() {
+class GetNewCompatibleVariationListUseCase : BaseScanningUseCase<List<Product>>() {
 
     override suspend fun useCaseExecution(params: Array<out Any?>): DataState<List<Product>> {
         val productList: List<Product> = params[0] as List<Product>

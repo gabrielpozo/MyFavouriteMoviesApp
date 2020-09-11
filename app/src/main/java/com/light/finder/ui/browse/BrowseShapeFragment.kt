@@ -35,6 +35,8 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private lateinit var component: BrowseShapeComponent
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var rootview: View? = null
+
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
 
@@ -43,7 +45,10 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_browse_shape, container, false)
+        if (rootview == null) {
+            rootview = inflater.inflate(R.layout.fragment_browse_shape, container, false)
+        }
+        return rootview
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +60,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    //viewModel.onRetrieveCategories(messageParcelable.deparcelizeMessage())
                     viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
                 }
         }
@@ -86,12 +90,16 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
                 //it is scrolling up
-                if (dy > 0) {
+                if (currentFirstVisible > firstVisible) {
                     line_divider.visible()
+                } else {
+                    line_divider.invisible()
                 }
             }
         })
@@ -102,7 +110,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
 
-
         context?.let {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
@@ -111,11 +118,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {
-                    if (state == RESTORED_STATE) {
-                        line_divider.invisible()
-                    }
-                }
+                override fun onStateChanged(p0: View, state: Int) {}
             })
         }
     }
@@ -127,7 +130,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         viewModel.modelBottomStatus.observe(viewLifecycleOwner, Observer(::updateStatusBottomBar))
         viewModel.modelNavigationToResult.observe(
             viewLifecycleOwner,
-            Observer(::navigatesToCategoriesResult)
+            Observer(::navigatesToCategoriesChoice)
         )
     }
 
@@ -194,10 +197,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         adapter.setShapeProductList(productFittingList)
     }
 
-    private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
+    private fun navigatesToCategoriesChoice(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsShapeSelected)
+            screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
         }
     }
-
 }

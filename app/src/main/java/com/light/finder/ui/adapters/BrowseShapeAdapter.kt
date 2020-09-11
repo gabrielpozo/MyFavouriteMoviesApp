@@ -9,7 +9,6 @@ import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
-import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 import kotlinx.android.synthetic.main.item_browse_shape.view.*
 
 class BrowseShapeAdapter(
@@ -83,10 +82,18 @@ class BrowseShapeAdapter(
                     )
                 }
                 else -> {
-                    itemView.textBrowseResultsCount.text =
-                        itemView.context.getString(R.string.not_available)
+                    makeItemDisabled()
                 }
             }
+        }
+
+        private fun makeItemDisabled() {
+            itemView.isClickable = false
+            itemView.isEnabled = false
+            itemView.textBrowseBulbName.alpha = 0.4F
+            itemView.imageViewBrowseIcon.alpha = 0.4F
+            itemView.textBrowseResultsCount.text =
+                itemView.context.getString(R.string.not_available)
         }
     }
 }

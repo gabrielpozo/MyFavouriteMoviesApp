@@ -8,14 +8,15 @@ import com.light.finder.data.source.BaseDataSource
 import com.light.finder.data.source.remote.services.CartRemoteUtil
 import com.light.source.remote.ItemRemoteDataSource
 
-class CartItemCountRemoteDataSource(val context: Context) : BaseDataSource(), ItemRemoteDataSource {
+class CartItemCountRemoteDataSource(val context: Context) :
+    BaseDataSource<CartItemCountResultDto, CartItemCount>(), ItemRemoteDataSource {
     override suspend fun fetchCartItemCount(): Result<CartItemCount> =
-        getResult(::mapResultToDomainModel) {
+        getResult {
             CartRemoteUtil.getInstance(context).service.fetchCartItemCountAsync()
         }
 
-    private fun mapResultToDomainModel(cartItemCountResult: CartItemCountResultDto): CartItemCount {
-        return mapCartItemCountToDomain(cartItemCountResult)
-    }
+    override fun mapResultToDomainModel(cartItemCountResult: CartItemCountResultDto): CartItemCount =
+        mapCartItemCountToDomain(cartItemCountResult)
+
 
 }

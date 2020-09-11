@@ -127,23 +127,23 @@
             app:layout_constraintVertical_bias="1.0" />
 
 
-
         <TextView
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="visible"
+            android:maxLines="1"
             android:id="@+id/textSkip"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textIsSelectable="false"
+            android:visibility="visible"
             android:textSize="18sp"
             android:textColor="@color/backgroundLight"
             android:fontFamily="@font/bold"
             android:text="@string/skip"
             android:layout_width="wrap_content"
-            android:maxWidth="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -170,12 +170,11 @@
         <Button
             android:id="@+id/buttonSearch"
             style="@style/BrowseNextDisable"
-            android:text="@string/search"
+            android:text="@string/next"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:stateListAnimator="@null"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_icon_small_search"
             android:background="@drawable/browse_next_disable"
             android:textAllCaps="false"
             android:layout_width="0dp"

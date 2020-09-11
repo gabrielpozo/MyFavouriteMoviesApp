@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.light.domain.model.Category
-import com.light.domain.model.FormFactorTypeBaseId
-import com.light.domain.model.Message
-import com.light.domain.model.ShapeBrowsing
+import com.light.domain.model.*
 import com.light.finder.ui.about.AboutFragment
+import com.light.finder.ui.browse.BrowseChoiceFragment
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -46,11 +44,11 @@ fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()
 
 fun AboutFragment.Companion.newInstance(): AboutFragment = AboutFragment()
 
-fun BrowseResultFragment.Companion.newInstance(shapeBrowsingProducts: List<ShapeBrowsing>): BrowseResultFragment {
+fun BrowseResultFragment.Companion.newInstance(choiceBrowsingProducts: List<ChoiceBrowsing>): BrowseResultFragment {
     val args = android.os.Bundle()
     args.putParcelableArrayList(
-        BrowseResultFragment.CATEGORIES_BROWSE_ID_KEY,
-        shapeBrowsingProducts.parcelizeBrowsingList()
+        CATEGORIES_BROWSE_ID_KEY,
+        choiceBrowsingProducts.parcelizeChoiceBrowsingList()
     )
     val fragment = BrowseResultFragment()
     fragment.arguments = args
@@ -70,6 +68,15 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
     val args = android.os.Bundle()
     args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
     val fragment = BrowseShapeFragment()
+    fragment.arguments = args
+    return  fragment
+}
+
+//todo parcelize list
+fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<ShapeBrowsing>): BrowseChoiceFragment {
+    val args = android.os.Bundle()
+    args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
+    val fragment = BrowseChoiceFragment()
     fragment.arguments = args
     return  fragment
 }

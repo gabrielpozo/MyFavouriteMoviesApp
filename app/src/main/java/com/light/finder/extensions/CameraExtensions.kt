@@ -1,6 +1,7 @@
 package com.light.finder.extensions
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -21,8 +22,8 @@ fun Image.toBitmap(): Bitmap {
     return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 }
 
-fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermission(
-    requireContext(),
+fun Context.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermission(
+    this,
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
