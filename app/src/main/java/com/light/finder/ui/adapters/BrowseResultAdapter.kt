@@ -32,6 +32,7 @@ class BrowseResultAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val TYPE_HEADER = 0
     private val TYPE_ITEM = 1
+    private val headerOffset: Int = 1
 
     var categories: List<Category> by basicDiffUtil(
         emptyList(),
@@ -55,7 +56,9 @@ class BrowseResultAdapter(
         }
     }
 
-    override fun getItemCount(): Int = categories.size + 1
+    // Size + headerOffset since 0 is reserved for header
+    override fun getItemCount(): Int = categories.size + headerOffset
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
@@ -63,11 +66,12 @@ class BrowseResultAdapter(
             holder.bind(categories.size, shapeIdentified)
 
         } else if (holder is ItemViewHolder) {
-            val category = categories[position - 1]
+            val category = categories[position - headerOffset]
             val indexes = getMaxIndices(categories)
             holder.itemView.colorsLayout.removeAllViews()
             holder.itemView.wattageLayout.removeAllViews()
             holder.itemView.imagesLayout.removeAllViews()
+            holder.itemView.thumbnail.removeAllViews()
             holder.bind(
                 category,
                 indexes,
