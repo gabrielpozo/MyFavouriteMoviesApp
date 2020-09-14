@@ -10,5 +10,6 @@
     <dimen name="icon_factor">32dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="spacing">8dp</dimen>
+    <dimen name="browse_header_margin">60dp</dimen>
 
 </resources>

@@ -36,6 +36,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var rootview: View? = null
+    private var isExpended = false
 
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
@@ -90,13 +91,12 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
-        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
+
                 //it is scrolling up
-                if (currentFirstVisible > firstVisible) {
+                if ((layoutManager.findFirstCompletelyVisibleItemPosition() > 0) && isExpended) {
                     line_divider.visible()
                 } else {
                     line_divider.invisible()
@@ -118,7 +118,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
                 BottomSheetBehavior.BottomSheetCallback() {
                 override fun onSlide(p0: View, p1: Float) {}
 
-                override fun onStateChanged(p0: View, state: Int) {}
+                override fun onStateChanged(p0: View, state: Int) {
+                    isExpended = state == BottomSheetBehavior.STATE_EXPANDED
+                }
             })
         }
     }

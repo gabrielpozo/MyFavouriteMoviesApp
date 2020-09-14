@@ -8,62 +8,96 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.paris.extensions.*
-import com.light.domain.model.*
+import com.airbnb.paris.extensions.backgroundRes
+import com.airbnb.paris.extensions.layoutMarginEndDp
+import com.airbnb.paris.extensions.paddingDp
+import com.airbnb.paris.extensions.style
+import com.light.domain.model.Category
+import com.light.domain.model.CctType
+import com.light.domain.model.FinishType
+import com.light.domain.model.ProductCategoryName
 import com.light.finder.R
 import com.light.finder.extensions.*
+import kotlinx.android.synthetic.main.browse_results_header.view.*
 import kotlinx.android.synthetic.main.item_category.view.*
 
 
 class BrowseResultAdapter(
     private val listener: (Category) -> Unit,
     private val filterColorList: List<CctType> = emptyList(),
-    private val formFactorList: List<FormFactorType> = emptyList(),
     private val filterFinishList: List<FinishType> = emptyList(),
-    private val formFactorIdList: List<FormFactorTypeId> = emptyList(),
     private val productCategoryNameList: List<ProductCategoryName> = emptyList(),
     private val shapeIdentified: String
 ) :
-    RecyclerView.Adapter<BrowseResultAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val TYPE_HEADER = 0
+    private val TYPE_ITEM = 1
+    private val headerOffset: Int = 1
 
     var categories: List<Category> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = parent.inflate(R.layout.item_category, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_HEADER -> {
+                // Here Inflating the header view
+                val view = parent.inflate(R.layout.browse_results_header, false)
+                HeaderViewHolder(view)
+            }
+            TYPE_ITEM -> {
+                val view = parent.inflate(R.layout.item_category, false)
+                ItemViewHolder(view)
+            }
+            else -> {
+                throw ClassCastException("Unknown viewType $viewType")
+            }
+        }
     }
 
-    override fun getItemCount(): Int = categories.size
+    // Size + headerOffset since 0 is reserved for header
+    override fun getItemCount(): Int = categories.size + headerOffset
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category = categories[position]
 
-        val indexes = getMaxIndices(categories)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.itemView.colorsLayout.removeAllViews()
-        holder.itemView.wattageLayout.removeAllViews()
-        holder.itemView.imagesLayout.removeAllViews()
-        holder.bind(
-            category,
-            indexes,
-            categories.size,
-            position,
-            filterColorList,
-            formFactorList,
-            formFactorIdList,
-            shapeIdentified,
-            filterFinishList,
-            productCategoryNameList
-        )
-        holder.itemView.setSafeOnClickListener { listener(category) }
+        if (holder is HeaderViewHolder) {
+            holder.bind(categories.size, shapeIdentified)
+
+        } else if (holder is ItemViewHolder) {
+            val category = categories[position - headerOffset]
+            val indexes = getMaxIndices(categories)
+
+            // removing view to avoid duplicates
+            holder.itemView.colorsLayout.removeAllViews()
+            holder.itemView.wattageLayout.removeAllViews()
+            holder.itemView.imagesLayout.removeAllViews()
+            holder.itemView.thumbnail.removeAllViews()
+
+            holder.bind(
+                category,
+                indexes,
+                categories.size,
+                position,
+                filterColorList,
+                filterFinishList,
+                productCategoryNameList
+            )
+            holder.itemView.setOnClickListener { listener(category) }
+
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
     }
 
     private fun getMaxIndices(categories: List<Category>): List<Int> {
         val max = categories.maxBy { it.maxEnergySaving }?.maxEnergySaving
-
         val maxIndices = mutableListOf<Int>()
         for (i in categories.indices) {
             if (categories[i].maxEnergySaving == max) {
@@ -73,8 +107,32 @@ class BrowseResultAdapter(
         return maxIndices
     }
 
+    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(
+            categorySize: Int,
+            shapeIdentified: String
+        ) {
+            when (categorySize) {
+                1 -> {
+                    itemView.textViewResults.text =
+                        itemView.context.getString(R.string.text_result)
+                            .getIntFormatter(categorySize)
+                }
+                else -> {
+                    itemView.textViewResults.text =
+                        itemView.context.getString(R.string.text_results)
+                            .getIntFormatter(categorySize)
+                }
+            }
+            itemView.textViewFitting.text =
+                itemView.context.getString(R.string.based_on_result_fitting).format(
+                    shapeIdentified
+                )
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        }
+    }
+
+    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
 
         fun bind(
@@ -83,9 +141,6 @@ class BrowseResultAdapter(
             categoriesSize: Int,
             position: Int,
             filterColorList: List<CctType>,
-            formFactorList: List<FormFactorType>,
-            formFactorListId: List<FormFactorTypeId>,
-            shapeIdentified: String,
             finishList: List<FinishType>,
             productNameCategoryList: List<ProductCategoryName>
         ) {

@@ -17,6 +17,7 @@ import com.light.finder.ui.adapters.BrowseResultAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
+import kotlinx.android.synthetic.main.browse_results_header.*
 import kotlinx.android.synthetic.main.fragment_browse_result.*
 
 class BrowseResultFragment : BaseFragment() {
@@ -71,17 +72,13 @@ class BrowseResultFragment : BaseFragment() {
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {
             is BrowseResultViewModel.ResultBrowse.Content -> {
-                updateData(model.message)
                 updateAdapter(model.message)
-
-
             }
+
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
-                layoutBulbType.gone()
                 rvCategories.gone()
-                textViewNoResultSubTitle.visible()
-                textViewNoResultTitle.visible()
-                updateData(model.message)
+                browseNoResultsView.visible()
+                updateNoResultsData(model.message)
             }
         }
     }
@@ -92,7 +89,7 @@ class BrowseResultFragment : BaseFragment() {
         }
     }
 
-    private fun updateData(message: Message) {
+    private fun updateNoResultsData(message: Message) {
         when (message.categories.size) {
             1 -> {
                 textViewResults.text =
@@ -104,11 +101,11 @@ class BrowseResultFragment : BaseFragment() {
             }
         }
 
-        textViewBulbType.invisible()
         textViewFitting.text = getString(R.string.based_on_result_fitting).format(
-         message.shapeIdentified
+            message.shapeIdentified
         )
     }
+
 
     private fun updateAdapter(message: Message) {
         setAdapter(message)
@@ -121,9 +118,7 @@ class BrowseResultFragment : BaseFragment() {
         adapter = BrowseResultAdapter(
             viewModel::onCategoryClick,
             localPreferences.loadLegendCctFilterNames(),
-            localPreferences.loadFormFactorLegendTags(),
             localPreferences.loadLegendFinishFilterNames(),
-            localPreferences.loadFormFactorIdLegendTags(),
             localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )
