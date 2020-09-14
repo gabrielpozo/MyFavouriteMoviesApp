@@ -4,7 +4,7 @@
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="@dimen/browse_header_margin"
     android:layout_marginBottom="16dp"
     android:layout_height="wrap_content"
     tools:background="@color/backgroundDark">
