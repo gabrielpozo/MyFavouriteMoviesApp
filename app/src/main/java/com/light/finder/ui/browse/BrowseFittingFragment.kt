@@ -55,13 +55,13 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
-        buttonNext.setOnClickListener {
+        buttonNext.setSafeOnClickListener {
             viewModel.onNextButtonPressed()
         }
 
 
 
-        buttonRefresh.setOnClickListener {
+        buttonRefresh.setSafeOnClickListener {
             viewModel.onRequestBrowsingProducts()
         }
 

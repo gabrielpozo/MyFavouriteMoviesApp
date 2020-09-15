@@ -6,6 +6,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
 import com.light.finder.common.WrappingViewPager
+import com.light.finder.extensions.setSafeOnClickListener
 import com.light.finder.ui.adapters.TipsViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_tips_and_tricks.*
 
@@ -29,7 +30,7 @@ class TipsAndTricksLightFinderActivity : BaseLightFinderActivity() {
 
 
     private fun setDoneClickListener() {
-        buttonGotIt.setOnClickListener {
+        buttonGotIt.setSafeOnClickListener {
             navigateBackToCamera()
         }
     }

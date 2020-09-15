@@ -89,8 +89,8 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
         ok_button.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         custom_toast.fadeIn()
 
-        ok_button.setOnClickListener {
-            custom_toast.fadeOut(0,true)
+        ok_button.setSafeOnClickListener {
+            custom_toast.fadeOut(0, true)
             localPreferences.disclaimerAccepted(true)
         }
     }

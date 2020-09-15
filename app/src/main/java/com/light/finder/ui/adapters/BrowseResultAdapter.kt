@@ -84,16 +84,16 @@ class BrowseResultAdapter(
                 filterFinishList,
                 productCategoryNameList
             )
-            holder.itemView.setOnClickListener { listener(category) }
+            holder.itemView.setSafeOnClickListener { listener(category) }
 
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         if (position == 0) {
-            return TYPE_HEADER;
+            return TYPE_HEADER
         }
-        return TYPE_ITEM;
+        return TYPE_ITEM
     }
 
     private fun getMaxIndices(categories: List<Category>): List<Int> {

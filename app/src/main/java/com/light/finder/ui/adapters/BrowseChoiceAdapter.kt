@@ -9,6 +9,7 @@ import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
+import com.light.finder.extensions.setSafeOnClickListener
 import kotlinx.android.synthetic.main.item_browse_choice.view.*
 
 class BrowseChoiceAdapter(
@@ -41,7 +42,7 @@ class BrowseChoiceAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productsList[position]
         holder.bind(product)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             productsList[position].isSelected = !productsList[position].isSelected
             listener(product)
             notifyDataSetChanged()

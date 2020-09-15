@@ -29,8 +29,6 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.facebook.appevents.AppEventsConstants
-import com.facebook.appevents.AppEventsLogger
 import com.google.common.util.concurrent.ListenableFuture
 import com.light.domain.model.Message
 import com.light.domain.model.ParsingError
@@ -153,11 +151,6 @@ class CameraFragment : BaseFragment() {
         } ?: Unit
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //mainExecutor = ContextCompat.getMainExecutor(requireContext())
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -286,7 +279,7 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
-        confirmPhoto.setOnClickListener {
+        confirmPhoto.setSafeOnClickListener {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
@@ -307,7 +300,7 @@ class CameraFragment : BaseFragment() {
 
         }
 
-        cancelPhoto.setOnClickListener {
+        cancelPhoto.setSafeOnClickListener {
             screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
             browseButton.visible()
@@ -596,7 +589,7 @@ class CameraFragment : BaseFragment() {
             timer.start()
             modelUiState = ModelStatus.LOADING
             screenNavigator.toCameraLoading(this)
-            cancelButton.setOnClickListener {
+            cancelButton.setSafeOnClickListener {
                 viewModel.onCancelRequest()
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.cancel_identified_event)) {}
             }
@@ -659,7 +652,7 @@ class CameraFragment : BaseFragment() {
         layoutCamera.gone()
         browseButton.visible()
         layoutPermission.visible()
-        enableContainer.setOnClickListener {
+        enableContainer.setSafeOnClickListener {
             viewModel.onRequestCameraViewDisplay()
         }
     }
@@ -703,7 +696,7 @@ class CameraFragment : BaseFragment() {
         dialogView.buttonPositive.text = buttonPositiveText
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             if (neutralButton) {
                 viewModel.onPositiveAlertDialogButtonClicked("enable")
             } else {
@@ -715,7 +708,7 @@ class CameraFragment : BaseFragment() {
         dialogView.buttonNegative.gone()
         if (neutralButton) {
             dialogView.buttonNeutral.text = getString(R.string.not_now)
-            dialogView.buttonNeutral.setOnClickListener {
+            dialogView.buttonNeutral.setSafeOnClickListener {
                 alertDialog.dismiss()
             }
         } else {
@@ -743,14 +736,14 @@ class CameraFragment : BaseFragment() {
         dialogView.buttonPositive.text = buttonPositiveText
         dialogView.textViewTitleDialog.text = titleDialog
         dialogView.textViewSubTitleDialog.text = subtitleDialog
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             viewModel.onPositiveAlertDialogButtonClicked("retry")
         }
 
         dialogView.buttonNegative.gone()
 
         dialogView.buttonNeutral.text = getString(R.string.help_me_scan)
-        dialogView.buttonNeutral.setOnClickListener {
+        dialogView.buttonNeutral.setSafeOnClickListener {
             alertDialog.dismiss()
             revertCameraView()
             screenNavigator.navigateToTipsAndTricksScreen()
@@ -777,7 +770,7 @@ class CameraFragment : BaseFragment() {
 
             setUpCamera()
 
-            flashSwitchButton.setOnClickListener {
+            flashSwitchButton.setSafeOnClickListener {
                 viewModel.onFlashModeButtonClicked(flashMode)
             }
 
