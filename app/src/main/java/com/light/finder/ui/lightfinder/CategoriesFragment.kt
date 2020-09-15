@@ -91,27 +91,25 @@ class CategoriesFragment : BaseFragment() {
     private fun updateData(categories: List<Category>, message: Message) {
         when {
             categories.isEmpty() -> {
-                textViewNoResultSubTitle.visible()
-                textViewNoResultTitle.visible()
+                categoryNoResultsView.visible()
                 rvCategories.gone()
             }
             else -> {
-                text_identified.text = message.textIdentified
-                identifiedBulb.loadIdentified(message.imageIdentified)
+                rvCategories.visible()
+                categoryNoResultsView.gone()
             }
         }
 
-        setAdapter()
-        //TODO(move it to a standalone method)
-
+        setAdapter(message)
         adapter.categories = categories
 
     }
 
 
-    private fun setAdapter() {
+    private fun setAdapter(message: Message) {
         adapter = CategoriesAdapter(
-            viewModel::onCategoryClick
+            viewModel::onCategoryClick,
+            message
         )
         rvCategories.adapter = adapter
 
