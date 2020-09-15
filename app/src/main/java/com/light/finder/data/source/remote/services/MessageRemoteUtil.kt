@@ -5,10 +5,12 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.light.finder.BuildConfig
 import com.light.finder.SignifyApp
 import com.light.finder.common.HiddenAnnotationExclusionStrategy
+import com.light.finder.data.source.local.LocalKeyStoreImpl
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
 import com.light.finder.data.source.utils.TokenAuthenticator
+import com.light.source.local.LocalKeyStore
 import com.light.source.local.LocalPreferenceDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,8 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object MessageRemoteUtil {
 
-    private val localPreferences: LocalPreferenceDataSource by lazy {
-        LocalPreferenceDataSourceImpl(
+    private val localKeyStore: LocalKeyStore by lazy {
+        LocalKeyStoreImpl(
             SignifyApp.getContext()!!
         )
     }
@@ -27,13 +29,13 @@ object MessageRemoteUtil {
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(
             BearerInterceptor(
-                tokenType = localPreferences.loadTokenType(),
-                accessToken = localPreferences.loadAccessToken()
+                tokenType = localKeyStore.loadBearerToken().tokenType,
+                accessToken = localKeyStore.loadBearerToken().accessToken
             )
         )
         addInterceptor(HttpErrorInterceptor())
         addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        authenticator(TokenAuthenticator(localPreferences))
+        authenticator(TokenAuthenticator(localKeyStore))
     }.build()
 
 

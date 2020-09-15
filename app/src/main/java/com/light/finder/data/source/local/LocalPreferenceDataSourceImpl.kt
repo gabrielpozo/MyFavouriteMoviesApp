@@ -69,7 +69,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun isDisclaimerAccepted(): Boolean =
         pref.getBoolean(DISCLAIMER_TEXT, false)
 
-    override fun saveAccessToken(credentials: Bearer) {
+/*    override fun saveAccessToken(credentials: Bearer) {
         editor.putString(ACCESS_TOKEN, credentials.accessToken).commit()
     }
 
@@ -87,7 +87,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
 
     override  fun removeToken() {
         editor.remove(ACCESS_TOKEN).commit()
-    }
+    }*/
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(
