@@ -69,25 +69,6 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
     override fun isDisclaimerAccepted(): Boolean =
         pref.getBoolean(DISCLAIMER_TEXT, false)
 
-/*    override fun saveAccessToken(credentials: Bearer) {
-        editor.putString(ACCESS_TOKEN, credentials.accessToken).commit()
-    }
-
-    override fun saveTokenType(credentials: Bearer) {
-        editor.putString(TOKEN_TYPE, credentials.tokenType).commit()
-    }
-
-    override fun loadAccessToken(): String {
-        return pref.getString(ACCESS_TOKEN, null) ?: ""
-    }
-
-    override fun loadTokenType(): String {
-        return pref.getString(TOKEN_TYPE, null) ?: ""
-    }
-
-    override  fun removeToken() {
-        editor.remove(ACCESS_TOKEN).commit()
-    }*/
 
     override fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>) {
         editor.putString(

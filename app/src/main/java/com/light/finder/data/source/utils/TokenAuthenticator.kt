@@ -18,16 +18,6 @@ class TokenAuthenticator(private val localKeyStore: LocalKeyStore) : Authenticat
     }
 
     private suspend fun Response.createSignedRequest(): Request? = try {
-        // get a new token
- /*       val tokenService = OAuthRemoteUtil.service.fetchBearerTokenAsync()
-        val accessToken = tokenService.body()*/
-
-/*        accessToken?.let {
-            val mapToBearer = mapAuthToDomain(it)
-            localPreferences.saveAccessToken(mapToBearer)
-            request.signWithToken(mapToBearer)
-        }*/
-
         request.signWithToken(localKeyStore.loadBearerToken())
     } catch (error: Throwable) {
         null

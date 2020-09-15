@@ -8,12 +8,11 @@ import com.light.finder.extensions.fromJson
 import com.light.source.local.LocalKeyStore
 
 
-class LocalKeyStoreImpl(private val context: Context) : LocalKeyStore {
+class LocalKeyStoreImpl(context: Context) : LocalKeyStore {
 
     companion object {
-        private const val PREF_KEY_STORE = "sharedPrefLegend"
+        private const val PREF_KEY_STORE = "prefBearerKeyStore"
         private const val ACCESS_TOKEN = "accessToken"
-        private const val TOKEN_TYPE = "tokenType"
     }
 
     private val PRIVATE_MODE = 0
@@ -29,7 +28,6 @@ class LocalKeyStoreImpl(private val context: Context) : LocalKeyStore {
     override fun loadBearerToken(): Bearer = Gson().fromJson(
         pref.getString(ACCESS_TOKEN, null) ?: ""
     )
-
 
     override fun removeToken() {
         editor.remove(ACCESS_TOKEN).commit()
