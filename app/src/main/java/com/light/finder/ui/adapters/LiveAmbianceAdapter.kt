@@ -7,9 +7,8 @@ import com.light.domain.model.CctType
 import com.light.finder.R
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadCircleImage
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.frame
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.imageFilterCover
-import kotlinx.android.synthetic.main.item_card_filter_unselected.view.variation_name
+import com.light.finder.extensions.setSafeOnClickListener
+import kotlinx.android.synthetic.main.item_card_filter_unselected.view.*
 
 class LiveAmbianceAdapter(
     private val listener: (CctType) -> Unit,
@@ -28,7 +27,7 @@ class LiveAmbianceAdapter(
         val filter = filterListColor[position]
 
         holder.bind(filter)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             listener(filter)
             filterListColor[lastPosition].isSelected = false
             filterListColor[position].isSelected = true

@@ -75,7 +75,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        retry_internet.setOnClickListener {
+        retry_internet.setSafeOnClickListener {
             if (!InternetUtil.isInternetOn()) {
                 displayNoInternetBanner()
             } else {

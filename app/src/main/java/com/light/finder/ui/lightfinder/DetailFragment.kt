@@ -19,7 +19,10 @@ import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.*
+import com.light.finder.common.ActivityCallback
+import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.PermissionRequester
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
@@ -115,7 +118,7 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        buttonAddTocart.setOnClickListener {
+        buttonAddTocart.setSafeOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
                     addToCart()
@@ -410,7 +413,7 @@ class DetailFragment : BaseFragment() {
         dialogView.textViewSubTitleDialog.text = subtitleDialog
         dialogView.buttonPositive.text = buttonPositiveText
 
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             if (neutralButton) {
                 viewModel.onGoToSettingsClicked()
             } else {
@@ -422,7 +425,7 @@ class DetailFragment : BaseFragment() {
         dialogView.buttonNegative.gone()
         if (neutralButton) {
             dialogView.buttonNeutral.text = getString(R.string.not_now)
-            dialogView.buttonNeutral.setOnClickListener {
+            dialogView.buttonNeutral.setSafeOnClickListener {
                 alertDialog.dismiss()
             }
 
