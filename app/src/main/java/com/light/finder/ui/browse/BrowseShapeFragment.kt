@@ -86,9 +86,9 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         adapter = BrowseShapeAdapter(
             viewModel::onShapeClick
         )
-        adapter.setHasStableIds(true)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerViewShape.itemAnimator = null
         recyclerViewShape.layoutManager = layoutManager
         recyclerViewShape.adapter = adapter
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
