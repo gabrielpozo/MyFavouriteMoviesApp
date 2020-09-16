@@ -29,8 +29,8 @@ object MessageRemoteUtil {
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(
             BearerInterceptor(
-                tokenType = localKeyStore.loadBearerToken().tokenType,
-                accessToken = localKeyStore.loadBearerToken().accessToken
+                tokenType = localKeyStore.loadBearerToken()?.tokenType ?: "",
+                accessToken = localKeyStore.loadBearerToken()?.accessToken?: ""
             )
         )
         addInterceptor(HttpErrorInterceptor())

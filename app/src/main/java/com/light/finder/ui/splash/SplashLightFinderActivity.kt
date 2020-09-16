@@ -45,10 +45,6 @@ class SplashLightFinderActivity : BaseLightFinderActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        // remove token before requesting a new one
-        //TODO move to a better place
-        localKeyStore.removeToken()
-
         splashViewModel.liveData.observe(this, Observer {
             when (it) {
                 is SplashState.CameraActivity -> {

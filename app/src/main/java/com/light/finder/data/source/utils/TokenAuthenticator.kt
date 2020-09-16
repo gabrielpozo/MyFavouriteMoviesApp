@@ -1,6 +1,8 @@
 package com.light.finder.data.source.utils
 
 import com.light.domain.model.Bearer
+import com.light.finder.data.mappers.mapAuthToDomain
+import com.light.finder.data.source.remote.services.OAuthRemoteUtil
 import com.light.source.local.LocalKeyStore
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -10,6 +12,7 @@ import okhttp3.Route
 
 
 class TokenAuthenticator(private val localKeyStore: LocalKeyStore) : Authenticator {
+
     override fun authenticate(route: Route?, response: Response): Request? = when {
         response.retryCount > 2 -> null
         else -> runBlocking {
@@ -18,7 +21,13 @@ class TokenAuthenticator(private val localKeyStore: LocalKeyStore) : Authenticat
     }
 
     private suspend fun Response.createSignedRequest(): Request? = try {
-        request.signWithToken(localKeyStore.loadBearerToken())
+        val tokenService = OAuthRemoteUtil.service.fetchBearerTokenAsync()
+        val accessToken = tokenService.body()
+        accessToken?.let {
+            val mapToBearer = mapAuthToDomain(it)
+            localKeyStore.saveBearerToken(mapToBearer)
+            request.signWithToken(mapToBearer)
+        }
     } catch (error: Throwable) {
         null
     }
