@@ -97,11 +97,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         adapter = BrowseFittingAdapter(
             viewModel::onFittingClick
         )
-        adapter.setHasStableIds(true)
+
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
+        recyclerViewFitting.itemAnimator = null
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -43,10 +43,9 @@ class BrowseChoiceAdapter(
         val product = productsList[position]
         holder.bind(product)
         holder.itemView.setSafeOnClickListener {
-            productsList[position].isSelected = !productsList[position].isSelected
+            product.isSelected = !product.isSelected
             listener(product)
             notifyItemChanged(position)
-
         }
 
         if (product.isSelected) {
