@@ -45,7 +45,8 @@ class BrowseChoiceAdapter(
         holder.itemView.setSafeOnClickListener {
             productsList[position].isSelected = !productsList[position].isSelected
             listener(product)
-            notifyDataSetChanged()
+            notifyItemChanged(position)
+
         }
 
         if (product.isSelected) {

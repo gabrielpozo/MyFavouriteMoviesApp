@@ -81,7 +81,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         adapter = BrowseChoiceAdapter(
             viewModel::onChoiceClick
         )
-        adapter.setHasStableIds(true)
+        //adapter.setHasStableIds(false)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerViewChoice.layoutManager = layoutManager
