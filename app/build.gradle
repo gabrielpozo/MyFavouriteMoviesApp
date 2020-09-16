@@ -57,6 +57,8 @@ android {
             buildConfigField "String", "CART_URL", "\"https://lightfinder-staging.luzernsolutions.com/us/hueCart/api/\""
             buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://stage.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "OAUTH_URL", "\"https://lightfinder.auth.us-east-1.amazoncognito.com/oauth2/\""
+            buildConfigField "String", "CLIENT_ID", "\"4pqsud54rr141gghtmgipmj257\""
+            buildConfigField "String", "CLIENT_SECRET", "\"h6jpssq6cpsgamngaiag29644ae19uc682a6d943j2ov3aa2t5s\""
 
         }
         production {
@@ -64,7 +66,10 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
             buildConfigField "String", "CART_URL", "\"https://www.store.lightguide.signify.com/us/hueCart/api/\""
             buildConfigField "String", "LIGHT_FINDER_OPEN_URL", "\"https://prod.lampfinder.d.acts.gso.cloud/api/\""
-            buildConfigField "String", "OAUTH_URL", "\"https://lightfinder.auth.us-east-1.amazoncognito.com/oauth2/\""
+            buildConfigField "String", "OAUTH_URL", "\"https://lightfinder-prod.auth.us-east-1.amazoncognito.com/oauth2/\""
+            buildConfigField "String", "CLIENT_ID", "\"3vqv9ei8rep5n3nolekb5tt30e\""
+            buildConfigField "String", "CLIENT_SECRET", "\"7g91ntl8os16ul5ogurlk1gf7rlb3skahq79uiu9j1m1sdj3drp\""
+
 
         }
     }
