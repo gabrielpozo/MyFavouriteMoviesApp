@@ -31,6 +31,7 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
         const val RESTORED_STATE = 4
+        const val spaceInDp = 26
     }
 
     private lateinit var component: BrowseChoiceComponent

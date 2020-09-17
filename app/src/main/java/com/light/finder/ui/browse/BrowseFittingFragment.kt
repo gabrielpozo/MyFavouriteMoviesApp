@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +37,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
+
+    companion object {
+        const val spaceInDp = 28
+    }
 
 
     override fun onCreateView(

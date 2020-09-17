@@ -34,6 +34,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
         const val RESTORED_STATE = 4
+        const val spaceInDp = 26
     }
 
     private lateinit var component: BrowseShapeComponent
