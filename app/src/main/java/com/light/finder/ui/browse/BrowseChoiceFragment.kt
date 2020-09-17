@@ -1,12 +1,14 @@
 package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
+import android.content.res.Resources
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +37,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     private lateinit var component: BrowseChoiceComponent
     private lateinit var adapter: BrowseChoiceAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var isExpended = false
 
     private val viewModel: BrowseChoiceViewModel by lazy { getViewModel { component.browseChoiceViewModel } }
 
@@ -90,16 +91,17 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //it is scrolling up
-                if ((layoutManager.findFirstCompletelyVisibleItemPosition() > 0) && isExpended) {
+                if (recyclerView.computeVerticalScrollOffset().pxToDp(density) >= 24) {
                     lineDividerCategoryChoice.visible()
-                } else {
+                }
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) < 24 && lineDividerCategoryChoice.isVisible
+                ) {
                     lineDividerCategoryChoice.invisible()
                 }
             }
         })
     }
-
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
@@ -108,14 +110,6 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
             val displayMetrics = it.resources.displayMetrics
             val dpHeight = displayMetrics.heightPixels
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
-            bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {}
-
-                override fun onStateChanged(p0: View, state: Int) {
-                    isExpended = state == BottomSheetBehavior.STATE_EXPANDED
-                }
-            })
         }
     }
 
