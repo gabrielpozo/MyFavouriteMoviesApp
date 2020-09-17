@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +35,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var isExpended = false
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
@@ -81,15 +81,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             val dpHeight = displayMetrics.heightPixels
 
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
-            bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {}
-
-                override fun onStateChanged(p0: View, state: Int) {
-                    isExpended = state == BottomSheetBehavior.STATE_EXPANDED
-                }
-            })
-
         }
     }
 
@@ -108,10 +99,14 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //it is scrolling up
-                if ((layoutManager.findFirstCompletelyVisibleItemPosition() > 0) && isExpended) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= R.dimen.divider_space_margin
+                ) {
                     line_divider_fitting.visible()
-                } else {
+                }
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) < R.dimen.divider_space_margin && line_divider_fitting.isVisible
+                ) {
                     line_divider_fitting.invisible()
                 }
             }

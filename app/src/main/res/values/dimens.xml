@@ -11,5 +11,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="spacing">8dp</dimen>
     <dimen name="browse_header_margin">60dp</dimen>
+    <dimen name="divider_space_margin">24dp</dimen>
 
 </resources>
