@@ -39,7 +39,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
     companion object {
-        const val spaceInDp = 28
+        const val spaceInDp = 30
     }
 
 
@@ -61,7 +61,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         buttonNext.setSafeOnClickListener {
             viewModel.onNextButtonPressed()
         }
-
 
 
         buttonRefresh.setSafeOnClickListener {
