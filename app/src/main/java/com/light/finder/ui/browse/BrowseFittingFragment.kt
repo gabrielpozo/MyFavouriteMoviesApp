@@ -25,7 +25,6 @@ import com.light.finder.ui.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
-import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.fragment_browse_fitting.*
 import kotlinx.android.synthetic.main.layout_browse_error.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
@@ -100,11 +99,13 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (recyclerView.computeVerticalScrollOffset().pxToDp(density) >= 24) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= R.dimen.divider_space_margin
+                ) {
                     line_divider_fitting.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < 24 && line_divider_fitting.isVisible
+                        .pxToDp(density) < R.dimen.divider_space_margin && line_divider_fitting.isVisible
                 ) {
                     line_divider_fitting.invisible()
                 }

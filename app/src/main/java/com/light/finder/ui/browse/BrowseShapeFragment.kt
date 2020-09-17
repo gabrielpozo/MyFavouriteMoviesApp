@@ -23,7 +23,6 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseShapeAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
-import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.fragment_browse_shape.buttonSearch
 import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
@@ -98,11 +97,13 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         recyclerViewShape.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (recyclerView.computeVerticalScrollOffset().pxToDp(density) >= 24) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= R.dimen.divider_space_margin
+                ) {
                     line_divider.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < 24 && line_divider.isVisible
+                        .pxToDp(density) < R.dimen.divider_space_margin && line_divider.isVisible
                 ) {
                     line_divider.invisible()
                 }

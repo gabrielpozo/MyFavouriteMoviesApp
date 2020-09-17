@@ -1,7 +1,6 @@
 package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
-import android.content.res.Resources
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -92,11 +91,13 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (recyclerView.computeVerticalScrollOffset().pxToDp(density) >= 24) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= R.dimen.divider_space_margin
+                ) {
                     lineDividerCategoryChoice.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < 24 && lineDividerCategoryChoice.isVisible
+                        .pxToDp(density) < R.dimen.divider_space_margin && lineDividerCategoryChoice.isVisible
                 ) {
                     lineDividerCategoryChoice.invisible()
                 }
