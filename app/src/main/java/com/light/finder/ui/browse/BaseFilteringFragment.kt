@@ -13,6 +13,7 @@ abstract class BaseFilteringFragment : Fragment() {
     protected lateinit var browseComponent: BrowseFilteringComponent
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
     protected val density = Resources.getSystem().displayMetrics.density
+    protected val spaceInDp = 24
 
 
     override fun onAttach(context: Context) {

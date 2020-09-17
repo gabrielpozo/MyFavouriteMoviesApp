@@ -92,12 +92,12 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) >= resources.getDimension(R.dimen.divider_space_margin)
+                        .pxToDp(density) >= spaceInDp
                 ) {
                     lineDividerCategoryChoice.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < resources.getDimension(R.dimen.divider_space_margin) && lineDividerCategoryChoice.isVisible
+                        .pxToDp(density) < spaceInDp && lineDividerCategoryChoice.isVisible
                 ) {
                     lineDividerCategoryChoice.invisible()
                 }
