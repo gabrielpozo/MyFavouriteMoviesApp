@@ -100,12 +100,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) >= R.dimen.divider_space_margin
+                        .pxToDp(density) >= resources.getDimension(R.dimen.divider_space_margin)
                 ) {
                     line_divider_fitting.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < R.dimen.divider_space_margin && line_divider_fitting.isVisible
+                        .pxToDp(density) < resources.getDimension(R.dimen.divider_space_margin) && line_divider_fitting.isVisible
                 ) {
                     line_divider_fitting.invisible()
                 }

@@ -98,12 +98,12 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) >= R.dimen.divider_space_margin
+                        .pxToDp(density) >= resources.getDimension(R.dimen.divider_space_margin)
                 ) {
                     line_divider.visible()
                 }
                 if (recyclerView.computeVerticalScrollOffset()
-                        .pxToDp(density) < R.dimen.divider_space_margin && line_divider.isVisible
+                        .pxToDp(density) < resources.getDimension(R.dimen.divider_space_margin) && line_divider.isVisible
                 ) {
                     line_divider.invisible()
                 }
