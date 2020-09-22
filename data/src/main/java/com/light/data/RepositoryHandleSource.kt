@@ -3,6 +3,7 @@ package com.light.data
 import com.light.domain.model.ParsingError
 import com.light.domain.state.DataState
 import com.light.domain.state.DataState.ProductsNotAvailable
+import com.light.source.local.LocalPreferenceDataSource
 import com.light.util.*
 
 
@@ -87,10 +88,13 @@ suspend fun <T> repositoryLegendHandleSource(
 
 suspend fun <T> repositoryAuthHandleSource(
     remoteSourceRequest: suspend () -> Result<T>,
-    localPreferenceDataSource: suspend (T) -> Unit
+    localPreferenceDataSource: suspend (T) -> Unit,
+    removeLocalData: suspend () -> Unit
 ): DataState<T> {
-    remoteSourceRequest.invoke().also { resultRequest ->
 
+    remoteSourceRequest.invoke().also { resultRequest ->
+        // remove token before requesting a new one
+        removeLocalData.invoke()
         return when (resultRequest.status) {
             Result.Status.SUCCESS -> {
                 when (resultRequest.code) {

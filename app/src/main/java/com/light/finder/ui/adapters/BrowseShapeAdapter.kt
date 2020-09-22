@@ -9,6 +9,7 @@ import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
+import com.light.finder.extensions.setSafeOnClickListener
 import kotlinx.android.synthetic.main.item_browse_shape.view.*
 
 class BrowseShapeAdapter(
@@ -41,10 +42,10 @@ class BrowseShapeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productsList[position]
         holder.bind(product)
-        holder.itemView.setOnClickListener {
-            productsList[position].isSelected = !productsList[position].isSelected
+        holder.itemView.setSafeOnClickListener {
+            product.isSelected = !product.isSelected
             listener(product)
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
 
         if (product.isSelected) {

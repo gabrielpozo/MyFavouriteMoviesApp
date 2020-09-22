@@ -207,7 +207,7 @@ class AboutFragment : BaseFragment() {
         dialogView.textViewSubTitleDialog.text = getString(R.string.will_be_opened)
         dialogView.buttonPositive.text = getString(R.string.ok)
         dialogView.buttonNeutral.text = getString(R.string.text_cancel)
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             when (aboutFlag) {
                 AboutDialogFlags.PRIVACY -> {
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.open_privacy_notice)) {}
@@ -223,7 +223,7 @@ class AboutFragment : BaseFragment() {
             openBrowser(aboutFlag.url)
         }
         dialogView.buttonNeutral.visible()
-        dialogView.buttonNeutral.setOnClickListener {
+        dialogView.buttonNeutral.setSafeOnClickListener {
             alertDialog.dismiss()
         }
         dialogView.buttonNegative.gone()

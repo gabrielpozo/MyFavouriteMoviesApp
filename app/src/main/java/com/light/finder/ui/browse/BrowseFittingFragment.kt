@@ -34,10 +34,13 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private var isExpended = false
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
+
+    companion object {
+        const val spaceInDp = 30
+    }
 
 
     override fun onCreateView(
@@ -55,13 +58,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
-        buttonNext.setOnClickListener {
+        buttonNext.setSafeOnClickListener {
             viewModel.onNextButtonPressed()
         }
 
 
-
-        buttonRefresh.setOnClickListener {
+        buttonRefresh.setSafeOnClickListener {
             viewModel.onRequestBrowsingProducts()
         }
 
@@ -81,15 +83,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             val dpHeight = displayMetrics.heightPixels
 
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
-            bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {}
-
-                override fun onStateChanged(p0: View, state: Int) {
-                    isExpended = state == BottomSheetBehavior.STATE_EXPANDED
-                }
-            })
-
         }
     }
 
@@ -97,20 +90,25 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         adapter = BrowseFittingAdapter(
             viewModel::onFittingClick
         )
-        adapter.setHasStableIds(true)
+
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
+        recyclerViewFitting.itemAnimator = null
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //it is scrolling up
-                if ((layoutManager.findFirstCompletelyVisibleItemPosition() > 0) && isExpended) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= spaceInDp
+                ) {
                     line_divider_fitting.visible()
-                } else {
+                }
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) < spaceInDp
+                ) {
                     line_divider_fitting.invisible()
                 }
             }

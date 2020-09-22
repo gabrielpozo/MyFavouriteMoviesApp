@@ -8,6 +8,7 @@ import com.light.finder.R
 import com.light.finder.extensions.basicDiffUtil
 import com.light.finder.extensions.inflate
 import com.light.finder.extensions.loadFitting
+import com.light.finder.extensions.setSafeOnClickListener
 import kotlinx.android.synthetic.main.item_browse_fitting.view.*
 
 class BrowseFittingAdapter(
@@ -50,7 +51,7 @@ class BrowseFittingAdapter(
         val product = productsList[position]
 
         holder.bind(product)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             listener(product)
             productsList[lastPosition].isSelected = false
             productsList[position].isSelected = true
