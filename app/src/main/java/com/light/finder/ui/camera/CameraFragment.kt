@@ -256,6 +256,9 @@ class CameraFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_GET) {
+            enableCameraCaptureButton()
+        }
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
                 val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
@@ -778,6 +781,7 @@ class CameraFragment : BaseFragment() {
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))
+                disableCameraCaptureButton()
             }
 
             pickLatestFromGallery()
@@ -927,11 +931,13 @@ class CameraFragment : BaseFragment() {
         if (flag) {
             activityCallback.setBottomBarInvisibility(true)
             controls?.cameraCaptureButton?.isEnabled = false
+            disableGalleryButton()
         }
     }
 
     private fun displayCameraItemsControl() {
         enableCameraCaptureButton()
+        enableGalleryButton()
         activityCallback.setBottomBarInvisibility(false)
     }
 
@@ -964,6 +970,14 @@ class CameraFragment : BaseFragment() {
 
     fun enableCameraCaptureButton() {
         controls?.cameraCaptureButton?.isEnabled = true
+    }
+
+    fun disableGalleryButton() {
+        imageGalleryButton.isEnabled = false
+    }
+
+    fun enableGalleryButton() {
+        imageGalleryButton.isEnabled = true
     }
 
     fun restoreCameraFromScanning() {
