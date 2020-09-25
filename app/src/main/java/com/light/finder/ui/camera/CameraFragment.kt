@@ -258,6 +258,7 @@ class CameraFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_GET) {
             enableCameraCaptureButton()
+            hideGalleryPreview()
         }
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
@@ -265,16 +266,14 @@ class CameraFragment : BaseFragment() {
                 initGalleryPreviewUI(uri, rotation)
                 setGalleryPreviewListeners(uri, rotation)
             }
-        } else {
-            hideGalleryPreview()
         }
     }
 
     private fun initGalleryPreviewUI(uri: Uri, rotation: Int) {
         // ui
-        layoutPreviewGallery.visible()
-        cameraUiContainer.gone()
+        cameraUiContainer?.gone()
         browseButton.gone()
+        layoutPreviewGallery.visible()
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
@@ -282,7 +281,10 @@ class CameraFragment : BaseFragment() {
     }
 
     private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
+        confirmPhoto.isEnabled = true
+        cancelPhoto.isEnabled = true
         confirmPhoto.setSafeOnClickListener {
+            cancelPhoto.isEnabled = false
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
@@ -304,6 +306,7 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setSafeOnClickListener {
+            confirmPhoto.isEnabled = false
             screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
             browseButton.visible()
@@ -339,7 +342,7 @@ class CameraFragment : BaseFragment() {
         modelUiState = ModelStatus.FEED
         activityCallback.setBottomBarInvisibility(false)
         layoutPreviewGallery.gone()
-        cameraUiContainer.visible()
+        cameraUiContainer?.visible()
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
