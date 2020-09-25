@@ -257,30 +257,39 @@ class CameraFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_GET) {
+            enableCameraCaptureButton()
+            hideGalleryPreview()
+        }
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
                 val rotation = getExifOrientation(context?.contentResolver?.openInputStream(uri))
                 initGalleryPreviewUI(uri, rotation)
                 setGalleryPreviewListeners(uri, rotation)
             }
-        } else {
-            hideGalleryPreview()
         }
     }
 
     private fun initGalleryPreviewUI(uri: Uri, rotation: Int) {
         // ui
-        layoutPreviewGallery.visible()
-        cameraUiContainer.gone()
+        cameraUiContainer?.gone()
         browseButton.gone()
+        layoutPreviewGallery.visible()
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
         modelUiState = ModelStatus.GALLERY
     }
 
+    private fun enableGalleryPreviewButtons() {
+        confirmPhoto.isEnabled = true
+        cancelPhoto.isEnabled = true
+    }
+
     private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
+        enableGalleryPreviewButtons()
         confirmPhoto.setSafeOnClickListener {
+            cancelPhoto.isEnabled = false
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
@@ -308,6 +317,7 @@ class CameraFragment : BaseFragment() {
         }
 
         cancelPhoto.setSafeOnClickListener {
+            confirmPhoto.isEnabled = false
             screenNavigator.toGalleryPreview(this)
             hideGalleryPreview()
             browseButton.visible()
@@ -343,7 +353,7 @@ class CameraFragment : BaseFragment() {
         modelUiState = ModelStatus.FEED
         activityCallback.setBottomBarInvisibility(false)
         layoutPreviewGallery.gone()
-        cameraUiContainer.visible()
+        cameraUiContainer?.visible()
     }
 
     private fun requestItemCount() = viewModel.onRequestGetItemCount()
@@ -782,19 +792,13 @@ class CameraFragment : BaseFragment() {
             }
 
             imageGalleryButton.setSafeOnClickListener {
+                disableCameraCaptureButton()
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))
             }
 
             pickLatestFromGallery()
-
-            /*//TODO check this and move it to local data source
-            lifecycleScope.launch(Dispatchers.IO) {
-                outputDirectory.listFiles { file ->
-                    EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-                }
-            }*/
         }
     }
 
@@ -934,11 +938,13 @@ class CameraFragment : BaseFragment() {
         if (flag) {
             activityCallback.setBottomBarInvisibility(true)
             controls?.cameraCaptureButton?.isEnabled = false
+            disableGalleryButton()
         }
     }
 
     private fun displayCameraItemsControl() {
         enableCameraCaptureButton()
+        enableGalleryButton()
         activityCallback.setBottomBarInvisibility(false)
     }
 
@@ -971,6 +977,14 @@ class CameraFragment : BaseFragment() {
 
     fun enableCameraCaptureButton() {
         controls?.cameraCaptureButton?.isEnabled = true
+    }
+
+    fun disableGalleryButton() {
+        imageGalleryButton.isEnabled = false
+    }
+
+    fun enableGalleryButton() {
+        imageGalleryButton.isEnabled = true
     }
 
     fun restoreCameraFromScanning() {
