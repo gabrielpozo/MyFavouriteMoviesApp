@@ -239,6 +239,7 @@ class CameraFragment : BaseFragment() {
     private fun setBrowsingClickable() {
         browseButton.setSafeOnClickListener {
             if (InternetUtil.isInternetOn()) {
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_open)) {}
                 viewModel.onBrowsingButtonClicked()
             } else {
                 activityCallback.onInternetConnectionLost()
@@ -283,6 +284,12 @@ class CameraFragment : BaseFragment() {
             screenNavigator.toGalleryPreview(this)
             if (InternetUtil.isInternetOn()) {
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
+                    putString(
+                        getString(R.string.source),
+                        getString(R.string.gallery)
+                    )
+                }
                 val inputStream = activity?.contentResolver?.openInputStream(uri)
                 inputStream?.let { stream ->
                     viewModel.onCameraButtonClicked(
@@ -893,9 +900,9 @@ class CameraFragment : BaseFragment() {
                 if (isConnected) {
                     facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.send_photo)) {}
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.send_photo)) {
-                        putBoolean(
-                            getString(R.string.flash_enabled),
-                            flashMode == ImageCapture.FLASH_MODE_ON
+                        putString(
+                            getString(R.string.source),
+                            getString(R.string.camera)
                         )
                     }
                     onCameraCaptureClick()

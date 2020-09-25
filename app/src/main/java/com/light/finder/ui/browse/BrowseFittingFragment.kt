@@ -157,6 +157,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
         modelNavigation.getContentIfNotHandled()?.let { model ->
             screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseFormFactor)
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_applied)) {
+                putString(
+                    getString(R.string.base),
+                    model.productBaseFormFactor.name
+                )
+            }
         }
     }
 
