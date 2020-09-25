@@ -280,9 +280,13 @@ class CameraFragment : BaseFragment() {
         modelUiState = ModelStatus.GALLERY
     }
 
-    private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
+    private fun enableGalleryPreviewButtons() {
         confirmPhoto.isEnabled = true
         cancelPhoto.isEnabled = true
+    }
+
+    private fun setGalleryPreviewListeners(uri: Uri, rotation: Int) {
+        enableGalleryPreviewButtons()
         confirmPhoto.setSafeOnClickListener {
             cancelPhoto.isEnabled = false
             screenNavigator.toGalleryPreview(this)
@@ -781,20 +785,13 @@ class CameraFragment : BaseFragment() {
             }
 
             imageGalleryButton.setSafeOnClickListener {
+                disableCameraCaptureButton()
                 galleryPermissionRequester.request({ isPermissionGranted ->
                     viewModel.onGalleryPermissionRequested(isPermissionGranted)
                 }, (::observeGalleryDenyPermission))
-                disableCameraCaptureButton()
             }
 
             pickLatestFromGallery()
-
-            /*//TODO check this and move it to local data source
-            lifecycleScope.launch(Dispatchers.IO) {
-                outputDirectory.listFiles { file ->
-                    EXTENSION_WHITELIST.contains(file.extension.toUpperCase(Locale.ROOT))
-                }
-            }*/
         }
     }
 
