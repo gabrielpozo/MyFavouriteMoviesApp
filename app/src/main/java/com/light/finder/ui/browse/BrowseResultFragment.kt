@@ -24,6 +24,7 @@ class BrowseResultFragment : BaseFragment() {
 
     companion object {
         const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
+        const val BROWSE_RESULT_SCREEN_TAG = "BrowseResults"
     }
 
     private lateinit var component: BrowseResultComponent
@@ -50,6 +51,8 @@ class BrowseResultFragment : BaseFragment() {
 
         activity?.run {
             component = lightFinderComponent.plus(BrowseResultModule())
+            firebaseAnalytics.trackScreen(this@BrowseResultFragment, this, BROWSE_RESULT_SCREEN_TAG)
+
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->

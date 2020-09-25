@@ -102,8 +102,8 @@
     <string name="camera_permission">CameraPermission</string>
     <string name="camera_feed">CameraFeed</string>
     <string name="camera_loading">CameraLoading</string>
-    <string name="product_results">ProductResults</string>
-    <string name="product_details">ScannedProductDetails</string>
+    <string name="product_results">ScanResults</string>
+    <string name="product_details">ProductDetailScreen</string>
     <string name="product_variations">ProductVariations</string>
     <string name="my_cart_fire">MyCart</string>
     <string name="about_page">AboutPage</string>
