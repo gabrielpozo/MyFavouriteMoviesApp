@@ -120,6 +120,7 @@
     <string name="gallery">Gallery</string>
     <string name="browse_open">browse_open</string>
     <string name="send_photo">send_photo</string>
+    <string name="browse_applied">browse_applied</string>
     <string name="lightbulb_identified_but_no_products">identified_but_no_products</string>
     <string name="error_reason_event">error_reason</string>
     <string name="time_out_event">timeout</string>
@@ -179,5 +180,6 @@
     <string name="add_to_cart_fb">add_to_cart</string>
     <string name="payment_succesful">payment_successful</string>
     <string name="faq">FAQ</string>
+
 
 </resources>
