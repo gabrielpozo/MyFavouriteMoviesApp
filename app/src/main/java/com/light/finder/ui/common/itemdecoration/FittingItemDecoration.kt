@@ -1,4 +1,4 @@
-package com.light.finder.ui.itemdecoration
+package com.light.finder.ui.common.itemdecoration
 import android.content.Context
 import android.graphics.Rect
 import android.view.View
@@ -22,7 +22,7 @@ class FittingItemDecoration(private val itemOffset: Int) : ItemDecoration() {
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.set(itemOffset, itemOffset, itemOffset, itemOffset);
+        outRect.set(itemOffset, itemOffset, itemOffset, itemOffset)
     }
 
 

@@ -20,7 +20,7 @@ import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseFittingAdapter
-import com.light.finder.ui.itemdecoration.FittingItemDecoration
+import com.light.finder.ui.common.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
