@@ -961,13 +961,10 @@ class CameraFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Shut down our background executor
+         //Shut down our background executor
         cameraExecutor.shutdown()
-        // Every time the orientation of device changes, update rotation for use cases
+         //Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
-        if (::cameraProvider.isInitialized) {
-            cameraProvider.unbindAll()
-        }
     }
 
     fun disableCameraCaptureButton() {
