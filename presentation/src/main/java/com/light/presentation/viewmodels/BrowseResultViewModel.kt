@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
-import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.GetBrowseProductsResultUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,7 +25,12 @@ class BrowseResultViewModel(
     val modelNavigation: LiveData<Event<NavigationModel>>
         get() = _modelNavigation
 
+    private val _modelFilter = MutableLiveData<Event<FilterModel>>()
+    val modelFilter: LiveData<Event<FilterModel>>
+        get() = _modelFilter
+
     class NavigationModel(val category: Category)
+    class FilterModel(val requestCode: Int)
 
 
     sealed class ResultBrowse {
@@ -43,6 +47,10 @@ class BrowseResultViewModel(
         _modelNavigation.value = Event(
             NavigationModel(category)
         )
+    }
+
+    fun onFilterClick(requestCode: Int) {
+        _modelFilter.value = Event(FilterModel(requestCode))
     }
 
     fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {

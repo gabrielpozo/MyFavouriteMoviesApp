@@ -8,7 +8,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
 import com.light.domain.model.Message
-import com.light.domain.model.Product
 import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.UsabillaActivity
@@ -19,9 +18,9 @@ import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
+import com.light.finder.ui.filter.FilterLightFinderActivity
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.REQUEST_CODE_AMBIANCE
@@ -223,4 +222,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {}
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
+
+    fun navigateToFiltering(requestCode: Int) {
+        activity.startActivityForResult<FilterLightFinderActivity>(requestCode) {}
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+
 }

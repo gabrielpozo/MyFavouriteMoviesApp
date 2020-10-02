@@ -11,7 +11,10 @@ import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseResultComponent
 import com.light.finder.di.modules.submodules.BrowseResultModule
-import com.light.finder.extensions.*
+import com.light.finder.extensions.deparcelizeChoiceBrowsingList
+import com.light.finder.extensions.getIntFormatter
+import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.gone
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.BrowseResultAdapter
 import com.light.presentation.common.Event
@@ -24,6 +27,7 @@ class BrowseResultFragment : BaseFragment() {
 
     companion object {
         const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
+        const val FILTER_REQUEST_CODE = 1
     }
 
     private lateinit var component: BrowseResultComponent
@@ -61,7 +65,22 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
         }
 
+        filterButton.setOnClickListener {
+            viewModel.onFilterClick(FILTER_REQUEST_CODE)
+        }
+
         navigationObserver()
+        filterObserver()
+    }
+
+    private fun filterObserver() {
+        viewModel.modelFilter.observe(viewLifecycleOwner, Observer(::navigateToFilter))
+    }
+
+    private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
+        filterModel?.getContentIfNotHandled()?.let { navModel ->
+            screenNavigator.navigateToFiltering(navModel.requestCode)
+        }
     }
 
 
@@ -77,7 +96,7 @@ class BrowseResultFragment : BaseFragment() {
 
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
                 rvCategories.gone()
-                browseNoResultsView.visible()
+                //browseNoResultsView.visible()
                 updateNoResultsData(model.message)
             }
         }

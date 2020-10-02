@@ -7,16 +7,31 @@
     android:orientation="vertical"
     android:background="@drawable/categories_gradient_bg">
 
-    <!--No Results View-->
-    <include
-        android:id="@+id/browseNoResultsView"
-        layout="@layout/browse_no_results_layout"
-        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/backgroundDark"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_icon_filters"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!--RecyclerView-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/browse_header_margin"
         android:layout_height="wrap_content">
 
         <!--Divider View-->
@@ -32,11 +47,11 @@
             android:splitMotionEvents="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_category" />
 
         <ProgressBar
