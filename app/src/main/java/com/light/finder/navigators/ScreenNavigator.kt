@@ -8,7 +8,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
 import com.light.domain.model.CctType
 import com.light.domain.model.Message
-import com.light.domain.model.Product
 import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.UsabillaActivity
@@ -17,11 +16,11 @@ import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
+import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
 import com.light.finder.ui.lightfinder.DetailFragment
-import com.light.finder.ui.lightfinder.ProductVariationsLightFinderActivity
 import com.light.finder.ui.lightfinder.TipsAndTricksLightFinderActivity
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity.Companion.REQUEST_CODE_AMBIANCE
@@ -76,13 +75,27 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                 INDEX_CART
         }
 
+        fun onLightFinderTabPressed(current: Fragment?, wasSelected: Boolean) {
 
-        activity.bottom_navigation_view.setOnTabSelectedListener { position, _ ->
+            if (!wasSelected) {
+                return
+            }
+
+            when (current) {
+                is BrowseResultFragment, is CategoriesFragment, is DetailFragment
+                -> goToHomeScreen()
+            }
+        }
+
+        activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
             when (position) {
                 INDEX_LIGHT_FINDER -> {
                     fragNavController.switchTab(INDEX_LIGHT_FINDER)
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
                     val current = getCurrentFragment()
+
+                    onLightFinderTabPressed(current, wasSelected)
+
                     if (current is CameraFragment) {
                         current.enableCameraCaptureButton()
                     }
@@ -151,6 +164,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
     }
 
+    private fun goToHomeScreen() {
+        activity.startActivity<CameraLightFinderActivity> {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+    }
 
     fun navigateToSettings() {
         activity.startActivity(Intent(Settings.ACTION_SETTINGS))
