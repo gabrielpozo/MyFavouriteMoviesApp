@@ -51,8 +51,6 @@ class BrowseResultFragment : BaseFragment() {
 
         activity?.run {
             component = lightFinderComponent.plus(BrowseResultModule())
-            firebaseAnalytics.trackScreen(this@BrowseResultFragment, this, BROWSE_RESULT_SCREEN_TAG)
-
         } ?: throw Exception("Invalid Activity")
 
         arguments?.let { bundle ->
@@ -67,6 +65,10 @@ class BrowseResultFragment : BaseFragment() {
         navigationObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.trackScreen(this@BrowseResultFragment, activity, BROWSE_RESULT_SCREEN_TAG)
+    }
 
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
