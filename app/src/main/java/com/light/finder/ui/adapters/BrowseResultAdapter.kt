@@ -57,19 +57,23 @@ class BrowseResultAdapter(
     }
 
 
-    fun sortByRecommended(categories: List<Category>) {
-        categories.sortedBy { it.categoryIndex }
+    fun sortByRecommended() {
+        updateList(categories.sortedBy { it.categoryIndex })
     }
 
-    fun sortByMin(categories: List<Category>) {
-        categories.sortedBy { it.priceRange.substringBefore("-").toInt() }
+    fun sortByMin() {
+        updateList(categories.sortedBy {
+            it.priceRange.substringBefore("-").replace("$", "").toDouble()
+        })
     }
 
-    fun sortByMax(categories: List<Category>) {
-        categories.sortedBy { it.priceRange.substringAfter("-").toInt() }
+    fun sortByMax() {
+        updateList(categories.sortedBy {
+            it.priceRange.substringAfter("-").replace("$", "").toDouble()
+        })
     }
 
-    fun updateList(categories: List<Category>) {
+    private fun updateList(categories: List<Category>) {
         this.categories = categories
         notifyDataSetChanged()
     }

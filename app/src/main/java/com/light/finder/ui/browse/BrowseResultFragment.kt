@@ -13,10 +13,7 @@ import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseResultComponent
 import com.light.finder.di.modules.submodules.BrowseResultModule
-import com.light.finder.extensions.deparcelizeChoiceBrowsingList
-import com.light.finder.extensions.getIntFormatter
-import com.light.finder.extensions.getViewModel
-import com.light.finder.extensions.gone
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.BrowseResultAdapter
 import com.light.finder.ui.filter.FilterLightFinderActivity
@@ -70,7 +67,7 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
         }
 
-        filterButton.setOnClickListener {
+        filterButton.setSafeOnClickListener {
             viewModel.onFilterClick(FILTER_REQUEST_CODE)
         }
 
@@ -112,30 +109,24 @@ class BrowseResultFragment : BaseFragment() {
         viewModel.onSortResults(sortId)
     }
 
-    private fun sortResults(sortModel: Event<BrowseResultViewModel.SortModel>?) {
-        sortModel?.getContentIfNotHandled()?.let { sort ->
-            {
+    private fun sortResults(sortModel: BrowseResultViewModel.SortModel?) {
 
-                when (sort.sortId) {
-                    Sort.RECOMMENDED.ordinal -> {
-                        //adapter.sortByRecommended()
-                    }
-                    Sort.MAX.ordinal -> {
-                        //adapter.sortByMax()
-                    }
-                    Sort.MIN.ordinal -> {
-                        //adapter.sortByMin()
-                    }
-                    else -> {
-                        //adapter.sortByRecommended()
-                    }
-                }
-
-
+        when (sortModel?.sortId) {
+            Sort.RECOMMENDED.id -> {
+                adapter.sortByRecommended()
+            }
+            Sort.MAX.id -> {
+                adapter.sortByMax()
+            }
+            Sort.MIN.id -> {
+                adapter.sortByMin()
+            }
+            else -> {
+                adapter.sortByRecommended()
             }
         }
+        }
 
-    }
 
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {
@@ -195,7 +186,7 @@ class BrowseResultFragment : BaseFragment() {
 
 }
 
-enum class Sort(id: Int) {
+enum class Sort(val id: Int) {
     RECOMMENDED(2131362146),
     MIN(2131362092),
     MAX(2131362030)
