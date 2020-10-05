@@ -56,6 +56,25 @@ class BrowseResultAdapter(
         }
     }
 
+
+    fun sortByRecommended(categories: List<Category>) {
+        categories.sortedBy { it.categoryIndex }
+    }
+
+    fun sortByMin(categories: List<Category>) {
+        categories.sortedBy { it.priceRange.substringBefore("-").toInt() }
+    }
+
+    fun sortByMax(categories: List<Category>) {
+        categories.sortedBy { it.priceRange.substringAfter("-").toInt() }
+    }
+
+    fun updateList(categories: List<Category>) {
+        this.categories = categories
+        notifyDataSetChanged()
+    }
+
+
     // Size + headerOffset since 0 is reserved for header
     override fun getItemCount(): Int = categories.size + headerOffset
 
