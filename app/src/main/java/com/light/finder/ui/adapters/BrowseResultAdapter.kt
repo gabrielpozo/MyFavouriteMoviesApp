@@ -61,6 +61,7 @@ class BrowseResultAdapter(
         updateList(categories.sortedBy { it.categoryIndex })
     }
 
+    //todo min max values should be parsed individually
     fun sortByMin() {
         updateList(categories.sortedBy {
             it.priceRange.substringBefore("-").replace("$", "").toDouble()
@@ -73,6 +74,7 @@ class BrowseResultAdapter(
         })
     }
 
+    //todo pass new list
     private fun updateList(categories: List<Category>) {
         this.categories = categories
         notifyDataSetChanged()

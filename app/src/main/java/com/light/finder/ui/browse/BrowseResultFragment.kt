@@ -23,6 +23,7 @@ import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.browse_results_header.*
 import kotlinx.android.synthetic.main.fragment_browse_result.*
+import timber.log.Timber
 
 class BrowseResultFragment : BaseFragment() {
 
@@ -110,8 +111,9 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun sortResults(sortModel: BrowseResultViewModel.SortModel?) {
-
+        Timber.d("egooo ${sortModel?.sortId}")
         when (sortModel?.sortId) {
+
             Sort.RECOMMENDED.id -> {
                 adapter.sortByRecommended()
             }
