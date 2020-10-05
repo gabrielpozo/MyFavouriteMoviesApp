@@ -49,7 +49,7 @@
     <string name="timeout_sub">That took longer than expected</string>
     <string name="unidentified_sub">We\'re struggling to recognize a light bulb in the image.</string>
     <string name="ok">OK</string>
-    <string name="oops">Oops</string>
+    <string name="oops">Oops!</string>
     <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="error_sub_not_available">Sorry! We recognized your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
@@ -102,8 +102,8 @@
     <string name="camera_permission">CameraPermission</string>
     <string name="camera_feed">CameraFeed</string>
     <string name="camera_loading">CameraLoading</string>
-    <string name="product_results">ProductResults</string>
-    <string name="product_details">ScannedProductDetails</string>
+    <string name="product_results">ScanResults</string>
+    <string name="product_details">ProductDetailScreen</string>
     <string name="product_variations">ProductVariations</string>
     <string name="my_cart_fire">MyCart</string>
     <string name="about_page">AboutPage</string>
@@ -115,7 +115,12 @@
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
     <string name="flash_enabled">flash_enabled</string>
+    <string name="source">source</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="browse_open">browse_open</string>
     <string name="send_photo">send_photo</string>
+    <string name="browse_applied">browse_applied</string>
     <string name="lightbulb_identified_but_no_products">identified_but_no_products</string>
     <string name="error_reason_event">error_reason</string>
     <string name="time_out_event">timeout</string>
@@ -153,7 +158,7 @@
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
-    <string name="error_browse">Oops…</string>
+    <string name="error_browse">Oops!</string>
     <string name="something_went_wrong">Something went wrong.\nPlease refresh or try again later.</string>
     <string name="refresh">Refresh</string>
     <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>

@@ -29,6 +29,7 @@ class BrowseResultFragment : BaseFragment() {
 
     companion object {
         const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
+        const val BROWSE_RESULT_SCREEN_TAG = "BrowseResults"
         const val FILTER_REQUEST_CODE = 1
     }
 
@@ -92,6 +93,10 @@ class BrowseResultFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.trackScreen(this@BrowseResultFragment, activity, BROWSE_RESULT_SCREEN_TAG)
+    }
 
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
