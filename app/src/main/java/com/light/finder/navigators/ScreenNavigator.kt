@@ -225,7 +225,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     fun navigateToFiltering(requestCode: Int) {
         activity.startActivityForResult<FilterLightFinderActivity>(requestCode) {}
-        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        activity.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
     }
 
 

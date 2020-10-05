@@ -21,7 +21,7 @@ import timber.log.Timber
 class FilterLightFinderActivity : BaseLightFinderActivity() {
 
     companion object {
-        const val REQUEST_CODE_FILTER = 1
+        const val SORT_ID = "sortId"
     }
 
 
@@ -40,8 +40,9 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
         component = app.applicationComponent.plus(FilterModule())
 
 
-        navigationObserver()
+
         setRadioButtonClickListener()
+        navigationObserver()
     }
 
     private fun setRadioButtonClickListener() {
@@ -53,7 +54,7 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
 
             val isChecked = checkedRadioButton.isChecked
             if (isChecked) {
-
+                viewModel.onFilterClick(checkedId)
                 Timber.d("ege $checkedId ${checkedRadioButton.id}")
             }
         }
@@ -71,7 +72,7 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
     private fun navigateBackToBrowseResults(navigationModel: Event<FilterViewModel.NavigationModel>) {
         navigationModel.getContentIfNotHandled()?.let { navModel ->
             setIntentForResult {
-                //put string extra with filter
+                putExtra(SORT_ID, navModel.filterId)
             }
             finish()
             setAnimation()
