@@ -29,8 +29,13 @@ class BrowseResultViewModel(
     val modelFilter: LiveData<Event<FilterModel>>
         get() = _modelFilter
 
+    private val _modelSort = MutableLiveData<Event<SortModel>>()
+    val modelSort: LiveData<Event<SortModel>>
+        get() = _modelSort
+
     class NavigationModel(val category: Category)
     class FilterModel(val requestCode: Int)
+    class SortModel(val sortId: Int)
 
 
     sealed class ResultBrowse {
@@ -51,6 +56,10 @@ class BrowseResultViewModel(
 
     fun onFilterClick(requestCode: Int) {
         _modelFilter.value = Event(FilterModel(requestCode))
+    }
+
+    fun onSortResults(sortId: Int) {
+        _modelSort.value = Event(SortModel(sortId))
     }
 
     fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {

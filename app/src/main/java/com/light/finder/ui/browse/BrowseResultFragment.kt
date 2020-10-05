@@ -19,6 +19,7 @@ import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.gone
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.BrowseResultAdapter
+import com.light.finder.ui.filter.FilterLightFinderActivity
 import com.light.finder.ui.filter.FilterLightFinderActivity.Companion.SORT_ID
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
@@ -34,6 +35,7 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private lateinit var component: BrowseResultComponent
+    private var sortId = Sort.RECOMMENDED.ordinal
     private val viewModel: BrowseResultViewModel by lazy { getViewModel { component.browseResultViewModel } }
     private lateinit var adapter: BrowseResultAdapter
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -74,15 +76,21 @@ class BrowseResultFragment : BaseFragment() {
 
         navigationObserver()
         filterObserver()
+        sortObserver()
     }
 
     private fun filterObserver() {
         viewModel.modelFilter.observe(viewLifecycleOwner, Observer(::navigateToFilter))
     }
 
+    private fun sortObserver() {
+        viewModel.modelSort.observe(viewLifecycleOwner, Observer(::sortResults))
+    }
+
     private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
         filterModel?.getContentIfNotHandled()?.let { navModel ->
-            screenNavigator.navigateToFiltering(navModel.requestCode)
+            val intent = Intent(context, FilterLightFinderActivity::class.java)
+            startActivityForResult(intent, navModel.requestCode)
         }
     }
 
@@ -95,13 +103,39 @@ class BrowseResultFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data?.getIntExtra(
+            sortId = data?.getIntExtra(
                 SORT_ID,
                 Sort.RECOMMENDED.ordinal
             ) ?: -1
         }
+
+        viewModel.onSortResults(sortId)
     }
 
+    private fun sortResults(sortModel: Event<BrowseResultViewModel.SortModel>?) {
+        sortModel?.getContentIfNotHandled()?.let { sort ->
+            {
+
+                when (sort.sortId) {
+                    Sort.RECOMMENDED.ordinal -> {
+                        //adapter.sortByRecommended()
+                    }
+                    Sort.MAX.ordinal -> {
+                        //adapter.sortByMax()
+                    }
+                    Sort.MIN.ordinal -> {
+                        //adapter.sortByMin()
+                    }
+                    else -> {
+                        //adapter.sortByRecommended()
+                    }
+                }
+
+
+            }
+        }
+
+    }
 
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {

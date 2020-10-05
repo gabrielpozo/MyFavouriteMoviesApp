@@ -1,5 +1,6 @@
 package com.light.finder.navigators
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.FormFactorTypeBaseId
@@ -12,6 +13,7 @@ import com.light.finder.extensions.newInstance
 import com.light.finder.extensions.parcelizeChoiceBrowsingList
 import com.light.finder.extensions.startActivity
 import com.light.finder.ui.browse.*
+import com.ncapdevi.fragnav.FragNavController
 
 
 class ScreenFilteringNavigator(private val activity: BrowseActivity) {
@@ -21,6 +23,8 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
     val fragmentManager: FragmentManager = activity.supportFragmentManager
+    private val fragNavController: FragNavController =
+        FragNavController(activity.supportFragmentManager, R.id.fragment_container_browse)
 
     fun navigateToBrowsingFittingScreen() {
         addFragmentTransaction(BrowseFittingFragment())
@@ -72,6 +76,8 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     fun popFragment() {
         fragmentManager.popBackStack()
     }
+
+    fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
 
 
 }
