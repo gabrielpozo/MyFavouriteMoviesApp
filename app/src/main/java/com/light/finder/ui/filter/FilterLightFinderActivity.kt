@@ -61,6 +61,11 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        setAnimation()
+    }
+
 
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(

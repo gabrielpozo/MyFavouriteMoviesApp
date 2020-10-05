@@ -90,12 +90,13 @@ class BrowseResultFragment : BaseFragment() {
         filterModel?.getContentIfNotHandled()?.let { navModel ->
             val intent = Intent(context, FilterLightFinderActivity::class.java)
             startActivityForResult(intent, navModel.requestCode)
+            activity?.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        firebaseAnalytics.trackScreen(this@BrowseResultFragment, activity, BROWSE_RESULT_SCREEN_TAG)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
     }
 
     private fun navigationObserver() {
