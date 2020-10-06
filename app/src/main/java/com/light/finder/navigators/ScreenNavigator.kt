@@ -11,10 +11,7 @@ import com.light.domain.model.Message
 import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.UsabillaActivity
-import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.parcelizeCctList
-import com.light.finder.extensions.startActivity
-import com.light.finder.extensions.startActivityForResult
+import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
@@ -103,7 +100,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                         current.enableCameraCaptureButton()
                     }
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_CART -> {
                     val current = getCurrentFragment()
@@ -113,7 +110,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     fragNavController.switchTab(INDEX_CART)
                     reloadCartFragment()
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+                    firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                 }
                 INDEX_ABOUT -> {
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
@@ -124,7 +121,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
                     fragNavController.switchTab(INDEX_ABOUT)
                     if (getCurrentFragment() is AboutFragment) {
-                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+                        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         (getCurrentFragment() as AboutFragment).setLightStatusBar()
                     }
                 }
@@ -155,7 +152,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
             current.restoreCameraFromScanning()
         }
         //TODO("create show/navigate event for every single fragment -> BaseFragment")
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
         return isFragmentPopped
     }
 
@@ -194,39 +191,43 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     fun navigateToDetailScreen(category: Category) {
         fragNavController.pushFragment(DetailFragment.newInstance(category))
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
 
     fun navigateToCategoriesScreen(message: Message) {
         fragNavController.pushFragment(CategoriesFragment.newInstance(message))
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
     }
 
     fun toCameraPermissionScreen(cameraFragment: CameraFragment) {
-        activity.getString(R.string.camera_permission)
-        firebaseAnalytics.logEvent(
-            FirebaseAnalytics.Event.SCREEN_VIEW, bundle
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_permission)
         )
     }
 
     fun toGalleryPreview(cameraFragment: CameraFragment) {
-        activity.getString(R.string.gallery_preview)
-        firebaseAnalytics.logEvent(
-            FirebaseAnalytics.Event.SCREEN_VIEW, bundle
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.gallery_preview)
         )
     }
 
     fun toCameraFeedScreen(cameraFragment: CameraFragment) {
-        activity.getString(R.string.camera_feed)
-        firebaseAnalytics.logEvent(
-            FirebaseAnalytics.Event.SCREEN_VIEW, bundle
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_feed)
         )
     }
 
     fun toCameraLoading(cameraFragment: CameraFragment) {
-        activity.getString(R.string.camera_loading)
-        firebaseAnalytics.logEvent(
-            FirebaseAnalytics.Event.SCREEN_VIEW, bundle
+        firebaseAnalytics.trackScreen(
+            cameraFragment,
+            activity,
+            activity.getString(R.string.camera_loading)
         )
     }
 

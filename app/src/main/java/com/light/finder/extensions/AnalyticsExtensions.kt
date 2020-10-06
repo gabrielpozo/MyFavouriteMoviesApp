@@ -37,7 +37,7 @@ inline fun AppEventsLogger.logEventOnFacebookSdk(
 }
 
 //TODO extract this method in a standalone class
-@Deprecated("will be removed in future releases", ReplaceWith("logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)"))
+@Deprecated("will be removed in future releases")
 fun FirebaseAnalytics.trackScreen(
     currentFragment: Fragment?,
     activity: FragmentActivity?,

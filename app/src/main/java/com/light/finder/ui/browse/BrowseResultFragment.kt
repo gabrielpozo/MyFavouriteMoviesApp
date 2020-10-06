@@ -23,7 +23,6 @@ import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.browse_results_header.*
 import kotlinx.android.synthetic.main.fragment_browse_result.*
-import timber.log.Timber
 
 class BrowseResultFragment : BaseFragment() {
 
@@ -96,7 +95,7 @@ class BrowseResultFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        firebaseAnalytics.trackScreen(this@BrowseResultFragment, activity, BROWSE_RESULT_SCREEN_TAG)
     }
 
     private fun navigationObserver() {
@@ -117,7 +116,6 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun sortResults(sortModel: BrowseResultViewModel.SortModel?) {
-        Timber.d("egooo ${sortModel?.sortId}")
         when (sortModel?.sortId) {
 
             Sort.RECOMMENDED.id -> {
