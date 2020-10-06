@@ -10,24 +10,33 @@ class GetSortCategoriesUseCase {
     ): List<Category> {
 
         val sortedCategories = categories.map { it.copy() }
+        val newCategories = mutableListOf<Category>()
 
-        return when (sortId) {
+        when (sortId) {
             Sort.RECOMMENDED.id -> {
-                sortedCategories.sortedBy { it.categoryIndex }
+                newCategories.addAll(sortedCategories.sortedBy { it.categoryIndex })
+                return newCategories
             }
             Sort.MAX.id -> {
-                //todo change dto
-                categories.sortedBy {
-                    it.maxPrice
-                }
+                //todo check sorting
+                newCategories.addAll(
+                    categories.sortedBy { category ->
+                        category.categoryProducts.maxBy { it.priceLamp }?.priceLamp
+                    })
+                return newCategories
             }
             Sort.MIN.id -> {
-                categories.sortedBy {
-                    it.minPrice
-                }
+                //todo check sorting
+                newCategories.addAll(
+                    categories.sortedBy { category ->
+                        category.categoryProducts.minBy { it.priceLamp }?.priceLamp
+                    })
+                return newCategories
             }
             else -> {
-                sortedCategories.sortedBy { it.categoryIndex }
+                newCategories.addAll(
+                    sortedCategories.sortedBy { it.categoryIndex })
+                return newCategories
             }
         }
     }
