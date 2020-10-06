@@ -33,7 +33,7 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private lateinit var component: BrowseResultComponent
-    private var sortId = Sort.RECOMMENDED.ordinal
+    private var sortId = 2131362146
     private val viewModel: BrowseResultViewModel by lazy { getViewModel { component.browseResultViewModel } }
     private lateinit var adapter: BrowseResultAdapter
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -108,7 +108,7 @@ class BrowseResultFragment : BaseFragment() {
         if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             sortId = data?.getIntExtra(
                 SORT_ID,
-                Sort.RECOMMENDED.ordinal
+                2131362146
             ) ?: -1
         }
 
@@ -116,28 +116,18 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun sortResults(sortModel: BrowseResultViewModel.SortModel?) {
-        when (sortModel?.sortId) {
-
-            Sort.RECOMMENDED.id -> {
-                adapter.sortByRecommended()
-            }
-            Sort.MAX.id -> {
-                adapter.sortByMax()
-            }
-            Sort.MIN.id -> {
-                adapter.sortByMin()
-            }
-            else -> {
-                adapter.sortByRecommended()
-            }
-        }
-        }
+        sortModel?.sortId?.let { viewModel.onSortCategories(it) }
+    }
 
 
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {
             is BrowseResultViewModel.ResultBrowse.Content -> {
                 updateAdapter(model.message)
+            }
+
+            is BrowseResultViewModel.ResultBrowse.SortedContent -> {
+                adapter.categories = model.categories
             }
 
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
@@ -192,8 +182,3 @@ class BrowseResultFragment : BaseFragment() {
 
 }
 
-enum class Sort(val id: Int) {
-    RECOMMENDED(2131362146),
-    MIN(2131362092),
-    MAX(2131362030)
-}

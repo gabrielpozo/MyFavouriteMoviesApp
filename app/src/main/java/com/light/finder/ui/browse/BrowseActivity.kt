@@ -51,7 +51,7 @@ class BrowseActivity : BaseLightFinderActivity(){
             if (currentFragment is BrowseResultFragment) {
                 data?.getIntExtra(
                     FilterLightFinderActivity.SORT_ID,
-                    Sort.RECOMMENDED.ordinal
+                    2131362146
                 ) ?: -1
             }
         }

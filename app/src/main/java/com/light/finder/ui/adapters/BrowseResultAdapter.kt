@@ -57,29 +57,6 @@ class BrowseResultAdapter(
     }
 
 
-    fun sortByRecommended() {
-        updateList(categories.sortedBy { it.categoryIndex })
-    }
-
-    //todo min max values should be parsed individually
-    fun sortByMin() {
-        updateList(categories.sortedBy {
-            it.priceRange.substringBefore("-").replace("$", "").toDouble()
-        })
-    }
-
-    fun sortByMax() {
-        updateList(categories.sortedBy {
-            it.priceRange.substringAfter("-").replace("$", "").toDouble()
-        })
-    }
-
-    //todo pass new list
-    private fun updateList(categories: List<Category>) {
-        this.categories = categories
-        notifyDataSetChanged()
-    }
-
 
     // Size + headerOffset since 0 is reserved for header
     override fun getItemCount(): Int = categories.size + headerOffset

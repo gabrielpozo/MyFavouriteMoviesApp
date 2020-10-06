@@ -7,10 +7,12 @@ import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
 import com.light.presentation.common.Event
 import com.light.usecases.GetBrowseProductsResultUseCase
+import com.light.usecases.GetSortCategoriesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class BrowseResultViewModel(
+    private val getSortCategoriesUseCase: GetSortCategoriesUseCase,
     private val getBrowseProductsResultUseCase: GetBrowseProductsResultUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
@@ -33,19 +35,18 @@ class BrowseResultViewModel(
     val modelSort: LiveData<SortModel>
         get() = _modelSort
 
+    private var currentCategoriesList = mutableListOf<Category>()
+
     class NavigationModel(val category: Category)
     class FilterModel(val requestCode: Int)
     class SortModel(val sortId: Int)
 
 
     sealed class ResultBrowse {
+        data class SortedContent(val categories: List<Category>) : ResultBrowse()
         data class Content(val categories: List<Category>, val message: Message) : ResultBrowse()
         data class NoResult(val message: Message) : ResultBrowse()
-
-
     }
-
-    data class Content(val messages: List<Category>, val message: Message)
 
 
     fun onCategoryClick(category: Category) {
@@ -62,6 +63,18 @@ class BrowseResultViewModel(
         _modelSort.value = SortModel(sortId)
     }
 
+    fun onSortCategories(sortId: Int) {
+        launch {
+            _model.value = ResultBrowse.SortedContent(
+                getSortCategoriesUseCase.executeSorting(
+                    sortId,
+                    currentCategoriesList
+                )
+            )
+        }
+
+    }
+
     fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {
         launch {
             getBrowseProductsResultUseCase.execute(
@@ -73,6 +86,7 @@ class BrowseResultViewModel(
     }
 
     private fun handleResultProducts(message: Message) {
+        currentCategoriesList = message.categories.toMutableList()
         _model.value = ResultBrowse.Content(message.categories, message)
     }
 
