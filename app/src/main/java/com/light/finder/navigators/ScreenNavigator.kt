@@ -166,7 +166,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     private fun goToHomeScreen() {
         activity.startActivity<CameraLightFinderActivity> {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
     }
 
