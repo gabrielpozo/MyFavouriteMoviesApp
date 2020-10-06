@@ -3,6 +3,7 @@ package com.light.finder.navigators
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.domain.model.Category
@@ -83,7 +84,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
             when (current) {
                 is BrowseResultFragment, is CategoriesFragment, is DetailFragment
-                -> goToHomeScreen()
+                -> {
+                    activity.bottom_navigation_view.setItemDisableColor(getColor(activity, R.color.backgroundLight))
+                    activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
+                    goToHomeScreen()
+                }
             }
         }
 
@@ -166,7 +171,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     private fun goToHomeScreen() {
         activity.startActivity<CameraLightFinderActivity> {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
     }
 
