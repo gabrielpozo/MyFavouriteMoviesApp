@@ -2,7 +2,7 @@ package com.light.finder.data.mappers
 
 import com.light.domain.model.*
 import com.light.domain.model.ProductCategoryName
-import com.light.finder.data.source.remote.*
+import com.light.finder.data.source.remote.CartItemCountResultDto
 import com.light.finder.data.source.remote.dto.*
 
 val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
@@ -20,6 +20,8 @@ val mapServerMessagesToDomain: (MessageDto) -> Message = { messageDto ->
                     priceRange = getMinPriceTag(
                         categoryDto.categoryPrice?.minPrice
                     ),
+                    maxPrice = categoryDto.categoryPrice?.maxPrice ?: -1f,
+                    minPrice = categoryDto.categoryPrice?.minPrice ?: -1f,
                     categoryWattReplaced = categoryDto.categoryWattReplace,
                     maxEnergySaving = categoryDto.categoryEnergySave.maxEnergySaving,
                     minEnergySaving = categoryDto.categoryEnergySave.minEnergySaving,

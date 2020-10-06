@@ -18,12 +18,12 @@ class GetSortCategoriesUseCase {
             Sort.MAX.id -> {
                 //todo change dto
                 categories.sortedBy {
-                    it.priceRange.substringAfter("-").replace("$", "").toDouble()
+                    it.maxPrice
                 }
             }
             Sort.MIN.id -> {
                 categories.sortedBy {
-                    it.priceRange.substringBefore("-").replace("$", "").toDouble()
+                    it.minPrice
                 }
             }
             else -> {
