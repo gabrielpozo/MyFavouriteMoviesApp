@@ -77,7 +77,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
         fun onLightFinderTabPressed(current: Fragment?, wasSelected: Boolean) {
-
+            
             if (!wasSelected) {
                 return
             }
@@ -85,7 +85,12 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
             when (current) {
                 is BrowseResultFragment, is CategoriesFragment, is DetailFragment
                 -> {
-                    activity.bottom_navigation_view.setItemDisableColor(getColor(activity, R.color.backgroundLight))
+                    activity.bottom_navigation_view.setItemDisableColor(
+                        getColor(
+                            activity,
+                            R.color.backgroundLight
+                        )
+                    )
                     activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
                     goToHomeScreen()
                 }
