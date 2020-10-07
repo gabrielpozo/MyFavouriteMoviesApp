@@ -19,7 +19,7 @@
             android:textSize="18sp"
             android:layout_marginTop="18dp"
             android:fontFamily="@font/bold"
-            android:textColor="@color/backgroundDark"
+            android:textColor="@color/textDark"
             android:lineSpacingExtra="12sp"
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
