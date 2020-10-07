@@ -9,6 +9,8 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorControlActivated">@color/gallerySelected</item>
+        <item name="colorControlNormal">@color/informationError</item>
     </style>
 
     <style name="LightStatusBar" parent="AppTheme">

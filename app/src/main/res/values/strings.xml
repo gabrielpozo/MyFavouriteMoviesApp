@@ -180,6 +180,8 @@
     <string name="add_to_cart_fb">add_to_cart</string>
     <string name="payment_succesful">payment_successful</string>
     <string name="faq">FAQ</string>
-
-
+    <string name="price_high_low">Price High - Low</string>
+    <string name="price_low_high">Price Low - High</string>
+    <string name="recommended">Recommended</string>
+    <string name="sort_by">Sort by</string>
 </resources>

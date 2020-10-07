@@ -23,6 +23,8 @@ data class Category(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
+    val maxPrice: Float,
+    val minPrice: Float,
     val categoryWattReplaced: List<Int>,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,

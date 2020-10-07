@@ -1,7 +1,6 @@
 package com.light.finder.data.source.remote
 
 import android.os.Parcelable
-import com.light.domain.model.ShapeBrowsing
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,6 +11,8 @@ data class CategoryParcelable(
     val categoryName: String,
     val categoryImage: String,
     val priceRange: String,
+    val maxPrice: Float,
+    val minPrice: Float,
     val minWattage: List<Int>,
     val maxEnergySaving: Float,
     val minEnergySaving: Float,

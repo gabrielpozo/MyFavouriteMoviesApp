@@ -56,6 +56,8 @@ class BrowseResultAdapter(
         }
     }
 
+
+
     // Size + headerOffset since 0 is reserved for header
     override fun getItemCount(): Int = categories.size + headerOffset
 
