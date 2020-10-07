@@ -128,6 +128,7 @@ class BrowseResultFragment : BaseFragment() {
 
             is BrowseResultViewModel.ResultBrowse.SortedContent -> {
                 adapter.categories = model.categories
+                rvCategories.scrollToPosition(0)
             }
 
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
