@@ -1,5 +1,6 @@
 package com.light.finder.ui.filter
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -12,6 +13,7 @@ import com.light.finder.di.modules.submodules.FilterModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
 import com.light.finder.extensions.setIntentForResult
+import com.light.finder.ui.browse.BrowseResultFragment.Companion.SORT_SELECTION
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.FilterViewModel
 import kotlinx.android.synthetic.main.browse_filter_layout.*
@@ -22,6 +24,10 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
 
     companion object {
         const val SORT_ID = "sortId"
+        const val RECOMMENDED = 2131362146
+        const val LOW_TO_HIGH = 2131362092
+        const val HIGH_TO_LOW = 2131362030
+
     }
 
 
@@ -39,10 +45,21 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
 
         component = app.applicationComponent.plus(FilterModule())
 
+        val intent: Intent = intent
+        val sortId = intent.getIntExtra(SORT_SELECTION, RECOMMENDED)
 
+        selectOption(sortId)
 
         setRadioButtonClickListener()
         navigationObserver()
+    }
+
+    private fun selectOption(sortId: Int?) {
+        when (sortId) {
+            LOW_TO_HIGH -> lowToHigh.isChecked = true
+            HIGH_TO_LOW -> highToLow.isChecked = true
+            else -> recommended.isChecked = true
+        }
     }
 
     private fun setRadioButtonClickListener() {

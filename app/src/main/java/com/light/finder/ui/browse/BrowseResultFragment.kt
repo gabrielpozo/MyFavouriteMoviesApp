@@ -30,6 +30,7 @@ class BrowseResultFragment : BaseFragment() {
         const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
         const val BROWSE_RESULT_SCREEN_TAG = "BrowseResults"
         const val FILTER_REQUEST_CODE = 1
+        const val SORT_SELECTION = "sortId"
     }
 
     private lateinit var component: BrowseResultComponent
@@ -88,6 +89,7 @@ class BrowseResultFragment : BaseFragment() {
     private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
         filterModel?.getContentIfNotHandled()?.let { navModel ->
             val intent = Intent(context, FilterLightFinderActivity::class.java)
+            intent.putExtra(SORT_SELECTION, sortId)
             startActivityForResult(intent, navModel.requestCode)
             activity?.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
         }
