@@ -99,6 +99,11 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<FormFactorTypeBaseId>().toString()
     )
 
+    override fun loadFormFactorBasedOnBrowsingProducts(productsFilteredBrowsing: List<ProductBrowsing>): List<FormFactorTypeBaseId> =
+        loadFormFactorIBaseIdLegendTags().filter { formFactor ->
+            productsFilteredBrowsing.find { it.productFormfactorBaseId == formFactor.id } != null
+        }
+
     override fun loadProductCategoryName(): List<ProductCategoryName> = Gson().fromJson(
         pref.getString(PRODUCT_CATEGORY_NAME, null)
             ?: emptyList<ProductBrowsing>().toString()
@@ -142,7 +147,6 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             Gson().toJson(productsFilteredBrowsing)
         ).commit()
     }
-
 
 
     override fun getFilteringShapeProducts(
@@ -191,7 +195,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
                 isSelected = false))*/
 
 
-                return shapesToDisplay
+        return shapesToDisplay
     }
 
 
@@ -226,7 +230,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         return if (browsedShapeFilteredList.isNotEmpty()) browsedShapeFilteredList else browsedFilteredList
     }
 
-    override fun  getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
+    override fun getShapeFilteredList(shapeBrowsingList: List<ShapeBrowsing>): List<ProductBrowsing> {
         val browsedFilteredList = loadProductBrowsingFiltered()
         val browsedShapeFilteredList = mutableListOf<ProductBrowsing>()
         shapeBrowsingList.forEach { shapeBrowse ->
