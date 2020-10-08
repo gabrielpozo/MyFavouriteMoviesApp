@@ -179,8 +179,8 @@ class BrowseResultFragment : BaseFragment() {
             localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )
+        rvCategories.itemAnimator = null
         rvCategories.adapter = adapter
-
     }
 
 }
