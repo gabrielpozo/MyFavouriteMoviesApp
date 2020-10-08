@@ -130,6 +130,7 @@ class BrowseResultFragment : BaseFragment() {
 
             is BrowseResultViewModel.ResultBrowse.SortedContent -> {
                 adapter.categories = model.categories
+                adapter.notifyDataSetChanged()
                 rvCategories.scrollToPosition(0)
             }
 
