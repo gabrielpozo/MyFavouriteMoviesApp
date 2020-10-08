@@ -12,6 +12,7 @@ import com.light.finder.di.modules.submodules.FilterComponent
 import com.light.finder.di.modules.submodules.FilterModule
 import com.light.finder.extensions.app
 import com.light.finder.extensions.getViewModel
+import com.light.finder.extensions.logEventOnGoogleTagManager
 import com.light.finder.extensions.setIntentForResult
 import com.light.finder.ui.browse.BrowseResultFragment.Companion.SORT_SELECTION
 import com.light.presentation.common.Event
@@ -27,6 +28,7 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
         const val RECOMMENDED = 2131362146
         const val LOW_TO_HIGH = 2131362092
         const val HIGH_TO_LOW = 2131362030
+        const val FILTER_SCREEN_TAG = "BrowseResultsSort"
 
     }
 
@@ -62,6 +64,11 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.setCurrentScreen(this, FILTER_SCREEN_TAG, null)
+    }
+
     private fun setRadioButtonClickListener() {
 
         sort_by_radiogroup.setOnCheckedChangeListener { group, checkedId ->
@@ -71,6 +78,7 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
 
             val isChecked = checkedRadioButton.isChecked
             if (isChecked) {
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_sort_results)) {}
                 viewModel.onFilterClick(checkedId)
                 Timber.d("ege $checkedId ${checkedRadioButton.id}")
             }

@@ -130,6 +130,7 @@ class BrowseResultFragment : BaseFragment() {
 
             is BrowseResultViewModel.ResultBrowse.SortedContent -> {
                 adapter.categories = model.categories
+                adapter.notifyDataSetChanged()
                 rvCategories.scrollToPosition(0)
             }
 
@@ -179,8 +180,8 @@ class BrowseResultFragment : BaseFragment() {
             localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )
+        rvCategories.itemAnimator = null
         rvCategories.adapter = adapter
-
     }
 
 }
