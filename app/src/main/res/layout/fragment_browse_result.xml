@@ -14,6 +14,60 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_close"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/background_edit_browse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/filterButton"
+            app:layout_constraintStart_toEndOf="@+id/closeButton"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/ic_icon_small_search" />
+
+            <TextView
+                android:id="@+id/textBrowseTypes"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:fontFamily="@font/book"
+                android:textColor="@color/backgroundLight"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
         <ImageButton
             android:id="@+id/filterButton"

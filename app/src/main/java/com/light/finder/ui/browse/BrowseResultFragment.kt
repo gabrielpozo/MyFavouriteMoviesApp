@@ -73,9 +73,18 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.onFilterClick(FILTER_REQUEST_CODE)
         }
 
+
+
+
         navigationObserver()
         filterObserver()
         sortObserver()
+    }
+
+    private fun setEditBrowseTypes(message: Message) {
+        val product = message.categories[0]
+        textBrowseTypes.text =
+            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName
     }
 
     private fun filterObserver() {
@@ -126,6 +135,7 @@ class BrowseResultFragment : BaseFragment() {
         when (model) {
             is BrowseResultViewModel.ResultBrowse.Content -> {
                 updateAdapter(model.message)
+                setEditBrowseTypes(model.message)
             }
 
             is BrowseResultViewModel.ResultBrowse.SortedContent -> {
