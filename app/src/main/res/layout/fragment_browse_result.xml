@@ -28,6 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/editBrowseBar"
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/background_edit_browse"
@@ -50,7 +51,7 @@
                 android:layout_marginBottom="12dp"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:background="@drawable/ic_icon_small_search" />
+                android:background="@drawable/ic_small_search_light" />
 
             <TextView
                 android:id="@+id/textBrowseTypes"

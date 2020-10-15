@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.light.domain.model.Message
 import com.light.finder.R
@@ -73,8 +74,14 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.onFilterClick(FILTER_REQUEST_CODE)
         }
 
+        editBrowseBar.setOnClickListener {
+            if (closeButton.isVisible) closeButton.invisible() else closeButton.visible()
+            //todo show expended state
+        }
 
-
+        closeButton.setOnClickListener {
+            //todo hide expended state
+        }
 
         navigationObserver()
         filterObserver()
@@ -83,8 +90,9 @@ class BrowseResultFragment : BaseFragment() {
 
     private fun setEditBrowseTypes(message: Message) {
         val product = message.categories[0]
-        textBrowseTypes.text =
-            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName
+        //todo
+        /*textBrowseTypes.text =
+            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName*/
     }
 
     private fun filterObserver() {
