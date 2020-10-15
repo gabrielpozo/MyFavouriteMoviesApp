@@ -75,7 +75,7 @@ class BrowseResultFragment : BaseFragment() {
         }
 
         editBrowseBar.setOnClickListener {
-            if (closeButton.isVisible) closeButton.invisible() else closeButton.visible()
+            if (!closeButton.isVisible) closeButton.visible()
             //todo show expended state
         }
 
