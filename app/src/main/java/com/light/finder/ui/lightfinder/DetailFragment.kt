@@ -43,6 +43,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -269,9 +270,15 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
-                    putString(getString(R.string.parameter_sku), productSapId)
-                putDouble(getString(R.string.value), pricePerPack.toDoubleEx().round(2))
+
+            val formattedPricePack = String.format(
+                Locale.US,
+                getString(R.string.price_per_pack),
+                pricePerPack
+            )
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)) {
+                putString(getString(R.string.parameter_sku), productSapId)
+                putDouble(getString(R.string.value), formattedPricePack.toDouble())
             }
 
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
@@ -341,7 +348,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_not_found_event_tag)
+                        )
 
                     }
                 }
@@ -355,7 +365,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.out_of_stock_event_tag)
+                        )
 
                     }
                 }
@@ -369,7 +382,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_disabled_event_tag)
+                        )
                     }
                 }
 
