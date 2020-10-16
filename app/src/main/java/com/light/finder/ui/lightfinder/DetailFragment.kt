@@ -19,7 +19,10 @@ import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
 import com.light.finder.R
-import com.light.finder.common.*
+import com.light.finder.common.ActivityCallback
+import com.light.finder.common.ConnectivityRequester
+import com.light.finder.common.PermissionRequester
+import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.remote.CategoryParcelable
 import com.light.finder.di.modules.submodules.DetailComponent
@@ -40,6 +43,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -115,7 +119,7 @@ class DetailFragment : BaseFragment() {
                 }
         }
 
-        buttonAddTocart.setOnClickListener {
+        buttonAddTocart.setSafeOnClickListener {
             connectivityRequester.checkConnection { isConnected ->
                 if (isConnected) {
                     addToCart()
@@ -266,9 +270,18 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
+
+            // we might not need that if backend always returns float with 2 decimals
+            // if facebook accepts floats we can remove this part as well
+            val formattedPricePack = String.format(
+                Locale.US,
+                getString(R.string.price_per_pack_analytics),
+                pricePerPack
+            )
+
             facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
                     putString(getString(R.string.parameter_sku), productSapId)
-                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
+                putDouble(getString(R.string.value), formattedPricePack.toDouble())
             }
 
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
@@ -410,7 +423,7 @@ class DetailFragment : BaseFragment() {
         dialogView.textViewSubTitleDialog.text = subtitleDialog
         dialogView.buttonPositive.text = buttonPositiveText
 
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             if (neutralButton) {
                 viewModel.onGoToSettingsClicked()
             } else {
@@ -422,7 +435,7 @@ class DetailFragment : BaseFragment() {
         dialogView.buttonNegative.gone()
         if (neutralButton) {
             dialogView.buttonNeutral.text = getString(R.string.not_now)
-            dialogView.buttonNeutral.setOnClickListener {
+            dialogView.buttonNeutral.setSafeOnClickListener {
                 alertDialog.dismiss()
             }
 

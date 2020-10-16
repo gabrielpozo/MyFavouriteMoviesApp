@@ -1,6 +1,7 @@
 package com.light.finder.di.modules.singleton
 
 import android.app.Application
+import com.light.finder.data.source.local.LocalKeyStoreImpl
 import com.light.finder.data.source.local.LocalMediaDataSourceImpl
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.local.db.BrowseRoomDataBase
@@ -8,6 +9,7 @@ import com.light.finder.data.source.local.db.BrowseRoomDataSource
 import com.light.finder.data.source.local.db.dao.BrowseDao
 import com.light.finder.data.source.remote.*
 import com.light.source.local.LocalDbDataSource
+import com.light.source.local.LocalKeyStore
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.*
@@ -53,5 +55,9 @@ class ApplicationModule {
     @Provides
     fun getLocalPreferenceDataSource(app: Application): LocalPreferenceDataSource =
         LocalPreferenceDataSourceImpl(app)
+
+    @Provides
+    fun getLocalKeyStore(app: Application): LocalKeyStore =
+        LocalKeyStoreImpl(app)
 
 }

@@ -204,12 +204,12 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         dialogView.textViewSubTitleDialog.text = getString(R.string.will_be_opened)
         dialogView.buttonPositive.text = getString(R.string.ok)
         dialogView.buttonNeutral.text = getString(R.string.text_cancel)
-        dialogView.buttonPositive.setOnClickListener {
+        dialogView.buttonPositive.setSafeOnClickListener {
             alertDialog.dismiss()
             openBrowser(URL)
         }
         dialogView.buttonNeutral.visible()
-        dialogView.buttonNeutral.setOnClickListener {
+        dialogView.buttonNeutral.setSafeOnClickListener {
             alertDialog.dismiss()
         }
         dialogView.buttonNegative.gone()

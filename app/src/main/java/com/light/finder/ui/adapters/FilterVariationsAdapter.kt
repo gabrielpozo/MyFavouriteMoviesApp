@@ -40,7 +40,7 @@ class FilterWattageAdapter(private val listener: (FilterVariationCF) -> Unit) :
         }
 
         holder.bind(filter)
-        holder.itemView.wattageButton.setOnClickListener {
+        holder.itemView.wattageButton.setSafeOnClickListener {
             listener(filterListWattage[position])
         }
 
@@ -107,7 +107,7 @@ class FilterColorAdapter(
         }
         holder.bind(filter, filterColorList)
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             listener(filterListColor[position])
         }
     }
@@ -162,7 +162,7 @@ class FilterFinishAdapter(
             viewItemsMap[filter.codeFilter] = holder.itemView
         }
         holder.bind(filter, filterFinishList)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             listener(filterListFinish[position])
         }
     }
@@ -217,7 +217,7 @@ class FilterConnectivityAdapter(
             viewItemsMap[filter.codeFilter] = holder.itemView
         }
         holder.bind(filter, filterConnectivityList)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setSafeOnClickListener {
             listener(filterListConnectivity[position])
         }
     }

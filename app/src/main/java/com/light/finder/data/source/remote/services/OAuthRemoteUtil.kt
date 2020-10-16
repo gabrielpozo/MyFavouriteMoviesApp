@@ -15,8 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object OAuthRemoteUtil {
 
-    private const val CLIENT_ID = "4pqsud54rr141gghtmgipmj257"
-    private const val CLIENT_SECRET = "h6jpssq6cpsgamngaiag29644ae19uc682a6d943j2ov3aa2t5s"
+    private const val CLIENT_ID = BuildConfig.CLIENT_ID
+    private const val CLIENT_SECRET = BuildConfig.CLIENT_SECRET
 
     var tokenInterceptor: Interceptor = Interceptor { chain ->
         val original: Request = chain.request()

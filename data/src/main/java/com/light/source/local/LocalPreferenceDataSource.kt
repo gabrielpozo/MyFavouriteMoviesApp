@@ -30,9 +30,4 @@ interface LocalPreferenceDataSource {
     fun getAllProductsMessage(baseIdFitting: String): Message
     fun disclaimerAccepted(confirmed: Boolean)
     fun isDisclaimerAccepted(): Boolean
-    fun saveAccessToken(credentials: Bearer)
-    fun saveTokenType(credentials: Bearer)
-    fun loadAccessToken(): String
-    fun loadTokenType(): String
-    fun removeToken()
 }
