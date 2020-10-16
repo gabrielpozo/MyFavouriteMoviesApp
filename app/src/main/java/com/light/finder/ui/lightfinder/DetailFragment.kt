@@ -271,9 +271,11 @@ class DetailFragment : BaseFragment() {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
 
+            // we might not need that if backend always returns float with 2 decimals
+            // if facebook accepts floats we can remove this part as well
             val formattedPricePack = String.format(
                 Locale.US,
-                getString(R.string.price_per_pack),
+                getString(R.string.price_per_pack_analytics),
                 pricePerPack
             )
             facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)) {
