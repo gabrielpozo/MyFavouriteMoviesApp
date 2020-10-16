@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><!--Results header-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/browse_header_margin"
+    android:layout_marginBottom="16dp"
+    android:layout_height="wrap_content"
+    tools:background="@color/backgroundDark">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/primaryOnDark"
+        android:lineSpacingExtra="8sp"
+        android:textAlignment="center"
+        android:text="@string/scan_completed" />
+
+    <TextView
+        android:id="@+id/text_identified"
+        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="69dp"
+        android:textSize="14sp"
+        android:textColor="@color/backgroundLight"
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/bold"
+        tools:text="We’ve identified your bulb (A19)with a xxx (E26) fitting" />
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="150dp"
+        android:scaleType="center"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_illustration_scancomplete"
+        android:layout_height="150dp">
+
+        <ImageView
+            android:id="@+id/identifiedBulb"
+            android:padding="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_width="52dp"
+            android:scaleType="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="83dp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="69dp"
+        android:fontFamily="@font/bold"
+        android:textColor="@color/backgroundLight"
+        android:gravity="center_horizontal"
+        android:text="@string/scan_completed_tip" />
+
+</LinearLayout>

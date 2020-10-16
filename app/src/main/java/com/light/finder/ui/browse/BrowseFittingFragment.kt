@@ -38,6 +38,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
 
+    companion object {
+        const val spaceInDp = 30
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +58,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
-        buttonNext.setOnClickListener {
+        buttonNext.setSafeOnClickListener {
             viewModel.onNextButtonPressed()
         }
 
 
-
-        buttonRefresh.setOnClickListener {
+        buttonRefresh.setSafeOnClickListener {
             viewModel.onRequestBrowsingProducts()
         }
 
@@ -80,13 +83,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
             val dpHeight = displayMetrics.heightPixels
 
             bottomSheetBehavior.peekHeight = (dpHeight * 0.66).toInt()
-            bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {}
-
-                override fun onStateChanged(p0: View, state: Int) {}
-            })
-
         }
     }
 
@@ -94,22 +90,25 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         adapter = BrowseFittingAdapter(
             viewModel::onFittingClick
         )
-        adapter.setHasStableIds(true)
+
         val layoutManager = GridLayoutManager(context, 3)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 
         recyclerViewFitting.addItemDecoration(FittingItemDecoration(context!!, R.dimen.spacing))
+        recyclerViewFitting.itemAnimator = null
         recyclerViewFitting.layoutManager = layoutManager
         recyclerViewFitting.adapter = adapter
-        val firstVisible = layoutManager.findFirstVisibleItemPosition()
         recyclerViewFitting.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val currentFirstVisible = layoutManager.findFirstVisibleItemPosition()
-                //it is scrolling up
-                if (currentFirstVisible > firstVisible) {
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) >= spaceInDp
+                ) {
                     line_divider_fitting.visible()
-                } else {
+                }
+                if (recyclerView.computeVerticalScrollOffset()
+                        .pxToDp(density) < spaceInDp
+                ) {
                     line_divider_fitting.invisible()
                 }
             }

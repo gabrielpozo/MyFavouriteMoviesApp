@@ -34,6 +34,7 @@
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
     <string name="change_variation">%s - %sW - %s %s</string>
+    <string name="price_per_pack_analytics">%.2f</string>
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
@@ -52,7 +53,7 @@
     <string name="oops">Oops</string>
     <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
-    <string name="error_sub_not_available">Sorry! We recognised your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
+    <string name="error_sub_not_available">Sorry! We recognized your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
     <string name="not_now">Not now</string>
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>

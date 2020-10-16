@@ -3,6 +3,7 @@ package com.light.finder.di.modules.singleton
 import com.light.domain.*
 import com.light.finder.data.source.remote.AuthRemoteDataSource
 import com.light.repository.*
+import com.light.source.local.LocalKeyStore
 import com.light.source.local.LocalMediaDataSource
 import com.light.source.local.LocalPreferenceDataSource
 import com.light.source.remote.*
@@ -49,9 +50,9 @@ class DataModule {
     @Provides
     fun getAuthRepository(
         authRemoteDataSource: AuthRemoteDataSource,
-        localPreferenceDataSource: LocalPreferenceDataSource
+        localKeyStore: LocalKeyStore
     ): AuthRepository =
-        AuthRepositoryImpl(authRemoteDataSource, localPreferenceDataSource)
+        AuthRepositoryImpl(authRemoteDataSource, localKeyStore)
 
     @Provides
     fun getBrowsingProductsRepository(
