@@ -271,7 +271,7 @@ class DetailFragment : BaseFragment() {
             Timber.d("egeee ${product.name}")
             facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
                     putString(getString(R.string.parameter_sku), productSapId)
-                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
+                putDouble(getString(R.string.value), pricePerPack.toDoubleEx().round(2))
             }
 
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
