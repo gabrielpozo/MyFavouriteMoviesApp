@@ -34,6 +34,7 @@
     <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
     <string name="change_variation">%s - %sW - %s %s</string>
+    <string name="price_per_pack_analytics">%.2f</string>
     <string name="price_per_pack">$%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
