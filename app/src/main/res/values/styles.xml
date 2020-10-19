@@ -108,7 +108,7 @@
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
-        <item  name="android:lineSpacingExtra">12sp</item>
+        <item name="android:lineSpacingExtra">12sp</item>
         <item name="android:textColor">@color/textLight</item>
         <item name="android:textAlignment">center</item>
     </style>
@@ -117,7 +117,7 @@
         <item name="android:fontFamily">@font/bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
-        <item  name="android:lineSpacingExtra">12sp</item>
+        <item name="android:lineSpacingExtra">12sp</item>
         <item name="android:textColor">@color/textDark</item>
         <item name="android:textAlignment">center</item>
         <item name="android:letterSpacing">0.03</item>
@@ -243,6 +243,12 @@
 
     <style name="Result" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/backgroundLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/book</item>
+    </style>
+
+    <style name="ResultEditText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/backgroundDark</item>
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/book</item>
     </style>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/backgroundDark"
+    android:elevation="12dp"
+    android:layout_height="wrap_content">
+
+
+    <Button
+        android:id="@+id/fittingEdit"
+        style="@style/Result"
+        android:layout_width="match_parent"
+        android:textAlignment="textStart"
+        android:drawablePadding="12dp"
+        android:drawableStart="@drawable/ic_icon_small_fitting"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_edit_browse"
+        tools:text="E26" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="47dp"
+        android:background="@color/backgroundDarkPressed" />
+
+
+    <Button
+        android:id="@+id/shapeEdit"
+        style="@style/Result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_icon_small_shape"
+        android:textAllCaps="false"
+        android:textAlignment="textStart"
+        android:drawablePadding="12dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_edit_browse"
+        tools:text="Bulb _ Reflector _ Candle" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="47dp"
+        android:background="@color/backgroundDarkPressed" />
+
+    <Button
+        android:id="@+id/categoryEdit"
+        style="@style/Result"
+        android:textAlignment="textStart"
+        android:drawablePadding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:drawableStart="@drawable/ic_icon_small_category"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_edit_browse"
+        tools:text="LED Non-Dimmable _ LED Dimmable" />
+
+
+</LinearLayout>

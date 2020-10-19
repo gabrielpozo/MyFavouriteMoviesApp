@@ -76,11 +76,17 @@ class BrowseResultFragment : BaseFragment() {
 
         editBrowseBar.setOnClickListener {
             if (!closeButton.isVisible) closeButton.visible()
+            editBrowseBar.gone()
+            edit_browse_title.visible()
+            edit_browse.visible()
             //todo show expended state
         }
 
         closeButton.setOnClickListener {
             //todo hide expended state
+            editBrowseBar.visible()
+            edit_browse_title.gone()
+            edit_browse.gone()
         }
 
         navigationObserver()
