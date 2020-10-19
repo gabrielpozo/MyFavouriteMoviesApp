@@ -87,6 +87,8 @@ class BrowseResultFragment : BaseFragment() {
             editBrowseBar.visible()
             edit_browse_title.gone()
             edit_browse.gone()
+            closeButton.invisible()
+
         }
 
         navigationObserver()
@@ -97,8 +99,8 @@ class BrowseResultFragment : BaseFragment() {
     private fun setEditBrowseTypes(message: Message) {
         val product = message.categories[0]
         //todo
-        /*textBrowseTypes.text =
-            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName*/
+        textBrowseTypes.text =
+            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName
     }
 
     private fun filterObserver() {
