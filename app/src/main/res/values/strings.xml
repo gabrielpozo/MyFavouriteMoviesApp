@@ -39,7 +39,7 @@
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
-    <string name="scan_completed">Scan completed!</string>
+    <string name="scan_completed">Scan completed</string>
     <string name="scan_completed_tip">Check the scan result and choose the type of product that fits your needs:</string>
     <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
@@ -50,7 +50,7 @@
     <string name="timeout_sub">That took longer than expected</string>
     <string name="unidentified_sub">We\'re struggling to recognize a light bulb in the image.</string>
     <string name="ok">OK</string>
-    <string name="oops">Oops!</string>
+    <string name="oops">Oops</string>
     <string name="bulb_not_available">%s %s not available</string>
     <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
     <string name="error_sub_not_available">Sorry! We recognized your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
@@ -74,7 +74,7 @@
     <string name="adding_to_cart">Adding to cart</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="my_cart">My Cart</string>
-    <string name="got_it">Got it!</string>
+    <string name="got_it">Got it</string>
     <string name="how_to_position">Distance</string>
     <string name="ensure_whole">Put the light bulb on a flat surface with enough light. Keep about 1 foot distance.</string>
     <string name="how_to_hold">Entirely visible</string>
@@ -159,7 +159,7 @@
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
-    <string name="error_browse">Oops!</string>
+    <string name="error_browse">Oops</string>
     <string name="something_went_wrong">Something went wrong.\nPlease refresh or try again later.</string>
     <string name="refresh">Refresh</string>
     <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>
