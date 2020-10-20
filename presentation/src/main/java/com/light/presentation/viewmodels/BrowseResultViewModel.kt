@@ -17,6 +17,8 @@ class BrowseResultViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
+    private lateinit var messageEdit: Message
+
     private val _model = MutableLiveData<ResultBrowse>()
     val model: LiveData<ResultBrowse>
         get() {
@@ -35,11 +37,16 @@ class BrowseResultViewModel(
     val modelSort: LiveData<SortModel>
         get() = _modelSort
 
+    private val _modelEdit = MutableLiveData<EditTextInfo>()
+    val modelEdit: LiveData<EditTextInfo>
+        get() = _modelEdit
+
     private var currentCategoriesList = mutableListOf<Category>()
 
-    class NavigationModel(val category: Category)
-    class FilterModel(val requestCode: Int)
-    class SortModel(val sortId: Int)
+    data class NavigationModel(val category: Category)
+    data class FilterModel(val requestCode: Int)
+    data class SortModel(val sortId: Int)
+    data class EditTextInfo(val message: Message)
 
 
     sealed class ResultBrowse {
@@ -86,11 +93,18 @@ class BrowseResultViewModel(
     }
 
     private fun handleResultProducts(message: Message) {
+        //we initialize here the edit text
+        messageEdit = message
         currentCategoriesList = message.categories.toMutableList()
         _model.value = ResultBrowse.Content(message.categories, message)
     }
 
     private fun handleNoResultProducts(message: Message) {
         _model.value = ResultBrowse.NoResult(message)
+    }
+
+    fun onEditTextClicked() {
+        if (this::messageEdit.isInitialized)
+            _modelEdit.value = EditTextInfo(messageEdit)
     }
 }

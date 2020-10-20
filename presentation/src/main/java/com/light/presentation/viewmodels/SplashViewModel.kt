@@ -38,7 +38,6 @@ class SplashViewModel(
     }
 }
 
-
 sealed class SplashState {
     object CameraActivity : SplashState()
 }

@@ -1,5 +1,6 @@
 package com.light.finder.ui.browse
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.browse_results_header.*
+import kotlinx.android.synthetic.main.edit_browse_expandable.*
 import kotlinx.android.synthetic.main.fragment_browse_result.*
 
 class BrowseResultFragment : BaseFragment() {
@@ -80,6 +82,8 @@ class BrowseResultFragment : BaseFragment() {
             edit_browse_title.visible()
             edit_browse.visible()
             //todo show expended state
+            //fill the buttons here:
+            viewModel.onEditTextClicked()
         }
 
         closeButton.setOnClickListener {
@@ -88,12 +92,12 @@ class BrowseResultFragment : BaseFragment() {
             edit_browse_title.gone()
             edit_browse.gone()
             closeButton.invisible()
-
         }
 
         navigationObserver()
         filterObserver()
         sortObserver()
+        viewModel.modelEdit.observe(viewLifecycleOwner, Observer(::updateEditText))
     }
 
     private fun setEditBrowseTypes(message: Message) {
@@ -110,6 +114,16 @@ class BrowseResultFragment : BaseFragment() {
     private fun sortObserver() {
         viewModel.modelSort.observe(viewLifecycleOwner, Observer(::sortResults))
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateEditText(editTextInfo: BrowseResultViewModel.EditTextInfo) {
+        val category = editTextInfo.message.categories[0]
+        fittingEdit.text = category.categoryProductBase
+        shapeEdit.text = editTextInfo.message.categories.convertCategoryListToShapeString()
+        categoryEdit.text =
+            editTextInfo.message.categories.convertCategoryListToCategoryString(localPreferences.loadProductCategoryName())
+    }
+
 
     private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
         filterModel?.getContentIfNotHandled()?.let { navModel ->
