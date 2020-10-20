@@ -170,4 +170,5 @@
     <string name="recommended">Recommended</string>
     <string name="sort_by">Sort by</string>
     <string name="browse_sort_results">browse_sort_results</string>
+    <string name="identify_a_lightbulb">Identify a lightbulb</string>
 </resources>
