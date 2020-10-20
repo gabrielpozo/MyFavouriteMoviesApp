@@ -49,6 +49,7 @@
         <TextView
             android:id="@+id/textBrowseResultsCount"
             style="@style/DisableTextDarkSubtitle"
+            android:textColor="@color/textDark"
             android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

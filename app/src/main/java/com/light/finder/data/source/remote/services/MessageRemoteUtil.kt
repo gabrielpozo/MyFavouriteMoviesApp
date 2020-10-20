@@ -6,12 +6,10 @@ import com.light.finder.BuildConfig
 import com.light.finder.SignifyApp
 import com.light.finder.common.HiddenAnnotationExclusionStrategy
 import com.light.finder.data.source.local.LocalKeyStoreImpl
-import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
 import com.light.finder.data.source.utils.TokenAuthenticator
 import com.light.source.local.LocalKeyStore
-import com.light.source.local.LocalPreferenceDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -30,7 +28,7 @@ object MessageRemoteUtil {
         addInterceptor(
             BearerInterceptor(
                 tokenType = localKeyStore.loadBearerToken()?.tokenType ?: "",
-                accessToken = localKeyStore.loadBearerToken()?.accessToken?: ""
+                accessToken = localKeyStore.loadBearerToken()?.accessToken ?: ""
             )
         )
         addInterceptor(HttpErrorInterceptor())
@@ -51,6 +49,7 @@ object MessageRemoteUtil {
         .build()
         .run {
             create<SignifyApiService>(
-                SignifyApiService::class.java)
+                SignifyApiService::class.java
+            )
         }
 }

@@ -142,7 +142,7 @@ private val mapLegendValueToDomain: (LegendValueDto) -> LegendValue = { legendVa
                 it.order
             )
         },
-         cctType = legendValueDto.productCctName.map {
+        cctType = legendValueDto.productCctName.map {
             CctType(
                 it.id,
                 it.name,
@@ -214,7 +214,7 @@ private val MAP_KELVIN_DTO_TO_DOMAIN: (KelvinSpecDto) -> KelvinSpec =
 fun getMinPriceTag(minPrice: Float?): String =
     if (minPrice == null) {
         "-"
-    } else  {
+    } else {
         priceTransform(minPrice)
     }
 

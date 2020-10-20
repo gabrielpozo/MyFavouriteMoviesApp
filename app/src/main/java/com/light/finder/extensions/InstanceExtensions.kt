@@ -69,7 +69,7 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
     args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
     val fragment = BrowseShapeFragment()
     fragment.arguments = args
-    return  fragment
+    return fragment
 }
 
 //todo parcelize list
@@ -78,7 +78,7 @@ fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<Shape
     args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
-    return  fragment
+    return fragment
 }
 
 fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {

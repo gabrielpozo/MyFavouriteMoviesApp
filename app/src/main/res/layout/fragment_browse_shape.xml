@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/textBrowseShapeTitle"
-        android:fontFamily="@font/bold"
+        android:fontFamily="@font/raisonne_demibold"
         android:textColor="@color/backgroundLight"
         android:textSize="40sp"
         android:text="@string/which_shape_do_you_need"
@@ -57,6 +57,7 @@
                 <TextView
                     android:id="@+id/textViewShapeTitle"
                     style="@style/TitleTextBrowse"
+                    android:fontFamily="@font/raisonne_demibold"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="18dp"
                     android:textAlignment="center"

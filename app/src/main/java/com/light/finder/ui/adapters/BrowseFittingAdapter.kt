@@ -19,7 +19,7 @@ class BrowseFittingAdapter(
         areItemsTheSame = { old, new -> old.id == new.id }
     )
 
-    fun setFittingProductList(formFactorBaseIdList: List<FormFactorTypeBaseId>){
+    fun setFittingProductList(formFactorBaseIdList: List<FormFactorTypeBaseId>) {
         productsList = formFactorBaseIdList
     }
 

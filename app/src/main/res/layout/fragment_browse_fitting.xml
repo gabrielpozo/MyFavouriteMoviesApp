@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/textBrowseFittingTitle"
-        android:fontFamily="@font/bold"
+        android:fontFamily="@font/raisonne_demibold"
         android:textColor="@color/backgroundLight"
         android:textSize="40sp"
         android:text="@string/which_fitting_do_you_need"
@@ -54,6 +54,7 @@
                 <TextView
                     android:id="@+id/textViewFittingTitle"
                     style="@style/TitleTextBrowse"
+                    android:fontFamily="@font/raisonne_demibold"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="18dp"
                     android:textAlignment="center"

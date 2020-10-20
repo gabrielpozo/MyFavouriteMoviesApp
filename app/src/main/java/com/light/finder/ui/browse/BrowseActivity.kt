@@ -13,7 +13,7 @@ import com.light.finder.navigators.ScreenFilteringNavigator
 import com.light.finder.ui.filter.FilterLightFinderActivity
 
 
-class BrowseActivity : BaseLightFinderActivity(){
+class BrowseActivity : BaseLightFinderActivity() {
 
     companion object {
         const val REQUEST_CODE_BROWSING = 2

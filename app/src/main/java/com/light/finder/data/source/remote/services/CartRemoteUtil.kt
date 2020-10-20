@@ -4,9 +4,9 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.light.finder.BuildConfig
-import com.light.util.SingletonHolder
 import com.light.finder.data.source.utils.WebKitSyncCookieManager
 import com.light.finder.extensions.createCookieStore
+import com.light.util.SingletonHolder
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,7 +39,8 @@ class CartRemoteUtil private constructor(val context: Context) {
         .build()
         .run {
             create<SignifyApiService>(
-                SignifyApiService::class.java)
+                SignifyApiService::class.java
+            )
         }
 
     companion object : SingletonHolder<CartRemoteUtil, Context>(::CartRemoteUtil)

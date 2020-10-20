@@ -29,7 +29,8 @@ class UsabillaActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaRead
     }
 
     private fun attachFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.usabila_container, formClient!!.fragment, fragmentTag).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.usabila_container, formClient!!.fragment, fragmentTag).commit()
     }
 
 
