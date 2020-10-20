@@ -120,11 +120,13 @@ class FilterColorAdapter(
                 legendTag = COLOR_LEGEND_TAG
             )
             itemView.setDrawableOnBackground(filter)
-            itemView.imageFilterCover.loadThumbnailVariation(getLegendCctTagPrefIcon(
-                filter.codeFilter,
-                filterTypeList = filterColorList,
-                legendTag = COLOR_LEGEND_TAG
-            ))
+            itemView.imageFilterCover.loadThumbnailVariation(
+                getLegendCctTagPrefIcon(
+                    filter.codeFilter,
+                    filterTypeList = filterColorList,
+                    legendTag = COLOR_LEGEND_TAG
+                )
+            )
         }
     }
 }
@@ -176,11 +178,13 @@ class FilterFinishAdapter(
             )
             itemView.setDrawableOnBackground(filter)
 
-            itemView.imageFilterCover.loadThumbnailVariation(getLegendFinishTagPrefImage(
-                filter.codeFilter,
-                filterTypeList = filterFinishList,
-                legendTag = FINISH_LEGEND_TAG
-            ))
+            itemView.imageFilterCover.loadThumbnailVariation(
+                getLegendFinishTagPrefImage(
+                    filter.codeFilter,
+                    filterTypeList = filterFinishList,
+                    legendTag = FINISH_LEGEND_TAG
+                )
+            )
         }
     }
 }
@@ -231,11 +235,13 @@ class FilterConnectivityAdapter(
             )
             itemView.setDrawableOnBackground(filter)
 
-            itemView.imageFilterCover.loadThumbnailVariation(getLegendConnectivityTagPrefImage(
-                filter.codeFilter,
-                filterTypeList = filterConnectivityList,
-                legendTag = CONNECTIVITY_LEGEND_TAG
-            ))
+            itemView.imageFilterCover.loadThumbnailVariation(
+                getLegendConnectivityTagPrefImage(
+                    filter.codeFilter,
+                    filterTypeList = filterConnectivityList,
+                    legendTag = CONNECTIVITY_LEGEND_TAG
+                )
+            )
         }
     }
 }

@@ -28,7 +28,7 @@ object KelvinToRgbConverter {
             }
         } else {
             red = temp - 60.0
-            red = 329.698727446 *  red.pow(-0.1332047592)
+            red = 329.698727446 * red.pow(-0.1332047592)
             green = temp - 60.0
             green = 288.1221695283 * green.pow(-0.0755148492)
             blue = 255.0

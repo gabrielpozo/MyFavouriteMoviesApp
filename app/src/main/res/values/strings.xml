@@ -4,19 +4,15 @@
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>
     <string name="cart">My Cart</string>
-    <string name="title_activity_browse">BrowseActivity</string>
 
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch flash</string>
-    <string name="gallery_button_alt">Gallery</string>
     <string name="text_enable_access">Enable camera access</string>
     <string name="text_help">Help</string>
     <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
     <string name="text_permissions_title">Identify a light bulb</string>
     <string name="text_camera_subtitle">Hold light bulb in screen, ensuring as much is in view as possible</string>
     <string name="text_browse_button">Browse light bulbs</string>
-    <string name="placeholder">-</string>
-    <string name="text_bulb">each</string>
     <string name="lightbulb_cd">lightBulb</string>
     <string name="settings_cd">settings</string>
     <string name="text_identifying">Identifying…</string>
@@ -27,13 +23,8 @@
     <string name="category_price">From %s each</string>
 
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
-    <string name="light_bulb_recognised_as">Scan results</string>
-    <string name="description_wattage">%sW-%sW %s</string>
-    <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient</string>
-    <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
-    <string name="change_variation">%s - %sW - %s %s</string>
     <string name="price_per_pack">$%.2f</string>
     <string name="price_per_pack_analytics">%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
@@ -105,7 +96,6 @@
     <string name="camera_loading">CameraLoading</string>
     <string name="product_results">ScanResults</string>
     <string name="product_details">ProductDetailScreen</string>
-    <string name="product_variations">ProductVariations</string>
     <string name="my_cart_fire">MyCart</string>
     <string name="about_page">AboutPage</string>
     <string name="gallery_preview">ConfirmSelectedPhoto</string>
@@ -115,7 +105,6 @@
     <string name="cancel_identified_event">cancel_identify</string>
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
-    <string name="flash_enabled">flash_enabled</string>
     <string name="source">source</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
@@ -129,7 +118,6 @@
     <string name="no_internet_connection_event">no_internet_connection</string>
     <string name="base">base</string>
     <string name="shape">Shape</string>
-    <string name="finish">finish</string>
     <string name="give_us_feedback">Give us feedback</string>
     <string name="open_terms_of_use">open_terms_of_use</string>
     <string name="open_privacy_notice">open_privacy_notice</string>
@@ -139,7 +127,6 @@
     <string name="photo_help">photo_help_tips</string>
     <string name="sorry">Sorry</string>
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
-    <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
     <string name="add_to_cart_error">add_to_cart_error</string>
     <string name="product_not_found_event_tag">product_not_found</string>
@@ -148,12 +135,9 @@
 
 
     // Sticky Header Product Details
-    <string name="sticky_header_title">%s %sW %s</string>
-    <string name="sticky_header_packs">%s pack%s of %s %s%s</string>
     <string name="sticky_header_price">$%.2f</string>
     <string name="no_results">No Results</string>
     <string name="no_result_sub">We couldn\'t find any matches with your search. Adjust your search by changing the fitting, shape or by removing filters.</string>
-    <string name="based_on_s_fitting">Identified as: %s (%s) with %s fitting</string>
     <string name="based_on_result_fitting">Based on: %s fitting</string>
 
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>

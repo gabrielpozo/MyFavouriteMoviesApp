@@ -5,12 +5,10 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.light.finder.BuildConfig
 import com.light.finder.SignifyApp
 import com.light.finder.data.source.local.LocalKeyStoreImpl
-import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
 import com.light.finder.data.source.utils.BearerInterceptor
 import com.light.finder.data.source.utils.HttpErrorInterceptor
 import com.light.finder.data.source.utils.TokenAuthenticator
 import com.light.source.local.LocalKeyStore
-import com.light.source.local.LocalPreferenceDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

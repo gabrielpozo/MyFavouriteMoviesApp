@@ -4,13 +4,8 @@
 
     <!-- camera -->
 
-    <dimen name="spacing_small">4dp</dimen>
-    <dimen name="spacing_large">16dp</dimen>
-
     <dimen name="stroke_small">4dp</dimen>
-    <dimen name="stroke_medium">8dp</dimen>
 
-    <dimen name="round_button_medium">64dp</dimen>
     <dimen name="round_button_large">80dp</dimen>
 
     <dimen name="default_top_margin">38dp</dimen>

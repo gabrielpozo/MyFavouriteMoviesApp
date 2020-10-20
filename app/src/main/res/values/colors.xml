@@ -16,7 +16,6 @@
     <color name="dividerOnLight">#f4f5f5</color>
     <color name="galleryUnselected">#49494d</color>
     <color name="divider">#696969</color>
-    <color name="outlined">#636367</color>
     <color name="bottomNavBarColor">#1c1c1f</color>
     <color name="primaryOnDark">#01e487</color>
     <color name="transparentLightBackgroundColor">#66636367</color>
@@ -28,8 +27,5 @@
 
 
     <!--Camera -->
-    <color name="icActive">#FFFFFFFF</color>
-    <color name="icFocused">#DDFFFFFF</color>
-    <color name="icPressed">#AAFFFFFF</color>
     <color name="dividerOndark">#49494e</color>
 </resources>

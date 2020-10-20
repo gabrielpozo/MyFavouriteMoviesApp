@@ -313,6 +313,7 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         textIdentified = textIdentified,
         imageIdentified = imageIdentified
     )
+
 fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
     FormFactorTypeBaseId(
         id = id,

@@ -1,4 +1,5 @@
 package com.light.finder.di.modules.filter
+
 import com.light.finder.di.modules.submodules.*
 import com.light.finder.navigators.ScreenFilteringNavigator
 import com.light.finder.ui.browse.BrowseActivity

@@ -77,7 +77,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
         fun onLightFinderTabPressed(current: Fragment?, wasSelected: Boolean) {
-            
+
             if (!wasSelected) {
                 return
             }

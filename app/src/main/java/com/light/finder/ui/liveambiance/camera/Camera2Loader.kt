@@ -35,7 +35,8 @@ class Camera2Loader(private val activity: Activity) : CameraLoader() {
 
     override fun switchCamera() {
         cameraFacing = cameraFacing xor 1
-        Timber.d("current camera facing is: $cameraFacing"
+        Timber.d(
+            "current camera facing is: $cameraFacing"
         )
         releaseCamera()
         setUpCamera()
@@ -91,7 +92,7 @@ class Camera2Loader(private val activity: Activity) : CameraLoader() {
             cameraManager.openCamera(id!!, mCameraDeviceCallback, null)
         } catch (e: CameraAccessException) {
             Timber.e(
-               "Opening camera (ID: $id) failed."
+                "Opening camera (ID: $id) failed."
             )
             e.printStackTrace()
         }
