@@ -52,10 +52,7 @@ class BrowseFittingViewModel(
     private val _modelFittingClickStatus = MutableLiveData<FittingClicked>()
     object FittingClicked
 
-    init {
-        onRequestBrowsingProducts()
-    }
-
+    
     fun onRequestBrowsingProducts() {
         launch {
             _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
@@ -82,6 +79,10 @@ class BrowseFittingViewModel(
     fun onNextButtonPressed() {
         if (productBaseId > NO_ITEM_SELECTED && !isNextDisabled)
             _modelNavigationShape.value = Event(NavigationToShapeFiltering(productFormFactorBaseId))
+    }
+
+    fun onRequestFormFactorFromEditBrowse() {
+
     }
 }
 

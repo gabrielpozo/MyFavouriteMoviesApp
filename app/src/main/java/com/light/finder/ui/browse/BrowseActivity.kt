@@ -75,7 +75,7 @@ class BrowseActivity : BaseLightFinderActivity() {
                 }
 
                 else -> {
-                    screenFilteringNavigator.navigateEditBrowsingFittingScreen()
+                    screenFilteringNavigator.navigateToBrowsingFittingScreen()
                 }
 
 

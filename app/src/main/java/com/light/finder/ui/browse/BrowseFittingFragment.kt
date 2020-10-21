@@ -3,6 +3,7 @@ package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.finder.R
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
 import com.light.finder.extensions.*
@@ -56,6 +58,12 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = browseComponent.plus(BrowseFittingModule())
+        }
+
+        arguments?.let {
+            viewModel.onRequestFormFactorFromEditBrowse()
+        } ?: run {
+            viewModel.onRequestBrowsingProducts()
         }
 
         buttonNext.setSafeOnClickListener {
