@@ -98,6 +98,27 @@ class BrowseResultFragment : BaseFragment() {
         filterObserver()
         sortObserver()
         viewModel.modelEdit.observe(viewLifecycleOwner, Observer(::updateEditText))
+        viewModel.modelEditBrowseStateLiveData.observe(
+            viewLifecycleOwner,
+            Observer(::setEditBrowsingState)
+        )
+    }
+
+    private fun setEditBrowsingState(uiShapeModel: Event<BrowseResultViewModel.EditBrowseState>) {
+        uiShapeModel.getContentIfNotHandled()?.let { editBrowseState ->
+            when (editBrowseState) {
+                is BrowseResultViewModel.EditBrowseState.EditBrowsingFitting -> {
+                    screenNavigator.navigateToFittingFiltering()
+                }
+                is BrowseResultViewModel.EditBrowseState.EditBrowsingShape -> {
+                    screenNavigator.navigateToShapeFiltering(editBrowseState.editBrowsing)
+                }
+                is BrowseResultViewModel.EditBrowseState.EditBrowsingChoiceCategory -> {
+                    screenNavigator.navigateToCategoryChoiceFiltering(editBrowseState.productBrowsingList)
+
+                }
+            }
+        }
     }
 
     private fun setEditBrowseTypes(message: Message) {
@@ -118,10 +139,27 @@ class BrowseResultFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun updateEditText(editTextInfo: BrowseResultViewModel.EditTextInfo) {
         val category = editTextInfo.message.categories[0]
+
+        // category.categoryProducts[0].pr
         fittingEdit.text = category.categoryProductBase
         shapeEdit.text = editTextInfo.message.categories.convertCategoryListToShapeString()
         categoryEdit.text =
             editTextInfo.message.categories.convertCategoryListToCategoryString(localPreferences.loadProductCategoryName())
+
+
+
+        fittingEdit.setOnClickListener {
+            viewModel.onFittingEditTextClicked()
+
+        }
+
+        shapeEdit.setOnClickListener {
+            viewModel.onShapeEditTextClicked()
+        }
+
+        categoryEdit.setOnClickListener {
+            viewModel.onCategoryEditTextClicked()
+        }
     }
 
 

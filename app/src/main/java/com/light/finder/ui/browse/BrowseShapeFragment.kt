@@ -16,7 +16,9 @@ import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ShapeBrowsing
 import com.light.finder.R
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.data.source.remote.FormFactorTypeBaseIdParcelable
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseShapeComponent
 import com.light.finder.di.modules.submodules.BrowseShapeModule
 import com.light.finder.extensions.*
@@ -33,6 +35,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
+        const val SHAPE_EDIT_ID_KEY = "BrowseEditShapeFragment::id"
         const val RESTORED_STATE = 4
         const val spaceInDp = 26
     }
@@ -66,6 +69,11 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
                     viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+                }
+
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(SHAPE_EDIT_ID_KEY)
+                ?.let { shapeBrowsingProducts ->
+                    viewModel.onRetrieveShapeList(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
         }
 

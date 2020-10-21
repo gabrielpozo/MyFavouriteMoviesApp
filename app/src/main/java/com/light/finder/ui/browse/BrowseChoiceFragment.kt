@@ -16,6 +16,7 @@ import com.airbnb.paris.extensions.style
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.light.domain.model.ChoiceBrowsing
 import com.light.finder.R
+import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
 import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.submodules.BrowseChoiceComponent
 import com.light.finder.di.modules.submodules.BrowseChoiceModule
@@ -30,6 +31,8 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
 
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
+        const val CHOICE_EDIT_ID_KEY = "BrowseChoiceEditFragment::id"
+
         const val RESTORED_STATE = 4
         const val spaceInDp = 26
     }
@@ -59,7 +62,14 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
                 ?.let { shapeBrowsingProducts ->
                     viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
                 }
+
+            bundle.getParcelableArrayList<ChoiceBrowsingParcelable>(CHOICE_EDIT_ID_KEY)
+                ?.let { choiceBrowsingProducts ->
+                    viewModel.onRetrieveChoiceProducts(choiceBrowsingProducts.deparcelizeChoiceBrowsingList())
+                }
         }
+
+
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG

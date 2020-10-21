@@ -73,6 +73,10 @@ class BrowseShapeViewModel(
         _modelBottomStatus.value = StatusBottomBar.ResetShape
     }
 
+    fun onRetrieveShapeList(browsingList: ArrayList<ShapeBrowsing>) {
+        handleSuccessRequest(browsingList)
+    }
+
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {
         productsShapeSelected = productBrowsingList.toMutableList()
         _modelBrowsingLiveData.value =

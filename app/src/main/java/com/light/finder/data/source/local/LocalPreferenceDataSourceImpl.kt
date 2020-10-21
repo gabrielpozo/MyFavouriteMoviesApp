@@ -22,9 +22,12 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val PRODUCT_CONNECTIVITY_LEGEND = "productConnectivityLegend"
         private const val FORM_FACTOR_LEGEND_BASE_ID = "productFormFactorBaseIdLegend"
         private const val PRODUCTS_BROWSING_BASE = "productsBrowsingBase"
+        private const val SHAPE_BROWSING_LIST = "shapeBrowsingList"
         private const val PRODUCTS_FILTERED_PRODUCT_BROWSING = "filteredProductsBrowsing"
         private const val PRODUCT_CATEGORY_NAME = "productCategoryName"
         private const val PRODUCTS_FILTERED_SHAPED_BROWSING = "products_filtered_shaped_browsing"
+        private const val CHOICE_BROWSING_LIST = "choiceBrowsingList"
+        private const val FORM_FACTOR_BROWSING_LIST = "formFactorBrowsingList"
         private const val DISCLAIMER_TEXT = "disclaimerText"
         private const val ACCESS_TOKEN = "accessToken"
         private const val TOKEN_TYPE = "tokenType"
@@ -77,6 +80,13 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         ).commit()
     }
 
+    override fun saveBrowsingShapeFilteredList(browsingList: List<ShapeBrowsing>) {
+        editor.putString(
+            SHAPE_BROWSING_LIST,
+            Gson().toJson(browsingList)
+        ).commit()
+    }
+
     override fun loadLegendCctFilterNames(): List<CctType> =
         Gson().fromJson(pref.getString(CCT_LEGEND, null) ?: "")
 
@@ -123,6 +133,21 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<ProductBrowsing>().toString()
     )
 
+    override fun loadShapeBrowsingFiltered(): List<ShapeBrowsing> = Gson().fromJson(
+        pref.getString(SHAPE_BROWSING_LIST, null)
+            ?: emptyList<ShapeBrowsing>().toString()
+    )
+
+    override fun loadChoiceBrowsingFiltered(): List<ChoiceBrowsing> = Gson().fromJson(
+        pref.getString(CHOICE_BROWSING_LIST, null)
+            ?: emptyList<ChoiceBrowsing>().toString()
+    )
+
+    override fun loadFormFactorBrowsingFiltered(): List<FormFactorTypeBaseId> = Gson().fromJson(
+        pref.getString(FORM_FACTOR_BROWSING_LIST, null)
+            ?: emptyList<FormFactorTypeBaseId>().toString()
+    )
+
 
     override fun getAllProductsMessage(baseNameFitting: String): Message {
         val productsFiltered = loadProductBrowsingFiltered()
@@ -141,13 +166,24 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         ).commit()
     }
 
-    override fun saveShapeFilteredList(productsFilteredBrowsing: List<ProductBrowsing>) {
+    override fun saveProductBrowsingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>) {
         editor.putString(
             PRODUCTS_FILTERED_SHAPED_BROWSING,
             Gson().toJson(productsFilteredBrowsing)
         ).commit()
     }
 
+    override fun saveChoiceCategories(choiceBrowsingList: List<ChoiceBrowsing>) {
+        editor.putString(
+            CHOICE_BROWSING_LIST,
+            Gson().toJson(choiceBrowsingList)
+        ).commit()
+    }
+    override fun saveFormFactorFilteredList(filterFilteringList: List<FormFactorTypeBaseId>) {
+        editor.putString(
+            FORM_FACTOR_BROWSING_LIST,
+            Gson().toJson(filterFilteringList)
+        ).commit()    }
 
     override fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,

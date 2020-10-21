@@ -9,9 +9,7 @@ import com.light.finder.CameraLightFinderActivity
 import com.light.finder.CameraLightFinderActivity.Companion.BROWSING_ACTIVITY
 import com.light.finder.CameraLightFinderActivity.Companion.CAMERA_LIGHT_FINDER_ACTIVITY_ID
 import com.light.finder.R
-import com.light.finder.extensions.newInstance
-import com.light.finder.extensions.parcelizeChoiceBrowsingList
-import com.light.finder.extensions.startActivity
+import com.light.finder.extensions.*
 import com.light.finder.ui.browse.*
 import com.ncapdevi.fragnav.FragNavController
 
@@ -72,6 +70,17 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
     }
 
+    fun navigateFirstTimeToBrowsingChoiceScreen(productsChoiceSelected: List<ChoiceBrowsing>) {
+        addFragmentTransaction(BrowseChoiceFragment.newInstanceForEditBrowse(productsChoiceSelected))
+    }
+
+    fun navigateFirstTimeToBrowsingShapeScreen(shapeParcelable: List<ShapeBrowsing>) {
+        addFragmentTransaction(BrowseShapeFragment.newInstanceForEditBrowse(shapeParcelable))
+    }
+
+    fun navigateEditBrowsingFittingScreen() {
+        addFragmentTransaction(BrowseFittingFragment.newInstanceForFittingEditBrowse())
+    }
 
     fun popFragment() {
         fragmentManager.popBackStack()

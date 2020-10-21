@@ -3,11 +3,13 @@ package com.light.finder.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.shapes.Shape
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseChoiceFragment
+import com.light.finder.ui.browse.BrowseFittingFragment
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -69,8 +71,31 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
     args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
     val fragment = BrowseShapeFragment()
     fragment.arguments = args
-    return  fragment
+    return fragment
 }
+
+fun BrowseShapeFragment.Companion.newInstanceForEditBrowse(shapeListSelected: List<ShapeBrowsing>): BrowseShapeFragment {
+    val args = android.os.Bundle()
+    args.putParcelableArrayList(
+        SHAPE_EDIT_ID_KEY,
+        shapeListSelected.parcelizeBrowsingList()
+    )
+    val fragment = BrowseShapeFragment()
+    fragment.arguments = args
+    return fragment
+}
+
+fun BrowseFittingFragment.Companion.newInstanceForFittingEditBrowse(): BrowseFittingFragment {
+    val args = android.os.Bundle()
+    args.putInt(
+        FITTING_EDIT_ID_KEY,
+        1
+    )
+    val fragment = BrowseFittingFragment()
+    fragment.arguments = args
+    return fragment
+}
+
 
 //todo parcelize list
 fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<ShapeBrowsing>): BrowseChoiceFragment {
@@ -78,7 +103,19 @@ fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<Shape
     args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
-    return  fragment
+    return fragment
+}
+
+//todo parcelize list
+fun BrowseChoiceFragment.Companion.newInstanceForEditBrowse(productsChoiceSelected: List<ChoiceBrowsing>): BrowseChoiceFragment {
+    val args = android.os.Bundle()
+    args.putParcelableArrayList(
+        CHOICE_EDIT_ID_KEY,
+        productsChoiceSelected.parcelizeChoiceBrowsingList()
+    )
+    val fragment = BrowseChoiceFragment()
+    fragment.arguments = args
+    return fragment
 }
 
 fun DetailFragment.Companion.newInstance(category: Category): DetailFragment {

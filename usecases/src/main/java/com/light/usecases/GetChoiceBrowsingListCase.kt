@@ -8,7 +8,7 @@ import com.light.domain.model.ShapeBrowsing
 import com.light.domain.state.DataState
 
 
-class GetBrowseProductsResultUseCase(private val productBrowsingRepository: ProductBrowsingRepository) {
+class GetChoiceBrowsingProductsUseCase(private val productBrowsingRepository: ProductBrowsingRepository) {
 
     suspend fun execute(
         onSuccess: (Message) -> Unit = {},

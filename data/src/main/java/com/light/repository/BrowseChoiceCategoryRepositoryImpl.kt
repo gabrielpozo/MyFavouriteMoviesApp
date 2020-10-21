@@ -11,13 +11,14 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
         val categoryChoiceList = mutableListOf<ChoiceBrowsing>()
         val categoryNameList = localPreferenceDataSource.loadProductCategoryName()
         val filteredProductsByShape =
-        if (browsingList.find { it.isSelected } != null ) {
-             localPreferenceDataSource.getShapeFilteredList(browsingList)
-        } else {
-            localPreferenceDataSource.loadProductBrowsingFiltered()
-        }
+            if (browsingList.find { it.isSelected } != null) {
+                localPreferenceDataSource.saveBrowsingShapeFilteredList(browsingList)
+                localPreferenceDataSource.getShapeFilteredList(browsingList)
+            } else {
+                localPreferenceDataSource.loadProductBrowsingFiltered()
+            }
 
-        localPreferenceDataSource.saveShapeFilteredList(filteredProductsByShape)
+        localPreferenceDataSource.saveProductBrowsingFilteredList(filteredProductsByShape)
 
         categoryNameList.forEach { categoryName ->
             categoryChoiceList.add(

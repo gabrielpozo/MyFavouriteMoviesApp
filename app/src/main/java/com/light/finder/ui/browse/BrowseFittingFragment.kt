@@ -40,6 +40,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     companion object {
         const val spaceInDp = 30
+        const val FITTING_EDIT_ID_KEY = "FITTING_EDIT_ID_KEY"
     }
 
 

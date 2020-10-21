@@ -54,6 +54,10 @@ class BrowseChoiceViewModel(
         requestBrowsingChoiceUseCase.execute(::handleSuccessChoiceResults, shapeBrowsingList)
     }
 
+    fun onRetrieveChoiceProducts(choiceBrowsingList: ArrayList<ChoiceBrowsing>) {
+        handleSuccessChoiceResults(choiceBrowsingList)
+    }
+
     private fun handleSuccessChoiceResults(choiceResults: List<ChoiceBrowsing>) {
         productChoiceSelectedList = choiceResults.toMutableList()
         _modelChoiceLiveData.value =
@@ -79,5 +83,6 @@ class BrowseChoiceViewModel(
     fun onSkipButtonClicked() {
         _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
     }
+
 
 }

@@ -10,6 +10,7 @@ import com.light.source.local.LocalPreferenceDataSource
 class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
     ProductBrowsingRepository {
     override suspend fun getProductBrowsingRepository(choiceBrowsingList: List<ChoiceBrowsing>): DataState<Message> {
+        localPreferenceDataSource.saveChoiceCategories(choiceBrowsingList)
         val messageFiltered =
             localPreferenceDataSource.getFilteredProductsMessageFromChoice(choiceBrowsingList)
         return if (messageFiltered.categories.isEmpty()) {
