@@ -16,24 +16,34 @@ class SplashViewModel(
     val liveData: LiveData<SplashState>
         get() = mutableLiveData
     private val mutableLiveData = MutableLiveData<SplashState>()
+    private var startTime = 0L
+    private val minimumDelay = 1000L
 
     init {
         launch {
-            onRetrieveBearerToken()
-            delay(4000)
+            startTime = System.currentTimeMillis()
+            retrieveBearerToken()
+        }
+    }
+
+    private fun onRetrieveToken() {
+        launch {
+            getLegendUseCase.execute(onSuccess = ::onRetrieveLegend)
+        }
+    }
+
+    private fun onRetrieveLegend() {
+        val remainingTime = minimumDelay - (System.currentTimeMillis() - startTime)
+
+        launch {
+            delay(remainingTime)
             mutableLiveData.postValue(SplashState.CameraActivity)
         }
     }
 
-    private fun onRetrieveLegendTags() {
+    private fun retrieveBearerToken() {
         launch {
-            getLegendUseCase.execute()
-        }
-    }
-
-    private fun onRetrieveBearerToken() {
-        launch {
-            getBearerTokenUseCase.execute(onSuccess = ::onRetrieveLegendTags)
+            getBearerTokenUseCase.execute(onSuccess = ::onRetrieveToken)
         }
     }
 }
