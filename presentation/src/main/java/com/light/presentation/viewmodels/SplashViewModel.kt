@@ -22,17 +22,13 @@ class SplashViewModel(
     init {
         launch {
             startTime = System.currentTimeMillis()
-            retrieveBearerToken()
+            getLegendUseCase.execute()
+            getBearerTokenUseCase.execute()
+            navigateToApp()
         }
     }
 
-    private fun onRetrieveToken() {
-        launch {
-            getLegendUseCase.execute(onSuccess = ::onRetrieveLegend)
-        }
-    }
-
-    private fun onRetrieveLegend() {
+    private fun navigateToApp() {
         val remainingTime = minimumDelay - (System.currentTimeMillis() - startTime)
 
         launch {
@@ -41,11 +37,6 @@ class SplashViewModel(
         }
     }
 
-    private fun retrieveBearerToken() {
-        launch {
-            getBearerTokenUseCase.execute(onSuccess = ::onRetrieveToken)
-        }
-    }
 }
 
 
