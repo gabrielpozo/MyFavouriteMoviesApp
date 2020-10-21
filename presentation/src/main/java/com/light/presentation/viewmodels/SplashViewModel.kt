@@ -22,8 +22,8 @@ class SplashViewModel(
     init {
         launch {
             startTime = System.currentTimeMillis()
-            getLegendUseCase.execute()
             getBearerTokenUseCase.execute()
+            getLegendUseCase.execute()
             navigateToApp()
         }
     }
