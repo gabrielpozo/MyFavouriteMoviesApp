@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.presentation.common.Event
+import com.light.usecases.GetFormFactorsEditBrowseUseCase
 import com.light.usecases.RequestBrowsingFittingsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class BrowseFittingViewModel(
     private val requestBrowsingProductsUseCase: RequestBrowsingFittingsUseCase,
+    private val getFormFactorsEditBrowseUseCase: GetFormFactorsEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -26,6 +28,7 @@ class BrowseFittingViewModel(
     sealed class UiBrowsingModel {
         data class SuccessRequestStatus(val productBrowsingList: List<FormFactorTypeBaseId>) :
             UiBrowsingModel()
+
         data class ErrorRequestStatus(val message: String) : UiBrowsingModel()
         object LoadingStatus : UiBrowsingModel()
     }
@@ -50,9 +53,10 @@ class BrowseFittingViewModel(
     val modelFittingClickStatus: LiveData<FittingClicked>
         get() = _modelFittingClickStatus
     private val _modelFittingClickStatus = MutableLiveData<FittingClicked>()
+
     object FittingClicked
 
-    
+
     fun onRequestBrowsingProducts() {
         launch {
             _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
@@ -82,7 +86,9 @@ class BrowseFittingViewModel(
     }
 
     fun onRequestFormFactorFromEditBrowse() {
-
+        launch {
+            handleSuccessRequest(getFormFactorsEditBrowseUseCase.execute())
+        }
     }
 }
 

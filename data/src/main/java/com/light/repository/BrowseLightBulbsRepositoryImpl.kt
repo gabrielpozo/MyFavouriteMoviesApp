@@ -32,4 +32,12 @@ class BrowseLightBulbsRepositoryImpl(
                 filterFilteringList
 
             })
+
+    override suspend fun getFittingListForEditBrowse(): List<FormFactorTypeBaseId> {
+        val baseId = localPreferenceDataSource.getProductBaseId()
+        val formFactorList = localPreferenceDataSource.loadFormFactorBrowsingFiltered()
+        formFactorList.find { it.id == baseId }?.isSelected = true
+        return formFactorList
+    }
+
 }

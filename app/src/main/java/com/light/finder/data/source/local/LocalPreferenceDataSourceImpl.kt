@@ -29,6 +29,7 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
         private const val CHOICE_BROWSING_LIST = "choiceBrowsingList"
         private const val FORM_FACTOR_BROWSING_LIST = "formFactorBrowsingList"
         private const val DISCLAIMER_TEXT = "disclaimerText"
+        private const val BASE_ID = "BASE_ID"
         private const val ACCESS_TOKEN = "accessToken"
         private const val TOKEN_TYPE = "tokenType"
 
@@ -148,6 +149,9 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             ?: emptyList<FormFactorTypeBaseId>().toString()
     )
 
+    override fun getProductBaseId(): Int =
+        pref.getInt(BASE_ID, -1)
+
 
     override fun getAllProductsMessage(baseNameFitting: String): Message {
         val productsFiltered = loadProductBrowsingFiltered()
@@ -179,11 +183,20 @@ class LocalPreferenceDataSourceImpl(private val context: Context) :
             Gson().toJson(choiceBrowsingList)
         ).commit()
     }
+
     override fun saveFormFactorFilteredList(filterFilteringList: List<FormFactorTypeBaseId>) {
         editor.putString(
             FORM_FACTOR_BROWSING_LIST,
             Gson().toJson(filterFilteringList)
-        ).commit()    }
+        ).commit()
+    }
+
+    override fun saveSelectedFormFactor(baseId: Int) {
+        editor.putInt(
+            BASE_ID,
+            baseId
+        ).commit()
+    }
 
     override fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,

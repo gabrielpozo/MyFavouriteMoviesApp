@@ -2,6 +2,7 @@ package com.light.finder.di.modules.submodules
 
 import com.light.domain.BrowseLightBulbsRepository
 import com.light.presentation.viewmodels.BrowseFittingViewModel
+import com.light.usecases.GetFormFactorsEditBrowseUseCase
 import com.light.usecases.RequestBrowsingFittingsUseCase
 import dagger.Module
 import dagger.Provides
@@ -16,8 +17,19 @@ class BrowseFittingModule {
         RequestBrowsingFittingsUseCase(browseLightBulbsRepository)
 
     @Provides
-    fun browsingFittingViewModel(requestBrowsingProductsUseCase: RequestBrowsingFittingsUseCase): BrowseFittingViewModel =
-        BrowseFittingViewModel(requestBrowsingProductsUseCase, Dispatchers.Main)
+    fun requestFormFactorsEditBrowseUseCase(browseLightBulbsRepository: BrowseLightBulbsRepository): GetFormFactorsEditBrowseUseCase =
+        GetFormFactorsEditBrowseUseCase(browseLightBulbsRepository)
+
+    @Provides
+    fun browsingFittingViewModel(
+        requestBrowsingProductsUseCase: RequestBrowsingFittingsUseCase,
+        getFormFactorsEditBrowseUseCase: GetFormFactorsEditBrowseUseCase
+    ): BrowseFittingViewModel =
+        BrowseFittingViewModel(
+            requestBrowsingProductsUseCase,
+            getFormFactorsEditBrowseUseCase,
+            Dispatchers.Main
+        )
 }
 
 @Subcomponent(modules = [(BrowseFittingModule::class)])
