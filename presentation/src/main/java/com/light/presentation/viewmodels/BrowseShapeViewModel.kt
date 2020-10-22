@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
-import com.light.presentation.common.Event
-import com.light.presentation.common.isProductsShapeSelected
-import com.light.presentation.common.resetShapeProductList
-import com.light.presentation.common.setSelectedProductShape
+import com.light.presentation.common.*
 import com.light.usecases.RequestBrowsingShapeUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -75,6 +72,10 @@ class BrowseShapeViewModel(
 
     fun onRetrieveShapeList(browsingList: ArrayList<ShapeBrowsing>) {
         handleSuccessRequest(browsingList)
+        val formFactor = browsingList.getShapeSelected()
+        if (formFactor != null) {
+            onShapeClick(formFactor)
+        }
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {

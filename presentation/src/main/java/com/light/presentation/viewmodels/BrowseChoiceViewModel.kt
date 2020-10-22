@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.ShapeBrowsing
-import com.light.presentation.common.Event
-import com.light.presentation.common.isProductsChoiceSelected
-import com.light.presentation.common.resetChoiceProductList
-import com.light.presentation.common.setSelectedProductChoice
+import com.light.presentation.common.*
 import com.light.usecases.RequestBrowsingChoiceUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -56,6 +53,10 @@ class BrowseChoiceViewModel(
 
     fun onRetrieveChoiceProducts(choiceBrowsingList: ArrayList<ChoiceBrowsing>) {
         handleSuccessChoiceResults(choiceBrowsingList)
+        val choiceCategory = choiceBrowsingList.getChoiceSelected()
+        if (choiceCategory != null) {
+            onChoiceClick(choiceCategory)
+        }
     }
 
     private fun handleSuccessChoiceResults(choiceResults: List<ChoiceBrowsing>) {

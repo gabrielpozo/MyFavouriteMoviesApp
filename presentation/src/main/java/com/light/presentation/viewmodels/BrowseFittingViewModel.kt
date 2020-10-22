@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.presentation.common.Event
+import com.light.presentation.common.getFormFactorSelected
 import com.light.usecases.GetFormFactorsEditBrowseUseCase
 import com.light.usecases.RequestBrowsingFittingsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -87,7 +88,9 @@ class BrowseFittingViewModel(
 
     fun onRequestFormFactorFromEditBrowse() {
         launch {
-            handleSuccessRequest(getFormFactorsEditBrowseUseCase.execute())
+            val formFactorList = getFormFactorsEditBrowseUseCase.execute()
+            handleSuccessRequest(formFactorList)
+            onFittingClick(formFactorList.getFormFactorSelected())
         }
     }
 }
