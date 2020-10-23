@@ -81,7 +81,6 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
         fun onLightFinderTabPressed(current: Fragment?, wasSelected: Boolean) {
-
             if (!wasSelected) {
                 return
             }
@@ -256,24 +255,16 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
-    fun navigateToCategoryChoiceFiltering(productChoiceList: List<ChoiceBrowsing>) {
+    fun navigateToCategoryChoiceFiltering() {
         activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {
             putExtra(REQUEST_BROWSING_SCREEN, CATEGORY_CHOICE_VIEW)
-            putParcelableArrayListExtra(
-                CHOICE_LIST_CODE,
-                productChoiceList.parcelizeChoiceBrowsingList()
-            )
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
-    fun navigateToShapeFiltering(editBrowsing: List<ShapeBrowsing>) {
+    fun navigateToShapeFiltering() {
         activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {
             putExtra(REQUEST_BROWSING_SCREEN, SHAPE_VIEW)
-            putParcelableArrayListExtra(
-                SHAPE_LIST_CODE,
-                editBrowsing.parcelizeBrowsingList()
-            )
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
@@ -284,4 +275,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
+
+    fun navigateToBrowsingFilteringFromBackButton() {
+        activity.startActivity<BrowseActivity> {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)    }
 }

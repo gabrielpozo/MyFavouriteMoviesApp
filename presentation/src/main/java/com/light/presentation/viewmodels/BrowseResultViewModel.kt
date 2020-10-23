@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
-import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
 import com.light.usecases.GetChoiceEditBrowseUseCase
 import com.light.usecases.GetChoiceBrowsingProductsUseCase
-import com.light.usecases.GetShapeEditBrowseUseCase
 import com.light.usecases.GetSortCategoriesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -17,8 +15,6 @@ import kotlinx.coroutines.launch
 class BrowseResultViewModel(
     private val getSortCategoriesUseCase: GetSortCategoriesUseCase,
     private val getBrowseProductsResultUseCase: GetChoiceBrowsingProductsUseCase,
-    private val getChoiceBrowsingUseCase: GetChoiceEditBrowseUseCase,
-    private val getShapeEditBrowseUseCase: GetShapeEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -64,10 +60,10 @@ class BrowseResultViewModel(
 
 
     sealed class EditBrowseState {
-        data class EditBrowsingChoiceCategory(val productBrowsingList: List<ChoiceBrowsing>) :
+        object EditBrowsingChoiceCategory :
             EditBrowseState()
 
-        data class EditBrowsingShape(val editBrowsing: List<ShapeBrowsing>) : EditBrowseState()
+        object EditBrowsingShape : EditBrowseState()
         object EditBrowsingFitting : EditBrowseState()
     }
 
@@ -131,10 +127,7 @@ class BrowseResultViewModel(
     fun onCategoryEditTextClicked() {
         launch {
             _modelEditBrowseStateLiveData.value = Event(
-                EditBrowseState.EditBrowsingChoiceCategory(
-                    getChoiceBrowsingUseCase.execute(
-                    )
-                )
+                EditBrowseState.EditBrowsingChoiceCategory
             )
         }
     }
@@ -142,10 +135,7 @@ class BrowseResultViewModel(
     fun onShapeEditTextClicked() {
         launch {
             _modelEditBrowseStateLiveData.value = Event(
-                EditBrowseState.EditBrowsingShape(
-                    getShapeEditBrowseUseCase.execute(
-                    )
-                )
+                EditBrowseState.EditBrowsingShape
             )
         }
     }

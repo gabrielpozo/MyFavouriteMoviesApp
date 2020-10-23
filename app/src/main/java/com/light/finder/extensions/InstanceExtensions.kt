@@ -3,7 +3,6 @@ package com.light.finder.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.shapes.Shape
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.*
@@ -74,11 +73,11 @@ fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorType
     return fragment
 }
 
-fun BrowseShapeFragment.Companion.newInstanceForEditBrowse(shapeListSelected: List<ShapeBrowsing>): BrowseShapeFragment {
+fun BrowseShapeFragment.Companion.newInstanceForShapeChoiceEditBrowse(): BrowseShapeFragment {
     val args = android.os.Bundle()
-    args.putParcelableArrayList(
+    args.putInt(
         SHAPE_EDIT_ID_KEY,
-        shapeListSelected.parcelizeBrowsingList()
+        SHAPE_NUMBER_KEY
     )
     val fragment = BrowseShapeFragment()
     fragment.arguments = args
@@ -107,11 +106,11 @@ fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<Shape
 }
 
 //todo parcelize list
-fun BrowseChoiceFragment.Companion.newInstanceForEditBrowse(productsChoiceSelected: List<ChoiceBrowsing>): BrowseChoiceFragment {
+fun BrowseChoiceFragment.Companion.newInstanceForShapeChoiceEditBrowse(): BrowseChoiceFragment {
     val args = android.os.Bundle()
-    args.putParcelableArrayList(
+    args.putInt(
         CHOICE_EDIT_ID_KEY,
-        productsChoiceSelected.parcelizeChoiceBrowsingList()
+        CHOICE_NUMBER_KEY
     )
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args

@@ -26,6 +26,7 @@ import com.light.source.local.LocalPreferenceDataSource
 import kotlinx.android.synthetic.main.browse_results_header.*
 import kotlinx.android.synthetic.main.edit_browse_expandable.*
 import kotlinx.android.synthetic.main.fragment_browse_result.*
+import java.util.ArrayList
 
 class BrowseResultFragment : BaseFragment() {
 
@@ -88,10 +89,7 @@ class BrowseResultFragment : BaseFragment() {
 
         closeButton.setOnClickListener {
             //todo hide expended state
-            editBrowseBar.visible()
-            edit_browse_title.gone()
-            edit_browse.gone()
-            closeButton.invisible()
+            setCloseButton()
         }
 
         navigationObserver()
@@ -104,6 +102,12 @@ class BrowseResultFragment : BaseFragment() {
         )
     }
 
+
+    fun setOnNewIntent(choiceResult: ArrayList<ChoiceBrowsingParcelable>) {
+        setCloseButton()
+        viewModel.onRetrieveShapeProducts(choiceResult.deparcelizeChoiceBrowsingList())
+    }
+
     private fun setEditBrowsingState(uiShapeModel: Event<BrowseResultViewModel.EditBrowseState>) {
         uiShapeModel.getContentIfNotHandled()?.let { editBrowseState ->
             when (editBrowseState) {
@@ -111,10 +115,10 @@ class BrowseResultFragment : BaseFragment() {
                     screenNavigator.navigateToFittingFiltering()
                 }
                 is BrowseResultViewModel.EditBrowseState.EditBrowsingShape -> {
-                    screenNavigator.navigateToShapeFiltering(editBrowseState.editBrowsing)
+                    screenNavigator.navigateToShapeFiltering()
                 }
                 is BrowseResultViewModel.EditBrowseState.EditBrowsingChoiceCategory -> {
-                    screenNavigator.navigateToCategoryChoiceFiltering(editBrowseState.productBrowsingList)
+                    screenNavigator.navigateToCategoryChoiceFiltering()
 
                 }
             }
@@ -262,5 +266,11 @@ class BrowseResultFragment : BaseFragment() {
         rvCategories.adapter = adapter
     }
 
+    private fun setCloseButton() {
+        editBrowseBar.visible()
+        edit_browse_title.gone()
+        edit_browse.gone()
+        closeButton.invisible()
+    }
 }
 

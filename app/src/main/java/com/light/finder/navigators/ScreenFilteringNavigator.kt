@@ -1,5 +1,6 @@
 package com.light.finder.navigators
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.light.domain.model.ChoiceBrowsing
@@ -56,6 +57,9 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     fun navigateToResultCategories(productsChoiceSelected: List<ChoiceBrowsing>) {
         activity.startActivity<CameraLightFinderActivity> {
+            if (activity.stateInitiated) {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
             putExtra(CAMERA_LIGHT_FINDER_ACTIVITY_ID, BROWSING_ACTIVITY)
             putParcelableArrayListExtra(
                 CameraLightFinderActivity.BROWSING_SHAPE_VALUES_ID,
@@ -70,12 +74,12 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
     }
 
-    fun navigateFirstTimeToBrowsingChoiceScreen(productsChoiceSelected: List<ChoiceBrowsing>) {
-        addFragmentTransaction(BrowseChoiceFragment.newInstanceForEditBrowse(productsChoiceSelected))
+    fun navigateFirstTimeToBrowsingChoiceScreen() {
+        addFragmentTransaction(BrowseChoiceFragment.newInstanceForShapeChoiceEditBrowse())
     }
 
-    fun navigateFirstTimeToBrowsingShapeScreen(shapeParcelable: List<ShapeBrowsing>) {
-        addFragmentTransaction(BrowseShapeFragment.newInstanceForEditBrowse(shapeParcelable))
+    fun navigateFirstTimeToBrowsingShapeScreen() {
+        addFragmentTransaction(BrowseShapeFragment.newInstanceForShapeChoiceEditBrowse())
     }
 
     fun navigateEditBrowsingFittingScreen() {
@@ -87,6 +91,14 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
     fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
+
+    fun setAllFilteringScreens() {
+        //TODO clear the backstack here!!
+        addFragmentTransaction(BrowseFittingFragment.newInstanceForFittingEditBrowse())
+        replaceFragmentTransaction(BrowseShapeFragment.newInstanceForShapeChoiceEditBrowse())
+        replaceFragmentTransaction(BrowseChoiceFragment.newInstanceForShapeChoiceEditBrowse())
+
+    }
 
 
 }

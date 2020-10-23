@@ -4,6 +4,7 @@ import com.light.domain.BrowseChoiceRepository
 import com.light.domain.ShapeLightBulbRepository
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import com.light.presentation.viewmodels.BrowseShapeViewModel
+import com.light.usecases.GetChoiceEditBrowseUseCase
 import com.light.usecases.RequestBrowsingChoiceUseCase
 import com.light.usecases.RequestBrowsingShapeUseCase
 import dagger.Module
@@ -17,9 +18,21 @@ class BrowseChoiceModule {
     fun requestChoiceProductsUseCase(browseLightBulbsRepository: BrowseChoiceRepository): RequestBrowsingChoiceUseCase =
         RequestBrowsingChoiceUseCase(browseLightBulbsRepository)
 
+
     @Provides
-    fun browsingChoiceViewModel(requestBrowsingProductsUseCase: RequestBrowsingChoiceUseCase): BrowseChoiceViewModel =
-        BrowseChoiceViewModel(requestBrowsingProductsUseCase, Dispatchers.Main)
+    fun getChoiceProductsUseCase(browseLightBulbsRepository: ShapeLightBulbRepository): GetChoiceEditBrowseUseCase =
+        GetChoiceEditBrowseUseCase(browseLightBulbsRepository)
+
+    @Provides
+    fun browsingChoiceViewModel(
+        requestBrowsingProductsUseCase: RequestBrowsingChoiceUseCase,
+        getChoiceEditBrowseUseCase: GetChoiceEditBrowseUseCase
+    ): BrowseChoiceViewModel =
+        BrowseChoiceViewModel(
+            requestBrowsingProductsUseCase,
+            getChoiceEditBrowseUseCase,
+            Dispatchers.Main
+        )
 }
 
 @Subcomponent(modules = [(BrowseChoiceModule::class)])

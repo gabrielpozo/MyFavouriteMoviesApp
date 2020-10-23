@@ -5,11 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.*
+import com.light.usecases.GetChoiceEditBrowseUseCase
 import com.light.usecases.RequestBrowsingChoiceUseCase
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 
 class BrowseChoiceViewModel(
     private val requestBrowsingChoiceUseCase: RequestBrowsingChoiceUseCase,
+    private val getChoiceBrowsingUseCase: GetChoiceEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productChoiceSelectedList: MutableList<ChoiceBrowsing>
@@ -51,11 +54,14 @@ class BrowseChoiceViewModel(
         requestBrowsingChoiceUseCase.execute(::handleSuccessChoiceResults, shapeBrowsingList)
     }
 
-    fun onRetrieveChoiceProducts(choiceBrowsingList: ArrayList<ChoiceBrowsing>) {
-        handleSuccessChoiceResults(choiceBrowsingList)
-        val choiceCategory = choiceBrowsingList.getChoiceSelected()
-        if (choiceCategory != null) {
-            onChoiceClick(choiceCategory)
+    fun onRetrieveChoiceProducts() {
+        launch {
+            val choiceBrowsingList = getChoiceBrowsingUseCase.execute()
+            handleSuccessChoiceResults(choiceBrowsingList)
+            val choiceCategory = choiceBrowsingList.getChoiceSelected()
+            if (choiceCategory != null) {
+                onChoiceClick(choiceCategory)
+            }
         }
     }
 
@@ -63,7 +69,6 @@ class BrowseChoiceViewModel(
         productChoiceSelectedList = choiceResults.toMutableList()
         _modelChoiceLiveData.value =
             UiBrowsingChoiceModel.SuccessRequestStatus(productChoiceSelectedList)
-
     }
 
     fun onSearchButtonClicked() {

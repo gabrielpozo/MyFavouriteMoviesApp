@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.*
+import com.light.usecases.GetShapeEditBrowseUseCase
 import com.light.usecases.RequestBrowsingShapeUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class BrowseShapeViewModel(
     private val requestBrowsingShapeUseCase: RequestBrowsingShapeUseCase,
+    private val getShapeEditBrowseUseCase: GetShapeEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productsShapeSelected: MutableList<ShapeBrowsing>
@@ -70,12 +72,16 @@ class BrowseShapeViewModel(
         _modelBottomStatus.value = StatusBottomBar.ResetShape
     }
 
-    fun onRetrieveShapeList(browsingList: ArrayList<ShapeBrowsing>) {
-        handleSuccessRequest(browsingList)
-        val formFactor = browsingList.getShapeSelected()
-        if (formFactor != null) {
-            onShapeClick(formFactor)
+    fun onRetrieveShapeList() {
+        launch {
+            val browsingList = getShapeEditBrowseUseCase.execute()
+            handleSuccessRequest(browsingList)
+            val formFactor = browsingList.getShapeSelected()
+            if (formFactor != null) {
+                onShapeClick(formFactor)
+            }
         }
+
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {
