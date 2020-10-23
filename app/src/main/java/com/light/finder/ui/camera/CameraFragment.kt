@@ -613,6 +613,8 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    fun exitOnBackPressed() : Boolean = arguments?.getBoolean("EXIT") ?: false
+
     fun getStatusView(): ModelStatus = modelUiState
 
     private fun observeFlashButtonAction(flashModel: FlashModel) {
