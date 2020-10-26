@@ -181,7 +181,11 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 //
 //        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
 
-        fragNavController.pushFragment(CameraFragment.newInstance(true), null)
+        fragNavController.pushFragment(CameraFragment.newInstance(true),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(R.anim.slide_in_from_left, 0, 0, R.anim.slide_out_to_right)
+                .build()
+        )
     }
 
     fun navigateToSettings() {
