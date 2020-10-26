@@ -38,7 +38,13 @@ inline fun AppCompatActivity.setIntentForResult(body: Intent.() -> Unit) {
     setResult(Activity.RESULT_OK, intent)
 }
 
-fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
+fun CameraFragment.Companion.newInstance(exitOnBack: Boolean = false): CameraFragment {
+    val args = android.os.Bundle()
+    args.putBoolean("EXIT", exitOnBack)
+    val fragment = CameraFragment()
+    fragment.arguments = args
+    return fragment
+}
 
 fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()
 

@@ -91,7 +91,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                             R.color.backgroundLight
                         )
                     )
-                    activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
+                    //activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
                     goToHomeScreen()
                 }
             }
@@ -175,12 +175,13 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     private fun goToHomeScreen() {
-        activity.startActivity<CameraLightFinderActivity> {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        }
+//        activity.startActivity<CameraLightFinderActivity> {
+//            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        }
+//
+//        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
 
-        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
-
+        fragNavController.pushFragment(CameraFragment.newInstance(true), null)
     }
 
     fun navigateToSettings() {
