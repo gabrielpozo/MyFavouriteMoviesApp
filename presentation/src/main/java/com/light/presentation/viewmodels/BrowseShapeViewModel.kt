@@ -77,11 +77,12 @@ class BrowseShapeViewModel(
             val browsingList = getShapeEditBrowseUseCase.execute()
             handleSuccessRequest(browsingList)
             val formFactor = browsingList.getShapeSelected()
-            if (formFactor != null) {
+            if (formFactor == null) {
+                _modelBottomStatus.value = StatusBottomBar.ResetShape
+            } else {
                 onShapeClick(formFactor)
             }
         }
-
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {

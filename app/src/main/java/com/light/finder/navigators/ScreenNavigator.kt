@@ -17,9 +17,9 @@ import com.light.finder.ui.browse.BrowseActivity
 import com.light.finder.ui.browse.BrowseActivity.Companion.CATEGORY_CHOICE_VIEW
 import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
 import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_BROWSING_SCREEN
-import com.light.finder.ui.browse.BrowseActivity.Companion.CHOICE_LIST_CODE
+import com.light.finder.ui.browse.BrowseActivity.Companion.EDIT_TEXT_REQUEST
+import com.light.finder.ui.browse.BrowseActivity.Companion.EDIT_TEXT_REQUEST_VALUE
 import com.light.finder.ui.browse.BrowseActivity.Companion.FITTING_VIEW
-import com.light.finder.ui.browse.BrowseActivity.Companion.SHAPE_LIST_CODE
 import com.light.finder.ui.browse.BrowseActivity.Companion.SHAPE_VIEW
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.camera.CameraFragment
@@ -278,6 +278,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
 
     fun navigateToBrowsingFilteringFromBackButton() {
         activity.startActivity<BrowseActivity> {
+            putExtra(EDIT_TEXT_REQUEST,EDIT_TEXT_REQUEST_VALUE)
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 

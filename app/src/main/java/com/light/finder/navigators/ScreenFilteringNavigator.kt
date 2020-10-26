@@ -26,24 +26,37 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         FragNavController(activity.supportFragmentManager, R.id.fragment_container_browse)
 
     fun navigateToBrowsingFittingScreen() {
-        addFragmentTransaction(BrowseFittingFragment())
+        addFragmentTransaction(BrowseFittingFragment(),"FITTING")
     }
 
     fun navigateToBrowsingShapeScreen(productBaseId: FormFactorTypeBaseId) {
-        replaceFragmentTransaction(BrowseShapeFragment.newInstance(productBaseId))
+        replaceFragmentTransaction(BrowseShapeFragment.newInstance(productBaseId),"SHAPE")
     }
 
-    private fun addFragmentTransaction(fragmentFiltering: BaseFilteringFragment) {
+    fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
+        replaceFragmentTransaction(
+            BrowseChoiceFragment.newInstance(productsShapeSelected),
+            "CHOICE"
+        )
+    }
+
+    private fun addFragmentTransaction(
+        fragmentFiltering: BaseFilteringFragment,
+        tagFragment: String? = null
+    ) {
         fragmentManager.beginTransaction().setCustomAnimations(
             R.anim.slide_in_from_right,
             R.anim.slide_out_to_left,
             R.anim.slide_in_from_left,
             R.anim.slide_out_to_right
-        ).add(R.id.fragment_container_browse, fragmentFiltering)
+        ).add(R.id.fragment_container_browse, fragmentFiltering, tagFragment)
             .commit()
     }
 
-    private fun replaceFragmentTransaction(fragmentFiltering: BaseFilteringFragment) {
+    private fun replaceFragmentTransaction(
+        fragmentFiltering: BaseFilteringFragment,
+        tagFragment: String
+    ) {
         fragmentManager.beginTransaction().setCustomAnimations(
             R.anim.slide_in_from_right,
             R.anim.slide_out_to_left,
@@ -51,7 +64,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
             R.anim.slide_out_to_right
         )
             .addToBackStack(null)
-            .replace(R.id.fragment_container_browse, fragmentFiltering)
+            .replace(R.id.fragment_container_browse, fragmentFiltering, tagFragment)
             .commit()
     }
 
@@ -70,10 +83,6 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
     }
 
 
-    fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
-        replaceFragmentTransaction(BrowseChoiceFragment.newInstance(productsShapeSelected))
-    }
-
     fun navigateFirstTimeToBrowsingChoiceScreen() {
         addFragmentTransaction(BrowseChoiceFragment.newInstanceForShapeChoiceEditBrowse())
     }
@@ -90,13 +99,24 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         fragmentManager.popBackStack()
     }
 
+
     fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
 
     fun setAllFilteringScreens() {
-        //TODO clear the backstack here!!
-        addFragmentTransaction(BrowseFittingFragment.newInstanceForFittingEditBrowse())
-        replaceFragmentTransaction(BrowseShapeFragment.newInstanceForShapeChoiceEditBrowse())
-        replaceFragmentTransaction(BrowseChoiceFragment.newInstanceForShapeChoiceEditBrowse())
+        val shapeFragment = fragmentManager.findFragmentByTag("SHAPE")
+        if(shapeFragment is BrowseExpandableStatus){
+            shapeFragment.setExpandableChoiceSelection()
+        }
+        val fittingFragment = fragmentManager.findFragmentByTag("FITTING")
+        if(fittingFragment is BrowseExpandableStatus){
+            fittingFragment.setExpandableChoiceSelection()
+        }
+
+        val choiceFragment = fragmentManager.findFragmentByTag("CHOICE")
+        if(choiceFragment is BrowseExpandableStatus){
+            choiceFragment.setExpandableChoiceSelection()
+        }
+
 
     }
 

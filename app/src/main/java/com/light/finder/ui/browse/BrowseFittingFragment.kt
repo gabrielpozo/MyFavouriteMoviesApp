@@ -3,7 +3,6 @@ package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,7 @@ import kotlinx.android.synthetic.main.layout_browse_error.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 
-class BrowseFittingFragment : BaseFilteringFragment() {
+class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
 
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
@@ -83,6 +82,9 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         firebaseAnalytics.trackScreen(this@BrowseFittingFragment, activity, BROWSE_SCREEN_TAG)
     }
 
+    override fun setExpandableChoiceSelection() {
+        viewModel.onRequestFormFactorFromEditBrowse()
+    }
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)

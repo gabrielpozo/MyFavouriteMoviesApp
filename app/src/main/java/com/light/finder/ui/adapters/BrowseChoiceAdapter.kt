@@ -17,7 +17,11 @@ class BrowseChoiceAdapter(
 ) : RecyclerView.Adapter<BrowseChoiceAdapter.ViewHolder>() {
     private var productsList: List<ChoiceBrowsing> by basicDiffUtil(
         emptyList(),
-        areItemsTheSame = { old, new -> old.id == new.id }
+        areItemsTheSame = { old, new ->
+            old.id == new.id
+                    && old.isSelected == new.isSelected
+                    && old.subtitleCount == new.subtitleCount
+        }
     )
 
     fun setChoiceProductList(formFactorBaseIdList: List<ChoiceBrowsing>) {

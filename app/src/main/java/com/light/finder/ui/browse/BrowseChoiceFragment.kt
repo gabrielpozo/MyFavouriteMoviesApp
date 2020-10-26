@@ -26,7 +26,7 @@ import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseChoiceFragment : BaseFilteringFragment() {
+class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus {
 
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
@@ -87,6 +87,11 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+
+    }
+
+    override fun setExpandableChoiceSelection() {
+        viewModel.onRetrieveChoiceProducts()
     }
 
     private fun setAdapter() {
@@ -212,5 +217,4 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
             }
         }
     }
-
 }

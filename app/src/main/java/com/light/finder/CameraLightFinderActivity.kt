@@ -237,8 +237,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             }
         }
 
-
-        if (current is BrowseResultFragment) {
+        if (current is BrowseResultFragment && current.isExpandableEditTextUsed()) {
             screenNavigator.navigateToBrowsingFilteringFromBackButton()
         } else if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
             super.onBackPressed()

@@ -26,10 +26,10 @@ class ShapeLightBulbsRepositoryImpl(
     }
 
     override suspend fun getSavedChoiceBrowsingList(): List<ChoiceBrowsing> =
-        localPreferenceDataSource.loadChoiceBrowsingFiltered()
+        localPreferenceDataSource.loadChoiceBrowsingFiltered().sortedBy { it.order }
 
     override suspend fun getSavedShapeBrowsingList(): List<ShapeBrowsing> =
-        localPreferenceDataSource.loadShapeBrowsingFiltered()
+        localPreferenceDataSource.loadShapeBrowsingFiltered().sortedBy { it.order }
 
 
 }

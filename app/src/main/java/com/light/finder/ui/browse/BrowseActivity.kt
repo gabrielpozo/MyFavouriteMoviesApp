@@ -2,6 +2,7 @@ package com.light.finder.ui.browse
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
@@ -24,6 +25,9 @@ class BrowseActivity : BaseLightFinderActivity() {
         const val CATEGORY_CHOICE_VIEW = 4
         const val CHOICE_LIST_CODE = "CHOICE_LIST_CODE"
         const val SHAPE_LIST_CODE = "SHAPE_LIST_CODE"
+        const val EDIT_TEXT_REQUEST = "EDIT_TEXT_REQUEST"
+        const val EDIT_TEXT_REQUEST_VALUE = 5
+
     }
 
     var stateInitiated = false
@@ -80,12 +84,18 @@ class BrowseActivity : BaseLightFinderActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        //TODO perform the new screen here
-        screenFilteringNavigator.setAllFilteringScreens()
+        intent?.extras?.let { bundle ->
+            val value = bundle.getInt(EDIT_TEXT_REQUEST)
+            if (value == EDIT_TEXT_REQUEST_VALUE) {
+                screenFilteringNavigator.setAllFilteringScreens()
+
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == REQUEST_CODE_BROWSING) {
             val currentFragment = screenFilteringNavigator.getCurrentFragment()
             if (currentFragment is BrowseResultFragment) {

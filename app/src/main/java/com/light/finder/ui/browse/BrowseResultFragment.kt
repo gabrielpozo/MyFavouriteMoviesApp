@@ -47,6 +47,8 @@ class BrowseResultFragment : BaseFragment() {
         )
     }
 
+    private var isEdited = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,9 +106,12 @@ class BrowseResultFragment : BaseFragment() {
 
 
     fun setOnNewIntent(choiceResult: ArrayList<ChoiceBrowsingParcelable>) {
+        isEdited = true
         setCloseButton()
         viewModel.onRetrieveShapeProducts(choiceResult.deparcelizeChoiceBrowsingList())
     }
+
+    fun isExpandableEditTextUsed() = isEdited
 
     private fun setEditBrowsingState(uiShapeModel: Event<BrowseResultViewModel.EditBrowseState>) {
         uiShapeModel.getContentIfNotHandled()?.let { editBrowseState ->

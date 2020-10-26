@@ -3,6 +3,7 @@ package com.light.finder.ui.browse
 import android.animation.ValueAnimator
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
 import kotlinx.android.synthetic.main.fragment_browse_shape.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseShapeFragment : BaseFilteringFragment() {
+class BrowseShapeFragment : BaseFilteringFragment() , BrowseExpandableStatus{
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
@@ -91,6 +92,11 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+    }
+
+
+    override fun setExpandableChoiceSelection() {
+        viewModel.onRetrieveShapeList()
     }
 
     private fun setAdapter() {
@@ -175,6 +181,7 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             add(R.style.TitleTextGray)
             backgroundRes(R.drawable.button_curvy_corners)
         }
+        Log.d("Gabriel","Reset is Visible!!")
         textReset.visible()
         textSkip.gone()
     }
@@ -199,10 +206,13 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun showShapes(productFittingList: List<ShapeBrowsing>) {
+    private fun showShapes(shapeList: List<ShapeBrowsing>) {
         recyclerViewShape.visible()
         browseLoadingShape.gone()
-        adapter.setShapeProductList(productFittingList)
+        shapeList.forEach {
+            Log.d("Gabriel","Shape Browsing $it")
+        }
+        adapter.setShapeProductList(shapeList)
     }
 
     private fun navigatesToCategoriesChoice(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
@@ -210,4 +220,6 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
         }
     }
+
+
 }
