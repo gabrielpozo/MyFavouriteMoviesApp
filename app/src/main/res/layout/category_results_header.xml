@@ -43,7 +43,6 @@
 
         <ImageView
             android:id="@+id/identifiedBulb"
-            android:src="@drawable/ic_icon_content_bulb"
             android:padding="10dp"
             android:layout_marginTop="30dp"
             android:layout_width="52dp"
