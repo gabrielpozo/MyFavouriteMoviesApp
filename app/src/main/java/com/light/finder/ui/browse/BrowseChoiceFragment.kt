@@ -1,8 +1,11 @@
 package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +24,14 @@ import com.light.finder.di.modules.submodules.BrowseChoiceComponent
 import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseChoiceAdapter
+import com.light.finder.ui.browse.BrowseShapeFragment.Companion.SHAPE_BACK_CODE
+import com.light.finder.ui.browse.BrowseShapeFragment.Companion.SHAPE_BACK_KEY
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus {
+class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IOnBackPressed {
 
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
@@ -69,7 +74,6 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus {
                     }
                 }
         }
-
 
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -216,5 +220,12 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus {
                 )
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //TODO move to screen navigation classs
+        val intent = Intent()
+        intent.putExtra(SHAPE_BACK_KEY, true)
+        targetFragment?.onActivityResult(SHAPE_BACK_CODE, RESULT_OK, intent)
     }
 }

@@ -13,7 +13,8 @@ data class Message(
     val formfactorType: String,
     val shapeIdentified: String,
     val textIdentified: String,
-    val imageIdentified: String
+    val imageIdentified: String,
+    var shapeNameList: List<String>? = emptyList()
 )
 
 data class Category(

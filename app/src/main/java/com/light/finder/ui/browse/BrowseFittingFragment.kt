@@ -2,6 +2,8 @@ package com.light.finder.ui.browse
 
 
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.layout_browse_error.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 
-class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
+class BrowseFittingFragment : BaseFilteringFragment() {
 
     private lateinit var component: BrowsingFittingComponent
     private lateinit var adapter: BrowseFittingAdapter
@@ -37,10 +39,14 @@ class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
+    private var backPressedFlag = false
 
     companion object {
         const val spaceInDp = 30
         const val FITTING_EDIT_ID_KEY = "FITTING_EDIT_ID_KEY"
+        const val FITTING_BACK_CODE = 1
+        const val FITTING_BACK_KEY = "FITTING_BACK_KEY"
+
     }
 
 
@@ -58,9 +64,9 @@ class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
         }
 
         arguments?.let {
-            viewModel.onRequestFormFactorFromEditBrowse()
+            viewModel.onRequestSavedFormFactorList()
         } ?: run {
-            viewModel.onRequestBrowsingProducts()
+            viewModel.onRequestFormFactorFromEditBrowse(backPressedFlag)
         }
 
         buttonNext.setSafeOnClickListener {
@@ -80,10 +86,6 @@ class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
     override fun onResume() {
         super.onResume()
         firebaseAnalytics.trackScreen(this@BrowseFittingFragment, activity, BROWSE_SCREEN_TAG)
-    }
-
-    override fun setExpandableChoiceSelection() {
-        viewModel.onRequestFormFactorFromEditBrowse()
     }
 
     private fun setBottomSheetBehaviour() {
@@ -169,7 +171,23 @@ class BrowseFittingFragment : BaseFilteringFragment(), BrowseExpandableStatus {
 
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
         modelNavigation.getContentIfNotHandled()?.let { model ->
-            screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseFormFactor)
+            screenFilteringNavigator.navigateToBrowsingShapeScreen(
+                this,
+                model.productBaseFormFactor
+            )
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == FITTING_BACK_CODE) {
+                val backPressed = data?.getBooleanExtra(FITTING_BACK_KEY, false)
+                if (backPressed == true) {
+                    backPressedFlag = true
+                }
+            }
         }
     }
 

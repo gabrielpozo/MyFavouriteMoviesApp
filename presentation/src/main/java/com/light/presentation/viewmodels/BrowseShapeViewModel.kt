@@ -50,7 +50,15 @@ class BrowseShapeViewModel(
     }
 
 
-    fun onRequestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
+    fun onRetrievingShapeList(backPressed: Boolean, productBaseId: FormFactorTypeBaseId) {
+        if (backPressed) {
+            onRetrieveShapeList()
+        } else {
+            requestFilteringShapes(productBaseId)
+        }
+    }
+
+    private fun requestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
         if (viewModelInitialized) {
             return
         }
@@ -67,11 +75,6 @@ class BrowseShapeViewModel(
         viewModelInitialized = true
     }
 
-    fun onResetButtonPressed() {
-        productsShapeSelected.resetShapeProductList()
-        _modelBottomStatus.value = StatusBottomBar.ResetShape
-    }
-
     fun onRetrieveShapeList() {
         launch {
             val browsingList = getShapeEditBrowseUseCase.execute()
@@ -83,6 +86,11 @@ class BrowseShapeViewModel(
                 onShapeClick(formFactor)
             }
         }
+    }
+
+    fun onResetButtonPressed() {
+        productsShapeSelected.resetShapeProductList()
+        _modelBottomStatus.value = StatusBottomBar.ResetShape
     }
 
     private fun handleSuccessRequest(productBrowsingList: List<ShapeBrowsing>) {

@@ -7,7 +7,6 @@ import android.view.View
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.light.finder.BaseLightFinderActivity
 import com.light.finder.R
-import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.filter.BrowseFilteringComponent
 import com.light.finder.di.modules.filter.BrowseFilteringModule
 import com.light.finder.extensions.app
@@ -61,10 +60,6 @@ class BrowseActivity : BaseLightFinderActivity() {
                 }
                 SHAPE_VIEW -> {
                     stateInitiated = true
-                    val shapeParcelable =
-                        intent.getParcelableArrayListExtra<ShapeBrowsingParcelable>(
-                            SHAPE_LIST_CODE
-                        )
                     screenFilteringNavigator.navigateFirstTimeToBrowsingShapeScreen()
                 }
                 CATEGORY_CHOICE_VIEW -> {
@@ -78,8 +73,6 @@ class BrowseActivity : BaseLightFinderActivity() {
                 }
             }
         }
-
-
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -109,7 +102,12 @@ class BrowseActivity : BaseLightFinderActivity() {
 
     override fun onBackPressed() {
         if (screenFilteringNavigator.fragmentManager.backStackEntryCount > 0) {
+            val currentFragment = screenFilteringNavigator.getCurrentFragment2()
+            if (currentFragment is IOnBackPressed) {
+                currentFragment.onBackPressed()
+            }
             screenFilteringNavigator.popFragment()
+
         } else {
             super.onBackPressed()
             overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)

@@ -60,7 +60,7 @@ class BrowseChoiceViewModel(
             handleSuccessChoiceResults(choiceBrowsingList)
             val choiceCategory = choiceBrowsingList.getChoiceSelected()
             if (choiceCategory == null) {
-                _modelBottomStatus.value = StatusBottomBar.NoButtonsClicked
+                _modelBottomStatus.value = StatusBottomBar.ResetChoice
             } else {
                 onChoiceClick(choiceCategory)
             }

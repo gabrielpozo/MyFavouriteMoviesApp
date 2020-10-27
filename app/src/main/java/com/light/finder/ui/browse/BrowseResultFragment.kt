@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -131,10 +132,11 @@ class BrowseResultFragment : BaseFragment() {
     }
 
     private fun setEditBrowseTypes(message: Message) {
-        val product = message.categories[0]
+        val category = message.categories[0]
         //todo
+
         textBrowseTypes.text =
-            product.categoryProductBase + "\u2022" + product.categoryShape + " ..." + product.categoryName
+            category.categoryProductBase + "\u2022" + category.categoryShape + " ..." + category.categoryName
     }
 
     private fun filterObserver() {
@@ -149,9 +151,8 @@ class BrowseResultFragment : BaseFragment() {
     private fun updateEditText(editTextInfo: BrowseResultViewModel.EditTextInfo) {
         val category = editTextInfo.message.categories[0]
 
-        // category.categoryProducts[0].pr
         fittingEdit.text = category.categoryProductBase
-        shapeEdit.text = editTextInfo.message.categories.convertCategoryListToShapeString()
+        shapeEdit.text = editTextInfo.message.shapeNameList?.convertCategoryListToShapeString()
         categoryEdit.text =
             editTextInfo.message.categories.convertCategoryListToCategoryString(localPreferences.loadProductCategoryName())
 
@@ -170,7 +171,6 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.onCategoryEditTextClicked()
         }
     }
-
 
     private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
         filterModel?.getContentIfNotHandled()?.let { navModel ->

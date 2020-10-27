@@ -26,17 +26,22 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         FragNavController(activity.supportFragmentManager, R.id.fragment_container_browse)
 
     fun navigateToBrowsingFittingScreen() {
-        addFragmentTransaction(BrowseFittingFragment(),"FITTING")
+        addFragmentTransaction(BrowseFittingFragment())
     }
 
-    fun navigateToBrowsingShapeScreen(productBaseId: FormFactorTypeBaseId) {
-        replaceFragmentTransaction(BrowseShapeFragment.newInstance(productBaseId),"SHAPE")
+    fun navigateToBrowsingShapeScreen(
+        fittingFragment: BrowseFittingFragment,
+        productBaseId: FormFactorTypeBaseId
+    ) {
+        replaceFragmentTransaction(BrowseShapeFragment.newInstance(fittingFragment, productBaseId))
     }
 
-    fun navigateToBrowsingChoiceScreen(productsShapeSelected: List<ShapeBrowsing>) {
+    fun navigateToBrowsingChoiceScreen(
+        browseShapeFragment: BrowseShapeFragment,
+        productsShapeSelected: List<ShapeBrowsing>
+    ) {
         replaceFragmentTransaction(
-            BrowseChoiceFragment.newInstance(productsShapeSelected),
-            "CHOICE"
+            BrowseChoiceFragment.newInstance(browseShapeFragment, productsShapeSelected),"CHOICE"
         )
     }
 
@@ -55,7 +60,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     private fun replaceFragmentTransaction(
         fragmentFiltering: BaseFilteringFragment,
-        tagFragment: String
+        tagFragment: String = ""
     ) {
         fragmentManager.beginTransaction().setCustomAnimations(
             R.anim.slide_in_from_right,
@@ -102,18 +107,16 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     fun getCurrentFragment(): Fragment? = fragNavController.currentFrag
 
-    fun setAllFilteringScreens() {
-        val shapeFragment = fragmentManager.findFragmentByTag("SHAPE")
-        if(shapeFragment is BrowseExpandableStatus){
-            shapeFragment.setExpandableChoiceSelection()
-        }
-        val fittingFragment = fragmentManager.findFragmentByTag("FITTING")
-        if(fittingFragment is BrowseExpandableStatus){
-            fittingFragment.setExpandableChoiceSelection()
-        }
+    fun getCurrentFragment2(): Fragment? =
+        fragmentManager.findFragmentById(R.id.fragment_container_browse)
 
+
+    fun getTargetFragment(): Fragment? = getCurrentFragment()?.targetFragment
+
+
+    fun setAllFilteringScreens() {
         val choiceFragment = fragmentManager.findFragmentByTag("CHOICE")
-        if(choiceFragment is BrowseExpandableStatus){
+        if (choiceFragment is BrowseExpandableStatus) {
             choiceFragment.setExpandableChoiceSelection()
         }
 

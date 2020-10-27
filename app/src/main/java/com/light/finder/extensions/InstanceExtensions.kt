@@ -9,8 +9,10 @@ import com.light.domain.model.*
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseChoiceFragment
 import com.light.finder.ui.browse.BrowseFittingFragment
+import com.light.finder.ui.browse.BrowseFittingFragment.Companion.FITTING_BACK_CODE
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.browse.BrowseShapeFragment
+import com.light.finder.ui.browse.BrowseShapeFragment.Companion.SHAPE_BACK_CODE
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
 import com.light.finder.ui.lightfinder.CategoriesFragment
@@ -65,11 +67,15 @@ fun CategoriesFragment.Companion.newInstance(message: Message): CategoriesFragme
 }
 
 
-fun BrowseShapeFragment.Companion.newInstance(formFactorTypeBase: FormFactorTypeBaseId): BrowseShapeFragment {
+fun BrowseShapeFragment.Companion.newInstance(
+    fittingFragment: BrowseFittingFragment,
+    formFactorTypeBase: FormFactorTypeBaseId
+): BrowseShapeFragment {
     val args = android.os.Bundle()
     args.putParcelable(SHAPE_ID_KEY, formFactorTypeBase.parcelizeFormFactor())
     val fragment = BrowseShapeFragment()
     fragment.arguments = args
+    fragment.setTargetFragment(fittingFragment, FITTING_BACK_CODE)
     return fragment
 }
 
@@ -97,11 +103,15 @@ fun BrowseFittingFragment.Companion.newInstanceForFittingEditBrowse(): BrowseFit
 
 
 //todo parcelize list
-fun BrowseChoiceFragment.Companion.newInstance(productsShapeSelected: List<ShapeBrowsing>): BrowseChoiceFragment {
+fun BrowseChoiceFragment.Companion.newInstance(
+    browseShapeFragment: BrowseShapeFragment,
+    productsShapeSelected: List<ShapeBrowsing>
+): BrowseChoiceFragment {
     val args = android.os.Bundle()
     args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
+    fragment.setTargetFragment(browseShapeFragment, SHAPE_BACK_CODE)
     return fragment
 }
 

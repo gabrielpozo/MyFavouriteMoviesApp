@@ -13,12 +13,19 @@ class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: Local
         localPreferenceDataSource.saveChoiceCategories(choiceBrowsingList)
         val messageFiltered =
             localPreferenceDataSource.getFilteredProductsMessageFromChoice(choiceBrowsingList)
+        val shapeList = localPreferenceDataSource.loadShapeBrowsingFiltered()
+        val shapeNameMutableList = mutableListOf<String>()
+        shapeList.forEach {
+            if (it.isSelected) {
+                shapeNameMutableList.add(it.name)
+            }
+        }
+        //TODO("what do we do when do skipping and what do we do about the order??")
+        messageFiltered.shapeNameList = if (shapeNameMutableList.isEmpty()) shapeList.map { it.name } else shapeNameMutableList
         return if (messageFiltered.categories.isEmpty()) {
             DataState.NoResult(messageFiltered)
         } else {
             DataState.Success(messageFiltered)
         }
-
     }
-
 }

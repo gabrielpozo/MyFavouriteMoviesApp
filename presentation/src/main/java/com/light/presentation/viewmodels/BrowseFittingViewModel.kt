@@ -59,19 +59,7 @@ class BrowseFittingViewModel(
 
 
     fun onRequestBrowsingProducts() {
-        launch {
-            _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
-            requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
-        }
-    }
-
-    private fun handleSuccessRequest(productBrowsingList: List<FormFactorTypeBaseId>) {
-        _modelBrowsingLiveData.value =
-            UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
-    }
-
-    private fun handleErrorRequest(exception: Exception, message: String) {
-        _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
+        requestFormFactorList()
     }
 
     fun onFittingClick(product: FormFactorTypeBaseId) {
@@ -86,12 +74,41 @@ class BrowseFittingViewModel(
             _modelNavigationShape.value = Event(NavigationToShapeFiltering(productFormFactorBaseId))
     }
 
-    fun onRequestFormFactorFromEditBrowse() {
+    fun onRequestFormFactorFromEditBrowse(backPressedFlag: Boolean) {
+        if (backPressedFlag) {
+            requestSavedFormFactorList()
+        } else {
+            requestFormFactorList()
+        }
+
+    }
+
+    fun onRequestSavedFormFactorList() {
+        requestSavedFormFactorList()
+    }
+
+    private fun requestSavedFormFactorList() {
         launch {
             val formFactorList = getFormFactorsEditBrowseUseCase.execute()
             handleSuccessRequest(formFactorList)
             onFittingClick(formFactorList.getFormFactorSelected())
         }
+    }
+
+    private fun requestFormFactorList() {
+        launch {
+            _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
+            requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
+        }
+    }
+
+    private fun handleSuccessRequest(productBrowsingList: List<FormFactorTypeBaseId>) {
+        _modelBrowsingLiveData.value =
+            UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
+    }
+
+    private fun handleErrorRequest(exception: Exception, message: String) {
+        _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 }
 
