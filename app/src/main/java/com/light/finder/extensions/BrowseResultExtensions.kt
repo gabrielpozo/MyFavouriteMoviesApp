@@ -25,11 +25,10 @@ fun List<Category>.convertCategoryListToCategoryString(loadProductCategoryName: 
 
 fun List<String>.convertCategoryListToShapeString(): String {
     var nameShape = ""
-    var listHashSet = HashSet<String>()
+    var listHashSet = LinkedHashSet<String>()
     forEach {
         listHashSet.add(it)
     }
-
     listHashSet.forEach { categoryShape -> nameShape = "$nameShape$categoryShape \u2022 " }
 
     return if (nameShape.isNotEmpty()) {

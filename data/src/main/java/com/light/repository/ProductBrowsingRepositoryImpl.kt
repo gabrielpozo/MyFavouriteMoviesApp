@@ -15,13 +15,24 @@ class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: Local
             localPreferenceDataSource.getFilteredProductsMessageFromChoice(choiceBrowsingList)
         val shapeList = localPreferenceDataSource.loadShapeBrowsingFiltered()
         val shapeNameMutableList = mutableListOf<String>()
-        shapeList.forEach {
-            if (it.isSelected) {
-                shapeNameMutableList.add(it.name)
+        val sortedList = shapeList.sortedBy { it.order }
+        sortedList.forEach { shapeBrowsing ->
+            if (shapeBrowsing.isSelected) {
+                shapeNameMutableList.add(shapeBrowsing.name)
             }
         }
-        //TODO("what do we do when do skipping and what do we do about the order??")
-        messageFiltered.shapeNameList = if (shapeNameMutableList.isEmpty()) shapeList.map { it.name } else shapeNameMutableList
+        messageFiltered.shapeNameList = if (shapeNameMutableList.isEmpty()) {
+            sortedList.forEach {
+                if (it.subtitleCount > 0) {
+                    shapeNameMutableList.add(it.name)
+                }
+            }
+            shapeNameMutableList
+        } else {
+            shapeNameMutableList
+        }
+
+
         return if (messageFiltered.categories.isEmpty()) {
             DataState.NoResult(messageFiltered)
         } else {
