@@ -53,6 +53,7 @@
             <RadioButton
                 android:id="@+id/recommended"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -64,6 +65,7 @@
             <RadioButton
                 android:id="@+id/lowToHigh"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +78,7 @@
             <RadioButton
                 android:id="@+id/highToLow"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
