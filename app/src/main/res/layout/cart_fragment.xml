@@ -51,6 +51,8 @@
         android:visibility="gone" />
 
     <ProgressBar
+        android:progressTint="@color/primaryOnDark"
+        android:progressBackgroundTint="#d8d8d8"
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_below="@+id/cart_toolbar"
