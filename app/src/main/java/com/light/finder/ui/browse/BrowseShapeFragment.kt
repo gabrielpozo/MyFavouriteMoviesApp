@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +22,6 @@ import com.light.finder.di.modules.submodules.BrowseShapeComponent
 import com.light.finder.di.modules.submodules.BrowseShapeModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseShapeAdapter
-import com.light.finder.ui.browse.BrowseFittingFragment.Companion.FITTING_BACK_CODE
-import com.light.finder.ui.browse.BrowseFittingFragment.Companion.FITTING_BACK_KEY
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
@@ -33,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
 import kotlinx.android.synthetic.main.fragment_browse_shape.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed{
+class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
@@ -74,8 +71,6 @@ class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed{
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    Log.d("Gabriel", "onViewCreated ShapeFragment")
-
                     viewModel.onRetrievingShapeList(
                         backPressedFlag,
                         productBaseId.deparcelizeFormFactor()
@@ -244,10 +239,11 @@ class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed{
     }
 
     override fun onBackPressed() {
-        //TODO move to screen navigation classs
-        val intent = Intent()
-        intent.putExtra(FITTING_BACK_KEY, true)
-        targetFragment?.onActivityResult(FITTING_BACK_CODE, RESULT_OK, intent)    }
+        setTargetScreenForResult(
+            BrowseFittingFragment.FITTING_BACK_KEY,
+            BrowseFittingFragment.FITTING_BACK_CODE
+        )
+    }
 
 
 }

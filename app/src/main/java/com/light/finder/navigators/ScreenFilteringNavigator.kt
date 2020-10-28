@@ -1,5 +1,6 @@
 package com.light.finder.navigators
 
+import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -19,6 +20,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
 
     companion object {
         private const val FILTERING_BACKSTAGE = "filtering_backstage"
+        private const val CHOICE_TAG = "CHOICE"
     }
 
     val fragmentManager: FragmentManager = activity.supportFragmentManager
@@ -41,7 +43,7 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         productsShapeSelected: List<ShapeBrowsing>
     ) {
         replaceFragmentTransaction(
-            BrowseChoiceFragment.newInstance(browseShapeFragment, productsShapeSelected),"CHOICE"
+            BrowseChoiceFragment.newInstance(browseShapeFragment, productsShapeSelected), CHOICE_TAG
         )
     }
 
@@ -111,17 +113,11 @@ class ScreenFilteringNavigator(private val activity: BrowseActivity) {
         fragmentManager.findFragmentById(R.id.fragment_container_browse)
 
 
-    fun getTargetFragment(): Fragment? = getCurrentFragment()?.targetFragment
-
-
     fun setAllFilteringScreens() {
-        val choiceFragment = fragmentManager.findFragmentByTag("CHOICE")
+        val choiceFragment = fragmentManager.findFragmentByTag(CHOICE_TAG)
         if (choiceFragment is BrowseExpandableStatus) {
             choiceFragment.setExpandableChoiceSelection()
         }
-
-
     }
-
-
 }
+

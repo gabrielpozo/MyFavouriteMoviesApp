@@ -39,6 +39,7 @@ class BrowseResultAdapter(
         areItemsTheSame = { old, new -> old.categoryIndex == new.categoryIndex }
     )
 
+    private var isClickable = true
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> {
@@ -56,6 +57,11 @@ class BrowseResultAdapter(
         }
     }
 
+
+    fun setAdapterClickable(clickable: Boolean) {
+        isClickable = clickable
+        notifyDataSetChanged()
+    }
 
 
     // Size + headerOffset since 0 is reserved for header
@@ -87,6 +93,7 @@ class BrowseResultAdapter(
                 productCategoryNameList
             )
             holder.itemView.setSafeOnClickListener { listener(category) }
+            holder.itemView.isClickable = isClickable
 
         }
     }

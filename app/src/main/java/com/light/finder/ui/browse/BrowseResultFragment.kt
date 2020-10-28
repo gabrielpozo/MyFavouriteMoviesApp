@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.light.domain.model.Category
 import com.light.domain.model.Message
 import com.light.finder.R
 import com.light.finder.data.source.local.LocalPreferenceDataSourceImpl
@@ -85,13 +84,18 @@ class BrowseResultFragment : BaseFragment() {
             editBrowseBar.gone()
             edit_browse_title.visible()
             edit_browse.visible()
-            //todo show expended state
-            //fill the buttons here:
+            rvCategories.isLayoutFrozen = true
+
+            adapter.setAdapterClickable(false)
+
+            /*      rvCategories.isClickable = false
+                  rvCategories.isFocusable = false*/
+
+
             viewModel.onEditTextClicked()
         }
 
         closeButton.setOnClickListener {
-            //todo hide expended state
             setCloseButton()
         }
 
@@ -157,10 +161,8 @@ class BrowseResultFragment : BaseFragment() {
             editTextInfo.message.categories.convertCategoryListToCategoryString(localPreferences.loadProductCategoryName())
 
 
-
         fittingEdit.setOnClickListener {
             viewModel.onFittingEditTextClicked()
-
         }
 
         shapeEdit.setOnClickListener {
@@ -276,6 +278,8 @@ class BrowseResultFragment : BaseFragment() {
         edit_browse_title.gone()
         edit_browse.gone()
         closeButton.invisible()
+        rvCategories.isLayoutFrozen = false
+        adapter.setAdapterClickable(true)
     }
 }
 

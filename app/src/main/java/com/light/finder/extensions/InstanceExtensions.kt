@@ -41,6 +41,18 @@ inline fun AppCompatActivity.setIntentForResult(body: Intent.() -> Unit) {
     setResult(Activity.RESULT_OK, intent)
 }
 
+fun Fragment.setTargetScreenForResult(key: String, code: Int) {
+    setTargetFragment({
+        putExtra(key, true)
+    }, code)
+}
+
+fun Fragment.setTargetFragment(body: Intent.() -> Unit, code: Int) {
+    val intent = Intent()
+    intent.apply(body)
+    targetFragment?.onActivityResult(code, Activity.RESULT_OK, intent)
+}
+
 fun CameraFragment.Companion.newInstance(): CameraFragment = CameraFragment()
 
 fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()

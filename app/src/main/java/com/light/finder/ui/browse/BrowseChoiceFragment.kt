@@ -209,7 +209,7 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IO
         adapter.setChoiceProductList(productChoiceList)
     }
 
-    //todo change with categories
+    //todo change with categoriesø
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
             screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
@@ -223,9 +223,9 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IO
     }
 
     override fun onBackPressed() {
-        //TODO move to screen navigation classs
-        val intent = Intent()
-        intent.putExtra(SHAPE_BACK_KEY, true)
-        targetFragment?.onActivityResult(SHAPE_BACK_CODE, RESULT_OK, intent)
+        setTargetScreenForResult(
+            SHAPE_BACK_KEY,
+            SHAPE_BACK_CODE
+        )
     }
 }
