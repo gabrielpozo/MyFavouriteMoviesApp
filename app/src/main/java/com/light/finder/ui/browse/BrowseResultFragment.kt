@@ -158,7 +158,10 @@ class BrowseResultFragment : BaseFragment() {
         fittingEdit.text = category.categoryProductBase
         shapeEdit.text = editTextInfo.message.shapeNameList?.convertCategoryListToShapeString()
         categoryEdit.text =
-            editTextInfo.message.categories.convertCategoryListToCategoryString(localPreferences.loadProductCategoryName())
+            editTextInfo.message.categories.convertCategoryListToCategoryString(
+                localPreferences.loadProductCategoryName(),
+                editTextInfo.message.noSelectedCategoriesOnFiltering
+            )
 
 
         fittingEdit.setOnClickListener {

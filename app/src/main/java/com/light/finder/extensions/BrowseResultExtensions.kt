@@ -3,7 +3,13 @@ package com.light.finder.extensions
 import com.light.domain.model.Category
 import com.light.domain.model.ProductCategoryName
 
-fun List<Category>.convertCategoryListToCategoryString(loadProductCategoryName: List<ProductCategoryName>): String {
+fun List<Category>.convertCategoryListToCategoryString(
+    loadProductCategoryName: List<ProductCategoryName>,
+    noSelectedCategoriesOnFiltering: Boolean
+): String {
+    if (noSelectedCategoriesOnFiltering) {
+        return "Add your category preference"
+    }
     var nameCategory = ""
     var listHashSet = HashSet<Int>()
     forEach {
@@ -33,5 +39,5 @@ fun List<String>.convertCategoryListToShapeString(): String {
 
     return if (nameShape.isNotEmpty()) {
         nameShape.removeRange(nameShape.length - 2, nameShape.length - 1)
-    } else nameShape
+    } else "Add your shape preference"
 }

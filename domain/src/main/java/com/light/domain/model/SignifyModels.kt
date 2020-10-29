@@ -14,7 +14,8 @@ data class Message(
     val shapeIdentified: String,
     val textIdentified: String,
     val imageIdentified: String,
-    var shapeNameList: List<String>? = emptyList()
+    var shapeNameList: List<String>? = emptyList(),
+    var noSelectedCategoriesOnFiltering: Boolean = false
 )
 
 data class Category(
