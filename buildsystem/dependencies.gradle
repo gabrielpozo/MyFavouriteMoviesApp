@@ -61,8 +61,8 @@ ext {
     testRulesVersion = "1.1.1"
     navigationFragNav = "3.2.0"
     bottombar = "2.3.4"
-    googleAnalyticsFirebase = "17.4.3"
-    googleCrashAnalyticsFirebase = "17.0.1"
+    googleAnalyticsFirebase = "18.0.0"
+    googleCrashAnalyticsFirebase = "17.2.2"
     googleAnalyticsPerformance = "19.0.5"
     parisVersion = "1.4.0"
     tagManagerVersion = "11.0.4"
@@ -191,10 +191,12 @@ ext {
     ]
 
     googleServicesDependencies = [
-            analytics  : "com.google.firebase:firebase-analytics-ktx:$googleAnalyticsFirebase",
+            analytics  : "com.google.firebase:firebase-analytics:$googleAnalyticsFirebase",
             crashlytics: "com.google.firebase:firebase-crashlytics:$googleCrashAnalyticsFirebase",
             performance: "com.google.firebase:firebase-perf:$googleAnalyticsPerformance",
             tagmanager : "com.google.android.gms:play-services-tagmanager:$tagManagerVersion"
+            // Recommended: Add the Google Analytics SDK.
+            //implementation 'com.google.firebase:firebase-analytics:18.0.0'
     ]
 
     usabillaDependencies = [
