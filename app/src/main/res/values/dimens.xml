@@ -2,15 +2,11 @@
 <resources>
     <dimen name="bottom_nav_bar_height">76dp</dimen>
     <dimen name="margin_big">16dp</dimen>
-    <dimen name="margin_card">4dp</dimen>
-    <dimen name="card_height">220dp</dimen>
     <dimen name="active_tab">12dp</dimen>
     <dimen name="inactive_tab">12dp</dimen>
     <dimen name="icon">24dp</dimen>
     <dimen name="icon_factor">32dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="spacing">8dp</dimen>
     <dimen name="browse_header_margin">60dp</dimen>
-    <dimen name="divider_space_margin">24dp</dimen>
 
 </resources>

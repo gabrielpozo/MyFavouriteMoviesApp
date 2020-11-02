@@ -79,6 +79,13 @@
             android:theme="@style/LightStatusBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".ui.filter.FilterLightFinderActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/LightStatusBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".ui.terms.TermsAndConditionsLightFinderActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

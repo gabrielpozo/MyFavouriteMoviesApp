@@ -8,9 +8,10 @@
 
     <TextView
         android:id="@+id/textBrowseChoiceTitle"
-        android:fontFamily="@font/bold"
+        android:fontFamily="@font/raisonne_demibold"
         android:textColor="@color/backgroundLight"
         android:textSize="40sp"
+        android:textAlignment="center"
         android:text="@string/what_type_of_light_do_you_prefer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
                 <TextView
                     android:id="@+id/textViewChoiceTitle"
                     style="@style/TitleTextBrowse"
+                    android:fontFamily="@font/raisonne_demibold"
                     android:layout_marginTop="22dp"
                     android:layout_marginBottom="14dp"
                     android:textAlignment="center"
@@ -179,7 +181,8 @@
             android:drawableStart="@drawable/ic_icon_small_search"
             android:background="@drawable/browse_next_disable"
             android:textAllCaps="false"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:minWidth="124dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="24dp"

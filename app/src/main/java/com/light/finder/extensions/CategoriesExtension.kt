@@ -92,8 +92,10 @@ fun ImageView.loadUrl(url: String) {
 }
 
 fun ImageView.loadIdentified(url: String) {
-    Glide.with(context).load(url)
-        .placeholder(R.drawable.ic_app_icon_front_white).into(this)
+    Glide.with(context)
+        .load(url)
+        .placeholder(R.drawable.ic_icon_content_bulb)
+        .into(this)
 }
 
 fun ImageView.loadUrWithoutPlaceholderl(url: String) {
@@ -178,6 +180,8 @@ fun Category.parcelizeCategory(): CategoryParcelable =
         categoryName,
         categoryImage,
         priceRange,
+        maxPrice,
+        minPrice,
         categoryWattReplaced,
         maxEnergySaving,
         minEnergySaving,
@@ -197,6 +201,8 @@ fun CategoryParcelable.deparcelizeCategory(): Category =
         categoryName,
         categoryImage,
         priceRange,
+        maxPrice,
+        minPrice,
         minWattage,
         maxEnergySaving,
         minEnergySaving,
@@ -309,6 +315,7 @@ fun MessageParcelable.deparcelizeMessage(): Message =
         textIdentified = textIdentified,
         imageIdentified = imageIdentified
     )
+
 fun FormFactorTypeBaseIdParcelable.deparcelizeFormFactor(): FormFactorTypeBaseId =
     FormFactorTypeBaseId(
         id = id,
