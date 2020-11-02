@@ -27,6 +27,11 @@ fun Context.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermis
     Manifest.permission.CAMERA
 ) == PackageManager.PERMISSION_GRANTED
 
+fun CameraFragment.checkSelfCameraPermission(): Boolean = ContextCompat.checkSelfPermission(
+    requireContext(),
+    Manifest.permission.CAMERA
+) == PackageManager.PERMISSION_GRANTED
+
 fun CameraFragment.checkSelfStoragePermission(): Boolean = ContextCompat.checkSelfPermission(
     requireContext(),
     Manifest.permission.READ_EXTERNAL_STORAGE
