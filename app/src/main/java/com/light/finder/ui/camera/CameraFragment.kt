@@ -43,6 +43,7 @@ import com.light.finder.di.modules.submodules.CameraComponent
 import com.light.finder.di.modules.submodules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
+import com.light.finder.ui.splash.SplashLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -80,6 +81,8 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var controls: View? = null
     private var modelUiState: ModelStatus = ModelStatus.FEED
+
+    private var isHasPermission = true
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -891,6 +894,23 @@ class CameraFragment : BaseFragment() {
                 )
             }, ANIMATION_SLOW_MILLIS)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        isHasPermission = checkSelfCameraPermission()
+        if (!isHasPermission && isComingFromSettings) {
+            restartApp()
+        }
+    }
+
+    private fun restartApp() {
+        val intent = Intent(activity, SplashLightFinderActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        activity?.finishAffinity()
+        Runtime.getRuntime().exit(0)
     }
 
     private fun initCameraUi() {
