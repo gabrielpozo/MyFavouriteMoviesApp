@@ -898,7 +898,7 @@ class CameraFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-
+        browseButton.visible()
         isHasPermission = checkSelfCameraPermission()
         if (!isHasPermission && isComingFromSettings) {
             restartApp()
