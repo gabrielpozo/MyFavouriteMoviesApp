@@ -20,7 +20,7 @@ import com.light.finder.di.modules.submodules.BrowseFittingModule
 import com.light.finder.di.modules.submodules.BrowsingFittingComponent
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseFittingAdapter
-import com.light.finder.ui.itemdecoration.FittingItemDecoration
+import com.light.finder.ui.common.itemdecoration.FittingItemDecoration
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseFittingViewModel
 import com.light.presentation.viewmodels.BrowseFittingViewModel.UiBrowsingModel
@@ -55,7 +55,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = browseComponent.plus(BrowseFittingModule())
-            firebaseAnalytics.trackScreen(this@BrowseFittingFragment, this, BROWSE_SCREEN_TAG)
         }
 
         buttonNext.setSafeOnClickListener {
@@ -70,6 +69,11 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.trackScreen(this@BrowseFittingFragment, activity, BROWSE_SCREEN_TAG)
     }
 
 

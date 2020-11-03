@@ -152,7 +152,7 @@ class LiveAmbianceLightFinderActivity : BaseLightFinderActivity() {
 
     override fun onResume() {
         super.onResume()
-        
+
         initDisclaimerText()
 
         if (isHasPermission) {

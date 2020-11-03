@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,9 +23,6 @@ import com.light.finder.ui.adapters.BrowseShapeAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
-import kotlinx.android.synthetic.main.fragment_browse_shape.buttonSearch
-import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
-import kotlinx.android.synthetic.main.fragment_browse_shape.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseShapeFragment : BaseFilteringFragment() {

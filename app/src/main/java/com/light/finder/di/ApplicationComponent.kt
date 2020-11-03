@@ -26,6 +26,7 @@ interface ApplicationComponent {
     fun plus(module: HardwareModule): HardwareInstanceComponents
     fun plus(module: LiveAmbianceModule): LiveAmbianceComponent
     fun plus(module: BrowseFilteringModule): BrowseFilteringComponent
+    fun plus(module: FilterModule): FilterComponent
 
 
     @Component.Factory

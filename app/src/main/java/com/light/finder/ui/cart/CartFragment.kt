@@ -119,7 +119,7 @@ class CartFragment : BaseFragment() {
     private fun observeProductContent(modelReload: CartViewModel.ContentReload) {
         when (modelReload) {
             CartViewModel.ContentReload.ContentToBeLoaded -> {
-                if(BuildConfig.FLAVOR == QA) {
+                if (BuildConfig.FLAVOR == QA) {
                     webView.loadUrl(URL_QA)
                 } else {
                     webView.loadUrl(URL)

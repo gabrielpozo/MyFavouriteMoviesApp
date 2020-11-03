@@ -278,9 +278,8 @@ class DetailFragment : BaseFragment() {
                 getString(R.string.price_per_pack_analytics),
                 pricePerPack
             )
-
-            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
-                    putString(getString(R.string.parameter_sku), productSapId)
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)) {
+                putString(getString(R.string.parameter_sku), productSapId)
                 putDouble(getString(R.string.value), formattedPricePack.toDouble())
             }
 
@@ -351,7 +350,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_not_found_event_tag)
+                        )
 
                     }
                 }
@@ -365,7 +367,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.out_of_stock_event_tag)
+                        )
 
                     }
                 }
@@ -379,7 +384,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_disabled_event_tag)
+                        )
                     }
                 }
 

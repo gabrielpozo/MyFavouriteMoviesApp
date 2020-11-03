@@ -1,5 +1,7 @@
 package com.light.finder.ui.browse
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,8 @@ import com.light.finder.di.modules.submodules.BrowseResultModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.adapters.BrowseResultAdapter
+import com.light.finder.ui.filter.FilterLightFinderActivity
+import com.light.finder.ui.filter.FilterLightFinderActivity.Companion.SORT_ID
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseResultViewModel
 import com.light.source.local.LocalPreferenceDataSource
@@ -24,9 +28,13 @@ class BrowseResultFragment : BaseFragment() {
 
     companion object {
         const val CATEGORIES_BROWSE_ID_KEY = "BrowseResultFragment::id"
+        const val BROWSE_RESULT_SCREEN_TAG = "BrowseResults"
+        const val FILTER_REQUEST_CODE = 1
+        const val SORT_SELECTION = "sortId"
     }
 
     private lateinit var component: BrowseResultComponent
+    private var sortId = 2131362146
     private val viewModel: BrowseResultViewModel by lazy { getViewModel { component.browseResultViewModel } }
     private lateinit var adapter: BrowseResultAdapter
     private val localPreferences: LocalPreferenceDataSource by lazy {
@@ -61,13 +69,58 @@ class BrowseResultFragment : BaseFragment() {
             viewModel.model.observe(viewLifecycleOwner, Observer { uiModel -> updateUI(uiModel) })
         }
 
+        filterButton.setSafeOnClickListener {
+            viewModel.onFilterClick(FILTER_REQUEST_CODE)
+        }
+
         navigationObserver()
+        filterObserver()
+        sortObserver()
     }
 
+    private fun filterObserver() {
+        viewModel.modelFilter.observe(viewLifecycleOwner, Observer(::navigateToFilter))
+    }
+
+    private fun sortObserver() {
+        viewModel.modelSort.observe(viewLifecycleOwner, Observer(::sortResults))
+    }
+
+    private fun navigateToFilter(filterModel: Event<BrowseResultViewModel.FilterModel>?) {
+        filterModel?.getContentIfNotHandled()?.let { navModel ->
+            val intent = Intent(context, FilterLightFinderActivity::class.java)
+            intent.putExtra(SORT_SELECTION, sortId)
+            startActivityForResult(intent, navModel.requestCode)
+            activity?.overridePendingTransition(R.anim.slide_in_up, R.anim.stay)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        firebaseAnalytics.trackScreen(this@BrowseResultFragment, activity, BROWSE_RESULT_SCREEN_TAG)
+    }
 
     private fun navigationObserver() {
         viewModel.modelNavigation.observe(viewLifecycleOwner, Observer(::navigateToProductList))
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            sortId = data?.getIntExtra(
+                SORT_ID,
+                2131362146
+            ) ?: -1
+        }
+
+        viewModel.onSortResults(sortId)
+    }
+
+    private fun sortResults(sortModel: BrowseResultViewModel.SortModel?) {
+        sortModel?.sortId?.let { viewModel.onSortCategories(it) }
+    }
+
 
     private fun updateUI(model: BrowseResultViewModel.ResultBrowse) {
         when (model) {
@@ -75,9 +128,15 @@ class BrowseResultFragment : BaseFragment() {
                 updateAdapter(model.message)
             }
 
+            is BrowseResultViewModel.ResultBrowse.SortedContent -> {
+                adapter.categories = model.categories
+                adapter.notifyDataSetChanged()
+                rvCategories.scrollToPosition(0)
+            }
+
             is BrowseResultViewModel.ResultBrowse.NoResult -> {
                 rvCategories.gone()
-                browseNoResultsView.visible()
+                //browseNoResultsView.visible()
                 updateNoResultsData(model.message)
             }
         }
@@ -109,7 +168,6 @@ class BrowseResultFragment : BaseFragment() {
 
     private fun updateAdapter(message: Message) {
         setAdapter(message)
-        //TODO sor the categories here
         adapter.categories = message.categories
     }
 
@@ -122,8 +180,9 @@ class BrowseResultFragment : BaseFragment() {
             localPreferences.loadProductCategoryName(),
             message.shapeIdentified
         )
+        rvCategories.itemAnimator = null
         rvCategories.adapter = adapter
-
     }
 
 }
+

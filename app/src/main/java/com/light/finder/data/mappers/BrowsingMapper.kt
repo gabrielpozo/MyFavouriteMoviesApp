@@ -1,7 +1,6 @@
 package com.light.finder.data.mappers
 
 import com.light.domain.model.*
-import com.light.domain.state.DataState
 import com.light.finder.data.source.remote.dto.ProductBrowsingListDto
 import com.light.finder.extensions.addOrderField
 
@@ -117,6 +116,8 @@ val mapBrowsingCategoryToDomain: (List<FormFactorType>, List<ProductBrowsing>) -
                 productBrowsingList.minBy { it.productPriceLamp }?.productPriceLamp,
                 productBrowsingList.maxBy { it.productPriceLamp }?.productPriceLamp
             ),
+            maxPrice = productBrowsingList.maxBy { it.productPriceLamp }?.productPriceLamp ?: 0.0f,
+            minPrice = productBrowsingList.minBy { it.productPriceLamp }?.productPriceLamp ?: 0.0f,
             categoryWattReplaced = productBrowsingList.map { it.productWattageReplaced }.distinct(),
             maxEnergySaving = 0.0f,
             minEnergySaving = 0.0f,

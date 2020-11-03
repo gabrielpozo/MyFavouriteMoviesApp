@@ -4,6 +4,4 @@ import androidx.room.Dao
 
 
 @Dao
-interface BrowseDao {
-
-}
+interface BrowseDao
