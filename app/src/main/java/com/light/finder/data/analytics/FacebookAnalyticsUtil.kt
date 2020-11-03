@@ -4,8 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import com.facebook.appevents.AppEventsLogger
 import com.light.finder.common.PrefManager
-import com.light.util.SingletonHolder
 import com.light.finder.extensions.bundleFor
+import com.light.util.SingletonHolder
 
 
 class FacebookAnalyticsUtil private constructor(context: Context) {
@@ -20,7 +20,7 @@ class FacebookAnalyticsUtil private constructor(context: Context) {
 
     fun logEventOnFacebookSdk(typeEvent: String, body: Bundle.() -> Unit) {
         if (isConsentAccepted)
-        logger?.logEvent(typeEvent, bundleFor(body))
+            logger?.logEvent(typeEvent, bundleFor(body))
     }
 
     fun setConsent(checked: Boolean) {

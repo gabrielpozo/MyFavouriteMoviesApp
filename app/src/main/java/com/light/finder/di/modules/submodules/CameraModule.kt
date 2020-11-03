@@ -5,7 +5,6 @@ import com.light.domain.CategoryRepository
 import com.light.domain.LegendRepository
 import com.light.finder.data.source.local.ImageRepository
 import com.light.presentation.viewmodels.CameraViewModel
-import com.light.source.local.LocalPreferenceDataSource
 import com.light.usecases.GetCategoriesResultUseCase
 import com.light.usecases.GetFilePathImageEncodedUseCase
 import com.light.usecases.GetItemCountUseCase

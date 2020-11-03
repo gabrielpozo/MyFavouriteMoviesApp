@@ -4,19 +4,15 @@
     //Bottom navigation task
     <string name="light_finder">LightFinder</string>
     <string name="cart">My Cart</string>
-    <string name="title_activity_browse">BrowseActivity</string>
 
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch flash</string>
-    <string name="gallery_button_alt">Gallery</string>
     <string name="text_enable_access">Enable camera access</string>
     <string name="text_help">Help</string>
     <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
     <string name="text_permissions_title">Identify a light bulb</string>
     <string name="text_camera_subtitle">Hold light bulb in screen, ensuring as much is in view as possible</string>
     <string name="text_browse_button">Browse light bulbs</string>
-    <string name="placeholder">-</string>
-    <string name="text_bulb">each</string>
     <string name="lightbulb_cd">lightBulb</string>
     <string name="settings_cd">settings</string>
     <string name="text_identifying">Identifying…</string>
@@ -27,19 +23,14 @@
     <string name="category_price">From %s each</string>
 
     <string name="text_no_internet_connection_cart">No internet connection found.\nPlease check your connection.</string>
-    <string name="light_bulb_recognised_as">Scan results</string>
-    <string name="description_wattage">%sW-%sW %s</string>
-    <string name="no_value"></string>
     <string name="most_efficient_option">Most energy efficient</string>
-    <string name="change_variation_title">Change variation</string>
     <string name="description">Description</string>
-    <string name="change_variation">%s - %sW - %s %s</string>
-    <string name="price_per_pack_analytics">%.2f</string>
     <string name="price_per_pack">$%.2f</string>
+    <string name="price_per_pack_analytics">%.2f</string>
     <string name="price_detail">/ $%.2f each</string>
     <string name="wattage_variation">%sW</string>
     <string name="intensity_title">Intensity:</string>
-    <string name="scan_completed">Scan completed!</string>
+    <string name="scan_completed">Scan completed</string>
     <string name="scan_completed_tip">Check the scan result and choose the type of product that fits your needs:</string>
     <string name="select_button">Select</string>
     <string name="wattage_detail">%sW %s</string>
@@ -47,13 +38,13 @@
     <string name="live_preview_disabled_button_text">Preview not available</string>
     <string name="try_again">Try again</string>
     <string name="unidentified">No light bulb identified</string>
-    <string name="timeout_sub">That took longer than expected</string>
+    <string name="timeout_sub">That took longer than expected.</string>
     <string name="unidentified_sub">We\'re struggling to recognize a light bulb in the image.</string>
     <string name="ok">OK</string>
     <string name="oops">Oops</string>
     <string name="bulb_not_available">%s %s not available</string>
-    <string name="error_sub">Sorry! We’re having an issue connecting to our internal server. Please try again later.</string>
-    <string name="error_sub_not_available">Sorry! We recognized your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
+    <string name="error_sub">Sorry. We’re having an issue connecting to our internal server. Please try again later.</string>
+    <string name="error_sub_not_available">Sorry. We recognized your \'%s %s\' light bulb, but unfortunately we don’t have this product for sale. </string>
     <string name="not_now">Not now</string>
     <string name="help_me_scan">Help me scan</string>
     <string name="enable_camera_access">Enable camera access</string>
@@ -74,7 +65,7 @@
     <string name="adding_to_cart">Adding to cart</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="my_cart">My Cart</string>
-    <string name="got_it">Got it!</string>
+    <string name="got_it">Got it</string>
     <string name="how_to_position">Distance</string>
     <string name="ensure_whole">Put the light bulb on a flat surface with enough light. Keep about 1 foot distance.</string>
     <string name="how_to_hold">Entirely visible</string>
@@ -96,16 +87,15 @@
     <string name="lightfinder">LightFinder</string>
     <string name="about">About</string>
     <string name="about_to_leave">You\'re about to leave the app</string>
-    <string name="will_be_opened">The link will be opened in the browser</string>
+    <string name="will_be_opened">The link will be opened in the browser.</string>
     <string name="the_easiest_way_to_the_best_lighting">The easiest way to the best lighting</string>
 
     //Firebase Screens
     <string name="camera_permission">CameraPermission</string>
     <string name="camera_feed">CameraFeed</string>
     <string name="camera_loading">CameraLoading</string>
-    <string name="product_results">ProductResults</string>
-    <string name="product_details">ScannedProductDetails</string>
-    <string name="product_variations">ProductVariations</string>
+    <string name="product_results">ScanResults</string>
+    <string name="product_details">ProductDetailScreen</string>
     <string name="my_cart_fire">MyCart</string>
     <string name="about_page">AboutPage</string>
     <string name="gallery_preview">ConfirmSelectedPhoto</string>
@@ -115,8 +105,12 @@
     <string name="cancel_identified_event">cancel_identify</string>
     <string name="lightbulb_identified_event">lightbulb_identified</string>
     <string name="no_lightbulb_identified_event">no_lightbulb_identified</string>
-    <string name="flash_enabled">flash_enabled</string>
+    <string name="source">source</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="browse_open">browse_open</string>
     <string name="send_photo">send_photo</string>
+    <string name="browse_applied">browse_applied</string>
     <string name="lightbulb_identified_but_no_products">identified_but_no_products</string>
     <string name="error_reason_event">error_reason</string>
     <string name="time_out_event">timeout</string>
@@ -124,7 +118,6 @@
     <string name="no_internet_connection_event">no_internet_connection</string>
     <string name="base">base</string>
     <string name="shape">Shape</string>
-    <string name="finish">finish</string>
     <string name="give_us_feedback">Give us feedback</string>
     <string name="open_terms_of_use">open_terms_of_use</string>
     <string name="open_privacy_notice">open_privacy_notice</string>
@@ -134,7 +127,6 @@
     <string name="photo_help">photo_help_tips</string>
     <string name="sorry">Sorry</string>
     <string name="cannot_added">The product cannot be added. Please try again at a later time.</string>
-    <string name="photo_tips">photoTips</string>
     <string name="_8">8</string>
     <string name="add_to_cart_error">add_to_cart_error</string>
     <string name="product_not_found_event_tag">product_not_found</string>
@@ -143,18 +135,15 @@
 
 
     // Sticky Header Product Details
-    <string name="sticky_header_title">%s %sW %s</string>
-    <string name="sticky_header_packs">%s pack%s of %s %s%s</string>
     <string name="sticky_header_price">$%.2f</string>
     <string name="no_results">No Results</string>
     <string name="no_result_sub">We couldn\'t find any matches with your search. Adjust your search by changing the fitting, shape or by removing filters.</string>
-    <string name="based_on_s_fitting">Identified as: %s (%s) with %s fitting</string>
     <string name="based_on_result_fitting">Based on: %s fitting</string>
 
     <string name="_0_00_0_00_each">$0.00-$0.00 each</string>
     <string name="available_options">Available options:</string>
     <string name="bulb_s">%s (%s)</string>
-    <string name="error_browse">Oops…</string>
+    <string name="error_browse">Oops</string>
     <string name="something_went_wrong">Something went wrong.\nPlease refresh or try again later.</string>
     <string name="refresh">Refresh</string>
     <string name="which_fitting_do_you_need">Which fitting\ndo you need?</string>
@@ -176,4 +165,10 @@
     <string name="add_to_cart_fb">add_to_cart</string>
     <string name="payment_succesful">payment_successful</string>
     <string name="faq">FAQ</string>
+    <string name="price_high_low">Price High - Low</string>
+    <string name="price_low_high">Price Low - High</string>
+    <string name="recommended">Recommended</string>
+    <string name="sort_by">Sort by</string>
+    <string name="browse_sort_results">browse_sort_results</string>
+    <string name="identify_a_lightbulb">Identify a lightbulb</string>
 </resources>

@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 class LiveAmbianceModule {
     @Provides
     fun liveAmbianceViewModel() = LiveAmbianceViewModel(
-      Dispatchers.Main
+        Dispatchers.Main
     )
 }
 

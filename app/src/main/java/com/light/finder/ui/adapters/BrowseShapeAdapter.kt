@@ -93,6 +93,7 @@ class BrowseShapeAdapter(
             itemView.isEnabled = false
             itemView.textBrowseBulbName.alpha = 0.4F
             itemView.imageViewBrowseIcon.alpha = 0.4F
+            itemView.textBrowseResultsCount.alpha = 0.4F
             itemView.textBrowseResultsCount.text =
                 itemView.context.getString(R.string.not_available)
         }

@@ -1,5 +1,6 @@
 package com.light.finder.ui.browse
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -9,9 +10,10 @@ import com.light.finder.di.modules.filter.BrowseFilteringComponent
 import com.light.finder.di.modules.filter.BrowseFilteringModule
 import com.light.finder.extensions.app
 import com.light.finder.navigators.ScreenFilteringNavigator
+import com.light.finder.ui.filter.FilterLightFinderActivity
 
 
-class BrowseActivity : BaseLightFinderActivity(){
+class BrowseActivity : BaseLightFinderActivity() {
 
     companion object {
         const val REQUEST_CODE_BROWSING = 2
@@ -42,8 +44,21 @@ class BrowseActivity : BaseLightFinderActivity(){
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_BROWSING) {
+            val currentFragment = screenFilteringNavigator.getCurrentFragment()
+            if (currentFragment is BrowseResultFragment) {
+                data?.getIntExtra(
+                    FilterLightFinderActivity.SORT_ID,
+                    2131362146
+                ) ?: -1
+            }
+        }
+    }
+
     override fun onBackPressed() {
-        if(screenFilteringNavigator.fragmentManager.backStackEntryCount > 0){
+        if (screenFilteringNavigator.fragmentManager.backStackEntryCount > 0) {
             screenFilteringNavigator.popFragment()
         } else {
             super.onBackPressed()

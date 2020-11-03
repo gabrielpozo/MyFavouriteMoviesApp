@@ -23,5 +23,5 @@ class BrowseLightBulbsRepositoryImpl(
             saveLegendRequestOnLocal = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
             mainRemoteRequest = { remoteFetchBrowsingSource.fetchBrowsingProducts() },
             saveBrowsingonLocal = { localPreferenceDataSource.saveBrowsingProducts(it) },
-            legendParsing = { localPreferenceDataSource.loadFormFactorIBaseIdLegendTags().sortedBy { it.order } })
+            legendParsing = { localPreferenceDataSource.loadFormFactorBasedOnBrowsingProducts(it).sortedBy { it.order } })
 }

@@ -57,9 +57,9 @@ class CategoriesAdapter(
 
     override fun getItemViewType(position: Int): Int {
         if (position == 0) {
-            return TYPE_HEADER;
+            return TYPE_HEADER
         }
-        return TYPE_ITEM;
+        return TYPE_ITEM
     }
 
     // Size + headerOffset since 0 is reserved for header

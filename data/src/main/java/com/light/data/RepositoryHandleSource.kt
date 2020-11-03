@@ -236,7 +236,7 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
     mainRemoteRequest: suspend () -> Result<T>,
     saveLegendRequestOnLocal: suspend (A) -> Unit,
     saveBrowsingonLocal: suspend (T) -> Unit,
-    legendParsing: () -> U
+    legendParsing: (T) -> U
 ): DataState<U> {
     if (shouldDoFetchLegendRequest) {
         legendTagsRemoteRequest.invoke().also { resultInitialRequest ->
@@ -276,7 +276,7 @@ suspend fun <T, A, U> repositoryBrowsingBusinessModel(
 private suspend fun <T, U> sendMainRequestBrowsing(
     mainRemoteRequest: suspend () -> Result<T>,
     saveOnDB: suspend (T) -> Unit = {},
-    legendParsing: () -> U
+    legendParsing: (T) -> U
 ): DataState<U> {
 
     mainRemoteRequest.invoke().also { resultRequest ->
@@ -289,7 +289,7 @@ private suspend fun <T, U> sendMainRequestBrowsing(
                                 if (saveOnDB != {}) {
                                     saveOnDB.invoke(this)
                                 }
-                                DataState.Success(legendParsing())
+                                DataState.Success(legendParsing(this))
                             } ?: DataState.Error(NULLABLE_ERROR)
                         }
                     }

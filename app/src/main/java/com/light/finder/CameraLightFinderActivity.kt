@@ -220,6 +220,11 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
                 current.pickImageFromGallery()
                 return
             }
+
+            if (current.exitOnBackPressed()) {
+                finishAffinity()
+                return
+            }
         }
 
 

@@ -37,53 +37,60 @@ inline fun AppEventsLogger.logEventOnFacebookSdk(
 }
 
 //TODO extract this method in a standalone class
+@Deprecated("will be removed in future releases")
 fun FirebaseAnalytics.trackScreen(
     currentFragment: Fragment?,
-    activity: FragmentActivity,
+    activity: FragmentActivity?,
     tagCameraScreen: String? = null
 ) {
-    if (tagCameraScreen == null) {
-        when (currentFragment) {
-            is DetailFragment -> {
-                setCurrentScreen(activity, activity.getString(R.string.product_details), null)
-            }
+    activity?.let {
+        if (tagCameraScreen == null) {
+            when (currentFragment) {
+                is DetailFragment -> {
+                    setCurrentScreen(activity, activity.getString(R.string.product_details), null)
+                }
 
-            is CategoriesFragment -> {
-                setCurrentScreen(activity, activity.getString(R.string.product_results), null)
-            }
+                is CategoriesFragment -> {
+                    setCurrentScreen(activity, activity.getString(R.string.product_results), null)
+                }
 
-            is CartFragment -> {
-                setCurrentScreen(activity, activity.getString(R.string.my_cart_fire), null)
-            }
-            is CameraFragment -> {
-                when {
-                    currentFragment.getStatusView() == ModelStatus.FEED -> {
-                        setCurrentScreen(activity, activity.getString(R.string.camera_feed), null)
-                    }
-                    currentFragment.getStatusView() == ModelStatus.LOADING -> {
-                        setCurrentScreen(
-                            activity,
-                            activity.getString(R.string.camera_loading),
-                            null
-                        )
-                    }
-                    currentFragment.getStatusView() == ModelStatus.PERMISSION -> {
-                        setCurrentScreen(
-                            activity,
-                            activity.getString(R.string.camera_permission),
-                            null
-                        )
+                is CartFragment -> {
+                    setCurrentScreen(activity, activity.getString(R.string.my_cart_fire), null)
+                }
+                is CameraFragment -> {
+                    when {
+                        currentFragment.getStatusView() == ModelStatus.FEED -> {
+                            setCurrentScreen(
+                                activity,
+                                activity.getString(R.string.camera_feed),
+                                null
+                            )
+                        }
+                        currentFragment.getStatusView() == ModelStatus.LOADING -> {
+                            setCurrentScreen(
+                                activity,
+                                activity.getString(R.string.camera_loading),
+                                null
+                            )
+                        }
+                        currentFragment.getStatusView() == ModelStatus.PERMISSION -> {
+                            setCurrentScreen(
+                                activity,
+                                activity.getString(R.string.camera_permission),
+                                null
+                            )
+                        }
                     }
                 }
-            }
 
-            is AboutFragment -> {
-                setCurrentScreen(activity, activity.getString(R.string.about_page), null)
+                is AboutFragment -> {
+                    setCurrentScreen(activity, activity.getString(R.string.about_page), null)
+                }
             }
-        }
-    } else {
-        if (currentFragment != null) {
-            setCurrentScreen(activity, tagCameraScreen, null)
+        } else {
+            if (currentFragment != null) {
+                setCurrentScreen(activity, tagCameraScreen, null)
+            }
         }
     }
 }

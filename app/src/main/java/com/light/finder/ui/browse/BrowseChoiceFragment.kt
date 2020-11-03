@@ -193,6 +193,12 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
             screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_applied)) {
+                putString(
+                    getString(R.string.base),
+                    browseNavigation.productsChoiceSelected[0].baseNameFitting
+                )
+            }
         }
     }
 

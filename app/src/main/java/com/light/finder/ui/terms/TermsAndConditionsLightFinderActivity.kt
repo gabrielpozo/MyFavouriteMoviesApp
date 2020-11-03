@@ -55,7 +55,7 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
         prefManager = PrefManager(this)
         switchConsent.isChecked = prefManager?.isConsentAccepted!!
 
-        setFacebookConsent(switchConsent.isChecked )
+        setFacebookConsent(switchConsent.isChecked)
 
         if (!InternetUtil.isInternetOn()) {
             displayNoInternetBanner()
