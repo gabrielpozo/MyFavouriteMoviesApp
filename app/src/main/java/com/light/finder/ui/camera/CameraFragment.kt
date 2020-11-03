@@ -43,7 +43,6 @@ import com.light.finder.di.modules.submodules.CameraComponent
 import com.light.finder.di.modules.submodules.CameraModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
-import com.light.finder.ui.splash.SplashLightFinderActivity
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.CameraViewModel
 import com.light.presentation.viewmodels.CameraViewModel.*
@@ -81,8 +80,6 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var controls: View? = null
     private var modelUiState: ModelStatus = ModelStatus.FEED
-
-    private var isHasPermission = true
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -136,6 +133,7 @@ class CameraFragment : BaseFragment() {
     private var camera: Camera? = null
 
     private var isComingFromSettings: Boolean = false
+    private var isGrantedBefore: Boolean = false
     private var isGalleryDenied: Boolean = false
 
     /**
@@ -278,6 +276,7 @@ class CameraFragment : BaseFragment() {
         cameraUiContainer?.gone()
         browseButton.gone()
         layoutPreviewGallery.visible()
+        //todo BUG 2517 not called when second time opening after tab switch
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
@@ -432,6 +431,9 @@ class CameraFragment : BaseFragment() {
 
             is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request({ isPermissionGranted ->
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
+                if (isPermissionGranted) {
+                    isGrantedBefore = true
+                }
             }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> {
@@ -616,7 +618,7 @@ class CameraFragment : BaseFragment() {
         }
     }
 
-    fun exitOnBackPressed() : Boolean = arguments?.getBoolean("EXIT") ?: false
+    fun exitOnBackPressed(): Boolean = arguments?.getBoolean("EXIT") ?: false
 
     fun getStatusView(): ModelStatus = modelUiState
 
@@ -899,18 +901,6 @@ class CameraFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         browseButton.visible()
-        isHasPermission = checkSelfCameraPermission()
-        if (!isHasPermission && isComingFromSettings) {
-            restartApp()
-        }
-    }
-
-    private fun restartApp() {
-        val intent = Intent(activity, SplashLightFinderActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        activity?.finishAffinity()
-        Runtime.getRuntime().exit(0)
     }
 
     private fun initCameraUi() {
