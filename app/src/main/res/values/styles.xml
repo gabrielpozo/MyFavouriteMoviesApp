@@ -421,4 +421,5 @@
     </style>
 
 
+    <dimen name="custom_peek_height">500dp</dimen>
 </resources>
