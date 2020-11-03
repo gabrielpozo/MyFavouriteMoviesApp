@@ -69,12 +69,8 @@ class CategoriesFragment : BaseFragment() {
         }
 
         navigationObserver()
-    }
-
-
-    override fun onResume() {
-        super.onResume()
         activityCallback.setBottomBarInvisibility(false)
+
     }
 
     private fun navigationObserver() {
