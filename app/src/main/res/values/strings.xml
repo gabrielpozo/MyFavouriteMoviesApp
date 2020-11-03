@@ -171,4 +171,6 @@
     <string name="sort_by">Sort by</string>
     <string name="browse_sort_results">browse_sort_results</string>
     <string name="identify_a_lightbulb">Identify a lightbulb</string>
+    <string name="color">Color:</string>
+    <string name="finish">Finish:</string>
 </resources>
