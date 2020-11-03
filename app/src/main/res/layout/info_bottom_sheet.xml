@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundLight"
+    app:behavior_hideable="false"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundLight">
+
+        <TextView
+            android:id="@+id/infoBottomSheetTextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raisonne_demibold"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:textColor="@color/backgroundDark"
+            android:lineSpacingExtra="8sp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="21dp"
+            android:text="@string/intensity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/infoSeperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/informationError"
+            android:layout_marginTop="21dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/infoBottomSheetTextTitle" />
+
+        <TextView
+            android:id="@+id/infoBottomSheetText"
+            android:scrollbars="vertical"
+            android:layout_width="0dp"
+            android:layout_height="294dp"
+            android:fontFamily="@font/book"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            android:textColor="@color/textDark"
+            android:lineSpacingExtra="10sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="Most people think that the wattage (W) of a bulb tells you how much light it gives. But wattage only tells you how much power a bulb uses. The light output of a bulb is actually measured in lumen (lm).
+
+As we know that lumen might be new to you, we want to make it easy for you to find the right replacement bulb. So therefore, we show the equivalent wattage value of a classic bulb. The higher the wattage (equivalent), the brighter the light."
+            app:layout_constraintBottom_toTopOf="@+id/buttonInfoGotIt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoSeperator" />
+
+
+        <Button
+            android:id="@+id/buttonInfoGotIt"
+            style="@style/GreenButton"
+            android:text="@string/got_it"
+            android:stateListAnimator="@null"
+            android:background="@drawable/button_curvy_corners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

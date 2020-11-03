@@ -10,6 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginTop="20dp"
+        android:id="@+id/clickIntensity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -87,6 +88,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/clickColor"
         android:layout_marginTop="6dp"
         android:orientation="horizontal">
 
@@ -227,6 +229,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/clickConnectivity"
         android:layout_marginTop="6dp"
         android:orientation="horizontal">
 
@@ -240,7 +243,7 @@
             android:layout_marginBottom="6dp"
             android:layout_marginTop="12dp"
             android:layout_marginStart="24dp"
-            android:text="Connectivity:"
+            android:text="@string/connection_type"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
