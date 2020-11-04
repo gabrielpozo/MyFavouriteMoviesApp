@@ -9,8 +9,12 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="20dp"
+        android:paddingTop="20dp"
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/clickIntensity"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -88,8 +92,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/clickColor"
-        android:layout_marginTop="6dp"
+        android:paddingTop="6dp"
         android:orientation="horizontal">
 
         <TextView
@@ -230,7 +238,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/clickConnectivity"
-        android:layout_marginTop="6dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingTop="6dp"
         android:orientation="horizontal">
 
         <TextView
