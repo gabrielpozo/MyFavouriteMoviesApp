@@ -46,9 +46,14 @@ class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var rootview: View? = null
     private var backPressedFlag = false
+    private var onBackOnFilteringScreen = false
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
 
+
+    fun setBackFilteringOnScreen(flag: Boolean) {
+        onBackOnFilteringScreen = flag
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,16 +76,24 @@ class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    viewModel.onRetrievingShapeList(
-                        backPressedFlag,
-                        productBaseId.deparcelizeFormFactor()
-                    )
+                    if (!onBackOnFilteringScreen) {
+                        viewModel.onRetrievingShapeList(
+                            backPressedFlag,
+                            productBaseId.deparcelizeFormFactor()
+                        )
+                    } else {
+                        viewModel.onRetrieveSavedShapeList()
+                        onBackOnFilteringScreen = false
+                    }
+
                 }
 
             bundle.getInt(SHAPE_EDIT_ID_KEY)
                 .let { key ->
                     if (key == SHAPE_NUMBER_KEY) {
-                        viewModel.onRetrieveShapeList()
+                        if (!backPressedFlag) {
+                            viewModel.onRetrieveSavedShapeList()
+                        }
                     }
                 }
         }
@@ -233,7 +246,9 @@ class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
             screenFilteringNavigator.navigateToBrowsingChoiceScreen(
                 this,
-                browseNavigation.productsShapeSelected
+                browseNavigation.productsShapeSelected,
+                browseNavigation.formFactorTypeBaseId,
+                browseNavigation.formFactorName
             )
         }
     }

@@ -40,6 +40,7 @@ class BrowseFittingFragment : BaseFilteringFragment() {
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
     private var backPressedFlag = false
+    private var onBackOnFilteringScreen = false
 
     companion object {
         const val spaceInDp = 30
@@ -57,6 +58,10 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         return inflater.inflate(R.layout.fragment_browse_fitting, container, false)
     }
 
+    fun setBackFilteringOnScreen(flag: Boolean) {
+        onBackOnFilteringScreen = flag
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
@@ -64,9 +69,17 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         }
 
         arguments?.let {
-            viewModel.onRequestSavedFormFactorList()
+            if (!backPressedFlag) {
+                viewModel.onRequestSavedFormFactorList()
+            }
         } ?: run {
-            viewModel.onRequestFormFactorFromEditBrowse(backPressedFlag)
+            if (!onBackOnFilteringScreen){
+                viewModel.onRequestFormFactorFromEditBrowse(backPressedFlag)
+            } else {
+                viewModel.onRequestSavedFormFactorList()
+                onBackOnFilteringScreen = false
+            }
+
         }
 
         buttonNext.setSafeOnClickListener {

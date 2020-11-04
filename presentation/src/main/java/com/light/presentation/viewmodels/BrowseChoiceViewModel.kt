@@ -16,6 +16,9 @@ class BrowseChoiceViewModel(
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productChoiceSelectedList: MutableList<ChoiceBrowsing>
+    private var productShapeSelectedList: MutableList<ShapeBrowsing>? = null
+    private var baseFormFactorId = -1
+    private var baseFormFactorName: String? = null
 
     sealed class UiBrowsingChoiceModel {
         data class SuccessRequestStatus(val productBrowsingList: List<ChoiceBrowsing>) :
@@ -28,7 +31,12 @@ class BrowseChoiceViewModel(
         get() = _modelChoiceLiveData
     private val _modelChoiceLiveData = MutableLiveData<UiBrowsingChoiceModel>()
 
-    data class NavigationToResults(val productsChoiceSelected: List<ChoiceBrowsing>)
+    data class NavigationToResults(
+        val productsChoiceSelected: List<ChoiceBrowsing>,
+        val productsShapeSelected: List<ShapeBrowsing>?,
+        val formFactorId: Int,
+        val formFactorName: String?
+    )
 
     private val _modelNavigationToResult = MutableLiveData<Event<NavigationToResults>>()
     val modelNavigationToResult: LiveData<Event<NavigationToResults>>
@@ -50,7 +58,14 @@ class BrowseChoiceViewModel(
     }
 
 
-    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ShapeBrowsing>) {
+    fun onRetrieveShapeProducts(
+        shapeBrowsingList: ArrayList<ShapeBrowsing>,
+        formFactorId: Int,
+        formFactorName: String?
+    ) {
+        baseFormFactorId = formFactorId
+        baseFormFactorName = formFactorName
+        productShapeSelectedList = shapeBrowsingList
         requestBrowsingChoiceUseCase.execute(::handleSuccessChoiceResults, shapeBrowsingList)
     }
 
@@ -75,7 +90,15 @@ class BrowseChoiceViewModel(
 
     fun onSearchButtonClicked() {
         if (productChoiceSelectedList.isProductsChoiceSelected()) {
-            _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
+            _modelNavigationToResult.value =
+                Event(
+                    NavigationToResults(
+                        productChoiceSelectedList,
+                        productShapeSelectedList,
+                        baseFormFactorId,
+                        baseFormFactorName
+                    )
+                )
         }
     }
 
@@ -89,7 +112,15 @@ class BrowseChoiceViewModel(
     }
 
     fun onSkipButtonClicked() {
-        _modelNavigationToResult.value = Event(NavigationToResults(productChoiceSelectedList))
+        _modelNavigationToResult.value =
+            Event(
+                NavigationToResults(
+                    productChoiceSelectedList,
+                    productShapeSelectedList,
+                    baseFormFactorId,
+                    baseFormFactorName
+                )
+            )
     }
 
 

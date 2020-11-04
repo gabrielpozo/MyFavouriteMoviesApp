@@ -75,10 +75,11 @@ class BrowseFittingViewModel(
     }
 
     fun onRequestFormFactorFromEditBrowse(backPressedFlag: Boolean) {
-        if (backPressedFlag) {
-            requestSavedFormFactorList()
-        } else {
+        if (!backPressedFlag) {
             requestFormFactorList()
+            // requestSavedFormFactorList()
+        } else {
+
         }
 
     }

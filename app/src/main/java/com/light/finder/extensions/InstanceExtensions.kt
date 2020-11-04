@@ -59,12 +59,26 @@ fun CartFragment.Companion.newInstance(): CartFragment = CartFragment()
 
 fun AboutFragment.Companion.newInstance(): AboutFragment = AboutFragment()
 
-fun BrowseResultFragment.Companion.newInstance(choiceBrowsingProducts: List<ChoiceBrowsing>): BrowseResultFragment {
+fun BrowseResultFragment.Companion.newInstance(
+    choiceBrowsingProducts: List<ChoiceBrowsing>,
+    shapeBrowsingProducts: ArrayList<ShapeBrowsing>?,
+    formFactorId: Int?,
+    formFactorName: String?
+): BrowseResultFragment {
     val args = android.os.Bundle()
     args.putParcelableArrayList(
-        CATEGORIES_BROWSE_ID_KEY,
+        CATEGORIES_BROWSE_CHOICE_ID_KEY,
         choiceBrowsingProducts.parcelizeChoiceBrowsingList()
     )
+
+    args.putParcelableArrayList(
+        CATEGORIES_BROWSE_SHAPE_ID_KEY,
+        shapeBrowsingProducts?.parcelizeBrowsingList()
+    )
+
+    args.putInt(CATEGORIES_FORM_FACTOR_SHAPE_ID_KEY, formFactorId ?: -1)
+    args.putString(CATEGORIES_FORM_FACTOR_SHAPE_NAME_KEY, formFactorName)
+
     val fragment = BrowseResultFragment()
     fragment.arguments = args
     return fragment
@@ -117,10 +131,14 @@ fun BrowseFittingFragment.Companion.newInstanceForFittingEditBrowse(): BrowseFit
 //todo parcelize list
 fun BrowseChoiceFragment.Companion.newInstance(
     browseShapeFragment: BrowseShapeFragment,
-    productsShapeSelected: List<ShapeBrowsing>
+    productsShapeSelected: List<ShapeBrowsing>,
+    formFactorTypeBaseId: Int,
+    formFactorName: String?
 ): BrowseChoiceFragment {
     val args = android.os.Bundle()
     args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
+    args.putInt(CHOICE_FITTING_ID,formFactorTypeBaseId)
+    args.putString(CHOICE_FITTING_NAME,formFactorName)
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
     fragment.setTargetFragment(browseShapeFragment, SHAPE_BACK_CODE)

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
+import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
-import com.light.usecases.GetChoiceEditBrowseUseCase
 import com.light.usecases.GetChoiceBrowsingProductsUseCase
 import com.light.usecases.GetSortCategoriesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -98,12 +98,20 @@ class BrowseResultViewModel(
 
     }
 
-    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {
+    fun onRetrieveShapeProducts(
+        shapeChoiceList: ArrayList<ChoiceBrowsing>,
+        shapeBrowsingList: ArrayList<ShapeBrowsing>?,
+        formFactorId: Int,
+        formFactorName: String?
+    ) {
         launch {
             getBrowseProductsResultUseCase.execute(
                 ::handleResultProducts,
                 ::handleNoResultProducts,
-                shapeBrowsingList
+                shapeChoiceList,
+                shapeBrowsingList,
+                formFactorId,
+                formFactorName
             )
         }
     }

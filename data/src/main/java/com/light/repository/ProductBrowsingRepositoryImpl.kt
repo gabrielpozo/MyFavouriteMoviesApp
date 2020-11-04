@@ -11,9 +11,18 @@ import com.light.source.local.LocalPreferenceDataSource
 class ProductBrowsingRepositoryImpl(private val localPreferenceDataSource: LocalPreferenceDataSource) :
     ProductBrowsingRepository {
     override suspend fun getProductBrowsingRepository(
-        choiceBrowsingList: List<ChoiceBrowsing>
+        choiceBrowsingList: List<ChoiceBrowsing>,
+        shapeBrowsingList: ArrayList<ShapeBrowsing>?,
+        formFactorId: Int,
+        formFactorName: String?
     ): DataState<Message> {
         localPreferenceDataSource.saveChoiceCategories(choiceBrowsingList)
+        if (shapeBrowsingList != null) {
+            localPreferenceDataSource.saveBrowsingShapeFilteredList(shapeBrowsingList)
+        }
+        if (formFactorId != -1) {
+            localPreferenceDataSource.saveSelectedFormFactor(formFactorId)
+        }
         val messageFiltered =
             localPreferenceDataSource.getFilteredProductsMessageFromChoice(choiceBrowsingList)
         val shapeList = localPreferenceDataSource.loadShapeBrowsingFiltered()

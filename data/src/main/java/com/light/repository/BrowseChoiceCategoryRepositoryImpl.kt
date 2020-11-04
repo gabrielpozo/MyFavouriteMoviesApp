@@ -16,7 +16,7 @@ class BrowseChoiceCategoryRepositoryImpl(private val localPreferenceDataSource: 
             } else {
                 localPreferenceDataSource.loadProductBrowsingFiltered()
             }
-        localPreferenceDataSource.saveBrowsingShapeFilteredList(browsingList)
+        
         localPreferenceDataSource.saveProductBrowsingFilteredList(filteredProductsByShape)
 
         categoryNameList.forEach { categoryName ->

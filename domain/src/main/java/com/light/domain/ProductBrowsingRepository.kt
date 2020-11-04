@@ -7,5 +7,10 @@ import com.light.domain.state.DataState
 
 
 interface ProductBrowsingRepository {
-    suspend fun getProductBrowsingRepository(shapeBrowsingList: List<ChoiceBrowsing>): DataState<Message>
+    suspend fun getProductBrowsingRepository(
+        shapeBrowsingList: List<ChoiceBrowsing>,
+        shapeBrowsingList1: ArrayList<ShapeBrowsing>?,
+        formFactorId: Int,
+        formFactorName: String?
+    ): DataState<Message>
 }

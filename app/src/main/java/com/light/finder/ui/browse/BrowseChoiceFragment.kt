@@ -1,11 +1,8 @@
 package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
-import android.app.Activity.RESULT_OK
-import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +33,8 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IO
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
         const val CHOICE_EDIT_ID_KEY = "BrowseChoiceEditFragment::id"
+        const val CHOICE_FITTING_ID = "CHOICE_FITTING_ID"
+        const val CHOICE_FITTING_NAME = "CHOICE_FITTING_NAME"
 
         const val CHOICE_NUMBER_KEY = 4
         const val spaceInDp = 26
@@ -62,9 +61,16 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IO
         }
 
         arguments?.let { bundle ->
+            val formFactorId = bundle.getInt(CHOICE_FITTING_ID)
+            val formFactorName = bundle.getString(CHOICE_FITTING_NAME)
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
             bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
                 ?.let { shapeBrowsingProducts ->
-                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
+                    viewModel.onRetrieveShapeProducts(
+                        shapeBrowsingProducts.deParcelizeBrowsingList(),
+                        formFactorId,
+                        formFactorName
+                    )
                 }
 
             bundle.getInt(CHOICE_EDIT_ID_KEY)
@@ -212,7 +218,12 @@ class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IO
     //todo change with categoriesø
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
+            screenFilteringNavigator.navigateToResultCategories(
+                browseNavigation.productsChoiceSelected,
+                browseNavigation.productsShapeSelected,
+                browseNavigation.formFactorId,
+                browseNavigation.formFactorName
+            )
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_applied)) {
                 putString(
                     getString(R.string.base),
