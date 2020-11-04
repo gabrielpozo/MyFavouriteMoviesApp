@@ -257,6 +257,11 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
                 current.pickImageFromGallery()
                 return
             }
+
+            if (current.exitOnBackPressed()) {
+                finishAffinity()
+                return
+            }
         }
 
         if (current is BrowseResultFragment && current.isExpandableEditTextUsed()) {

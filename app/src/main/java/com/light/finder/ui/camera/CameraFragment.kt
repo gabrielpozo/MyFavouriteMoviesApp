@@ -133,6 +133,7 @@ class CameraFragment : BaseFragment() {
     private var camera: Camera? = null
 
     private var isComingFromSettings: Boolean = false
+    private var isGrantedBefore: Boolean = false
     private var isGalleryDenied: Boolean = false
 
     /**
@@ -275,6 +276,7 @@ class CameraFragment : BaseFragment() {
         cameraUiContainer?.gone()
         browseButton.gone()
         layoutPreviewGallery.visible()
+        //todo BUG 2517 not called when second time opening after tab switch
         activityCallback.setBottomBarInvisibility(true)
         galleryPreview.setImageURI(uri)
         galleryPreview.rotation = rotation.toFloat()
@@ -429,6 +431,9 @@ class CameraFragment : BaseFragment() {
 
             is UiModel.RequestCameraViewDisplay -> cameraPermissionRequester.request({ isPermissionGranted ->
                 viewModel.onCameraPermissionRequested(isPermissionGranted)
+                if (isPermissionGranted) {
+                    isGrantedBefore = true
+                }
             }, (::observeDenyPermission))
 
             is UiModel.CameraViewDisplay -> {
@@ -612,6 +617,8 @@ class CameraFragment : BaseFragment() {
             }
         }
     }
+
+    fun exitOnBackPressed(): Boolean = arguments?.getBoolean("EXIT") ?: false
 
     fun getStatusView(): ModelStatus = modelUiState
 
@@ -891,6 +898,11 @@ class CameraFragment : BaseFragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        browseButton.visible()
+    }
+
     private fun initCameraUi() {
 
         container.findViewById<ConstraintLayout>(R.id.cameraUiContainer)?.let {
@@ -961,9 +973,9 @@ class CameraFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-         //Shut down our background executor
+        //Shut down our background executor
         cameraExecutor.shutdown()
-         //Every time the orientation of device changes, update rotation for use cases
+        //Every time the orientation of device changes, update rotation for use cases
         displayManager.registerDisplayListener(displayListener, null)
     }
 

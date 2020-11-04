@@ -94,7 +94,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                             R.color.backgroundLight
                         )
                     )
-                    activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
+                    //activity.bottom_navigation_view.disableItemAtPosition(INDEX_LIGHT_FINDER)
                     goToHomeScreen()
                 }
             }
@@ -103,7 +103,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         activity.bottom_navigation_view.setOnTabSelectedListener { position, wasSelected ->
             when (position) {
                 INDEX_LIGHT_FINDER -> {
-                    fragNavController.switchTab(INDEX_LIGHT_FINDER)
+                    fragNavController.switchTab(INDEX_LIGHT_FINDER, null)
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
                     val current = getCurrentFragment()
 
@@ -120,7 +120,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                     if (current is CameraFragment) {
                         current.disableCameraCaptureButton()
                     }
-                    fragNavController.switchTab(INDEX_CART)
+                    fragNavController.switchTab(INDEX_CART, null)
                     reloadCartFragment()
                     //TODO("create show/navigate event for every single fragment -> BaseFragment")
                     firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
@@ -132,7 +132,7 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
                         current.disableCameraCaptureButton()
                     }
 
-                    fragNavController.switchTab(INDEX_ABOUT)
+                    fragNavController.switchTab(INDEX_ABOUT, null)
                     if (getCurrentFragment() is AboutFragment) {
                         firebaseAnalytics.trackScreen(fragNavController.currentFrag, activity)
                         (getCurrentFragment() as AboutFragment).setLightStatusBar()
@@ -178,9 +178,17 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
     }
 
     private fun goToHomeScreen() {
-        activity.startActivity<CameraLightFinderActivity> {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        }
+//        activity.startActivity<CameraLightFinderActivity> {
+//            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        }
+//
+//        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+
+        fragNavController.pushFragment(CameraFragment.newInstance(true),
+            FragNavTransactionOptions.newBuilder()
+                .customAnimations(R.anim.slide_in_from_left, 0, 0, R.anim.slide_out_to_right)
+                .build()
+        )
     }
 
     fun navigateToSettings() {

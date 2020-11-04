@@ -25,9 +25,6 @@ import com.light.finder.ui.adapters.BrowseShapeAdapter
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
-import kotlinx.android.synthetic.main.fragment_browse_shape.buttonSearch
-import kotlinx.android.synthetic.main.fragment_browse_shape.textReset
-import kotlinx.android.synthetic.main.fragment_browse_shape.textSkip
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
 class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {

@@ -18,7 +18,7 @@
             android:text="@string/sort_by"
             android:textSize="18sp"
             android:layout_marginTop="18dp"
-            android:fontFamily="@font/bold"
+            android:fontFamily="@font/raisonne_demibold"
             android:textColor="@color/textDark"
             android:lineSpacingExtra="12sp"
             android:gravity="center_horizontal"
@@ -53,6 +53,9 @@
             <RadioButton
                 android:id="@+id/recommended"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -64,6 +67,9 @@
             <RadioButton
                 android:id="@+id/lowToHigh"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +82,9 @@
             <RadioButton
                 android:id="@+id/highToLow"
                 android:layoutDirection="rtl"
+                android:textDirection="ltr"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

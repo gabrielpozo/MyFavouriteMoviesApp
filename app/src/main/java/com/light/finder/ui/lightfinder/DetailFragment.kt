@@ -3,11 +3,15 @@ package com.light.finder.ui.lightfinder
 import android.Manifest
 import android.animation.Animator
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -15,6 +19,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.light.domain.model.Category
 import com.light.domain.model.FilterVariationCF
 import com.light.domain.model.Product
@@ -43,6 +48,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 
 class DetailFragment : BaseFragment() {
@@ -129,12 +135,66 @@ class DetailFragment : BaseFragment() {
         }
 
 
+        initInfoClickListeners()
         initAdapters()
         setVariationsObservers()
         setCartListeners()
         setBottomSheetBehaviour()
         setViewPager()
 
+    }
+
+    private fun initInfoClickListeners() {
+        clickIntensity.setSafeOnClickListener {
+            showInfoBottomSheetDialog(infoId = 1)
+        }
+        clickColor.setSafeOnClickListener {
+            showInfoBottomSheetDialog(infoId = 2)
+        }
+
+        clickConnectivity.setSafeOnClickListener {
+            showInfoBottomSheetDialog(infoId = 3)
+        }
+    }
+
+    private fun showInfoBottomSheetDialog(infoId: Int) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val parentView: View = layoutInflater.inflate(R.layout.info_bottom_sheet, null)
+        bottomSheetDialog.setContentView(parentView)
+
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheetInternal = d.findViewById<View>(R.id.design_bottom_sheet)
+            BottomSheetBehavior.from(bottomSheetInternal).peekHeight =
+                (Resources.getSystem().displayMetrics.heightPixels / 0.70).toInt()
+        }
+
+        val infoDismissButton: Button = parentView.findViewById(R.id.buttonInfoGotIt) as Button
+        val infoText: TextView = parentView.findViewById(R.id.infoBottomSheetText) as TextView
+        val infoTitle: TextView = parentView.findViewById(R.id.infoBottomSheetTextTitle) as TextView
+
+        infoText.movementMethod = ScrollingMovementMethod()
+        when (infoId) {
+            1 -> {
+                infoText.text = getString(R.string.intensity_text)
+                infoTitle.text = getString(R.string.intensity)
+            }
+            2 -> {
+                infoText.text = getString(R.string.color_text)
+                infoTitle.text = getString(R.string.color)
+            }
+            3 -> {
+                infoText.text = getString(R.string.connection_text)
+                infoTitle.text = getString(R.string.connection_type)
+            }
+        }
+
+        infoDismissButton.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.show()
     }
 
     private fun setBottomSheetBehaviour() {
@@ -269,9 +329,17 @@ class DetailFragment : BaseFragment() {
         if (contentCart.cartItem.peekContent().success.isNotEmpty()) {
             val product = contentCart.cartItem.peekContent().product
             Timber.d("egeee ${product.name}")
-            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)){
-                    putString(getString(R.string.parameter_sku), productSapId)
-                putDouble(getString(R.string.value), pricePerPack.toDouble().round(2))
+
+            // we might not need that if backend always returns float with 2 decimals
+            // if facebook accepts floats we can remove this part as well
+            val formattedPricePack = String.format(
+                Locale.US,
+                getString(R.string.price_per_pack_analytics),
+                pricePerPack
+            )
+            facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.add_to_cart_fb)) {
+                putString(getString(R.string.parameter_sku), productSapId)
+                putDouble(getString(R.string.value), formattedPricePack.toDouble())
             }
 
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
@@ -341,7 +409,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_not_found_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_not_found_event_tag)
+                        )
 
                     }
                 }
@@ -355,7 +426,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.out_of_stock_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.out_of_stock_event_tag)
+                        )
 
                     }
                 }
@@ -369,7 +443,10 @@ class DetailFragment : BaseFragment() {
                     )
                     firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_error)) {
                         putString(getString(R.string.parameter_sku), productSapId)
-                        putString(getString(R.string.error_reason_event), getString(R.string.product_disabled_event_tag))
+                        putString(
+                            getString(R.string.error_reason_event),
+                            getString(R.string.product_disabled_event_tag)
+                        )
                     }
                 }
 

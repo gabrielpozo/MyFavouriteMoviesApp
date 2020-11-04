@@ -1,4 +1,5 @@
 package com.light.finder.ui.common.itemdecoration
+
 import android.content.Context
 import android.graphics.Rect
 import android.view.View

@@ -254,8 +254,8 @@ fun getLegendCategoryName(
     return productName?.name ?: ""
 }
 
-fun  List<Product>.getProductImage(): String {
-    val lowestPrioProduct = this.minBy {it.productPrio}
+fun List<Product>.getProductImage(): String {
+    val lowestPrioProduct = this.minBy { it.productPrio }
     return lowestPrioProduct?.imageUrls?.firstOrNull() ?: ""
 }
 
@@ -343,7 +343,6 @@ fun List<FilterVariationCF>.sortConnectivityByOrderField(filterConnectivityList:
 }
 
 
-
 fun List<FilterVariationCF>.sortColorByOrderField(filterColorList: List<CctType>): List<FilterVariationCF> {
     val orderedList = map {
         it.order = getOrderColor(it.codeFilter, filterColorList)
@@ -403,7 +402,7 @@ fun getOrderConnectivity(
     code: Int,
     filterTypeList: List<ProductConnectivity>
 ): Int {
-    val productConnectivity= filterTypeList.find {
+    val productConnectivity = filterTypeList.find {
         it.id == code
     }
     return productConnectivity?.order?.toInt() ?: -1

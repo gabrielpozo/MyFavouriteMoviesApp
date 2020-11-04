@@ -58,10 +58,12 @@ class BrowseResultAdapter(
     }
 
 
+
     fun setAdapterClickable(clickable: Boolean) {
         isClickable = clickable
         notifyDataSetChanged()
     }
+
 
 
     // Size + headerOffset since 0 is reserved for header
