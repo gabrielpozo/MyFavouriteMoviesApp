@@ -77,8 +77,9 @@
 
             <TextView
                 android:id="@+id/textBrowseTypes"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:paddingEnd="16dp"
+                android:maxLines="1"
                 android:textSize="12sp"
                 android:fontFamily="@font/book"
                 android:textColor="@color/backgroundLight"

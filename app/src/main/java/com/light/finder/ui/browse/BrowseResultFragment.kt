@@ -167,7 +167,10 @@ class BrowseResultFragment : BaseFragment() {
         //todo
 
         textBrowseTypes.text =
-            category.categoryProductBase + "\u2022" + category.categoryShape + " ..." + category.categoryName
+            category.categoryProductBase + " \u2022 " + message.shapeNameList?.convertCategoryListToShapeString() + "\u2022 " + message.categories.convertCategoryListToCategoryString(
+                localPreferences.loadProductCategoryName(),
+                message.noSelectedCategoriesOnFiltering
+            )
     }
 
     private fun filterObserver() {
