@@ -79,7 +79,11 @@ class FilterLightFinderActivity : BaseLightFinderActivity() {
             val isChecked = checkedRadioButton.isChecked
             if (isChecked) {
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_sort_results)) {}
-                viewModel.onFilterClick(checkedId)
+                when (checkedId) {
+                    R.id.recommended -> viewModel.onFilterClick(RECOMMENDED)
+                    R.id.lowToHigh -> viewModel.onFilterClick(LOW_TO_HIGH)
+                    R.id.highToLow -> viewModel.onFilterClick(HIGH_TO_LOW)
+                }
                 Timber.d("ege $checkedId ${checkedRadioButton.id}")
             }
         }
