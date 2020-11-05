@@ -12,7 +12,6 @@
         android:id="@+id/header_browse"
         android:background="@color/backgroundDark"
         android:layout_width="match_parent"
-        android:elevation="12dp"
         android:layout_height="80dp"
         android:orientation="horizontal">
 
@@ -103,23 +102,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
-        android:id="@+id/edit_browse"
-        layout="@layout/edit_browse_expandable"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/category_results"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_browse" />
-
-
-    <!--RecyclerView-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/category_results"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/header_browse">
 
         <!--Divider View-->
         <View
@@ -140,6 +130,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_category" />
+
+        <FrameLayout
+            android:id="@+id/edit_browse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundDark"
+            android:elevation="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/edit_browse_second"
+                layout="@layout/edit_browse_expandable"
+                android:visibility="visible" />
+
+        </FrameLayout>
 
         <ProgressBar
             android:id="@+id/progressBar2"

@@ -68,9 +68,16 @@
         android:drawableStart="@drawable/ic_icon_small_category"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="22dp"
         android:background="@drawable/button_edit_browse"
         tools:text="LED Non-Dimmable _ LED Dimmable" />
+
+    <View
+        android:background="@color/backgroundDarkPressed"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="-1dp"
+   />
 
 
 </LinearLayout>
