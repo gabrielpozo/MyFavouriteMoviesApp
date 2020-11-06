@@ -234,6 +234,7 @@ class BrowseResultFragment : BaseFragment() {
                 2131362146
             ) ?: -1
         }
+        setCloseButton()
 
         viewModel.onSortResults(sortId)
     }
