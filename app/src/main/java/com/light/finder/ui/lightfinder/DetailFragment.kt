@@ -185,7 +185,7 @@ class DetailFragment : BaseFragment() {
             }
             3 -> {
                 infoText.text = getString(R.string.connection_text)
-                infoTitle.text = getString(R.string.connection_type)
+                infoTitle.text = getString(R.string.connection_type_title)
             }
         }
 
