@@ -181,7 +181,7 @@ class DetailFragment : BaseFragment() {
             }
             2 -> {
                 infoText.text = getString(R.string.color_text)
-                infoTitle.text = getString(R.string.color)
+                infoTitle.text = getString(R.string.color_title)
             }
             3 -> {
                 infoText.text = getString(R.string.connection_text)
