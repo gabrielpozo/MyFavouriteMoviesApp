@@ -10,6 +10,7 @@ abstract class BaseScanningUseCase<T> {
         onTimeout: (String) -> Unit = {},
         onEmptyResponse: () -> Unit = {},
         onProductsNotAvailableResponse: (T) -> Unit = {},
+        onBadRequest: (Int) -> Unit = {},
         vararg params: Any?
     ) {
         when (val dataState = useCaseExecution(params)) {
@@ -22,6 +23,7 @@ abstract class BaseScanningUseCase<T> {
             is DataState.TimeOut -> onTimeout.invoke(dataState.errorMessage)
             is DataState.ProductsNotAvailable -> onProductsNotAvailableResponse.invoke(dataState.data)
             is DataState.Empty -> onEmptyResponse.invoke()
+            is DataState.BadRequest -> onBadRequest.invoke(dataState.code)
         }
     }
 

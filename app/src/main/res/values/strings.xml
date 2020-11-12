@@ -181,4 +181,5 @@ As we know that lumen might be new to you, we want to make it easy for you to fi
     <string name="connection_text">With connected lights you can manage the lighting in your home easily, and more efficiently. Smart bulbs screw into the existing sockets in your home and your phone can be used to provide full control of the lighting. Control smart lighting via an app, with your voice, or using smart controls. And don’t worry, your good old switches also still work. </string>
     <string name="color_title">Color</string>
     <string name="connection_type_title">Connection type</string>
+    <string name="something_wrong">Something went wrong.</string>
 </resources>

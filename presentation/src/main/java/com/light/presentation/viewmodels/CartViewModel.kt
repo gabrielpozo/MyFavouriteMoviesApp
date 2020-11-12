@@ -28,6 +28,7 @@ class CartViewModel(
         data class RequestModelItemCount(val itemCount: Event<CartItemCount>) : CountItemsModel()
         object ClearedBadgeItemCount : CountItemsModel()
         object PaymentSuccessful : CountItemsModel()
+        object ErrorRequestItemCount : CountItemsModel()
 
     }
 
@@ -60,7 +61,10 @@ class CartViewModel(
     fun onRequestGetItemCount() {
         launch {
             getItemCount.execute(
-                ::handleItemCountSuccessResponse
+                onSuccess = ::handleItemCountSuccessResponse,
+                onError = ::handleError,
+                onBadRequest = ::handleBadRequest,
+                onTimeout = ::handleTimeout
             )
         }
     }
@@ -92,6 +96,21 @@ class CartViewModel(
         }
     }
 
+    private fun handleError(
+        isException: Boolean = false,
+        exception: Exception? = null,
+        errorCode: String = ""
+    ) {
+        _modelItemCountRequest.value = CountItemsModel.ErrorRequestItemCount
+    }
+
+    private fun handleTimeout(errorMessage: String = "") {
+        _modelItemCountRequest.value = CountItemsModel.ErrorRequestItemCount
+    }
+
+    private fun handleBadRequest(errorCode: Int) {
+        _modelItemCountRequest.value = CountItemsModel.ErrorRequestItemCount
+    }
 
     fun onCheckNetworkConnection(status: Boolean?) {
         if (status == false) {

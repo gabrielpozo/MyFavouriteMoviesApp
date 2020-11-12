@@ -28,6 +28,7 @@ import com.light.presentation.viewmodels.CartViewModel
 import com.light.util.QA
 import kotlinx.android.synthetic.main.cart_fragment.*
 import kotlinx.android.synthetic.main.cart_fragment_offline.*
+import kotlinx.android.synthetic.main.layout_error.*
 import timber.log.Timber
 
 class CartFragment : BaseFragment() {
@@ -82,6 +83,10 @@ class CartFragment : BaseFragment() {
                 no_internet_overlay.gone()
             }
         }
+
+        buttonTryAgain.setOnClickListener {
+            viewModel.onRequestGetItemCount()
+        }
     }
 
     private fun observeLayout() {
@@ -134,17 +139,35 @@ class CartFragment : BaseFragment() {
     private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
         when (countModel) {
             is CartViewModel.CountItemsModel.RequestModelItemCount -> {
+                hideErrorLayout()
                 activityCallback.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
             }
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                hideErrorLayout()
                 activityCallback.onCartCleared()
             }
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
+                hideErrorLayout()
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_succesful)) {}
                 activityCallback.onCartCleared()
             }
+            is CartViewModel.CountItemsModel.ErrorRequestItemCount -> {
+                showErrorLayout()
+            }
         }
+    }
+
+    private fun showErrorLayout() {
+        progressBar.gone()
+        cartErrorLayout.visible()
+        webView.gone()
+    }
+
+    private fun hideErrorLayout() {
+        progressBar.visible()
+        cartErrorLayout.gone()
+        webView.visible()
     }
 
 

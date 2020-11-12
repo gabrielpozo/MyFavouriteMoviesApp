@@ -50,6 +50,13 @@
         android:layout_width="match_parent"
         android:visibility="gone" />
 
+    <include
+        layout="@layout/layout_error"
+        android:layout_below="@+id/cart_toolbar"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone" />
+
     <ProgressBar
         android:progressTint="@color/primaryOnDark"
         android:progressBackgroundTint="#d8d8d8"
@@ -67,7 +74,9 @@
         android:indeterminate="false"
         android:max="100" />
 
+
     <WebView
+        android:visibility="visible"
         android:id="@+id/webView"
         android:layout_below="@+id/cart_toolbar"
         android:layout_width="match_parent"

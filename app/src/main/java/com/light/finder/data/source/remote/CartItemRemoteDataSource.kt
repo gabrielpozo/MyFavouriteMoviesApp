@@ -13,9 +13,10 @@ class CartItemRemoteDataSource(val context: Context) : BaseDataSource<CartResult
     CartRemoteDataSource {
 
     override suspend fun fetchCartItems(productSapId: String): Result<Cart> =
-        getResult {
-            CartRemoteUtil.getInstance(context).service.fetchCartAsync(productSapId)
+            getResult {
+                CartRemoteUtil.getInstance(context).service.fetchCartAsync(productSapId)
         }
+
 
     override fun mapResultToDomainModel(cartResult: CartResultDto): Cart {
         return mapCartToDomain(cartResult)
