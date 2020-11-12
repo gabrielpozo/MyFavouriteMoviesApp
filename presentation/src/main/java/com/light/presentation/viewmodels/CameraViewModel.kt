@@ -143,12 +143,12 @@ class CameraViewModel(
     fun onRequestCategoriesMessages(base64: String) {
         launch {
             getCategoryResultUseCase.execute(
-                ::handleSuccessResponse,
-                ::handleErrorResponse,
-                ::handleTimeOutResponse,
-                ::handleEmptyResponse,
-                ::handleNoProductsResponse,
-                base64
+                onSuccess = ::handleSuccessResponse,
+                onError = ::handleErrorResponse,
+                onTimeout = ::handleTimeOutResponse,
+                onEmptyResponse = ::handleEmptyResponse,
+                onProductsNotAvailableResponse = ::handleNoProductsResponse,
+                params = *arrayOf(base64)
             )
         }
     }

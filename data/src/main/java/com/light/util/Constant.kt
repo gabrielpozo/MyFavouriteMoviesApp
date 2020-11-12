@@ -11,6 +11,7 @@ const val KEY_EVENT_ACTION = "key_event_action"
 const val KEY_EVENT_EXTRA = "key_event_extra"
 const val IMMERSIVE_FLAG_TIMEOUT = 8100L
 const val BROWSING_FLAG_TIMEOUT = 10000L
+const val CART_FLAG_TIMEOUT = 30000L
 
 const val NO_CONTENT_CODE = 204
 const val NO_PRODUCTS_CODE = 206

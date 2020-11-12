@@ -85,7 +85,7 @@ class CartFragment : BaseFragment() {
         }
 
         buttonTryAgain.setOnClickListener {
-            //todo setup webview/ call cart api
+            viewModel.onRequestGetItemCount()
         }
     }
 
@@ -139,17 +139,33 @@ class CartFragment : BaseFragment() {
     private fun observeItemCount(countModel: CartViewModel.CountItemsModel) {
         when (countModel) {
             is CartViewModel.CountItemsModel.RequestModelItemCount -> {
+                hideErrorLayout()
                 activityCallback.onBadgeCountChanged(countModel.itemCount.peekContent().itemQuantity)
             }
             is CartViewModel.CountItemsModel.ClearedBadgeItemCount -> {
+                hideErrorLayout()
                 activityCallback.onCartCleared()
             }
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
+                hideErrorLayout()
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_succesful)) {}
                 activityCallback.onCartCleared()
             }
+            is CartViewModel.CountItemsModel.ErrorRequestItemCount -> {
+                showErrorLayout()
+            }
         }
+    }
+
+    private fun showErrorLayout() {
+        cartErrorLayout.visible()
+        webView.gone()
+    }
+
+    private fun hideErrorLayout() {
+        cartErrorLayout.gone()
+        webView.visible()
     }
 
 
