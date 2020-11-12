@@ -159,11 +159,13 @@ class CartFragment : BaseFragment() {
     }
 
     private fun showErrorLayout() {
+        progressBar.gone()
         cartErrorLayout.visible()
         webView.gone()
     }
 
     private fun hideErrorLayout() {
+        progressBar.visible()
         cartErrorLayout.gone()
         webView.visible()
     }
