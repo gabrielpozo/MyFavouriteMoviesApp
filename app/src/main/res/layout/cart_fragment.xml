@@ -69,10 +69,10 @@
 
     <include
         layout="@layout/layout_error"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <WebView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/webView"
         android:layout_below="@+id/cart_toolbar"
         android:layout_width="match_parent"

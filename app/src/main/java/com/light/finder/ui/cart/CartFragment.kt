@@ -28,6 +28,7 @@ import com.light.presentation.viewmodels.CartViewModel
 import com.light.util.QA
 import kotlinx.android.synthetic.main.cart_fragment.*
 import kotlinx.android.synthetic.main.cart_fragment_offline.*
+import kotlinx.android.synthetic.main.layout_error.*
 import timber.log.Timber
 
 class CartFragment : BaseFragment() {
@@ -81,6 +82,10 @@ class CartFragment : BaseFragment() {
             } else {
                 no_internet_overlay.gone()
             }
+        }
+
+        buttonTryAgain.setOnClickListener {
+            //todo setup webview/ call cart api
         }
     }
 
