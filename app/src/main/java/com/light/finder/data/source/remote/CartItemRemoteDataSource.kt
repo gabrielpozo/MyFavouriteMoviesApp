@@ -8,17 +8,13 @@ import com.light.finder.data.source.BaseDataSource
 import com.light.finder.data.source.remote.dto.CartResultDto
 import com.light.finder.data.source.remote.services.CartRemoteUtil
 import com.light.source.remote.CartRemoteDataSource
-import com.light.util.CART_FLAG_TIMEOUT
-import kotlinx.coroutines.withTimeout
 
 class CartItemRemoteDataSource(val context: Context) : BaseDataSource<CartResultDto, Cart>(),
     CartRemoteDataSource {
 
     override suspend fun fetchCartItems(productSapId: String): Result<Cart> =
-        withTimeout(CART_FLAG_TIMEOUT) {
             getResult {
                 CartRemoteUtil.getInstance(context).service.fetchCartAsync(productSapId)
-            }
         }
 
 
