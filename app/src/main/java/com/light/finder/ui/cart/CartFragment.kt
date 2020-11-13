@@ -8,10 +8,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.view.isGone
 import androidx.lifecycle.Observer
 import com.light.finder.BuildConfig
@@ -205,6 +202,16 @@ class CartFragment : BaseFragment() {
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())
                 super.onPageFinished(view, url)
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                Timber.d("Ege: preventing showing webpage not available")
+                view?.loadUrl("about:blank")
+                super.onReceivedError(view, request, error)
             }
         }
         webView.webViewClient = webViewClient
