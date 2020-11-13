@@ -192,13 +192,17 @@ fun String.getIntFormatter(number: Number): String =
 fun String.getStringFormatter(chain: String): String = String.format(this, chain)
 
 fun String?.getSplitUrl(): String {
-    var chain = "/"
-    val splitedList = this?.split("/") ?: return ""
-    for (index in (splitedList.size - 3) until splitedList.size - 1) {
-        chain += splitedList[index] + "/"
-    }
+    if (this != "about:blank") {
+        var chain = "/"
+        val splitedList = this?.split("/") ?: return ""
+        for (index in (splitedList.size - 3) until splitedList.size - 1) {
+            chain += splitedList[index] + "/"
+        }
 
-    return chain
+        return chain
+    } else {
+        return this
+    }
 }
 
 fun SpannableString.withClickableSpan(
