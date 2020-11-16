@@ -175,10 +175,10 @@ class CartFragment : BaseFragment() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
-
                 progressBar?.let {
                     setProgress(newProgress)
                 }
+                white_overlay.visible()
             }
         }
 
@@ -200,6 +200,8 @@ class CartFragment : BaseFragment() {
                 } else {
                     view?.visible()
                 }
+
+                white_overlay.gone()
                 viewModel.onRequestGetItemCount()
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())

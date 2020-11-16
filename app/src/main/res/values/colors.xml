@@ -20,6 +20,8 @@
     <color name="primaryOnDark">#01e487</color>
     <color name="transparentLightBackgroundColor">#66636367</color>
     <color name="transparentBackgroundColor">#80636367</color>
+    <color name="backgroundLightOverlay">#D9ffffff</color>
+
 
 
 
