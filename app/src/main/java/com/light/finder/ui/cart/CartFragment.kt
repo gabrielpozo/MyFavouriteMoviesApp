@@ -83,7 +83,7 @@ class CartFragment : BaseFragment() {
 
         buttonTryAgain.setOnClickListener {
             viewModel.onRequestGetItemCount()
-            setupWebView()
+            viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
             hideErrorLayout()
         }
     }
