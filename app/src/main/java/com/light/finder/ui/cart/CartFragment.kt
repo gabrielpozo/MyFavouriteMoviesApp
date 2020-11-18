@@ -148,7 +148,7 @@ class CartFragment : BaseFragment() {
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
                 hideErrorLayout()
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
-                facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_succesful)) {}
+                facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_successful_fb)) {}
                 activityCallback.onCartCleared()
             }
             is CartViewModel.CountItemsModel.ErrorRequestItemCount -> {
