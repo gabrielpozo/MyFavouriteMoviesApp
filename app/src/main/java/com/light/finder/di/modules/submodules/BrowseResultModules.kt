@@ -2,7 +2,7 @@ package com.light.finder.di.modules.submodules
 
 import com.light.domain.ProductBrowsingRepository
 import com.light.presentation.viewmodels.BrowseResultViewModel
-import com.light.usecases.GetBrowseProductsResultUseCase
+import com.light.usecases.GetChoiceBrowsingProductsUseCase
 import com.light.usecases.GetSortCategoriesUseCase
 import dagger.Module
 import dagger.Provides
@@ -17,13 +17,12 @@ class BrowseResultModule {
 
     @Provides
     fun getResultUseCase(productBrowsingRepository: ProductBrowsingRepository) =
-        GetBrowseProductsResultUseCase(productBrowsingRepository)
-
+        GetChoiceBrowsingProductsUseCase(productBrowsingRepository)
 
     @Provides
     fun browseResultViewModel(
         getSortCategoriesUseCase: GetSortCategoriesUseCase,
-        getBrowseProductsResultUseCase: GetBrowseProductsResultUseCase
+        getBrowseProductsResultUseCase: GetChoiceBrowsingProductsUseCase
     ) = BrowseResultViewModel(
         getSortCategoriesUseCase,
         getBrowseProductsResultUseCase,

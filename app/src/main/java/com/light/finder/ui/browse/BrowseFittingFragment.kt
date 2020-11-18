@@ -2,6 +2,8 @@ package com.light.finder.ui.browse
 
 
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,9 +39,15 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private val BROWSE_SCREEN_TAG = "BrowseChooseFitting"
     private val viewModel: BrowseFittingViewModel by lazy { getViewModel { component.browseFittingViewModel } }
+    private var backPressedFlag = false
+    private var onBackOnFilteringScreen = false
 
     companion object {
         const val spaceInDp = 30
+        const val FITTING_EDIT_ID_KEY = "FITTING_EDIT_ID_KEY"
+        const val FITTING_BACK_CODE = 1
+        const val FITTING_BACK_KEY = "FITTING_BACK_KEY"
+
     }
 
 
@@ -47,14 +55,31 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_browse_fitting, container, false)
+    }
+
+    fun setBackFilteringOnScreen(flag: Boolean) {
+        onBackOnFilteringScreen = flag
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.run {
             component = browseComponent.plus(BrowseFittingModule())
+        }
+
+        arguments?.let {
+            if (!backPressedFlag) {
+                viewModel.onRequestSavedFormFactorList()
+            }
+        } ?: run {
+            if (!onBackOnFilteringScreen){
+                viewModel.onRequestFormFactorFromEditBrowse(backPressedFlag)
+            } else {
+                viewModel.onRequestSavedFormFactorList()
+                onBackOnFilteringScreen = false
+            }
+
         }
 
         buttonNext.setSafeOnClickListener {
@@ -75,7 +100,6 @@ class BrowseFittingFragment : BaseFilteringFragment() {
         super.onResume()
         firebaseAnalytics.trackScreen(this@BrowseFittingFragment, activity, BROWSE_SCREEN_TAG)
     }
-
 
     private fun setBottomSheetBehaviour() {
         val bottomSheetLayout = view?.findViewById<LinearLayout>(R.id.bottomSheetLayoutBrowse)
@@ -160,7 +184,23 @@ class BrowseFittingFragment : BaseFilteringFragment() {
 
     private fun navigatesToShape(modelNavigation: Event<BrowseFittingViewModel.NavigationToShapeFiltering>) {
         modelNavigation.getContentIfNotHandled()?.let { model ->
-            screenFilteringNavigator.navigateToBrowsingShapeScreen(model.productBaseFormFactor)
+            screenFilteringNavigator.navigateToBrowsingShapeScreen(
+                this,
+                model.productBaseFormFactor
+            )
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == FITTING_BACK_CODE) {
+                val backPressed = data?.getBooleanExtra(FITTING_BACK_KEY, false)
+                if (backPressed == true) {
+                    backPressedFlag = true
+                }
+            }
         }
     }
 

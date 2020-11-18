@@ -129,3 +129,4 @@ data class ChoiceBrowsingParcelable(
     var baseFittingId: Int = -1,
     var isSelected: Boolean = false
 ) : Parcelable
+

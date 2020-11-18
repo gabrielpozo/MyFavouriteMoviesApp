@@ -13,7 +13,9 @@ data class Message(
     val formfactorType: String,
     val shapeIdentified: String,
     val textIdentified: String,
-    val imageIdentified: String
+    val imageIdentified: String,
+    var shapeNameList: List<String>? = emptyList(),
+    var noSelectedCategoriesOnFiltering: Boolean = false
 )
 
 data class Category(
@@ -212,7 +214,7 @@ data class ChoiceBrowsing(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
-        other as ShapeBrowsing
+        other as ChoiceBrowsing
 
         return other.id == this.id
     }

@@ -19,6 +19,7 @@ import com.light.finder.common.ConnectionLiveData
 import com.light.finder.common.ConnectionModel
 import com.light.finder.common.ReloadingCallback
 import com.light.finder.data.source.remote.ChoiceBrowsingParcelable
+import com.light.finder.data.source.remote.ShapeBrowsingParcelable
 import com.light.finder.di.modules.camera.LightFinderComponent
 import com.light.finder.di.modules.camera.LightFinderModule
 import com.light.finder.extensions.*
@@ -63,7 +64,12 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     companion object {
         const val LIMITED_NUMBER_BADGE = 100
         const val CAMERA_LIGHT_FINDER_ACTIVITY_ID: String = "CAMERA_LIGHT_FINDER_ACTIVITY_ID"
-        const val BROWSING_SHAPE_VALUES_ID: String = "BrowseShapeValues::id"
+        const val BROWSING_CHOICE_LIST_VALUES_ID: String = "BROWSING_CHOICE_LIST_VALUES_ID::id"
+        const val BROWSING_SHAPE_LIST_VALUES_ID: String = "BROWSING_SHAPE_LIST_VALUES_ID::id"
+        const val BROWSING_FORM_FACTOR_VALUE_ID: String = "BROWSING_FORM_FACTOR_VALUE_ID::id"
+        const val BROWSING_FORM_FACTOR_VALUE_NAME: String = "BROWSING_FORM_FACTOR_VALUE_NAME::id"
+
+
         const val BROWSING_ACTIVITY: String = "BrowsingActivity"
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
@@ -80,24 +86,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         window.decorView.systemUiVisibility =
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
-        if (intent != null) {
-            val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
-            if (dataId.equals(BROWSING_ACTIVITY)) {
-                val choiceResult = intent.extras?.getParcelableArrayList<ChoiceBrowsingParcelable>(
-                    BROWSING_SHAPE_VALUES_ID
-                )
-                choiceResult?.let {
-                    screenNavigator.setInitialRootFragment(
-                        BrowseResultFragment.newInstance(
-                            choiceResult.deparcelizeChoiceBrowsingList()
-                        )
-                    )
-                }
-
-            } else {
-                screenNavigator.setInitialRootFragment(CameraFragment.newInstance())
-            }
-        }
+        initializeIntent(intent)
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -110,6 +99,54 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         observeConnection()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        initializeIntent(intent, true)
+    }
+
+    private fun initializeIntent(intent: Intent?, isNewIntent: Boolean = false) {
+        if (intent != null) {
+            val dataId = intent.extras?.getString(CAMERA_LIGHT_FINDER_ACTIVITY_ID)
+            if (dataId.equals(BROWSING_ACTIVITY)) {
+                val choiceResult = intent.extras?.getParcelableArrayList<ChoiceBrowsingParcelable>(
+                    BROWSING_CHOICE_LIST_VALUES_ID
+                )
+                val shapeBrowsingParcelable =
+                    intent.extras?.getParcelableArrayList<ShapeBrowsingParcelable>(
+                        BROWSING_SHAPE_LIST_VALUES_ID
+                    )
+
+                val formFactorId = intent.extras?.getInt(BROWSING_FORM_FACTOR_VALUE_ID)
+                val formFactorName = intent.extras?.getString(BROWSING_FORM_FACTOR_VALUE_ID)
+
+                choiceResult?.let {
+                    if (!isNewIntent) {
+                        screenNavigator.setInitialRootFragment(
+                            BrowseResultFragment.newInstance(
+                                choiceResult.deparcelizeChoiceBrowsingList(),
+                                shapeBrowsingParcelable?.deParcelizeBrowsingList(),
+                                formFactorId,
+                                formFactorName
+                            )
+                        )
+                    } else {
+                        val currentFragment = screenNavigator.getCurrentFragment()
+                        if (currentFragment is BrowseResultFragment) {
+                            currentFragment.setOnNewIntent(
+                                choiceResult,
+                                shapeBrowsingParcelable,
+                                formFactorId ?: -1,
+                                formFactorName
+                            )
+                        }
+                    }
+                }
+
+            } else {
+                screenNavigator.setInitialRootFragment(CameraFragment.newInstance())
+            }
+        }
+    }
 
     override fun setBottomBarInvisibility(invisible: Boolean) {
         if (invisible) {
@@ -227,8 +264,9 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             }
         }
 
-
-        if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
+        if (current is BrowseResultFragment && current.isExpandableEditTextUsed()) {
+            screenNavigator.navigateToBrowsingFilteringFromBackButton()
+        } else if (!isBackButtonBlocked && screenNavigator.popFragmentNot()) {
             super.onBackPressed()
             overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
         }
