@@ -9,9 +9,9 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickIntensity"
         android:paddingTop="20dp"
         android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/clickIntensity"
         android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -65,6 +65,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/infoIntensityTapView"
+            android:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_height="22dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:background="@color/transparent_color"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/infoIntensityButton"
+            app:layout_constraintStart_toStartOf="@+id/textViewWattage"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -87,16 +104,16 @@
         android:layout_marginTop="16dp"
         android:background="@color/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/clickColor"
         android:paddingTop="6dp"
         android:orientation="horizontal">
 
@@ -150,6 +167,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/infoColorTapView"
+            android:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_height="22dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@color/transparent_color"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/infoColorButton"
+            app:layout_constraintStart_toStartOf="@+id/textViewColor"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,7 +207,7 @@
         android:background="@color/divider"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -214,8 +248,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="12dp"
         android:id="@+id/recyclerViewFinish"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -232,12 +266,12 @@
         android:background="@color/divider"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clickConnectivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/clickConnectivity"
         android:clickable="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -297,12 +331,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/infoConnectivityTapView"
+            android:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="22dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center"
+            android:background="@color/transparent_color"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/infoConnectivityButton"
+            app:layout_constraintStart_toStartOf="@+id/textViewConnectivity"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="12dp"
         android:id="@+id/recyclerViewConnectivity"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -313,11 +364,12 @@
         tools:listitem="@layout/item_card_filter_unselected">
 
     </androidx.recyclerview.widget.RecyclerView>
+
     <View
         android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
         android:background="@color/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
 </LinearLayout>

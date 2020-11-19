@@ -109,7 +109,6 @@ class DetailFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
 
-
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
@@ -145,14 +144,15 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun initInfoClickListeners() {
-        clickIntensity.setSafeOnClickListener {
+
+        infoIntensityTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 1)
         }
-        clickColor.setSafeOnClickListener {
+        infoColorTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 2)
         }
 
-        clickConnectivity.setSafeOnClickListener {
+        infoConnectivityTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 3)
         }
     }
