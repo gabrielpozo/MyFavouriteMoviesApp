@@ -165,7 +165,6 @@
     <string name="view_product_fb">ViewContent</string>
     <string name="add_to_cart_fb">AddToCart</string>
     <string name="add_to_cart_tag">add_to_cart</string>
-    <string name="payment_succesful">payment_successful</string>
     <string name="payment_successful_fb">Purchase</string>
 
     <string name="faq">FAQ</string>
