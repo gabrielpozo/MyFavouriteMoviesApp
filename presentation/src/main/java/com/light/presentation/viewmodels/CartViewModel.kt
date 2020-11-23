@@ -29,7 +29,6 @@ class CartViewModel(
         object ClearedBadgeItemCount : CountItemsModel()
         object PaymentSuccessful : CountItemsModel()
         object ErrorRequestItemCount : CountItemsModel()
-
     }
 
     private val _modelReload = MutableLiveData<ContentReload>()
