@@ -189,9 +189,7 @@ ext {
             uiAutomator     : "androidx.test.uiautomator:uiautomator:$uiAutomatorVersion",
             workManagerTest : "androidx.work:work-testing:$workVersion",
             archTest        : "androidx.arch.core:core-testing:$coreTestingVersion",
-            mockitoAndroid  : "org.mockito:mockito-android:$mockitoAndroidVersion",
-            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin",
-            mockitoInline: "org.mockito:mockito-inline:$mockitoInline"
+            mockitoAndroid  : "org.mockito:mockito-android:$mockitoAndroidVersion"
     ]
 
     googleServicesDependencies = [
@@ -205,5 +203,9 @@ ext {
 
     usabillaDependencies = [
             core: "com.usabilla.sdk:ubform:$usabillaVersion"
+    ]
+    testLibs = [
+            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin",
+            mockitoInline: "org.mockito:mockito-inline:$mockitoInline"
     ]
 }
