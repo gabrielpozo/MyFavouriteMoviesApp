@@ -69,6 +69,8 @@ ext {
     usabillaVersion = "7.0.3"
     gpuVersion = "2.0.3"
     facebookVersion = "7.1.0"
+    mockitoKotlin = "2.2.0"
+    mockitoInline = "2.28.2"
 
     classpathDependencies = [
             androidToolsBuild : "com.android.tools.build:gradle:${gradleVersion}",
@@ -81,7 +83,7 @@ ext {
             timber      : "com.jakewharton.timber:timber:$timberVersion",
             stetho      : "com.facebook.stetho:stetho:$stetho",
             stethoOkhttp: "com.facebook.stetho:stetho-okhttp3:$stetho",
-            facebook : "com.facebook.android:facebook-core:${facebookVersion}"
+            facebook    : "com.facebook.android:facebook-core:${facebookVersion}"
     ]
 
     kaptJetpackDependencies = [
@@ -200,6 +202,10 @@ ext {
     ]
 
     usabillaDependencies = [
-            core : "com.usabilla.sdk:ubform:$usabillaVersion"
+            core: "com.usabilla.sdk:ubform:$usabillaVersion"
+    ]
+    testLibs = [
+            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin",
+            mockitoInline: "org.mockito:mockito-inline:$mockitoInline"
     ]
 }
