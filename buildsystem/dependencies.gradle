@@ -204,6 +204,7 @@ ext {
     usabillaDependencies = [
             core: "com.usabilla.sdk:ubform:$usabillaVersion"
     ]
+    
     testLibs = [
             mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin",
             mockitoInline: "org.mockito:mockito-inline:$mockitoInline"
