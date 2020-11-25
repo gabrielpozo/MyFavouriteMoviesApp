@@ -77,11 +77,7 @@ class BrowseFittingViewModel(
     fun onRequestFormFactorFromEditBrowse(backPressedFlag: Boolean) {
         if (!backPressedFlag) {
             requestFormFactorList()
-            // requestSavedFormFactorList()
-        } else {
-
         }
-
     }
 
     fun onRequestSavedFormFactorList() {
@@ -108,7 +104,7 @@ class BrowseFittingViewModel(
             UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
     }
 
-    private fun handleErrorRequest(exception: Exception, message: String) {
+    private fun handleErrorRequest(message: String) {
         _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 }
