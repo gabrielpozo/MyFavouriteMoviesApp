@@ -58,4 +58,6 @@ dependencies {
     androidTestImplementation androidTestDependencies.values()
     testImplementation testDependencies.values()
     implementation coroutinesDependencies.values()
+    implementation testLibs.values()
+
 }
