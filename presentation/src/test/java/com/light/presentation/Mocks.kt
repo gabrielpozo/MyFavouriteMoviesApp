@@ -43,3 +43,17 @@ val productFormFactor3: FormFactorTypeBaseId = FormFactorTypeBaseId(
 
 val formFactorList = listOf<FormFactorTypeBaseId>()
 val formFactorSavedList = listOf(productFormFactor1, productFormFactor2, productFormFactor3)
+
+
+//Browse Shape
+val shapeBrowse1 = ShapeBrowsing(1, "", "", 1, 1, 1, "")
+val shapeBrowse2 = ShapeBrowsing(2, "", "", 2, 1, 1, "")
+val shapeBrowse3 = ShapeBrowsing(3, "", "", 3, 1, 1, "")
+val shapeBrowse4 = ShapeBrowsing(4, "", "", 4, 1, 1, "")
+
+
+val shapeBrowseClicked = ShapeBrowsing(1, "", "", 4, 1, 1, "", true)
+
+val shapeAlreadySelected = ShapeBrowsing(1, "", "", 4, 1, 1, "", false)
+
+val shapeBrowsingList = listOf(shapeBrowse1, shapeBrowse2, shapeBrowse3, shapeBrowse4)
