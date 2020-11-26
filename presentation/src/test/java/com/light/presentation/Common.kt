@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.light.presentation
 
 import org.mockito.invocation.InvocationOnMock
