@@ -5,11 +5,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.Response
 
-
 interface TheMovieDbService {
 
     companion object {
-        private const val QUERY = "query"
+        private const val REGION = "NL"
     }
 
     @GET("discover/movie?sort_by=popularity.desc")
