@@ -42,6 +42,7 @@ dependencies {
     implementation jetBrainsDependencies.values()
     implementation androidXDependencies.values()
     implementation androidDependenciesFramework.values()
+    implementation coroutinesDependencies.values()
     kapt androidKaptLibs.values()
     testImplementation testLibs.values()
     implementation retrofitDependencies.values()
