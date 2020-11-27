@@ -14,7 +14,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "movie_db_api_key", MOVIE_DB_API_KEY
+        buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -43,11 +44,11 @@ dependencies {
     implementation androidXDependencies.values()
     implementation androidDependenciesFramework.values()
     implementation coroutinesDependencies.values()
+    implementation loggingInterceptorDependencies.values()
     kapt androidKaptLibs.values()
     testImplementation testLibs.values()
     implementation retrofitDependencies.values()
     implementation androidLifecycle.values()
-
 
 
 }
