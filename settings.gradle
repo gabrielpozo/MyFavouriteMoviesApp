@@ -1,0 +1,6 @@
+include ':usecases'
+include ':testShared'
+include ':domain'
+include ':data'
+include ':app'
+rootProject.name = "MyFavouriteMoviesApp"
