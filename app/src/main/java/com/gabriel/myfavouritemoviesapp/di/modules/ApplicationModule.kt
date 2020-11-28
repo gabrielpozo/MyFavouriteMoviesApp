@@ -1,7 +1,6 @@
 package com.gabriel.myfavouritemoviesapp.di.modules
 
 import com.gabriel.myfavouritemoviesapp.data.source.remote.MovieListRemoteDataSource
-import com.gabriel.source.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 
@@ -9,6 +8,6 @@ import dagger.Provides
 class ApplicationModule {
 
     @Provides
-    fun getMovieListRemoteDataSource(): RemoteDataSource =
+    fun getMovieListRemoteDataSource() =
         MovieListRemoteDataSource()
 }

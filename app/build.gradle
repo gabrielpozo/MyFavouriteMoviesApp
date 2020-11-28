@@ -45,6 +45,8 @@ dependencies {
     implementation androidDependenciesFramework.values()
     implementation coroutinesDependencies.values()
     implementation loggingInterceptorDependencies.values()
+    implementation glideDependencies.values()
+    implementation coroutinesAdapterDependencies.values()
     kapt androidKaptLibs.values()
     testImplementation testLibs.values()
     implementation retrofitDependencies.values()
