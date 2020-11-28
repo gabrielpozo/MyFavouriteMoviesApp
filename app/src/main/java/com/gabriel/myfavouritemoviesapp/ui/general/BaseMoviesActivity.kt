@@ -1,4 +1,4 @@
-package com.gabriel.myfavouritemoviesapp.ui
+package com.gabriel.myfavouritemoviesapp.ui.general
 
 import androidx.appcompat.app.AppCompatActivity
 

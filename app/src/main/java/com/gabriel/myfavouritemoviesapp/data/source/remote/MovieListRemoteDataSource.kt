@@ -1,7 +1,7 @@
 package com.gabriel.myfavouritemoviesapp.data.source.remote
 
 import com.gabriel.domain.Resource
-import com.gabriel.domain.model.Movie
+import com.gabriel.domain.models.Movie
 import com.gabriel.myfavouritemoviesapp.data.mappers.mapServerMovieToDomain
 import com.gabriel.source.RemoteDataSource
 

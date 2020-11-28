@@ -2,7 +2,7 @@ package com.gabriel.myfavouritemoviesapp.data.mappers
 
 import com.gabriel.myfavouritemoviesapp.data.source.remote.MovieDto as ServerMovie
 
-import com.gabriel.domain.model.Movie
+import com.gabriel.domain.models.Movie
 
 val mapServerMovieToDomain: (ServerMovie) -> Movie = { movie ->
     Movie(

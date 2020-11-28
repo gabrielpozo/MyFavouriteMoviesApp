@@ -4,7 +4,7 @@ import android.os.Parcelable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.gabriel.domain.model.Movie
+import com.gabriel.domain.models.Movie
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

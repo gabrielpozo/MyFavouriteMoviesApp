@@ -8,13 +8,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 class DetailViewModel(uiDispatcher: CoroutineDispatcher) : ScopedViewModel(uiDispatcher) {
 
-    data class ModelMovie(val movie: MovieUI)
-
     private val _model = MutableLiveData<ModelMovie>()
     val model: LiveData<ModelMovie>
         get() = _model
 
-    fun start(movie: MovieUI?) {
+    fun onRetrieveMovie(movie: MovieUI?) {
         movie?.let {
             _model.value = ModelMovie(movie)
         }

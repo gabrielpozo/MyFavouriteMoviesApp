@@ -8,7 +8,7 @@ import com.gabriel.myfavouritemoviesapp.di.modules.DetailMovieComponent
 import com.gabriel.myfavouritemoviesapp.di.modules.DetailMovieModule
 import com.gabriel.myfavouritemoviesapp.extensions.app
 import com.gabriel.myfavouritemoviesapp.extensions.getViewModel
-import com.gabriel.myfavouritemoviesapp.ui.BaseMoviesActivity
+import com.gabriel.myfavouritemoviesapp.ui.general.BaseMoviesActivity
 import com.gabriel.myfavouritemoviesapp.uimodels.MovieUI
 
 class DetailMovieActivity : BaseMoviesActivity() {
@@ -35,7 +35,7 @@ class DetailMovieActivity : BaseMoviesActivity() {
         }
 
         setupObservers()
-        detailViewModel.start(movieUI)
+        detailViewModel.onRetrieveMovie(movieUI)
     }
 
     private fun setupObservers() {

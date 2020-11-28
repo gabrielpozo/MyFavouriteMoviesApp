@@ -1,4 +1,4 @@
-package com.gabriel.domain.model
+package com.gabriel.domain.models
 
 data class Movie(
     val id: Int,

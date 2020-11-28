@@ -2,8 +2,9 @@ package com.gabriel.myfavouritemoviesapp.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.covidglobal.general.SingleLiveEvent
 import com.gabriel.domain.ResourceException
-import com.gabriel.domain.model.Movie
+import com.gabriel.domain.models.Movie
 import com.gabriel.myfavouritemoviesapp.ui.common.ScopedViewModel
 import com.gabriel.myfavouritemoviesapp.uimodels.MovieUI
 import com.gabriel.myfavouritemoviesapp.uimodels.toMovieUIModel
@@ -20,37 +21,33 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
             return _model
         }
 
-    private val _modelError = MutableLiveData<ResourceErrorModel>()
+    private val _modelError = SingleLiveEvent<ResourceErrorModel>()
     val modelError: LiveData<ResourceErrorModel>
         get() = _modelError
-
-    sealed class UiModel {
-        object Loading : UiModel()
-        data class Content(val movies: List<MovieUI>) : UiModel()
-        data class Navigation(val movie: MovieUI) : UiModel()
-        object RequestMovies : UiModel()
-    }
-
-    sealed class ResourceErrorModel {
-        data class ShowGeneralError(val message: String?) : ResourceErrorModel()
-        object ShowEmptyListError : ResourceErrorModel()
-    }
 
     private fun refresh() {
         _model.value = UiModel.RequestMovies
     }
 
     fun onRequestPopularMovies() {
+        loadMovies()
+    }
+
+    fun onRetryButtonClicked() {
+        loadMovies()
+    }
+
+    fun onMovieClicked(movie: MovieUI) {
+        _model.value = UiModel.Navigation(movie)
+    }
+
+    private fun loadMovies() {
         launch {
             _model.value = UiModel.Loading
             getMoviesUseCase.execute(
                 onSuccess = ::handleSuccessMovies, onError = ::handleErrorMovies
             )
         }
-    }
-
-    fun onMovieClicked(movie: MovieUI) {
-        _model.value = UiModel.Navigation(movie)
     }
 
     private fun handleSuccessMovies(movies: List<Movie>) {
