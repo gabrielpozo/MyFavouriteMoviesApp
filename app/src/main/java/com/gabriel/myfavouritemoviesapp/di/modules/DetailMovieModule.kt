@@ -1,6 +1,6 @@
 package com.gabriel.myfavouritemoviesapp.di.modules
 
-import com.gabriel.myfavouritemoviesapp.ui.detail.DetailViewModel
+import com.gabriel.myfavouritemoviesapp.ui.moviedetails.DetailViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent

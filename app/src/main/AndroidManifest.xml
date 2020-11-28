@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.detail.DetailMovieActivity"/>
-        <activity android:name=".ui.main.MoviesActivity">
+            android:name=".ui.moviedetails.DetailMovieActivity"/>
+        <activity android:name=".ui.movielist.MoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

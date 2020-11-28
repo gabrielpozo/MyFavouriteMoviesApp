@@ -1,4 +1,4 @@
-package com.gabriel.myfavouritemoviesapp.ui.main
+package com.gabriel.myfavouritemoviesapp.ui.movielist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,6 +25,10 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
     val modelError: LiveData<ResourceErrorModel>
         get() = _modelError
 
+    private val _modelNavigation = SingleLiveEvent<NavigationModel>()
+    val modelNavigation: LiveData<NavigationModel>
+        get() = _modelNavigation
+
     private fun refresh() {
         _model.value = UiModel.RequestMovies
     }
@@ -38,7 +42,7 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
     }
 
     fun onMovieClicked(movie: MovieUI) {
-        _model.value = UiModel.Navigation(movie)
+        _modelNavigation.value = NavigationModel(movie)
     }
 
     private fun loadMovies() {

@@ -1,4 +1,4 @@
-package com.gabriel.myfavouritemoviesapp.ui.detail
+package com.gabriel.myfavouritemoviesapp.ui.moviedetails
 
 import com.gabriel.myfavouritemoviesapp.uimodels.MovieUI
 

@@ -1,4 +1,4 @@
-package com.gabriel.myfavouritemoviesapp.ui.main
+package com.gabriel.myfavouritemoviesapp.ui.movielist
 
 import android.view.View
 import android.view.ViewGroup
