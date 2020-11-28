@@ -28,8 +28,11 @@ class MoviesActivity : BaseMoviesActivity() {
         adapter = MoviesAdapter(moviesViewModel::onMovieClicked)
         rv.adapter = adapter
 
+        setUpObservers()
+    }
+
+    private fun setUpObservers() {
         moviesViewModel.model.observe(this, Observer(::updateUi))
-        moviesViewModel.modelError.observe(this, Observer(::updateErrorView))
         moviesViewModel.modelNavigation.observe(this, Observer(::navigateToDetail))
     }
 
@@ -38,13 +41,8 @@ class MoviesActivity : BaseMoviesActivity() {
         when (model) {
             is UiModel.Content -> adapter.movies = model.movies
             is UiModel.RequestMovies -> moviesViewModel.onRequestPopularMovies()
-        }
-    }
-
-    private fun updateErrorView(model: ResourceErrorModel) {
-        when (model) {
-            is ResourceErrorModel.ShowEmptyListError -> showErrorView()
-            is ResourceErrorModel.ShowGeneralError -> showErrorView()
+            is UiModel.ShowEmptyListError -> showErrorView()
+            is UiModel.ShowGeneralError -> showErrorView()
         }
     }
 

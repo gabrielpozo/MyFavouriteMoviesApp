@@ -21,10 +21,6 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
             return _model
         }
 
-    private val _modelError = SingleLiveEvent<ResourceErrorModel>()
-    val modelError: LiveData<ResourceErrorModel>
-        get() = _modelError
-
     private val _modelNavigation = SingleLiveEvent<NavigationModel>()
     val modelNavigation: LiveData<NavigationModel>
         get() = _modelNavigation
@@ -60,8 +56,8 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
 
     private fun handleErrorMovies(resourceException: ResourceException?) {
         when (resourceException) {
-            is ResourceException.NullOrEmptyResource -> _modelError.value = ResourceErrorModel.ShowEmptyListError
-            else -> _modelError.value = ResourceErrorModel.ShowGeneralError(resourceException?.message)
+            is ResourceException.NullOrEmptyResource -> _model.value = UiModel.ShowEmptyListError
+            else -> _model.value = UiModel.ShowGeneralError(resourceException?.message)
         }
     }
 }

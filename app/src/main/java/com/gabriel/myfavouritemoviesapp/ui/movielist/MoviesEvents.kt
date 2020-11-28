@@ -6,11 +6,8 @@ sealed class UiModel {
     object Loading : UiModel()
     data class Content(val movies: List<MovieUI>) : UiModel()
     object RequestMovies : UiModel()
+    data class ShowGeneralError(val message: String?) : UiModel()
+    object ShowEmptyListError : UiModel()
 }
 
 data class NavigationModel(val movie: MovieUI)
-
-sealed class ResourceErrorModel {
-    data class ShowGeneralError(val message: String?) : ResourceErrorModel()
-    object ShowEmptyListError : ResourceErrorModel()
-}
