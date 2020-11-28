@@ -8,14 +8,15 @@ abstract class MoviesBaseUseCase<T, Params> {
 
     suspend fun execute(
         onSuccess: (T) -> Unit,
-        onError: (ResourceException?) -> Unit,
+        onError: (ResourceException?) -> Unit = {},
         params: Params? = null
     ) {
         val resource = useCaseExecution(params)
         when (resource.state) {
             ResourceStatus.SUCCESS -> {
-                //TODO()
-                onSuccess.invoke(resource.value!!)
+                resource.value?.apply {
+                    onSuccess.invoke(this)
+                } ?: onError.invoke(null)
             }
             ResourceStatus.ERROR -> onError.invoke(resource.error)
         }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movieUI"
+            type="com.gabriel.myfavouritemoviesapp.uimodels.MovieUI"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivMoviePoster"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_image_detail_movie"
+                android:scaleType="fitCenter"
+                android:fitsSystemWindows="true"
+                android:background="@color/purple_500"
+                app:imageUrl="@{movieUI.posterPath}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movieUI.title}"
+                android:maxLines="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster"
+                app:layout_constraintVertical_bias="0.05"
+                tools:text="Movie Title"/>
+
+            <TextView
+                android:id="@+id/tvRateNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@{String.valueOf(movieUI.voteAverage)}"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                tools:text="4.8"/>
+
+            <ImageView
+                android:id="@+id/ivRateAverage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/tvRateNumber"
+                app:layout_constraintStart_toEndOf="@+id/tvRateNumber"
+                app:layout_constraintTop_toTopOf="@+id/tvRateNumber"
+                app:srcCompat="@drawable/ic_star"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_detail_movie_data"
+                android:layout_marginEnd="@dimen/margin_detail_movie_data"
+                android:text="@{movieUI.overview}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/ivMoviePoster"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvRateNumber"/>
+
+            <TextView
+                android:id="@+id/tvReleaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movieUI.releaseDate}"
+                android:textSize="@dimen/lower_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/ivRateAverage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toEndOf="@+id/ivRateAverage"
+                app:layout_constraintTop_toTopOf="@+id/ivRateAverage"
+                tools:text="Released: 10/02/2009"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

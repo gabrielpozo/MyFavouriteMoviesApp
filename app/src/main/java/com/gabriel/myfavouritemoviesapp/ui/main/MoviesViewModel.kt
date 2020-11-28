@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.gabriel.domain.ResourceException
 import com.gabriel.domain.model.Movie
 import com.gabriel.myfavouritemoviesapp.ui.common.ScopedViewModel
+import com.gabriel.myfavouritemoviesapp.uimodels.MovieUI
+import com.gabriel.myfavouritemoviesapp.uimodels.toMovieUIModel
 import com.gabriel.usecases.GetMoviesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -24,8 +26,8 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
 
     sealed class UiModel {
         object Loading : UiModel()
-        data class Content(val movies: List<Movie>) : UiModel()
-        data class Navigation(val movie: Movie) : UiModel()
+        data class Content(val movies: List<MovieUI>) : UiModel()
+        data class Navigation(val movie: MovieUI) : UiModel()
         object RequestMovies : UiModel()
     }
 
@@ -41,16 +43,18 @@ class MoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase, uiDispatch
     fun onRequestPopularMovies() {
         launch {
             _model.value = UiModel.Loading
-            getMoviesUseCase.execute(onSuccess = ::handleSuccessMovies, onError = ::handleErrorMovies)
+            getMoviesUseCase.execute(
+                onSuccess = ::handleSuccessMovies, onError = ::handleErrorMovies
+            )
         }
     }
 
-    fun onMovieClicked(movie: Movie) {
+    fun onMovieClicked(movie: MovieUI) {
         _model.value = UiModel.Navigation(movie)
     }
 
     private fun handleSuccessMovies(movies: List<Movie>) {
-        _model.value = UiModel.Content(movies)
+        _model.value = UiModel.Content(movies.map { it.toMovieUIModel() })
     }
 
     private fun handleErrorMovies(resourceException: ResourceException?) {

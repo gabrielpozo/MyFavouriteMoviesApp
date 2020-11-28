@@ -35,17 +35,13 @@ class MoviesActivity : BaseMoviesActivity() {
     private fun updateUi(model: UiModel) {
         progress_bar.visibility = if (model is UiModel.Loading) View.VISIBLE else View.GONE
         when (model) {
-            is UiModel.Content ->{
-                adapter.movies = model.movies}
-
+            is UiModel.Content -> {
+                adapter.movies = model.movies
+            }
             is UiModel.Navigation -> startActivity<DetailMovieActivity> {
-                putExtra(DetailMovieActivity.MOVIE, model.movie.id)
+                putExtra(DetailMovieActivity.MOVIE_EXTRA, model.movie)
             }
-            UiModel.RequestMovies -> {
-                moviesViewModel.onRequestPopularMovies()
-            }
-            else -> {
-            }
+            is UiModel.RequestMovies -> moviesViewModel.onRequestPopularMovies()
         }
     }
 }

@@ -1,10 +1,7 @@
 package com.gabriel.myfavouritemoviesapp.di
 
 import android.app.Application
-import com.gabriel.myfavouritemoviesapp.di.modules.ApplicationModule
-import com.gabriel.myfavouritemoviesapp.di.modules.DataModule
-import com.gabriel.myfavouritemoviesapp.di.modules.MoviesComponent
-import com.gabriel.myfavouritemoviesapp.di.modules.MoviesModule
+import com.gabriel.myfavouritemoviesapp.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -14,6 +11,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun plus(module: MoviesModule): MoviesComponent
+    fun plus(module: DetailMovieModule): DetailMovieComponent
 
     @Component.Factory
     interface Factory {
