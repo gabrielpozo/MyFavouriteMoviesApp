@@ -51,7 +51,7 @@ class MoviesActivity : BaseMoviesActivity() {
         error_view.visible()
         error_button.setOnClickListener {
             moviesViewModel.onRetryButtonClicked()
-            error_view.visibility = View.GONE
+            error_view.gone()
         }
     }
 

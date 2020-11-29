@@ -4,14 +4,13 @@ import com.gabriel.domain.Resource
 import com.gabriel.domain.ResourceException
 import com.gabriel.domain.ResourceStatus
 
-abstract class MoviesBaseUseCase<T, Params> {
+abstract class MoviesBaseUseCase<T> {
 
     suspend fun execute(
         onSuccess: (T) -> Unit,
-        onError: (ResourceException?) -> Unit = {},
-        params: Params? = null
+        onError: (ResourceException?) -> Unit = {}
     ) {
-        val resource = useCaseExecution(params)
+        val resource = useCaseExecution()
         when (resource.state) {
             ResourceStatus.SUCCESS -> {
                 resource.value?.apply {
@@ -22,5 +21,5 @@ abstract class MoviesBaseUseCase<T, Params> {
         }
     }
 
-    protected abstract suspend fun useCaseExecution(params: Params?): Resource<T>
+    protected abstract suspend fun useCaseExecution(): Resource<T>
 }
