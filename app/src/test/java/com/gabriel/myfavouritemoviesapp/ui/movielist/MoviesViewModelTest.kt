@@ -61,7 +61,7 @@ class MoviesViewModelTest {
             ).then { invocation ->
                 invocation.invocationOnSuccess(mockedMovieUiList)
             }
-            vm.onRetryButtonClicked()
+            vm.onRequestPopularMovies()
 
             verify(observerUIModel).onChanged(
                 UiModel.Content(mockedMovieUiList)
@@ -110,5 +110,25 @@ class MoviesViewModelTest {
         verify(observerModelNavigation).onChanged(
             NavigationModel(mockedMovieUi)
         )
+    }
+
+    @Test
+    fun `when requesting movies from retry button, then a successful event is returned `() {
+        runBlocking {
+            vm.model.observeForever(observerUIModel)
+            whenever(
+                getMoviesUseCase.execute(
+                    any(),
+                    any()
+                )
+            ).then { invocation ->
+                invocation.invocationOnSuccess(mockedMovieUiList)
+            }
+            vm.onRetryButtonClicked()
+
+            verify(observerUIModel).onChanged(
+                UiModel.Content(mockedMovieUiList)
+            )
+        }
     }
 }
