@@ -47,8 +47,12 @@ ext {
     glideVersion = '4.9.0'
 
     //Mockito
-    mockitoKotin = '2.2.0'
-    mockitoInline = '2.28.3'
+    mockitoKotlin = '2.2.0'
+    mockitoInline = '2.28.2'
+    coreTestingVersion = '2.0.0'
+    mockwebserverVersion = "3.8.1"
+
+    mockitoVersion = "2.25.0"
 
 
     versionNumbers = [
@@ -78,11 +82,18 @@ ext {
     ]
 
 
-    testLibs = [
+    testDependencies = [
+
+            //testImplementation
+            mockwebserver: "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion",
+            coreTesting  : "androidx.arch.core:core-testing:$coreTestingVersion",
+            mockitoCore  : "org.mockito:mockito-core:$mockitoVersion",
             junit        : "junit:junit:${junit_version}",
-            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotin}",
-            mockitoInline: "org.mockito:mockito-inline:${mockitoInline}",
             testShared   : project(':testShared')
+    ]
+
+    androidTestDependencies = [
+            mockitoAndroid  : "org.mockito:mockito-android:$mockitoVersion"
     ]
 
     androidDependenciesFramework = [
@@ -121,5 +132,9 @@ ext {
 
     glideCompilerDependencies = [
             glide: "com.github.bumptech.glide:compiler:${glideVersion}"
+    ]
+    testLibs = [
+            mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlin",
+            mockitoInline: "org.mockito:mockito-inline:$mockitoInline"
     ]
 }

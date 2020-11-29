@@ -1,7 +1,6 @@
 package com.gabriel.myfavouritemoviesapp.ui.movielist
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import com.gabriel.myfavouritemoviesapp.R
 import com.gabriel.myfavouritemoviesapp.di.modules.MoviesComponent
@@ -51,7 +50,7 @@ class MoviesActivity : BaseMoviesActivity() {
         error_view.visible()
         error_button.setOnClickListener {
             moviesViewModel.onRetryButtonClicked()
-            error_view.visibility = View.GONE
+            error_view.gone()
         }
     }
 

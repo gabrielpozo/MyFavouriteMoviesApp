@@ -51,9 +51,12 @@ dependencies {
     implementation glideDependencies.values()
     implementation coroutinesAdapterDependencies.values()
     kapt androidKaptLibs.values()
-    testImplementation testLibs.values()
+    testImplementation testDependencies.values()
     implementation retrofitDependencies.values()
     implementation androidLifecycle.values()
+
+    androidTestImplementation androidTestDependencies.values()
+    implementation testLibs.values()
 
 
 }
