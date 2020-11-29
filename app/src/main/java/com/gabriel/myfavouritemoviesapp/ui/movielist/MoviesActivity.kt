@@ -1,7 +1,6 @@
 package com.gabriel.myfavouritemoviesapp.ui.movielist
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import com.gabriel.myfavouritemoviesapp.R
 import com.gabriel.myfavouritemoviesapp.di.modules.MoviesComponent
