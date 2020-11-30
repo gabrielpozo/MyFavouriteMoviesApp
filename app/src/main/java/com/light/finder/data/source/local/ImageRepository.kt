@@ -81,7 +81,8 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
     fun decodeSampledBitmapFromStream(
         inputStream: InputStream
     ): Bitmap {
-        var byteArr = ByteArray(0)
+
+/*        var byteArr = ByteArray(0)
         val buffer = ByteArray(1024)
         var len: Int
         var count = 0
@@ -109,11 +110,13 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
             options.inInputShareable = true
             options.inJustDecodeBounds = false
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            BitmapFactory.decodeByteArray(byteArr, 0, count, options)
-        } catch (e: java.lang.Exception) {
+            BitmapFactory.decodeByteArray(byteArr, 0, count, options)*/
+
+            return BitmapFactory.decodeStream(inputStream)
+    /*    } catch (e: java.lang.Exception) {
             //TODO("implement a solution to let the user know(e.g snackbar or popup) that something went terribly wrong in his device")
             throw BitmapDecodeException(DECODE_BITMAP_EXCEPTION_MESSAGE)
-        }
+        }*/
     }
 
     private fun encodeBitmapTo64(bitmap: Bitmap): String {
