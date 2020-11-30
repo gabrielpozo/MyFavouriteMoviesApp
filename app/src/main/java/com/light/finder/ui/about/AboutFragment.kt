@@ -1,8 +1,6 @@
 package com.light.finder.ui.about
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
@@ -190,8 +188,10 @@ class AboutFragment : BaseFragment() {
 
 
     private fun openBrowser(URL: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(URL))
-        startActivity(browserIntent)
+        requireContext().startBrowsingActivity(URL) {
+            //TODO implement flow in order let the user know there is no browser active installed on the device
+        }
+
     }
 
     private fun showAboutDialog(aboutFlag: AboutDialogFlags) {

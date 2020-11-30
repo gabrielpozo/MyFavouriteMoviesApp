@@ -187,8 +187,9 @@ class TermsAndConditionsLightFinderActivity : BaseLightFinderActivity() {
     }
 
     private fun openBrowser(URL: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(URL))
-        startActivity(browserIntent)
+        startBrowsingActivity(URL) {
+            //TODO implement flow in order let the user know there is no browser active installed on the device
+        }
     }
 
     private fun showErrorDialog(URL: String) {

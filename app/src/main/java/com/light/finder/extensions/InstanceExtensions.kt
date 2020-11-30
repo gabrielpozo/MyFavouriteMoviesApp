@@ -3,6 +3,7 @@ package com.light.finder.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.light.domain.model.*
@@ -26,6 +27,15 @@ inline fun <reified T : Activity> Context.intentFor(body: Intent.() -> Unit): In
 
 inline fun <reified T : Activity> Context.startActivity(body: Intent.() -> Unit) {
     startActivity(intentFor<T>(body))
+}
+
+fun Context.startBrowsingActivity(url: String, browserNotFound: () -> Unit = {}) {
+    val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    if (browseIntent.resolveActivity(packageManager) != null) {
+        startActivity(browseIntent)
+    } else {
+        browserNotFound.invoke()
+    }
 }
 
 inline fun <reified T : Activity> AppCompatActivity.startActivityForResult(
@@ -146,8 +156,8 @@ fun BrowseChoiceFragment.Companion.newInstance(
 ): BrowseChoiceFragment {
     val args = android.os.Bundle()
     args.putParcelableArrayList(CHOICE_ID_KEY, productsShapeSelected.parcelizeBrowsingList())
-    args.putInt(CHOICE_FITTING_ID,formFactorTypeBaseId)
-    args.putString(CHOICE_FITTING_NAME,formFactorName)
+    args.putInt(CHOICE_FITTING_ID, formFactorTypeBaseId)
+    args.putString(CHOICE_FITTING_NAME, formFactorName)
     val fragment = BrowseChoiceFragment()
     fragment.arguments = args
     fragment.setTargetFragment(browseShapeFragment, SHAPE_BACK_CODE)
