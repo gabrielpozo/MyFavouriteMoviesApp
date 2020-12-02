@@ -81,42 +81,12 @@ class ImageRepository(private val uiDispatcher: CoroutineDispatcher) : Coroutine
     fun decodeSampledBitmapFromStream(
         inputStream: InputStream
     ): Bitmap {
-
-/*        var byteArr = ByteArray(0)
-        val buffer = ByteArray(1024)
-        var len: Int
-        var count = 0
         return try {
-            while (inputStream.read(buffer).also { len = it } > -1) {
-                if (len != 0) {
-                    if (count + len > byteArr.size) {
-                        val newbuf = ByteArray((count + len) * 2)
-                        System.arraycopy(byteArr, 0, newbuf, 0, count)
-                        byteArr = newbuf
-                    }
-                    System.arraycopy(buffer, 0, byteArr, count, len)
-                    count += len
-                }
-            }
-            val options = BitmapFactory.Options()
-            options.inJustDecodeBounds = true
-            BitmapFactory.decodeByteArray(byteArr, 0, count, options)
-            options.inSampleSize = calculateInSampleSize(
-                options,
-                bitmapWidth,
-                bitmapHeight
-            )
-            options.inPurgeable = true
-            options.inInputShareable = true
-            options.inJustDecodeBounds = false
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            BitmapFactory.decodeByteArray(byteArr, 0, count, options)*/
-
-            return BitmapFactory.decodeStream(inputStream)
-    /*    } catch (e: java.lang.Exception) {
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: java.lang.Exception) {
             //TODO("implement a solution to let the user know(e.g snackbar or popup) that something went terribly wrong in his device")
             throw BitmapDecodeException(DECODE_BITMAP_EXCEPTION_MESSAGE)
-        }*/
+        }
     }
 
     private fun encodeBitmapTo64(bitmap: Bitmap): String {

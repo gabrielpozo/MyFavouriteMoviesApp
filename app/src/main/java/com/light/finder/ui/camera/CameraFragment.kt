@@ -13,6 +13,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Size
@@ -80,6 +81,7 @@ class CameraFragment : BaseFragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private var controls: View? = null
     private var modelUiState: ModelStatus = ModelStatus.FEED
+    private val handler = Handler()
 
 
     val timer = object : CountDownTimer(INIT_INTERVAL, DOWN_INTERVAL) {
@@ -980,20 +982,32 @@ class CameraFragment : BaseFragment() {
     }
 
     fun disableCameraCaptureButton() {
-        controls?.cameraCaptureButton?.isEnabled = false
-
+        //ensure the update will be done on the UI thread
+        handler.postDelayed({
+            controls?.cameraCaptureButton?.isEnabled = false
+        }, 100)
     }
 
     fun enableCameraCaptureButton() {
-        controls?.cameraCaptureButton?.isEnabled = true
+        //ensure the update will be done on the UI thread
+        handler.postDelayed({
+            controls?.cameraCaptureButton?.isEnabled = true
+        }, 100)
     }
 
-    fun disableGalleryButton() {
-        imageGalleryButton.isEnabled = false
+    private fun disableGalleryButton() {
+        //ensure the update will be done on the UI thread
+        handler.postDelayed({
+            imageGalleryButton.isEnabled = false
+        }, 100)
     }
 
-    fun enableGalleryButton() {
-        imageGalleryButton.isEnabled = true
+    private fun enableGalleryButton() {
+        //ensure the update will be done on the UI thread
+        handler.postDelayed({
+            imageGalleryButton.isEnabled = true
+        }, 100)
+
     }
 
     fun restoreCameraFromScanning() {
