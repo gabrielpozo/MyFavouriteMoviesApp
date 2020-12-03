@@ -55,6 +55,7 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
             )
         )
     }
+    private val handler = Handler()
     private var isBackButtonBlocked = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -149,13 +150,17 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
     }
 
     override fun setBottomBarInvisibility(invisible: Boolean) {
-        if (invisible) {
-            onBottomBarBlocked(false)
-            bottom_navigation_view.gone()
-        } else {
-            onBottomBarBlocked(true)
-            bottom_navigation_view.visible()
-        }
+        //ensure that the changes on UI will be render on the UI-thread
+        handler.postDelayed({
+            if (invisible) {
+                onBottomBarBlocked(false)
+                bottom_navigation_view.gone()
+            } else {
+                onBottomBarBlocked(true)
+                bottom_navigation_view.visible()
+            }
+
+        }, 100)
     }
 
     override fun onBadgeCountChanged(badgeCount: Int) {
