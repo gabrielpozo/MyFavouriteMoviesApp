@@ -132,6 +132,9 @@
     <string name="product_not_found_event_tag">product_not_found</string>
     <string name="product_disabled_event_tag">product_disabled</string>
     <string name="out_of_stock_event_tag">out_of_stock</string>
+    <string name="CES_campaign">CES_campaign</string>
+    <string name="submitted_event">submitted</string>
+    <string name="dismissed_event">dismissed</string>
 
 
     // Sticky Header Product Details

@@ -1,7 +1,9 @@
 package com.light.finder
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.view.KeyEvent
@@ -38,6 +40,8 @@ import com.light.finder.ui.liveambiance.LiveAmbianceLightFinderActivity
 import com.light.util.KEY_EVENT_ACTION
 import com.light.util.KEY_EVENT_EXTRA
 import com.ncapdevi.fragnav.FragNavController
+import com.usabilla.sdk.ubform.UbConstants
+import com.usabilla.sdk.ubform.sdk.entity.FeedbackResult
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.io.File
@@ -69,8 +73,8 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
         const val BROWSING_SHAPE_LIST_VALUES_ID: String = "BROWSING_SHAPE_LIST_VALUES_ID::id"
         const val BROWSING_FORM_FACTOR_VALUE_ID: String = "BROWSING_FORM_FACTOR_VALUE_ID::id"
         const val BROWSING_FORM_FACTOR_VALUE_NAME: String = "BROWSING_FORM_FACTOR_VALUE_NAME::id"
-
-
+        const val submittedValue = "1"
+        const val dismissedValue = "0"
         const val BROWSING_ACTIVITY: String = "BrowsingActivity"
         fun getOutputDirectory(context: Context): File {
             val appContext = context.applicationContext
@@ -145,6 +149,49 @@ class CameraLightFinderActivity : BaseLightFinderActivity(), FragNavController.R
 
             } else {
                 screenNavigator.setInitialRootFragment(CameraFragment.newInstance())
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            usabillaReceiverCloseCampaign, IntentFilter(
+                UbConstants.INTENT_CLOSE_CAMPAIGN
+            )
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverCloseCampaign)
+    }
+
+    private val usabillaReceiverCloseCampaign: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            // The campaign feedback form has been closed and the feedback result is returned
+            val res: FeedbackResult? =
+                intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)
+            if (res != null) {
+                firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.CES_campaign)) {
+                    putString(
+                        getString(R.string.submitted_event),
+                        if (res.isSent) {
+                            submittedValue
+                        } else {
+                            dismissedValue
+                        }
+                    )
+
+                    putString(
+                        getString(R.string.dismissed_event),
+                        if (res.isSent) {
+                            submittedValue
+                        } else {
+                            dismissedValue
+                        }
+                    )
+                }
             }
         }
     }

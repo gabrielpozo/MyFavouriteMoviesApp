@@ -6,6 +6,7 @@ import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
+import com.light.util.QA
 import com.usabilla.sdk.ubform.Usabilla
 import timber.log.Timber
 
@@ -36,6 +37,10 @@ class SignifyApp : Application() {
         InternetUtil.init(this)
 
         applicationComponent = DaggerApplicationComponent.factory().create(this)
-        Usabilla.initialize(this, UsabillaActivity.APP_ID, null, null)
+        Usabilla.initialize(
+            this, if (BuildConfig.FLAVOR == QA) {
+                UsabillaActivity.APP_ID_QA
+            } else UsabillaActivity.APP_ID_PROD, null, null
+        )
     }
 }
