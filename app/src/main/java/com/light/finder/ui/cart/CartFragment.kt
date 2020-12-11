@@ -13,7 +13,6 @@ import androidx.core.view.isGone
 import androidx.lifecycle.Observer
 import com.light.finder.BuildConfig
 import com.light.finder.R
-import com.light.finder.UsabillaActivity
 import com.light.finder.common.ActivityCallback
 import com.light.finder.common.ConnectivityRequester
 import com.light.finder.common.InternetUtil
@@ -24,7 +23,6 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.presentation.viewmodels.CartViewModel
 import com.light.util.QA
-import com.usabilla.sdk.ubform.Usabilla
 import kotlinx.android.synthetic.main.cart_fragment.*
 import kotlinx.android.synthetic.main.cart_fragment_offline.*
 import kotlinx.android.synthetic.main.layout_error.*
@@ -152,7 +150,8 @@ class CartFragment : BaseFragment() {
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
                 facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_successful_fb)) {}
                 activityCallback.onCartCleared()
-                UsabillaActivity.sendEvent(requireContext(), requireActivity().supportFragmentManager)
+                requireActivity().sendUsabillaCampaignEvent()
+
             }
             is CartViewModel.CountItemsModel.ErrorRequestItemCount -> {
                 showErrorLayout()
