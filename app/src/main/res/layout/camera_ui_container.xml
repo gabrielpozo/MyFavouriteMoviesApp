@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        android:text="@string/text_help"
+        android:text="@string/text_how_it_works"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/cameraCaptureButton"
         app:layout_constraintEnd_toEndOf="parent"

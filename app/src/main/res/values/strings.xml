@@ -8,7 +8,7 @@
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch flash</string>
     <string name="text_enable_access">Enable camera access</string>
-    <string name="text_help">Help</string>
+    <string name="text_how_it_works">How it works</string>
     <string name="text_permissions_subtitle">Enable camera access to get the best recommendations for your light bulb replacement.</string>
     <string name="text_permissions_title">Identify a light bulb</string>
     <string name="text_camera_subtitle">Hold light bulb in screen, ensuring as much is in view as possible</string>
