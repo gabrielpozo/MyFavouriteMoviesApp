@@ -55,7 +55,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_curvy_corners_gray_transparent"
-        android:alpha="0.7"
+        android:textColor="@color/primaryOnDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"

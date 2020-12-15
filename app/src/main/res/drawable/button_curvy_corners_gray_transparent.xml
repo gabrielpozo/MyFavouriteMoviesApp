@@ -6,7 +6,7 @@
         android:topRightRadius="2dp"
         android:bottomLeftRadius="2dp"
         android:bottomRightRadius="2dp" />
-    <solid android:color="@color/backgroundDarkPressed" />
+    <solid android:color="@color/backgroundDarkOpacity" />
     <padding
         android:left="0dp"
         android:top="0dp"
