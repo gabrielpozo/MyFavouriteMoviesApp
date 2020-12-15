@@ -6,9 +6,7 @@ import android.provider.Settings
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.light.domain.model.Category
-import com.light.domain.model.CctType
-import com.light.domain.model.Message
+import com.light.domain.model.*
 import com.light.finder.CameraLightFinderActivity
 import com.light.finder.R
 import com.light.finder.UsabillaActivity
@@ -16,7 +14,13 @@ import com.light.finder.extensions.*
 import com.light.finder.ui.BaseFragment
 import com.light.finder.ui.about.AboutFragment
 import com.light.finder.ui.browse.BrowseActivity
+import com.light.finder.ui.browse.BrowseActivity.Companion.CATEGORY_CHOICE_VIEW
 import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_CODE_BROWSING
+import com.light.finder.ui.browse.BrowseActivity.Companion.REQUEST_BROWSING_SCREEN
+import com.light.finder.ui.browse.BrowseActivity.Companion.EDIT_TEXT_REQUEST
+import com.light.finder.ui.browse.BrowseActivity.Companion.EDIT_TEXT_REQUEST_VALUE
+import com.light.finder.ui.browse.BrowseActivity.Companion.FITTING_VIEW
+import com.light.finder.ui.browse.BrowseActivity.Companion.SHAPE_VIEW
 import com.light.finder.ui.browse.BrowseResultFragment
 import com.light.finder.ui.camera.CameraFragment
 import com.light.finder.ui.cart.CartFragment
@@ -77,7 +81,6 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         }
 
         fun onLightFinderTabPressed(current: Fragment?, wasSelected: Boolean) {
-
             if (!wasSelected) {
                 return
             }
@@ -259,4 +262,33 @@ class ScreenNavigator(private val activity: CameraLightFinderActivity) {
         activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {}
         activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
+
+    fun navigateToCategoryChoiceFiltering() {
+        activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {
+            putExtra(REQUEST_BROWSING_SCREEN, CATEGORY_CHOICE_VIEW)
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToShapeFiltering() {
+        activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {
+            putExtra(REQUEST_BROWSING_SCREEN, SHAPE_VIEW)
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToFittingFiltering() {
+        activity.startActivityForResult<BrowseActivity>(REQUEST_CODE_BROWSING) {
+            putExtra(REQUEST_BROWSING_SCREEN, FITTING_VIEW)
+        }
+        activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    fun navigateToBrowsingFilteringFromBackButton() {
+        activity.startActivity<BrowseActivity> {
+            putExtra(EDIT_TEXT_REQUEST,EDIT_TEXT_REQUEST_VALUE)
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        activity.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)    }
 }

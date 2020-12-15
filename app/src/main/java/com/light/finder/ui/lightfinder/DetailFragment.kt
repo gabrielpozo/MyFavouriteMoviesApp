@@ -109,7 +109,6 @@ class DetailFragment : BaseFragment() {
         } ?: throw Exception("Invalid Activity")
 
 
-
         setNavigationObserver()
         setDetailObservers()
         setLightStatusBar()
@@ -145,14 +144,15 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun initInfoClickListeners() {
-        clickIntensity.setSafeOnClickListener {
+
+        infoIntensityTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 1)
         }
-        clickColor.setSafeOnClickListener {
+        infoColorTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 2)
         }
 
-        clickConnectivity.setSafeOnClickListener {
+        infoConnectivityTapView.setSafeOnClickListener {
             showInfoBottomSheetDialog(infoId = 3)
         }
     }
@@ -317,7 +317,7 @@ class DetailFragment : BaseFragment() {
 
     private fun observeProductSapId(contentCart: DetailViewModel.ContentProductId) {
         productSapId = contentCart.productSapId
-        facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.view_product)) {
+        facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.view_product_fb)) {
             putString(getString(R.string.parameter_sku), productSapId)
         }
         firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.view_product)) {
@@ -342,7 +342,7 @@ class DetailFragment : BaseFragment() {
                 putDouble(getString(R.string.value), formattedPricePack.toDouble())
             }
 
-            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_fb)) {
+            firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.add_to_cart_tag)) {
                 putString("CURRENCY", "USD")
                 putString("ITEMS", productSapId)
                 putFloat("VALUE", pricePerPack)

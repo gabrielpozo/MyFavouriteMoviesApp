@@ -1,6 +1,8 @@
 package com.light.finder.ui.browse
 
 import android.animation.ValueAnimator
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,22 +27,30 @@ import com.light.presentation.viewmodels.BrowseShapeViewModel
 import kotlinx.android.synthetic.main.fragment_browse_shape.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseShapeFragment : BaseFilteringFragment() {
+class BrowseShapeFragment : BaseFilteringFragment(), IOnBackPressed {
 
     companion object {
         const val SHAPE_ID_KEY = "BrowseShapeFragment::id"
-        const val RESTORED_STATE = 4
+        const val SHAPE_EDIT_ID_KEY = "BrowseEditShapeFragment::id"
+        const val SHAPE_NUMBER_KEY = 2
         const val spaceInDp = 26
+        const val SHAPE_BACK_CODE = 3
+        const val SHAPE_BACK_KEY = "SHAPE_BACK_KEY"
     }
 
     private lateinit var component: BrowseShapeComponent
     private lateinit var adapter: BrowseShapeAdapter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var rootview: View? = null
-
+    private var backPressedFlag = false
+    private var onBackOnFilteringScreen = false
 
     private val viewModel: BrowseShapeViewModel by lazy { getViewModel { component.browseShapeViewModel } }
 
+
+    fun setBackFilteringOnScreen(flag: Boolean) {
+        onBackOnFilteringScreen = flag
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,12 +68,34 @@ class BrowseShapeFragment : BaseFilteringFragment() {
             component = browseComponent.plus(BrowseShapeModule())
         }
 
+
+
         arguments?.let { bundle ->
             bundle.getParcelable<FormFactorTypeBaseIdParcelable>(SHAPE_ID_KEY)
                 ?.let { productBaseId ->
-                    viewModel.onRequestFilteringShapes(productBaseId.deparcelizeFormFactor())
+                    if (!onBackOnFilteringScreen) {
+                        viewModel.onRetrievingShapeList(
+                            backPressedFlag,
+                            productBaseId.deparcelizeFormFactor()
+                        )
+                    } else {
+                        viewModel.onRetrieveSavedShapeList()
+                        onBackOnFilteringScreen = false
+                    }
+
+                }
+
+            bundle.getInt(SHAPE_EDIT_ID_KEY)
+                .let { key ->
+                    if (key == SHAPE_NUMBER_KEY) {
+                        if (!backPressedFlag) {
+                            viewModel.onRetrieveSavedShapeList()
+                        }
+                    }
                 }
         }
+
+
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -80,6 +112,19 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SHAPE_BACK_CODE) {
+                val backPressed = data?.getBooleanExtra(SHAPE_BACK_KEY, false)
+                if (backPressed == true) {
+                    backPressedFlag = true
+                }
+            }
+        }
     }
 
     private fun setAdapter() {
@@ -188,15 +233,29 @@ class BrowseShapeFragment : BaseFilteringFragment() {
         }
     }
 
-    private fun showShapes(productFittingList: List<ShapeBrowsing>) {
+    private fun showShapes(shapeList: List<ShapeBrowsing>) {
         recyclerViewShape.visible()
         browseLoadingShape.gone()
-        adapter.setShapeProductList(productFittingList)
+        adapter.setShapeProductList(shapeList)
     }
 
     private fun navigatesToCategoriesChoice(modelNavigationEvent: Event<BrowseShapeViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToBrowsingChoiceScreen(browseNavigation.productsShapeSelected)
+            screenFilteringNavigator.navigateToBrowsingChoiceScreen(
+                this,
+                browseNavigation.productsShapeSelected,
+                browseNavigation.formFactorTypeBaseId,
+                browseNavigation.formFactorName
+            )
         }
     }
+
+    override fun onBackPressed() {
+        setTargetScreenForResult(
+            BrowseFittingFragment.FITTING_BACK_KEY,
+            BrowseFittingFragment.FITTING_BACK_CODE
+        )
+    }
+
+
 }

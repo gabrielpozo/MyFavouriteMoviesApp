@@ -4,19 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.domain.model.ShapeBrowsing
-import com.light.presentation.common.Event
-import com.light.presentation.common.isProductsShapeSelected
-import com.light.presentation.common.resetShapeProductList
-import com.light.presentation.common.setSelectedProductShape
+import com.light.presentation.common.*
+import com.light.usecases.GetShapeEditBrowseUseCase
 import com.light.usecases.RequestBrowsingShapeUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class BrowseShapeViewModel(
     private val requestBrowsingShapeUseCase: RequestBrowsingShapeUseCase,
+    private val getShapeEditBrowseUseCase: GetShapeEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
     private lateinit var productsShapeSelected: MutableList<ShapeBrowsing>
+    private var formFactorBaseId: Int = -1
+    private var formFactorName: String? = null
     private var viewModelInitialized = false
 
     companion object {
@@ -34,7 +35,11 @@ class BrowseShapeViewModel(
         get() = _modelBrowsingLiveData
     private val _modelBrowsingLiveData = MutableLiveData<UiBrowsingShapeModel>()
 
-    data class NavigationToResults(val productsShapeSelected: List<ShapeBrowsing>)
+    data class NavigationToResults(
+        val productsShapeSelected: List<ShapeBrowsing>,
+        val formFactorTypeBaseId: Int,
+        val formFactorName: String?
+    )
 
     private val _modelNavigationToResult = MutableLiveData<Event<NavigationToResults>>()
     val modelNavigationToResult: LiveData<Event<NavigationToResults>>
@@ -51,7 +56,31 @@ class BrowseShapeViewModel(
     }
 
 
-    fun onRequestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
+    fun onRetrievingShapeList(
+        backPressed: Boolean,
+        productBaseId: FormFactorTypeBaseId
+    ) {
+        formFactorBaseId = productBaseId.id
+        formFactorName = productBaseId.name
+        if (!backPressed) {
+            requestFilteringShapes(productBaseId)
+        }
+    }
+
+    fun onRetrieveSavedShapeList() {
+        launch {
+            val browsingList = getShapeEditBrowseUseCase.execute()
+            handleSuccessRequest(browsingList)
+            val formFactor = browsingList.getShapeSelected()
+            if (formFactor == null) {
+                _modelBottomStatus.value = StatusBottomBar.ResetShape
+            } else {
+                onShapeClick(formFactor)
+            }
+        }
+    }
+
+    private fun requestFilteringShapes(productBaseId: FormFactorTypeBaseId) {
         if (viewModelInitialized) {
             return
         }
@@ -81,7 +110,8 @@ class BrowseShapeViewModel(
 
     fun onSearchButtonClicked() {
         if (productsShapeSelected.isProductsShapeSelected()) {
-            _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
+            _modelNavigationToResult.value =
+                Event(NavigationToResults(productsShapeSelected, formFactorBaseId, formFactorName))
         }
     }
 
@@ -95,6 +125,7 @@ class BrowseShapeViewModel(
     }
 
     fun onSkipButtonClicked() {
-        _modelNavigationToResult.value = Event(NavigationToResults(productsShapeSelected))
+        _modelNavigationToResult.value =
+            Event(NavigationToResults(productsShapeSelected, formFactorBaseId, formFactorName))
     }
 }

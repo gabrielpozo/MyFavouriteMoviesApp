@@ -5,15 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.Category
 import com.light.domain.model.ChoiceBrowsing
 import com.light.domain.model.Message
+import com.light.domain.model.ShapeBrowsing
 import com.light.presentation.common.Event
-import com.light.usecases.GetBrowseProductsResultUseCase
+import com.light.usecases.GetChoiceBrowsingProductsUseCase
 import com.light.usecases.GetSortCategoriesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class BrowseResultViewModel(
     private val getSortCategoriesUseCase: GetSortCategoriesUseCase,
-    private val getBrowseProductsResultUseCase: GetBrowseProductsResultUseCase,
+    private val getBrowseProductsResultUseCase: GetChoiceBrowsingProductsUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -35,11 +36,20 @@ class BrowseResultViewModel(
     val modelSort: LiveData<SortModel>
         get() = _modelSort
 
-    private var currentCategoriesList = mutableListOf<Category>()
+    private val _modelEdit = MutableLiveData<EditTextInfo>()
+    val modelEdit: LiveData<EditTextInfo>
+        get() = _modelEdit
 
-    class NavigationModel(val category: Category)
-    class FilterModel(val requestCode: Int)
-    class SortModel(val sortId: Int)
+    val modelEditBrowseStateLiveData: LiveData<Event<EditBrowseState>>
+        get() = _modelEditBrowseStateLiveData
+    private val _modelEditBrowseStateLiveData =
+        MutableLiveData<Event<EditBrowseState>>()
+
+
+    data class NavigationModel(val category: Category)
+    data class FilterModel(val requestCode: Int)
+    data class SortModel(val sortId: Int)
+    data class EditTextInfo(val message: Message)
 
 
     sealed class ResultBrowse {
@@ -47,6 +57,19 @@ class BrowseResultViewModel(
         data class Content(val categories: List<Category>, val message: Message) : ResultBrowse()
         data class NoResult(val message: Message) : ResultBrowse()
     }
+
+
+    sealed class EditBrowseState {
+        object EditBrowsingChoiceCategory :
+            EditBrowseState()
+
+        object EditBrowsingShape : EditBrowseState()
+        object EditBrowsingFitting : EditBrowseState()
+    }
+
+
+    private var currentCategoriesList = mutableListOf<Category>()
+    private lateinit var messageEdit: Message
 
 
     fun onCategoryClick(category: Category) {
@@ -75,22 +98,61 @@ class BrowseResultViewModel(
 
     }
 
-    fun onRetrieveShapeProducts(shapeBrowsingList: ArrayList<ChoiceBrowsing>) {
+    fun onRetrieveShapeProducts(
+        shapeChoiceList: ArrayList<ChoiceBrowsing>,
+        shapeBrowsingList: ArrayList<ShapeBrowsing>?,
+        formFactorId: Int,
+        formFactorName: String?
+    ) {
         launch {
             getBrowseProductsResultUseCase.execute(
                 ::handleResultProducts,
                 ::handleNoResultProducts,
-                shapeBrowsingList
+                shapeChoiceList,
+                shapeBrowsingList,
+                formFactorId,
+                formFactorName
             )
         }
     }
 
     private fun handleResultProducts(message: Message) {
+        //we initialize here the edit text
+        messageEdit = message
         currentCategoriesList = message.categories.toMutableList()
         _model.value = ResultBrowse.Content(message.categories, message)
     }
 
     private fun handleNoResultProducts(message: Message) {
         _model.value = ResultBrowse.NoResult(message)
+    }
+
+    fun onEditTextClicked() {
+        if (this::messageEdit.isInitialized)
+            _modelEdit.value = EditTextInfo(messageEdit)
+    }
+
+    fun onCategoryEditTextClicked() {
+        launch {
+            _modelEditBrowseStateLiveData.value = Event(
+                EditBrowseState.EditBrowsingChoiceCategory
+            )
+        }
+    }
+
+    fun onShapeEditTextClicked() {
+        launch {
+            _modelEditBrowseStateLiveData.value = Event(
+                EditBrowseState.EditBrowsingShape
+            )
+        }
+    }
+
+    fun onFittingEditTextClicked() {
+        launch {
+            _modelEditBrowseStateLiveData.value = Event(
+                EditBrowseState.EditBrowsingFitting
+            )
+        }
     }
 }

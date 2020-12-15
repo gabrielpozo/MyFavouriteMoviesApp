@@ -48,12 +48,27 @@ fun List<ShapeBrowsing>.setSelectedProductShape(productShape: ShapeBrowsing) {
     }
 }
 
-fun List<ShapeBrowsing>.resetShapeProductList(){
+fun List<ShapeBrowsing>.resetShapeProductList() {
     forEach {
         it.isSelected = false
     }
 }
 
+
+fun List<FormFactorTypeBaseId>.getFormFactorSelected(): FormFactorTypeBaseId {
+    val product = find {
+        it.isSelected
+    }
+    return product!!
+}
+
+fun List<ShapeBrowsing>.getShapeSelected(): ShapeBrowsing? = find {
+    it.isSelected
+}
+
+fun List<ChoiceBrowsing>.getChoiceSelected(): ChoiceBrowsing? = find {
+    it.isSelected
+}
 
 fun List<ChoiceBrowsing>.isProductsChoiceSelected(): Boolean =
     find { it.isSelected } != null
@@ -64,7 +79,7 @@ fun List<ChoiceBrowsing>.setSelectedProductChoice(productChoice: ChoiceBrowsing)
     }
 }
 
-fun List<ChoiceBrowsing>.resetChoiceProductList(){
+fun List<ChoiceBrowsing>.resetChoiceProductList() {
     forEach {
         it.isSelected = false
     }

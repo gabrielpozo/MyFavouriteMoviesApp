@@ -216,12 +216,12 @@ class Camera2Loader(private val activity: Activity) : CameraLoader() {
             }
 
             override fun onDisconnected(camera: CameraDevice) {
-                cameraDevice!!.close()
+                cameraDevice?.close()
                 cameraDevice = null
             }
 
             override fun onError(camera: CameraDevice, error: Int) {
-                cameraDevice!!.close()
+                cameraDevice?.close()
                 cameraDevice = null
             }
         }

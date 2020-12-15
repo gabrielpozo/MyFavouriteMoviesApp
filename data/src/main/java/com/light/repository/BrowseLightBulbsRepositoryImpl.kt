@@ -23,5 +23,21 @@ class BrowseLightBulbsRepositoryImpl(
             saveLegendRequestOnLocal = { localPreferenceDataSource.saveLegendParsingFilterNames(it) },
             mainRemoteRequest = { remoteFetchBrowsingSource.fetchBrowsingProducts() },
             saveBrowsingonLocal = { localPreferenceDataSource.saveBrowsingProducts(it) },
-            legendParsing = { localPreferenceDataSource.loadFormFactorBasedOnBrowsingProducts(it).sortedBy { it.order } })
+            legendParsing = {
+                val filterFilteringList =
+                    localPreferenceDataSource.loadFormFactorBasedOnBrowsingProducts(it)
+                        .sortedBy { it.order }
+
+                localPreferenceDataSource.saveFormFactorFilteredList(filterFilteringList)
+                filterFilteringList
+
+            })
+
+    override suspend fun getFittingListForEditBrowse(): List<FormFactorTypeBaseId> {
+        val baseId = localPreferenceDataSource.getProductBaseId()
+        val formFactorList = localPreferenceDataSource.loadFormFactorBrowsingFiltered()
+        formFactorList.find { it.id == baseId }?.isSelected = true
+        return formFactorList
+    }
+
 }

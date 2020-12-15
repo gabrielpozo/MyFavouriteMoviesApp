@@ -16,9 +16,17 @@ interface LocalPreferenceDataSource {
     fun loadProductBrowsingTags(): List<ProductBrowsing>
     fun loadProductBrowsingFiltered(): List<ProductBrowsing>
     fun loadProductShapeBrowsingFiltered(): List<ProductBrowsing>
+    fun loadShapeBrowsingFiltered(): List<ShapeBrowsing>
+    fun loadChoiceBrowsingFiltered(): List<ChoiceBrowsing>
+    fun loadFormFactorBrowsingFiltered(): List<FormFactorTypeBaseId>
+    fun getProductBaseId(): Int
     fun saveBrowsingProducts(productsBrowsing: List<ProductBrowsing>)
-    fun saveShapeFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
+    fun saveProductBrowsingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
+    fun saveBrowsingShapeFilteredList(browsingList: List<ShapeBrowsing>)
     fun saveFittingFilteredList(productsFilteredBrowsing: List<ProductBrowsing>)
+    fun saveChoiceCategories(choiceBrowsingList: List<ChoiceBrowsing>)
+    fun saveFormFactorFilteredList(filterFilteringList: List<FormFactorTypeBaseId>)
+    fun saveSelectedFormFactor(baseId: Int)
     fun getFilteringShapeProducts(
         productFilteredBrowseList: List<ProductBrowsing>,
         productBaseId: Int,

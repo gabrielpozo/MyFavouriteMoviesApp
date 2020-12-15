@@ -83,7 +83,7 @@ class CartFragment : BaseFragment() {
 
         buttonTryAgain.setOnClickListener {
             viewModel.onRequestGetItemCount()
-            setupWebView()
+            viewModel.onCheckReloadCartWebView(reloadingCallback.hasBeenReload())
             hideErrorLayout()
         }
     }
@@ -148,8 +148,10 @@ class CartFragment : BaseFragment() {
             is CartViewModel.CountItemsModel.PaymentSuccessful -> {
                 hideErrorLayout()
                 firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.payment_successful)) {}
-                facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_succesful)) {}
+                facebookAnalyticsUtil.logEventOnFacebookSdk(getString(R.string.payment_successful_fb)) {}
                 activityCallback.onCartCleared()
+                requireActivity().sendUsabillaCampaignEvent()
+
             }
             is CartViewModel.CountItemsModel.ErrorRequestItemCount -> {
                 showErrorLayout()
@@ -175,10 +177,10 @@ class CartFragment : BaseFragment() {
         val webChromeClient: WebChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
-
                 progressBar?.let {
                     setProgress(newProgress)
                 }
+                white_overlay.visible()
             }
         }
 
@@ -200,6 +202,8 @@ class CartFragment : BaseFragment() {
                 } else {
                     view?.visible()
                 }
+
+                white_overlay.gone()
                 viewModel.onRequestGetItemCount()
                 view?.scrollTo(0, 0)
                 viewModel.onSetWebUrl(url.getSplitUrl())

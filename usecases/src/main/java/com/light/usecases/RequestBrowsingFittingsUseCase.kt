@@ -8,17 +8,17 @@ import com.light.domain.state.DataState
 class RequestBrowsingFittingsUseCase(private val browseLightBulbsRepository: BrowseLightBulbsRepository) {
     suspend fun execute(
         onSuccess: (List<FormFactorTypeBaseId>) -> Unit = {},
-        onError: (e: Exception, message: String) -> Unit = { _, _ -> }
+        onError: (message: String) -> Unit = { _ -> }
     ) {
         when (val dataState = browseLightBulbsRepository.getFittingBrowsingProducts()) {
             is DataState.Success -> {
                 onSuccess.invoke(dataState.data)
             }
             is DataState.Error -> {
-                onError.invoke(dataState.cause ?: Exception(""), dataState.errorMessage)
+                onError.invoke(dataState.errorMessage)
             }
             is DataState.TimeOut -> {
-                onError.invoke(dataState.cause ?: Exception(""), dataState.errorMessage)
+                onError.invoke(dataState.errorMessage)
             }
         }
     }

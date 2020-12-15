@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.light.domain.model.FormFactorTypeBaseId
 import com.light.presentation.common.Event
+import com.light.presentation.common.getFormFactorSelected
+import com.light.usecases.GetFormFactorsEditBrowseUseCase
 import com.light.usecases.RequestBrowsingFittingsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -11,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class BrowseFittingViewModel(
     private val requestBrowsingProductsUseCase: RequestBrowsingFittingsUseCase,
+    private val getFormFactorsEditBrowseUseCase: GetFormFactorsEditBrowseUseCase,
     uiDispatcher: CoroutineDispatcher
 ) : BaseViewModel(uiDispatcher) {
 
@@ -26,6 +29,7 @@ class BrowseFittingViewModel(
     sealed class UiBrowsingModel {
         data class SuccessRequestStatus(val productBrowsingList: List<FormFactorTypeBaseId>) :
             UiBrowsingModel()
+
         data class ErrorRequestStatus(val message: String) : UiBrowsingModel()
         object LoadingStatus : UiBrowsingModel()
     }
@@ -50,26 +54,12 @@ class BrowseFittingViewModel(
     val modelFittingClickStatus: LiveData<FittingClicked>
         get() = _modelFittingClickStatus
     private val _modelFittingClickStatus = MutableLiveData<FittingClicked>()
+
     object FittingClicked
 
-    init {
-        onRequestBrowsingProducts()
-    }
 
     fun onRequestBrowsingProducts() {
-        launch {
-            _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
-            requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
-        }
-    }
-
-    private fun handleSuccessRequest(productBrowsingList: List<FormFactorTypeBaseId>) {
-        _modelBrowsingLiveData.value =
-            UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
-    }
-
-    private fun handleErrorRequest(exception: Exception, message: String) {
-        _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
+        requestFormFactorList()
     }
 
     fun onFittingClick(product: FormFactorTypeBaseId) {
@@ -82,6 +72,40 @@ class BrowseFittingViewModel(
     fun onNextButtonPressed() {
         if (productBaseId > NO_ITEM_SELECTED && !isNextDisabled)
             _modelNavigationShape.value = Event(NavigationToShapeFiltering(productFormFactorBaseId))
+    }
+
+    fun onRequestFormFactorFromEditBrowse(backPressedFlag: Boolean) {
+        if (!backPressedFlag) {
+            requestFormFactorList()
+        }
+    }
+
+    fun onRequestSavedFormFactorList() {
+        requestSavedFormFactorList()
+    }
+
+    private fun requestSavedFormFactorList() {
+        launch {
+            val formFactorList = getFormFactorsEditBrowseUseCase.execute()
+            handleSuccessRequest(formFactorList)
+            onFittingClick(formFactorList.getFormFactorSelected())
+        }
+    }
+
+    private fun requestFormFactorList() {
+        launch {
+            _modelBrowsingLiveData.value = UiBrowsingModel.LoadingStatus
+            requestBrowsingProductsUseCase.execute(::handleSuccessRequest, ::handleErrorRequest)
+        }
+    }
+
+    private fun handleSuccessRequest(productBrowsingList: List<FormFactorTypeBaseId>) {
+        _modelBrowsingLiveData.value =
+            UiBrowsingModel.SuccessRequestStatus(productBrowsingList)
+    }
+
+    private fun handleErrorRequest(message: String) {
+        _modelBrowsingLiveData.value = UiBrowsingModel.ErrorRequestStatus(message)
     }
 }
 

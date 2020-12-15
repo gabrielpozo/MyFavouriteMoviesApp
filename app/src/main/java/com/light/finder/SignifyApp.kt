@@ -6,6 +6,8 @@ import com.facebook.stetho.Stetho
 import com.light.finder.common.InternetUtil
 import com.light.finder.di.ApplicationComponent
 import com.light.finder.di.DaggerApplicationComponent
+import com.light.util.QA
+import com.usabilla.sdk.ubform.Usabilla
 import timber.log.Timber
 
 
@@ -24,6 +26,11 @@ class SignifyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        initializeInstanceApp()
+        initializeUsabillaSdk()
+    }
+
+    private fun initializeInstanceApp() {
         instance = this
 
         if (BuildConfig.DEBUG) {
@@ -31,11 +38,16 @@ class SignifyApp : Application() {
             Stetho.initializeWithDefaults(this)
             Timber.plant(Timber.DebugTree())
         }
-
         InternetUtil.init(this)
-
         applicationComponent = DaggerApplicationComponent.factory().create(this)
+    }
 
-
+    private fun initializeUsabillaSdk() {
+        Usabilla.initialize(
+            this, if (BuildConfig.FLAVOR == QA) {
+                UsabillaActivity.APP_ID_QA
+            } else UsabillaActivity.APP_ID_PROD, null, null
+        )
+        Usabilla.preloadFeedbackForms(listOf(UsabillaActivity.FORM_ID)) // make sure that preloadFeedbackForms is called only when online
     }
 }

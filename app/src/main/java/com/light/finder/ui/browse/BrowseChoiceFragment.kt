@@ -21,16 +21,22 @@ import com.light.finder.di.modules.submodules.BrowseChoiceComponent
 import com.light.finder.di.modules.submodules.BrowseChoiceModule
 import com.light.finder.extensions.*
 import com.light.finder.ui.adapters.BrowseChoiceAdapter
+import com.light.finder.ui.browse.BrowseShapeFragment.Companion.SHAPE_BACK_CODE
+import com.light.finder.ui.browse.BrowseShapeFragment.Companion.SHAPE_BACK_KEY
 import com.light.presentation.common.Event
 import com.light.presentation.viewmodels.BrowseChoiceViewModel
 import kotlinx.android.synthetic.main.fragment_browse_choice.*
 import kotlinx.android.synthetic.main.layout_browse_loading.*
 
-class BrowseChoiceFragment : BaseFilteringFragment() {
+class BrowseChoiceFragment : BaseFilteringFragment(), BrowseExpandableStatus, IOnBackPressed {
 
     companion object {
         const val CHOICE_ID_KEY = "BrowseChoiceFragment::id"
-        const val RESTORED_STATE = 4
+        const val CHOICE_EDIT_ID_KEY = "BrowseChoiceEditFragment::id"
+        const val CHOICE_FITTING_ID = "CHOICE_FITTING_ID"
+        const val CHOICE_FITTING_NAME = "CHOICE_FITTING_NAME"
+
+        const val CHOICE_NUMBER_KEY = 4
         const val spaceInDp = 26
     }
 
@@ -55,11 +61,26 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         }
 
         arguments?.let { bundle ->
+            val formFactorId = bundle.getInt(CHOICE_FITTING_ID)
+            val formFactorName = bundle.getString(CHOICE_FITTING_NAME)
+            bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
             bundle.getParcelableArrayList<ShapeBrowsingParcelable>(CHOICE_ID_KEY)
                 ?.let { shapeBrowsingProducts ->
-                    viewModel.onRetrieveShapeProducts(shapeBrowsingProducts.deParcelizeBrowsingList())
+                    viewModel.onRetrieveShapeProducts(
+                        shapeBrowsingProducts.deParcelizeBrowsingList(),
+                        formFactorId,
+                        formFactorName
+                    )
+                }
+
+            bundle.getInt(CHOICE_EDIT_ID_KEY)
+                .let { key ->
+                    if (key == CHOICE_NUMBER_KEY) {
+                        viewModel.onRetrieveChoiceProducts()
+                    }
                 }
         }
+
 
         textReset.paintFlags = textReset.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         textSkip.paintFlags = textSkip.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -76,6 +97,11 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         setAdapter()
         setBottomSheetBehaviour()
         setObservers()
+
+    }
+
+    override fun setExpandableChoiceSelection() {
+        viewModel.onRetrieveChoiceProducts()
     }
 
     private fun setAdapter() {
@@ -189,10 +215,15 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         adapter.setChoiceProductList(productChoiceList)
     }
 
-    //todo change with categories
+    //todo change with categoriesø
     private fun navigatesToCategoriesResult(modelNavigationEvent: Event<BrowseChoiceViewModel.NavigationToResults>) {
         modelNavigationEvent.getContentIfNotHandled()?.let { browseNavigation ->
-            screenFilteringNavigator.navigateToResultCategories(browseNavigation.productsChoiceSelected)
+            screenFilteringNavigator.navigateToResultCategories(
+                browseNavigation.productsChoiceSelected,
+                browseNavigation.productsShapeSelected,
+                browseNavigation.formFactorId,
+                browseNavigation.formFactorName
+            )
             firebaseAnalytics.logEventOnGoogleTagManager(getString(R.string.browse_applied)) {
                 putString(
                     getString(R.string.base),
@@ -202,4 +233,10 @@ class BrowseChoiceFragment : BaseFilteringFragment() {
         }
     }
 
+    override fun onBackPressed() {
+        setTargetScreenForResult(
+            SHAPE_BACK_KEY,
+            SHAPE_BACK_CODE
+        )
+    }
 }
