@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
+-keep class android.animation.ObjectAnimator {*;}
